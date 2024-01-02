@@ -2,4 +2,4 @@
 title: "slides"
 ---
 
-[Matrix algebra basics](/docs/matrix24.html)
+[Matrix algebra basics](/501sp24/docs/slides/matrix24.html)
