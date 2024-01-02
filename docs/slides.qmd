@@ -2,6 +2,6 @@
 title: "slides"
 ---
 
-[Matrix algebra basics](/501sp24/docs/matrix24.html)
+[Matrix algebra basics](matrix24.html)
 
 [Thinking about data](matrix24.html)
