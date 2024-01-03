@@ -4,4 +4,4 @@ title: "slides"
 
 [Matrix algebra basics](matrix24.html)
 
-[Thinking about data](matrix24.html)
+[Thinking about data](matrix24.qmd)

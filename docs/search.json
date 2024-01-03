@@ -1,16 +1,338 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "PLSC 501 - Spring 2024",
-    "section": "",
-    "text": "This is the course website for PLSC 501 - it is a data science course focused on data management, coding in R, and learning basic regression techniques in OLS and MLE.\nSlides\nCode and Data"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
     "text": "About this site\nCreated with Quarto.\nAbout me\nProfessor of political science, I’ve taught this class for a long time. My real effort in the last 15 years or so has been to retool it into a data-science-heavy class to leave students with modern coding, data wrangling, and modeling tools. PhD Florida State 1999. I study models of political violence."
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "slides",
+    "section": "",
+    "text": "Matrix algebra basics\nThinking about data"
+  },
+  {
+    "objectID": "matrix24.html#matrix-notation",
+    "href": "matrix24.html#matrix-notation",
+    "title": "Matrix algebra basics",
+    "section": "Matrix notation",
+    "text": "Matrix notation\nFor our purposes, matrix algebra is useful for (at least) three reasons:\n\nSimplifies mathematical expressions.\nHas a clear, visual relationship to the data.\nProvides intuitive ways to understand elements of the model."
+  },
+  {
+    "objectID": "matrix24.html#matrices",
+    "href": "matrix24.html#matrices",
+    "title": "Matrix algebra basics",
+    "section": "Matrices",
+    "text": "Matrices\nA single number is known as a scalar.\nA matrix is a rectangular or square array of numbers arranged in rows and columns.\n\\[\\mathbf{A} = \\left[\n\\begin{array}{cccc}\na_{11} & a_{12} &\\cdots &a_{1m}\\\\\na_{21}& a_{22} &\\cdots &a_{2m}\\\\\n&&\\vdots\\\\\na_{n1} &a_{n2} &\\cdots & a_{nm}\\\\\n\\end{array} \\right] \\]\nwhere each element of the matrix is written as \\(a_{row,column}\\). Matrices are denoted by capital, bold faced letters, A."
+  },
+  {
+    "objectID": "matrix24.html#dimensions",
+    "href": "matrix24.html#dimensions",
+    "title": "Matrix algebra basics",
+    "section": "Dimensions",
+    "text": "Dimensions\nThe dimensions of a matrix are the number of rows (n) and columns (m) it contains. The dimensions of matrices are always read \\(n\\) by \\(m\\), row by column. We would say that matrix A is of order \\((n,m)\\).\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right] \\]\nA is of order (3,3) and is a square matrix. If matrix A is of order (1,1), then it is a scalar."
+  },
+  {
+    "objectID": "matrix24.html#symmetric-matrices",
+    "href": "matrix24.html#symmetric-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Symmetric matrices",
+    "text": "Symmetric matrices\n\nA is a square matrix if \\(n=m\\). This matrix is also symmetric.\nA symmetric matrix is one where each element \\(a_{n,m}\\) is equal to its opposite element, \\(a_{m,n}\\). In other words, a matrix is symmetric if \\(a_{n,m}=a_{n,m}\\), \\(\\forall\\) \\(n\\) and \\(m\\).\nAll symmetric matrices are square, but not all square matrices are symmetric. A correlation matrix is and example of a symmetric matrix."
+  },
+  {
+    "objectID": "matrix24.html#rectangular-matrices",
+    "href": "matrix24.html#rectangular-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Rectangular matrices",
+    "text": "Rectangular matrices\nA rectangular matrix is one where \\(n\\neq m\\).\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{cc}\n1 &3 \\\\\n3& 5\\\\\n7& 2\\\\\n\\end{array} \\right] \\]\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{ccc}\n1 &3 &7\\\\\n3& 5& 2\\\\\n\\end{array} \\right] \\]\nIn the first, case, A is of order (3,2); in the second, A is of order (2,3)."
+  },
+  {
+    "objectID": "matrix24.html#vectors",
+    "href": "matrix24.html#vectors",
+    "title": "Matrix algebra basics",
+    "section": "Vectors",
+    "text": "Vectors\nA vector is a special kind of matrix wherein one of its dimensions is 1; the matrix has either one row or one column. Vectors are denoted by lower case, bold faced letters, a and may be row or column vectors.\n\\[\\mathbf{\\beta} =  \\left[\n\\begin{array}{cccc}\n\\beta_{1} &\\beta_{2} &\\beta_{3}&\\beta_{4}\\\\\n\\end{array} \\right]\n~~~~~~~~\n\\mathbf{a} =  \\left[\n\\begin{array}{c}\n1 \\\\\n3\\\\\n5\\\\\n7\\\\\n\\end{array} \\right] \\]\nParameter matrices (e.g. \\(\\beta\\)) follow the same notation except that they are indicated by Greek rather than Roman letters."
+  },
+  {
+    "objectID": "matrix24.html#transposition",
+    "href": "matrix24.html#transposition",
+    "title": "Matrix algebra basics",
+    "section": "Transposition",
+    "text": "Transposition\nThe transpose of a matrix A is the matrix flipped on its side such that its rows become columns and columns become rows; the transpose of A is denoted \\({\\mathbf A'}\\) and is referred to as “\\({\\mathbf A}\\) transpose.”\n\\[\\mathbf{X} =  \\left[\n\\begin{array}{cc}\n1 &3 \\\\\n3& 5\\\\\n7& 2\\\\\n\\end{array} \\right]\n~~~~~~~~~~~\n\\mathbf{X'} =  \\left[\n\\begin{array}{ccc}\n1 &3 &7\\\\\n3& 5 & 2\\\\\n\\end{array} \\right] \\]\nso \\({\\mathbf X}\\), a (3,2) matrix, becomes \\({\\mathbf X'}\\), a (2,3) matrix."
+  },
+  {
+    "objectID": "matrix24.html#transposition-1",
+    "href": "matrix24.html#transposition-1",
+    "title": "Matrix algebra basics",
+    "section": "Transposition",
+    "text": "Transposition\nIf \\({\\mathbf A}\\) is symmetric, then \\({\\mathbf A}={\\mathbf A'}\\) – take a look at the following symmetric matrix and you’ll see why:\n\\[\\mathbf{X} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right]\n~~~~~~~~\n\\mathbf{X'} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "matrix24.html#transposition-2",
+    "href": "matrix24.html#transposition-2",
+    "title": "Matrix algebra basics",
+    "section": "Transposition",
+    "text": "Transposition\nAlso note that the transpose of a transposed matrix results in the original matrix: \\((\\mathbf{X}')'=\\mathbf{X}\\).\nTransposing a row vector results in a column vector and vice versa:\n\\[\\mathbf{x} =  \\left[\n\\begin{array}{c}\n-1 \\\\\n-9\\\\\n4\\\\\n16\\\\\n\\end{array} \\right]\n~~~~~~~~~\n\\mathbf{x'} =  \\left[\n\\begin{array}{cccc}\n-1 & -9 &4 &16\\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "matrix24.html#trace-of-a-matrix",
+    "href": "matrix24.html#trace-of-a-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Trace of a Matrix",
+    "text": "Trace of a Matrix\nThe trace of a matrix is the sum of the diagonal elements of a square matrix, and is denoted \\(tr(\\mathbf{A})=a_{11}+a_{22}+a_{33}\\ldots+a_{nn} = \\sum\\limits_{i=1}^{n}a_{ii}\\)\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right] \\]\nsuch that\n\\(tr(\\mathbf{A})=2+5+2=9\\)"
+  },
+  {
+    "objectID": "matrix24.html#addition-subtraction",
+    "href": "matrix24.html#addition-subtraction",
+    "title": "Matrix algebra basics",
+    "section": "Addition & Subtraction",
+    "text": "Addition & Subtraction\n\nAddition and subtraction of matrices is analogous to the same scalar operations, but depend on the conformatibility of the matrices to be added or subtracted.\nTwo matrices are conformable for addition or subtraction iff they are of the same order.\nNote that conformability means something different for addition/subtraction than for multiplication."
+  },
+  {
+    "objectID": "matrix24.html#addition-subtraction-1",
+    "href": "matrix24.html#addition-subtraction-1",
+    "title": "Matrix algebra basics",
+    "section": "Addition & Subtraction",
+    "text": "Addition & Subtraction\nConsider the following (2,2) matrices and the problem \\(\\mathbf{A}+\\mathbf{B}=\\mathbf{C}\\):\n\\[ \\left[\n\\begin{array}{cc}\na_{11} & a_{12}\\\\\na_{21}& a_{22} \\\\\n\\end{array} \\right]\n+\n\\left[\n\\begin{array}{cc}\nb_{11} & b_{12}\\\\\nb_{21}& b_{22} \\\\\n\\end{array} \\right]\n=\n\\left[\n\\begin{array}{cc}\na_{11}+b_{11} & a_{12}+b_{12}\\\\\na_{21}+b_{21}& a_{22}+b_{22} \\\\\n\\end{array} \\right]\n=\n\\left[\n\\begin{array}{cc}\nc_{11} & c_{12}\\\\\nc_{21}& c_{22} \\\\\n\\end{array} \\right] \\]\nAddition and subtraction are only possible among matrices that share the same order; otherwise, they are nonconformable."
+  },
+  {
+    "objectID": "matrix24.html#addition-subtraction-2",
+    "href": "matrix24.html#addition-subtraction-2",
+    "title": "Matrix algebra basics",
+    "section": "Addition & Subtraction",
+    "text": "Addition & Subtraction\nConsider a second example of addition, and note that subtraction would follow directly:\n\\[ \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right]\n+\n\\left[\n\\begin{array}{ccc}\n1 &5 &7\\\\\n3& 7& 1\\\\\n2& 4& 9\\\\\n\\end{array} \\right]\n=\n  \\left[\n\\begin{array}{ccc}\n3 &9 &15\\\\\n7& 12& 4\\\\\n10& 7& 11\\\\\n\\end{array} \\right] \\]\nMatrix addition adheres to the commutative and associative properties such that:\n\\(\\mathbf{A}+\\mathbf{B}=\\mathbf{B}+\\mathbf{A}\\) (Commutative), and \\((\\mathbf{A}+\\mathbf{B})+\\mathbf{C}= \\mathbf{A}+(\\mathbf{B}+\\mathbf{C})\\) (Associative)."
+  },
+  {
+    "objectID": "matrix24.html#multiplication",
+    "href": "matrix24.html#multiplication",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication",
+    "text": "Multiplication\nLet’s begin by multiplying a scalar and a matrix - the product is a matrix whose elements are the scalar multiplied by each element of the original matrix, so:\n\\[ \\beta\n\\left[\n\\begin{array}{cc}\nx_{11} & x_{12}\\\\\nx_{21}& x_{22} \\\\\n\\end{array} \\right]\n=\n\\left[\n\\begin{array}{cc}\n\\beta x_{11} & \\beta x_{12}\\\\\n\\beta x_{21}&  \\beta x_{22} \\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "matrix24.html#multiplication-1",
+    "href": "matrix24.html#multiplication-1",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication",
+    "text": "Multiplication\n\nIn order to multiply two matrices (or vectors), they must be conformable for multiplication.\nTwo matrices are conformable for multiplication iff the number of columns in the first matrix is equal to the number of rows in the second matrix. That is, \\(\\mathbf{A_{i,j}}\\) and \\(\\mathbf{B_{j,k}}\\).\nAn easy way to think of this is to write the dimensions of the two matrices, (i,j),(j,k) - the inner dimensions are the same, so the matrix is conformable for multiplication - moreover, the outer dimensions (i,k) give the dimension of the product matrix."
+  },
+  {
+    "objectID": "matrix24.html#multiplication---inner-product",
+    "href": "matrix24.html#multiplication---inner-product",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication - inner product",
+    "text": "Multiplication - inner product\n\nTo illustrate multiplication, let’s start with a column vector, \\(\\mathbf{e}\\) whose order is (N,1) and take its inner product.\nThe inner product of a column vector is the transpose of the column vector (thus, a row vector) post-multiplied by the column vector, so \\({\\mathbf e'\\mathbf e}\\). The inner product is a scalar."
+  },
+  {
+    "objectID": "matrix24.html#multiplication---inner-product-1",
+    "href": "matrix24.html#multiplication---inner-product-1",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication - inner product",
+    "text": "Multiplication - inner product\nWhen we transpose the column vector \\({\\mathbf e}\\) of (N,1) order, we get a row vector \\({\\mathbf e'}\\) of (1,N) order. Inner dimensions match, so they are conformable.\n\\[\\mathbf{e'} =  \\left[\n\\begin{array}{rrrrr}\n-1 & -9 &4 &16 & -10\\\\\n\\end{array} \\right]\n~~~~~\n\\mathbf{e} =  \\left[\n\\begin{array}{r}\n-1 \\\\\n-9\\\\\n4\\\\\n16\\\\\n-10\\\\\n\\end{array} \\right] \\] \\[=\n(-1 \\cdot -1)+(-9 \\cdot -9)+(4 \\cdot 4)+ (16 \\cdot 16)+ (-10 \\cdot -10) = 454\\]"
+  },
+  {
+    "objectID": "matrix24.html#least-squares-foreshadowing",
+    "href": "matrix24.html#least-squares-foreshadowing",
+    "title": "Matrix algebra basics",
+    "section": "Least Squares foreshadowing",
+    "text": "Least Squares foreshadowing\nNote the inner product of a column vector is a scalar; the inner product of \\(\\mathbf{e}\\), is the sum of the squares of \\(\\mathbf{e}\\).\n\\[\\mathbf{e'e}= e_{1}e_{1}+e_{2}e_{2}+\\ldots e_{N}e_{N} = \\sum\\limits_{i=1}^{N}e_{i}^{2}\\]"
+  },
+  {
+    "objectID": "matrix24.html#multiplication---outer-product",
+    "href": "matrix24.html#multiplication---outer-product",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication - outer product",
+    "text": "Multiplication - outer product\nThe outer product of a column vector is the transpose of the column vector (thus, a row vector) pre-multiplied by the column vector, so \\({\\mathbf e\\mathbf e'}\\). The outer product is an (N,N) matrix.\n\\[\\mathbf{e} =  \\left[\n\\begin{array}{r}\n-1 \\\\\n-9\\\\\n4\\\\\n16\\\\\n-10\\\\\n\\end{array} \\right]\n\\mathbf{e'} =  \\left[\n\\begin{array}{rrrrr}\n-1 & -9 &4 &16 & -10\\\\\n\\end{array} \\right]\n\\]\nLet’s multiply \\({\\mathbf e\\mathbf e'}\\), a column vector of (5,1) by a row vector of (1,5); we’ll obtain a square matrix of (5,5)."
+  },
+  {
+    "objectID": "matrix24.html#least-squares-foreshadowing-1",
+    "href": "matrix24.html#least-squares-foreshadowing-1",
+    "title": "Matrix algebra basics",
+    "section": "Least Squares foreshadowing",
+    "text": "Least Squares foreshadowing\nLet \\(\\mathbf{e}\\) represent the residuals or errors in our regression. The outer product\n\\[{\\mathbf e\\mathbf e'} =  \\left[\n\\begin{array}{rrrrr}\n1 & 9 &-4 &-16 &10\\\\\n9 & 81 &-36 &-144 &90\\\\\n-4 & -36 &16 &64 &-40\\\\\n-16 & -144 &64 &256 &-160\\\\\n10 & 90 &-40 &-160 &100\\\\\n\\end{array} \\right] \\]\nis the variance-covariance matrix of \\(\\mathbf{e}\\). The squares on the main diagonal (which sums to the sum of squares) and the symmetry of the off-diagonal elements."
+  },
+  {
+    "objectID": "matrix24.html#inverting-matrices-1",
+    "href": "matrix24.html#inverting-matrices-1",
+    "title": "Matrix algebra basics",
+    "section": "Inverting Matrices",
+    "text": "Inverting Matrices\n\nYou’ll have noticed that division has been conspicuously absent so far. In scalar algebra, we sometimes represent division in fractions, \\(\\frac{1}{2}\\).\nAnother way to represent the same quantity is \\(2^{-1}\\), or the inverse of 2. Of course, in scalar algebra, a number multiplied by its inverse equals 1, e.g., \\(2 \\cdot 2^{-1}=1\\) or \\(2 \\cdot \\frac{1}{2}=1\\). So, if we are given \\(4x=1\\) and want to solve for \\(x\\) what we really want to know is “what is the inverse of 4 such that \\(4 \\cdot 4^{-1}=1\\)?” We consider matrices in a similar manner."
+  },
+  {
+    "objectID": "matrix24.html#inverting-square-matrices",
+    "href": "matrix24.html#inverting-square-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Inverting Square Matrices",
+    "text": "Inverting Square Matrices\nImagine a square matrix, \\(\\mathbf{X}\\) and its inverse, denoted \\({\\mathbf{X^{-1}}}\\) (read as “X inverse”). Analogous to scalar algebra, a matrix multiplied by its inverse is equal to the identity matrix, \\(\\mathbf{I}\\).\nSo in order to find \\({\\mathbf{X^{-1}}}\\), we must find the matrix that, when multiplied by \\(\\mathbf{X}\\), produces \\(\\mathbf{I}\\). Thus, for a square matrix, its inverse (if it exists) is such that\n\\[\\mathbf{X} \\mathbf{X^{-1}}= \\mathbf{X^{-1}} \\mathbf{X}=\\mathbf{I}\\]\nNotice the commutative property at work here - this is because \\(\\mathbf{X}\\) is square, such that \\(n=m\\), so \\(\\mathbf{X}\\) and \\({\\mathbf{X^{-1}}}\\) have the same dimensions."
+  },
+  {
+    "objectID": "matrix24.html#determinant",
+    "href": "matrix24.html#determinant",
+    "title": "Matrix algebra basics",
+    "section": "Determinant",
+    "text": "Determinant\nAn important characteristic of square matrices is the determinant. The determinant, denoted \\(|X|\\), is a scalar; every square matrix has one. We evaluate the determinant by examining the cross-products of the matrice’s elements. This is simple in the 2x2 matrix, less so in larger matrices.\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\nx_{11} & x_{12}\\\\\nx_{21}& x_{22} \\\\\n\\end{array} \\right| = x_{11}x_{22}-x_{12}x_{21}\\]"
+  },
+  {
+    "objectID": "matrix24.html#determinant-1",
+    "href": "matrix24.html#determinant-1",
+    "title": "Matrix algebra basics",
+    "section": "Determinant",
+    "text": "Determinant\nIn the 2x2 matrix, the determinant is the cross-product of the main diagonals minus the cross-product of the off-diagonals.\n\\[ |\\mathbf{X_{1}}|=\\left|\n\\begin{array}{cc}\n2 & 4\\\\\n6& 3 \\\\\n\\end{array} \\right| = 2 \\cdot 3-4 \\cdot 6 = -18\n\\]\nThe determinant is -18; \\(|\\mathbf{X_{1}}|=-18\\)."
+  },
+  {
+    "objectID": "matrix24.html#determinant-2",
+    "href": "matrix24.html#determinant-2",
+    "title": "Matrix algebra basics",
+    "section": "Determinant",
+    "text": "Determinant\nThis matrix has a determinant of zero - this is an important case.\n\\[ |\\mathbf{X_{2}}|=\\left|\n\\begin{array}{cc}\n3 & 6\\\\\n2& 4 \\\\\n\\end{array} \\right| = 3 \\cdot 4-6 \\cdot 2 =0\n\\] A matrix with determinant zero is singular. A singluar matrix has no inverse."
+  },
+  {
+    "objectID": "matrix24.html#singular-matrices",
+    "href": "matrix24.html#singular-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Singular matrices",
+    "text": "Singular matrices\nThere are some important conditions that will produce a determinant of zero and thus a singular matrix:\n\nIf all the elements of any row or column of a matrix are equal to zero, then the determinant is zero.\nIf two rows or columns of a matrix are identical, the determinant is zero.\nIf a row or column of a matrix is a multiple of another row or column, the determinant is zero; if one row or column is a linear combination of other rows or columns, the determinant is zero."
+  },
+  {
+    "objectID": "matrix24.html#least-squares-foreshadowing-2",
+    "href": "matrix24.html#least-squares-foreshadowing-2",
+    "title": "Matrix algebra basics",
+    "section": "Least Squares Foreshadowing",
+    "text": "Least Squares Foreshadowing\nFor the linear model in least squares, this is important because computing estimates of \\(\\beta\\) requires inverting a matrix. Let’s derive \\(\\beta\\) in matrix notation to see how:\nThe estimated model is:\n\\[\\mathbf{y}={\\mathbf X{\\widehat{\\beta}}}+\\widehat{\\mathbf{\\epsilon}}\\] Minimizing \\(\\widehat{\\mathbf{\\epsilon}}'\\widehat{\\mathbf{\\epsilon}}\\) (skipping the math for now), we get\n\\[(\\mathbf{X'X}) \\widehat{\\beta}=\\mathbf{X'y}\\]"
+  },
+  {
+    "objectID": "matrix24.html#foreshadowing-least-squares",
+    "href": "matrix24.html#foreshadowing-least-squares",
+    "title": "Matrix algebra basics",
+    "section": "Foreshadowing Least Squares",
+    "text": "Foreshadowing Least Squares\nThe matrix \\((\\mathbf{X'X})\\) gives the sums of squares (on the main diagonal) and the sums of cross products (in the off-diagonals) of all the \\(\\mathbf{X}\\) variables; the matrix is symmetric. Since \\(\\beta\\) is the unknown vector in this equation, solve for \\(\\beta\\) by dividing both sides by \\((\\mathbf{X'X})\\) - in matrix terms, we premultiply each side by \\((\\mathbf{X'X)^{-1}}\\):\n\\[(\\mathbf{X'X)^{-1}} (\\mathbf{X'X}) \\widehat{\\beta}= (\\mathbf{X'X)^{-1}} \\mathbf{X'y}\\]"
+  },
+  {
+    "objectID": "matrix24.html#foreshadowing-least-squares-1",
+    "href": "matrix24.html#foreshadowing-least-squares-1",
+    "title": "Matrix algebra basics",
+    "section": "Foreshadowing Least Squares",
+    "text": "Foreshadowing Least Squares\nAs we know, \\((\\mathbf{X'X)^{-1}} (\\mathbf{X'X}) = \\mathbf{I}\\). So,\n\\[\\mathbf{I}\\widehat{\\beta}= (\\mathbf{X'X)^{-1}} \\mathbf{X'y}\\] or \\[\\widehat{\\beta}= (\\mathbf{X'X)^{-1}} \\mathbf{X'y}\\]\nEstimating \\(\\widehat{\\beta}\\) requires inverting \\(\\mathbf{(X'X)}\\) If the matrix \\(\\mathbf{(X'X)}\\) is singular, then \\(\\mathbf{(X'X)^{-1}}\\) does not exist, and we cannot estimate \\(\\widehat{\\beta}\\). Least Squares fails."
+  },
+  {
+    "objectID": "matrix24.html#foreshadowing-least-squares-2",
+    "href": "matrix24.html#foreshadowing-least-squares-2",
+    "title": "Matrix algebra basics",
+    "section": "Foreshadowing Least Squares",
+    "text": "Foreshadowing Least Squares\nThinking specifically of the \\(\\mathbf{X}\\) variables in the model, any of these conditions produce perfect collinearity - estimation fails because the matrix can’t invert.\n\nIf all the elements of any row or column of \\(\\mathbf{X}\\) are equal to zero, then the determinant is zero.\nIf two rows or columns of \\(\\mathbf{X}\\) are identical, the determinant is zero.\nIf a row or column of \\(\\mathbf{X}\\) is a multiple of another row or column, the determinant is zero; if one row or column is a linear combination of other rows or columns, the determinant is zero."
+  },
+  {
+    "objectID": "matrix24.html#examples",
+    "href": "matrix24.html#examples",
+    "title": "Matrix algebra basics",
+    "section": "Examples",
+    "text": "Examples\n\nExample 1Example 2Example 3\n\n\n\\({\\mathbf X}\\) below has a row of zeros; compute the determinant using the difference of cross-products.\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\n0 & 0\\\\\n19& 12 \\\\\n\\end{array} \\right| = 0 \\cdot 12-0 \\cdot 19 = 0 \\]\nYou can see in \\({\\mathbf X}\\) that because all the cross-products involve multiplying by zero, the determinant will always be zero; this applies to larger matrices as well.\n\n\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\n5 & 7\\\\\n5& 7 \\\\\n\\end{array} \\right| = 5 \\cdot 7-5 \\cdot 7 =0 \\]\nIn \\({\\mathbf X}\\) it’s easy to see that the cross-products will always be equal to one another if the rows or columns are identical, and the difference between identical values is zero.\n\n\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\n64 & 48\\\\\n16& 12 \\\\\n\\end{array} \\right| = 64 \\cdot 12-48 \\cdot 16 = 768-768=0\\]\nFinally \\({\\mathbf X}\\) shows that if one row or column is a linear combination of other rows or columns, the determinant will be zero; in that matrix, the top row is 4 times the bottom row."
+  },
+  {
+    "objectID": "matrix24.html#inversion",
+    "href": "matrix24.html#inversion",
+    "title": "Matrix algebra basics",
+    "section": "Inversion",
+    "text": "Inversion\nThe matrix we need to invert, \\(\\mathbf{X'X}\\) is rectangular, so inversion is more complex. I’m going to illustrate the method of cofactor expansion - the purpose here is to give you an idea what software does every time you estimate an OLS model."
+  },
+  {
+    "objectID": "matrix24.html#minor-of-a-matrix",
+    "href": "matrix24.html#minor-of-a-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Minor of a matrix",
+    "text": "Minor of a matrix\nThe minor of a matrix is the determinant of a submatrix created by deleting the \\(i\\)th row and the \\(j\\)th column of the full matrix, where the minor is denoted by the element where the deleted rows intersect.\n\\[ \\mathbf{A} =  \\left[\n\\begin{array}{ccc}\na_{11} & a_{12} &a_{13}\\\\\na_{21}& a_{22} &a_{23}\\\\\na_{31} &a_{32} & a_{33}\\\\\n\\end{array} \\right] \\] \\[\\text{so the minor of } a_{11} \\text{ is }\n|\\mathbf{M_{11}}| =  \\left|\n\\begin{array}{cc}\na_{22} &a_{23}\\\\\na_{32} & a_{33}\\\\\n\\end{array} \\right|  =  a_{22} \\cdot a_{33}- a_{23} \\cdot a_{32}\\]"
+  },
+  {
+    "objectID": "matrix24.html#cofactor-matrix",
+    "href": "matrix24.html#cofactor-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Cofactor Matrix",
+    "text": "Cofactor Matrix\nThe cofactor of an element (\\(c_{ij}\\)) is the minor with a positive or negative sign depending on whether \\(i+j\\) is odd (negative) or even (positive). This is given by:\n\\[\\theta_{ij}=(-1)^{i+j}|\\mathbf{M_{ij}}|\\]\nso, from the example finding the minor of \\(a_{11}\\), \\(i\\)=1 and \\(j=1\\); their sum is 2 which is even, so the cofactor is \\(+a_{22} \\cdot a_{33}- a_{23} \\cdot a_{32}\\). If we find the cofactor for every element, \\(a_{ij}\\) in a matrix and replace each element with its cofactor, the new matrix is called the cofactor matrix of \\(\\mathbf{A}\\)."
+  },
+  {
+    "objectID": "matrix24.html#cofactor-matrix-1",
+    "href": "matrix24.html#cofactor-matrix-1",
+    "title": "Matrix algebra basics",
+    "section": "Cofactor Matrix",
+    "text": "Cofactor Matrix\nWhat we have so far is the signed matrix of minors:\n\\[\\mathbf{A} = \\left[\n\\begin{array}{ccc}\n1&4&2\\\\\n3&3&1\\\\\n2&2&4\\\\\n\\end{array} \\right]\n\\mathbf{\\Theta_{A}} \\left[\n\\begin{array}{cccccc}\n~\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n3&3\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n-\\left|  \\begin{array}{cc}\n4&2\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&2\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left|  \\begin{array}{cc}\n1&4\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n~\\left|\\begin{array}{cc}\n4&2\\\\\n3&1\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n1&2\\\\\n3&1\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&4\\\\\n3&3\\\\\n\\end{array} \\right|\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24.html#cofactor-expansion",
+    "href": "matrix24.html#cofactor-expansion",
+    "title": "Matrix algebra basics",
+    "section": "Cofactor Expansion",
+    "text": "Cofactor Expansion\nFind the signed determinant of each 2x2 submatrix.\n\\[\\mathbf{\\Theta_{A}} \\left[\n\\begin{array}{cccccc}\n~\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n3&3\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n-\\left|  \\begin{array}{cc}\n4&2\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&2\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left|  \\begin{array}{cc}\n1&4\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n~\\left|\\begin{array}{cc}\n4&2\\\\\n3&1\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n1&2\\\\\n3&1\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&4\\\\\n3&3\\\\\n\\end{array} \\right|\n\\end{array} \\right]\n\\mathbf{\\Theta_{A}} = \\left[\n\\begin{array}{rrr}\n10&-10&0\\\\\n-12&0&6\\\\\n-2&5&-9\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24.html#find-the-determinant",
+    "href": "matrix24.html#find-the-determinant",
+    "title": "Matrix algebra basics",
+    "section": "Find the Determinant",
+    "text": "Find the Determinant\nUsing the cofactor matrix, \\(\\mathbf{\\Theta_{A}}\\) we perform cofactor expansion in order to find the determinant, \\(|\\mathbf{A}|\\). Cofactor expansion is given by:\n\\[|\\mathbf{A}|=\\sum\\limits_{i,j=1}^{n}a_{ij}\\Theta_{ij}\\]\nwhich means that we take two corresponding rows or columns from \\(\\mathbf{A}\\) and \\(\\mathbf{\\Theta_{A}}\\) and sum the products of their elements - this gives us the determinant of \\(\\mathbf{A}\\)."
+  },
+  {
+    "objectID": "matrix24.html#find-the-determinant-1",
+    "href": "matrix24.html#find-the-determinant-1",
+    "title": "Matrix algebra basics",
+    "section": "Find the Determinant",
+    "text": "Find the Determinant\nSo taking the first row from \\(\\mathbf{A}\\) (1,4,2) and from \\(\\mathbf{\\Theta_{A}}\\) (10,-10,0) above, we compute\n\\[a_{11} \\cdot \\Theta_{A11}+a_{12} \\cdot \\Theta_{A12}+a_{13} \\cdot \\Theta_{A13}\\]\n\\[1 \\cdot 10+ 4 \\cdot -10 + 2 \\cdot 0 = -30\\] This is the determinant of \\(\\mathbf{A}\\) , \\(|\\mathbf{A}|\\). Note that any corresponding rows or columns from \\(\\mathbf{A}\\) and \\(\\mathbf{\\Theta_{A}}\\) will produce the same result."
+  },
+  {
+    "objectID": "matrix24.html#adjoint-matrix",
+    "href": "matrix24.html#adjoint-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Adjoint Matrix",
+    "text": "Adjoint Matrix\nIf we transpose the cofactor matrix, (cof \\(\\mathbf{A'}\\)), the new matrix is called the adjoint matrix, denoted adj\\(\\mathbf{A}\\)=(cof \\(\\mathbf{A'}\\)).\n\\[adj\\mathbf{A} = \\mathbf{\\Theta_{A}'} = \\left[\n\\begin{array}{rrr}\n10&-12&-2\\\\\n-10&0&5\\\\\n0&6&-9\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24.html#inverting-the-matrix",
+    "href": "matrix24.html#inverting-the-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Inverting the matrix",
+    "text": "Inverting the matrix\nBelieve it or not, this all leads us to inverting the matrix, provided it is nonsingular.\n\\[\\mathbf{A^{-1}}=\\frac{1}{|\\mathbf{A}|}(adj {\\mathbf A})\\] The inverse of A is equal to one over the determinant of A times the adjoint matrix of A. So we’re pre-multiplying \\(adj {\\mathbf A}\\) by the (scalar) determinant, -30."
+  },
+  {
+    "objectID": "matrix24.html#inverse-of-matrix-a",
+    "href": "matrix24.html#inverse-of-matrix-a",
+    "title": "Matrix algebra basics",
+    "section": "Inverse of Matrix A",
+    "text": "Inverse of Matrix A\n\\[{\\mathbf A^{-1}}=-\\frac{1}{30}\\left[\n\\begin{array}{rrr}\n10&-12&-2\\\\\n-10&0&5\\\\\n0&6&-9\\\\\n\\end{array} \\right]\n=\\left[\n\\begin{array}{rrr}\n-\\frac{1}{3}&\\frac{2}{5}&\\frac{1}{15}\\\\\n\\frac{1}{3}&0&-\\frac{1}{6}\\\\\n0&-\\frac{1}{5}&\\frac{3}{10}\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24.html#checking-our-work",
+    "href": "matrix24.html#checking-our-work",
+    "title": "Matrix algebra basics",
+    "section": "Checking our work",
+    "text": "Checking our work\nWe can check our work to be sure we’ve inverted correctly by making sure that \\(\\mathbf{A^{-1}A}=\\mathbf{I_{3}}\\); so,\n\\[-\\frac{1}{30}\\left[\n\\begin{array}{rrr}\n10&-12&-2\\\\\n-10&0&5\\\\\n0&6&-9\\\\\n\\end{array} \\right]\n\\left[\n\\begin{array}{ccc}\n1&4&2\\\\\n3&3&1\\\\\n2&2&4\\\\\n\\end{array} \\right]\n=\n-\\frac{1}{30}\\left[\n\\begin{array}{rrr}\n-30&0&0\\\\\n0&-30&0\\\\\n0&0&-30\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24.html#connecting-data-matrices-to-ols",
+    "href": "matrix24.html#connecting-data-matrices-to-ols",
+    "title": "Matrix algebra basics",
+    "section": "Connecting data matrices to OLS",
+    "text": "Connecting data matrices to OLS\nLet’s examine these matrices a little to get a feel for what the computation of \\(\\widehat{\\beta}\\) involves: \\(\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}\\).\n\\[\n\\mathbf{X}= \\left[\n\\begin{matrix}\n  1& X_{1,2} & X_{1,3} & \\cdots & X_{1,k} \\\\\n  1 & X_{2,2} & X_{2,3} &\\cdots & X_{2,k} \\\\\n  1 & X_{3,2} & X_{3,3} &\\cdots & X_{3,k} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  1 & X_{n,2} & X_{n,3} & \\cdots & X_{n,k}  \n\\end{matrix}  \\right]\n\\] The dimensions of \\(\\mathbf{X}\\) are \\(n x k\\); the sample size by the number of regressors (including the constant)."
+  },
+  {
+    "objectID": "matrix24.html#connecting-data-matrices-to-ols-1",
+    "href": "matrix24.html#connecting-data-matrices-to-ols-1",
+    "title": "Matrix algebra basics",
+    "section": "Connecting data matrices to OLS",
+    "text": "Connecting data matrices to OLS\n\\[\\mathbf{X'X}= \\left[\n\\begin{matrix}\n  N& \\sum X_{2,i} & \\sum X_{3,i} & \\cdots & \\sum X_{k,i} \\\\\n  \\sum X_{2,i}&\\sum X_{2,2}^{2} & \\sum X_{2,i} X_{3,i} &\\cdots & \\sum X_{2,i}X_{k,i} \\\\\n  \\sum X_{3,i} & \\sum X_{3,i}X_{2,i}& \\sum X_{3,i}^{2} &\\cdots & \\sum X_{3,i}X_{k,i} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  \\sum X_{k,i} & \\sum X_{k,i}X_{2,i} & \\sum X_{k,i}X_{3,i} & \\cdots & \\sum X_{k,i}^{2}  \n\\end{matrix}  \\right] \\]\nIn \\(\\mathbf{X'X}\\), the main diagonal is the sums of squares and the offdiagonals are the cross-products."
+  },
+  {
+    "objectID": "matrix24.html#connecting-data-matrices-to-ols-2",
+    "href": "matrix24.html#connecting-data-matrices-to-ols-2",
+    "title": "Matrix algebra basics",
+    "section": "Connecting data matrices to OLS",
+    "text": "Connecting data matrices to OLS\n\\[\\mathbf{X'y}= \\left[\n\\begin{matrix}\n\\sum Y_{i}\\\\\n\\sum X_{2,i}Y_{i}\\\\\n\\sum X_{3,i}Y_{i}\\\\\n\\vdots \\\\\n\\sum X_{k,i}Y_{i}\n\\end{matrix}  \\right] \\]\nWhen we compute \\(\\widehat{\\beta}\\), \\(\\mathbf{X'y}\\) is the covariation of \\(X\\) and \\(y\\), and we pre-multiply by the inverse of \\(\\mathbf{(X'X)^{-1}}\\) to control for the relationships among \\(X_k\\)."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "PLSC 501 - Spring 2024",
+    "section": "",
+    "text": "This is the course website for PLSC 501 - it is a data science course focused on data management, coding in R, and learning basic regression techniques in OLS and MLE.\nSlides\nCode and Data"
   }
 ]
