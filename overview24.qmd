@@ -1,0 +1,627 @@
+---
+title: "Course overview"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: 01/17/2024
+date-format: long
+title-block-banner: TRUE
+format: revealjs
+editor: visual
+embed-resources: true
+cache: true
+---
+
+# About this class
+
+```{=html}
+<style>
+table, th, td {
+    font-size: 18px;
+}
+</style>
+```
+```{r setup, include=FALSE ,echo=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+
+library(leaflet.extras)
+library(tidyverse)
+library(ggthemes)
+library(ggplot2)
+library(leaflet)
+library(lubridate)
+library(haven) #read stata w/labels
+library(ggridges) # multiple densities
+library(tmap)
+library(countrycode)
+library(acled.api)
+library(patchwork)
+library(zoo)
+library(countrycode)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+
+mm <-read.csv("/Users/dave/Documents/2023/PITF/slides/mmALL_073120_csv.csv")
+tl <- read_dta("/Users/dave/Documents/2023/PITF/slides/Meng_exec_constraints_updated.dta")
+polity <- read_dta("/Users/dave/Documents/2023/PITF/slides/polity5.dta")
+
+```
+
+## All models are wrong $\ldots$
+
+"All models are wrong, some are useful." Box & Draper (1987)
+
+This course is based on the principle that to build useful models, we need:
+
+-   an intuitive understanding of regression models
+-   data science skills
+-   careful and creative thinking about politics
+-   a general skepticism of individual models, but an optimism about the modeling enterprise
+
+## The regression model
+
+This course focuses on the linear regression model, but with a heavy emphasis on data science skills like data management/wrangling, and coding.
+
+## Course Goals
+
+In May, you should be able to:
+
+-   develop and test hypotheses about politics.
+
+-   estimate, evaluate, and interpret basic linear and nonlinear regression models.
+
+-   evaluate, understand, clean, wrangle, join, and reshape data.
+
+-   write R code, to manage data, implement simulation methods, estimate models, visualize data/predictions.
+
+-   understand the data generation process as a motivation for modeling.
+
+## This class {.scrollable}
+
+Is not a math class,
+
+![](trojanhorse.jpeg){fig-align="\"center"}
+
+but one that uses basic math toward an applied goal.
+
+## This class
+
+-   is aimed at application; the more you struggle with code, the more you'll learn.
+
+-   the more you **use** other people's code, the less you'll learn.
+
+-   the more you **look** at other people's code, the more you'll learn. You should live on  [stackoverflow](https://stackoverflow.com/) etc. 
+
+-   is applied - if you apply the tools we cover, you'll learn a lot; if not, you won't.
+
+-   the students who do best later on in this program challenge themselves here.
+
+## This class
+
+-   is a collaborative effort among you, and with me and Kathleen. We learn from each other when we collaborate.
+
+-   This means having honest conversations in class about what we do and do not understand.
+
+-   It means working together to learn R, to wrangle data, and to understand models; working together on your assignments.
+
+-   the most successful cohorts are those that work collaboratively; this does not mean free-riding, but struggling with everything together.
+
+## What do you need to know for 501?
+
+What do you need at the start?
+
+-   [basic R](https://datacarpentry.org/r-socialsci/index.html) or this [terrific bookdown book](https://bookdown.org/yih_huynh/Guide-to-R-Book/) written by a graduate student for graduate students.
+
+-   [basic probability theory](probability24.qmd)
+
+-   [basic matrix algebra](matrix24.qmd)
+
+## Matrix algebra
+
+You should be able to make sense of this in terms of dimensions and operations:
+
+$$\beta = (X'X)^{-1} X'y$$ where $X$ is a data matrix of rows and columns; these are the variables in a regression. $y$ is the outcome variable, the same number of rows as $X$. Define the dimensions of $X$, $y$, and $\beta$, of $(X'X)^-1$ and $X'y$.
+
+## Probability theory
+
+-   what are probability distributions?
+-   what is the PDF of a variable?
+-   what is the CDF of a variable?
+
+<!-- bad_teeth -->
+
+<!-- alcohol_ -->
+
+<!-- body_mass_index_bmi_women_kgperm -->
+
+<!-- body_mass_index_bmi_men_kgperm2 -->
+
+<!-- electricity_generation_per_perso -->
+
+<!-- patent_applications_total -->
+
+<!-- pump_price_for_gasoline_us_per_l -->
+
+<!-- smoking_adults_percent_of_population_over_age_15 -->
+
+<!-- smoking_men_percent_of_men_over_age_15 -->
+
+<!-- smoking_women_percent_of_women_over_age_15 -->
+
+<!-- ## Protest data -->
+
+<!-- ```{r mm protests by year } -->
+
+<!-- annualprotests <- mm %>%  -->
+
+<!--   group_by(year) %>% -->
+
+<!--   mutate(protests = n())  -->
+
+<!-- ggplot(mm, aes(x=year, y=protest))+ -->
+
+<!--   geom_bar(stat="identity") + -->
+
+<!--    labs(x = "Year", y= "Protests", caption="Mass Mobilization (Clark & Regan 2021)")+ -->
+
+<!--   ggtitle("Protests, 1990-2020")  -->
+
+<!-- ``` -->
+
+<!-- draw histogram of var; draw pdf, talk pr(y=i), fold in half for cdf\ -->
+
+<!-- https://rdrr.io/github/stharms/realEstAnalytics.r/f/vignettes/zillow-vignette.Rmd -->
+
+<!-- https://osf.io/en9rk -->
+
+## Understanding Regression models
+
+The class focuses on regression models of the general form (scalar notation):
+
+$$ y_i = \beta_0 + X_1\beta_1 + X_2\beta_2 \ldots + X_k\beta_k + \epsilon$$
+
+or in matrix notation,
+
+$$ \mathbf{y} = \mathbf{X} \mathbf{\beta} + \mathbf{\epsilon} $$
+
+An outcome, $y$ is a function of some combination of $X$ variables, their coefficients ($\beta$, including an intercept), and an error term.
+
+## Regression models
+
+Posit a statistical relationship between:
+
+-   an outcome variable, $y$.
+-   a covariate of interest, $x$.
+-   a set of controls, $\mathbf{X}$.
+
+The effect of $x$ is denoted $\beta$. It is the *partial* effect of x on y, because removed from that effect are the effects of x -\> X -\> y. This is what we mean by *controlling for the effects of X*. Much more on this later.
+
+## Regression models
+
+Can be estimated using different technologies including:
+
+-   Least Squares
+-   Maximum Likelihood
+-   Bayesian methods
+
+This course is about the technology of least squares; we will deal with one ML regression model (logit) later in the semester.
+
+# Illustration
+
+## Models to understand politics
+
+$~$
+
+This a methods class, but the methods are only meaningful to us insofar as they help us understand politics. So let's motivate the class with a question about politics.
+
+------------------------------------------------------------------------
+
+### Repression during the COVID-19 Pandemic
+
+Among the products of the pandemic is an opportunity for governments, under the guise of protecting public health, to repress citizens.
+
+There is some evidence of democratic backsliding prior to the pandemic, but the global public health crisis gave governments a specific and universal opportunity to take advantage of this softened ground and to become more authoritarian.
+
+We're going to examine the covariates of violence against civilians during the COVID period, focusing on how states of emergency create changes in government violence.
+
+------------------------------------------------------------------------
+
+### Data
+
+Let's look at ACLED event data, and data on states of emergency during the COVID period from Lundgren et al (2020).
+
+The next figure (which should look familiar), plots protests and repression since mid-2019, the onset of the pandemic marked at March 15, 2020.
+
+The blue lines are local regressions showing trends; while protests return to pre-pandemic levels (similar to the years prior), repression increases since the onset of COVID-19.
+
+------------------------------------------------------------------------
+
+### Protests
+
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+acled<-read.csv("/Users/dave/Documents/2013/PITF/analysis/protests2021/data/2022analysis/acled2022.csv")
+
+##Event_date variable has a "Chr" format. 
+#Need to convert it into date format to calculate 7 day averages for Protests and Violence against Civilians
+
+acled$event_date<-as.Date(acled$event_date,format="%d %B %Y")
+#class(acled$event_date)
+
+##Compute number of events per day
+
+acled$perday<-1
+
+protests<-filter(acled,event_type=="Protests" )
+stateviol<-filter(acled, event_type=="Violence against civilians")
+protests<-aggregate(perday ~ event_date, data = protests, sum)
+stateviol<-aggregate(perday ~ event_date, data = stateviol, sum)
+
+
+##Calculating a 7 day moving average
+protests$rollmean<-rollmean(protests$perday,k=7, fill=NA)
+stateviol$rollmean<-rollmean(stateviol$perday,k=7, fill=NA)
+
+protests <- protests %>% filter(protests$event_date < "2022-06-25")
+stateviol <- stateviol %>% filter(stateviol$event_date < "2022-06-25")
+
+protestplot <- ggplot(data=protests, aes(x=event_date, y=rollmean)) +
+  geom_line()+
+  geom_smooth() +
+  geom_vline(xintercept=as.numeric(as.Date("2020-03-15")), color="red") +
+  scale_x_date(date_breaks = "6 months", date_labels = '%b %Y')  +
+  labs(x="Date", y="Protests", caption="7 day rolling averages; smoothed loess trend lines; red lines indicate 3.15.2020 COVID onset; 'ACLED data retrieved 7.18.22, http://acleddata.com") + 
+  ggtitle("Protests During the Pandemic") 
+   
+
+protestplot
+
+```
+
+------------------------------------------------------------------------
+
+### Repression
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+repressionplot <- ggplot(data=stateviol, aes(x=event_date, y=rollmean)) +
+  geom_line()+
+  geom_smooth() +
+  geom_vline(xintercept=as.numeric(as.Date("2020-03-15")), color="red") +
+  scale_x_date(date_breaks = "6 months", date_labels = '%b %Y')  +
+  labs(x="Date", y="Violence against civilians", caption="7 day rolling averages; smoothed loess trend lines; red lines indicate 3.15.2020 COVID onset; ACLED data retrieved 7.18.22, http://acleddata.com") + 
+  ggtitle("Violence Against Civilians During the Pandemic") 
+  
+repressionplot
+
+```
+
+```{r, echo=TRUE, include=FALSE, message=FALSE }
+
+#ACLED data, set up for join with SOE data
+acled<-read.csv("/Users/dave/Documents/2013/PITF/analysis/protests2021/data/2022analysis/acled2022.csv")
+
+#find/remove duplicate cases in ACLED
+acled <- acled %>% distinct()
+
+#dates
+acled$event_date<-as.Date(acled$event_date,format="%d %B %Y")
+class(acled$event_date)
+
+#create event type dummies
+acled$eventtype<-acled$event_type
+a2 <- acled %>% mutate(dummy=1) %>%
+  spread(key=event_type,value=dummy, fill=0) 
+
+#add cow codes
+a2$ccode <-  countrycode(a2$iso, origin='iso3n', destination='cown')
+
+# lose missing ccode obs (non-states)
+a2 <- a2 %>%
+filter((!is.na(ccode)))
+
+#collapse by country/date; use 'complete' to fill missing dates
+perday <- a2%>%
+  group_by(ccode, event_date) %>%
+  summarise(across(`Protests`:`Violence against civilians`, sum)) %>%
+  ungroup() %>%
+  complete(ccode, event_date) 
+
+#event date as numeric for join
+perday$event_date<-as.numeric(perday$event_date)
+  
+#replace NA obs with zeros on events
+perday <- perday %>% mutate_all(~replace(., is.na(.), 0))
+
+#rolling 7 day averages for protests/repression
+
+perday$repress7dat<-rollmean(perday$`Violence against civilians`,k=7, fill=NA)
+perday$protest7day<-rollmean(perday$Protests,k=7, fill=NA)
+
+#####################
+#Covid data from our world in data
+covid <- read.csv("https://covid.ourworldindata.org/data/owid-covid-data.csv", header=TRUE)
+#https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv
+#####################
+
+#add cow codes
+covid$ccode <-  countrycode(covid$iso_code, origin='iso3c', destination='cown') 
+
+covid <- covid %>% 
+  filter((!is.na(ccode)))
+
+#dates
+covid$date<-as.Date(covid$date)
+class(covid$date)
+covid$date<-as.numeric(covid$date)
+
+#7 day rolling avg of new deaths
+covid$newdeaths7day<-rollmean(covid$new_deaths,k=7, fill=NA)
+
+
+####################
+#SoE data from Lundgren et al.
+####################
+
+load("/users/dave/documents/teaching/606J-mle/2022/prep/code/data_tscs.RData")
+soe <- data_tscs
+#write.csv(soe, "/users/dave/documents/teaching/606J-mle/2022/prep/code/soe.csv")
+rm(data_tscs)
+soe$event_date<-as.Date(soe$date ,format="%Y-%m-%d")
+soe$event_date<-as.numeric(soe$event_date)
+
+#add cow codes
+soe$ccode <-  countrycode(soe$iso_code, origin='iso3c', destination='cown')
+soe <- soe %>%
+  filter((!is.na(ccode)))
+
+```
+
+------------------------------------------------------------------------
+
+### States of Emergency during the Pandemic
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+####################
+#analysis data
+####################
+
+#make analysis data frame
+analysisdata <- left_join(perday, soe, by=c("ccode"="ccode", "event_date"="event_date"))
+analysisdata <- left_join(analysisdata, covid, by=c("ccode"="ccode", "event_date"="date"))
+
+#zeros for NA in soe_s
+analysisdata <- analysisdata %>% mutate(across(soe_s, ~replace_na(., 0)))
+
+#fill soe series after onset
+analysisdata <- analysisdata %>% group_by(ccode) %>% mutate(cumSOE = cumsum(soe_s)) %>% ungroup
+
+#plot cumulative states of emergency over time
+totalsoe <- analysisdata %>% group_by(event_date) %>%
+  summarise(across(cumSOE, sum)) %>%
+  ungroup() 
+
+totalsoe$event_date <- as.Date(totalsoe$event_date)
+
+totalsoe <- totalsoe %>% filter(event_date >"2020-01-01"& event_date <"2020-07-01")
+
+ggplot() +
+  geom_line(data=totalsoe, aes(x=event_date, y=cumSOE))+
+  scale_x_date(date_breaks = "1 months", date_labels = '%b %Y') +
+  labs ( colour = NULL, x = "Date", y =  "Active States of Emergency" )  
+
+```
+
+------------------------------------------------------------------------
+
+### Modeling repression
+
+Let's build a simple model predicting violence against civilians. The data here are daily, covering 167 countries between January 2020 and July 2022. We'll predict the 7 day moving average of repression depending on whether a state of emergency is in place.
+
+$~$
+
+My expectation is states of emergency will make repression easier to motivate and therefore, more frequent.
+
+------------------------------------------------------------------------
+
+### The model
+
+$y$ = violence against civilians
+
+$x$ = states of emergency
+
+Controlling for:
+
+-   new daily deaths from COVID (logged)
+-   percentage of the population over 65 years old
+-   the Human Development Index
+-   the 7 day average number of protests.
+
+------------------------------------------------------------------------
+
+### Modeling Repression and SoEs
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+##################
+#models
+#################
+
+analysisdata$soeprotests <- analysisdata$cumSOE*analysisdata$protest7day
+analysisdata$lnd =  log(analysisdata$new_deaths+.01)
+#label variables for coef plot
+library("labelled")
+analysisdata <- analysisdata %>%
+  set_variable_labels(
+    cumSOE = "State of Emergency",
+    lnd = "ln(New COVID deaths)",
+    aged_65_older = "% age 65 +",
+    human_development_index = "Human Development Index",
+    protest7day = "Protests, 7 day avg",
+    soeprotests = "SoE * Protests, 7 day avg", 
+    `Violence against civilians` = "Violence against Civilians"
+  )
+
+#model predicting repression during covid 
+
+m1 <- lm(data=analysisdata, `Violence against civilians` ~ cumSOE  + lnd + aged_65_older+human_development_index + protest7day )
+#summary(m1)  
+
+library(sjPlot)
+tab_model(m1, show.se=TRUE,  p.style="stars", show.ci=FALSE)
+
+```
+
+------------------------------------------------------------------------
+
+### Another look
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+#coefficient plot
+ggcoef_model(
+  m1,show_p_values = FALSE,
+  signif_stars = FALSE, exponentiate =FALSE, intercept=TRUE,
+  colour=NULL, include = c("cumSOE", "lnd", "aged_65_older", "human_development_index", "protest7day")
+)+
+  xlab("Average Marginal Effects") +
+  ggtitle("Predictors of Violence Against Civilians") 
+
+```
+
+------------------------------------------------------------------------
+
+### Discussion
+
+The estimates indicate:
+
+-   if all the $X$ variables are set to zero, the expected violence against civilians is 1.16 (the intercept). *Can we reasonably set all the* $X$ variables to zero?
+
+-   the difference between a state with a SoE and without is different from zero, but quite small; 0.13 uses of violence.
+
+-   more deaths from COVID are associated with more violence against civilians; $ln(\beta) = .05$. Exponentiate that, and the effect on violence is 1.05, so large compared to anything else in the model.
+
+------------------------------------------------------------------------
+
+### Quantities of interest (simulation)
+
+Let's generate predictions from the model by simulating the distribution of $\widehat{\beta}$:
+
+-   sample 1000 times from a multivariate normal distribution with mean $\widehat{\beta}$s and variances of $var(\widehat{\beta})$.
+
+-   plug those simulated $\widehat{\beta}$s into the equation using mean/median/mode values for the $X$s.
+
+------------------------------------------------------------------------
+
+### Simulating quantities
+
+First, set $SoE = 0$; vary $covid~deaths = ln(1 \ldots 28000)$, $\%~age~ 65 = 6$ (the median), $HDI = .74$ (the median), and $protests = 2$ (the median).
+
+$$ \widehat{y} = \beta_0 + \beta_1*   0 +\beta_2*log(p) + \beta_3*6 +\beta_4*.74+ \beta_5*2 $$
+
+then, repeat but with $SoE = 1$:
+
+$$ \widehat{y} = \beta_0 + \beta_1*1 +\beta_2*log(p) + \beta_3*6 +\beta_4*.74+ \beta_5*2 $$
+
+------------------------------------------------------------------------
+
+### Predicted Violence against Civilians
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+#simulated quantities
+sigma <- vcov(m1)
+B <- data.frame(rmvnorm(n=1000, mean=coef(m1), vcov(m1)))
+
+colnames(B) <-c('b0', 'b1', 'b2', 'b3', 'b4', 'b5')
+
+predictions <- data.frame ( lb0 = numeric(0),med0= numeric(0),
+      ub0= numeric(0),lb1= numeric(0),med1= numeric(0),ub1= 
+      numeric(0), deaths = numeric(0))
+
+for (p in seq(0,28000,100)) {
+  
+  xbRA0  <- quantile(B$b0 + B$b1*0 + B$b2*log(p) + B$b3*6 +B$b4*.74+ 
+                       B$b5*2, probs=c(.025,.5,.975))
+  xbRA1 <- quantile(B$b0 + B$b1*1 + B$b2*log(p) + B$b3*6 +B$b4*.74+ 
+                      B$b5*2, probs=c(.025,.5,.975))
+  xbRA0<- data.frame(t(xbRA0))
+  xbRA1<- data.frame(t(xbRA1))
+  predictions[p:p,] <- data.frame(xbRA0, xbRA1, p)
+}
+predictions$deaths <- log(predictions$deaths)
+
+#plot 
+ggplot()+
+  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb0, ymax=ub0),fill = "grey70", alpha = .4, ) +
+  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb1, ymax=ub1), fill= "grey60",  alpha = .4, ) +
+  geom_line(data= predictions, aes(x=deaths, y=med0))+
+  geom_line(data= predictions, aes(x=deaths, y=med1))+
+  labs ( colour = NULL, x = "ln(New COVID Deaths)", y =  "Expected Repression Episodes" ) +
+  annotate("text", x = 5.5, y = .82, label = "State of Emergency", size=3.5, colour="gray30")+
+  annotate("text", x = 6.5, y = .55, label = "No State of Emergency", size=3.5, colour="gray30")
+
+```
+
+------------------------------------------------------------------------
+
+### Discussion
+
+SoE states have higher levels of violence against civilians, but the difference is very small, making me think we haven't found anything particularly interesting here.
+
+-   Covid deaths is associated with more violence; though violence nearly doubles over the range of deaths (x-axis), the range is huge - from 1 to 28,000. If we transform the x-axis to deaths rather than $ln(deaths)$, we can see this effect is pretty isolated.
+
+------------------------------------------------------------------------
+
+### Simulated effects (again)
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+#| 
+predictions$deaths <- exp(predictions$deaths)
+
+#plot 
+ggplot()+
+  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb0, ymax=ub0),fill = "grey70", alpha = .4, ) +
+  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb1, ymax=ub1), fill= "grey60",  alpha = .4, ) +
+  geom_line(data= predictions, aes(x=deaths, y=med0))+
+  geom_line(data= predictions, aes(x=deaths, y=med1))+
+  labs ( colour = NULL, x = "New COVID Deaths", y =  "Expected Repression Episodes" ) +
+  annotate("text", x = 5000, y = 1, label = "State of Emergency", size=3.5, colour="gray30")+
+  annotate("text", x = 10000, y = .65, label = "No State of Emergency", size=3.5, colour="gray30")
+
+```
+
+------------------------------------------------------------------------
+
+### Discussion
+
+The increase in violence occurs almost entirely between zero and 5000 COVID deaths. We can speculate on why this might be; doing so might lead us to wonder how useful this model is.
+
+$~$ $~$
+
+That's the primary question we'll ask this semester.

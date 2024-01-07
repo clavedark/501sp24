@@ -2,6 +2,8 @@
 title: "slides"
 ---
 
-[Matrix algebra basics](matrix24.html)
+[Course overview](overview24.qmd)
 
-[Thinking about data](matrix24.qmd)
+[Matrix algebra basics](matrix24.qmd)
+
+[Probability basics](probability24.qmd)
