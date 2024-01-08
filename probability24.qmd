@@ -7,6 +7,7 @@ date-format: long
 format: html
 editor: visual
 title-block-banner: true
+# title-block-color: "#005A43"
 embed-resources: true
  # for pdf version,quarto render myslides.qmd --to pdf
 ---
@@ -330,15 +331,20 @@ $$
 P(x=0)  =  \begin{pmatrix}
     5  \\
     0
-  \end{pmatrix} \cdot  (.5)^{0} \cdot (.5) ^{5} = 1 \cdot 1 \cdot 0.03125=0.03125\\
+  \end{pmatrix} \cdot  (.5)^{0} \cdot (.5) ^{5} = 1 \cdot 1 \cdot 0.03125=0.03125\\ 
+  $$
+$$
 P(x=1) =  \begin{pmatrix}
     5  \\
     1
   \end{pmatrix} \cdot (.5)^{1}\cdot (.5)^{4} = 5 \cdot .5 \cdot 0.0625=0.15625 \\
-P(x=2) =  \begin{pmatrix}
+  $$
+$$P(x=2) =  \begin{pmatrix}
     5  \\
     2
   \end{pmatrix} \cdot (.5)^{2}\cdot (.5)^{3} = 10 \cdot .25 \cdot 0.125=0.3125 \\
+$$
+$$
 \vdots \vdots \vdots 
 $$
 :::

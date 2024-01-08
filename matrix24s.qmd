@@ -1,0 +1,770 @@
+---
+title: "Matrix algebra basics"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+format: revealjs
+editor: visual
+title-block-banner: true
+embed-resources: true
+ # for pdf version,quarto render myslides.qmd --to pdf
+---
+```{r setup, include=FALSE ,echo=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+
+```
+
+# Matrix basics
+
+## Matrix notation
+
+For our purposes, matrix algebra is useful for (at least) three reasons:
+
+-   Simplifies mathematical expressions.
+
+-   Has a clear, visual relationship to the data.
+
+-   Provides intuitive ways to understand elements of the model.
+
+## Matrices
+
+A single number is known as a *scalar*.
+
+A *matrix* is a rectangular or square array of numbers arranged in rows and columns.
+
+$$\mathbf{A} = \left[
+\begin{array}{cccc}
+a_{11} & a_{12} &\cdots &a_{1m}\\
+a_{21}& a_{22} &\cdots &a_{2m}\\
+&&\vdots\\
+a_{n1} &a_{n2} &\cdots & a_{nm}\\
+\end{array} \right] $$
+
+where each *element* of the matrix is written as $a_{row,column}$. Matrices are denoted by capital, bold faced letters, **A**.
+
+## Dimensions
+
+The *dimensions* of a matrix are the number of rows (n) and columns (m) it contains. The *dimensions* of matrices are always read $n$ by $m$, row by column. We would say that matrix **A** is of order $(n,m)$.
+
+$$\mathbf{A} =  \left[
+\begin{array}{ccc}
+2 &4 &8\\
+4& 5& 3\\
+8& 3& 2\\
+\end{array} \right] $$
+
+**A** is of order (3,3) and is a *square matrix*. If matrix **A** is of order (1,1), then it is a scalar.
+
+## Symmetric matrices
+
+-   **A** is a *square matrix* if $n=m$. This matrix is also *symmetric*.
+
+-   A *symmetric matrix* is one where each element $a_{n,m}$ is equal to its opposite element, $a_{m,n}$. In other words, a matrix is symmetric if $a_{n,m}=a_{n,m}$, $\forall$ $n$ and $m$.
+
+-   All symmetric matrices are square, but not all square matrices are symmetric. A correlation matrix is and example of a symmetric matrix.
+
+------------------------------------------------------------------------
+
+*Diagonal matrices* have zeros for all *off-diagonal* elements.
+
+::: panel-tabset
+### Diagonal
+
+Diagonal matrices only have non-zero elements on the *main diagonal* (from upper left to lower right). That is, $a_{n,m}=0$ if $n \neq m$.
+
+$$\mathbf{A} =  \left[
+\begin{array}{ccc}
+2 &0 &0\\
+0& 3& 0\\
+0& 0& 2\\
+\end{array} \right] $$
+
+### Scalar
+
+**B** is a special kind of diagonal matrix known as a *scalar matrix* because all of the elements on the main diagonal are equal to each other; $a_{n,m}=k$ if $n=m$, else, zero.
+
+$$\mathbf{B} =  \left[
+\begin{array}{ccc}
+2 &0 &0\\
+0& 2& 0\\
+0& 0& 2\\
+\end{array} \right] $$
+
+### Identity
+
+**C** is a special kind of scalar matrix called the *identity matrix*; the diagonal elements of this matrix are all equal to 1 ($a_{n,m}=1$ if $n=m$, else, zero). This is useful in some matrix manipulations we'll talk about later; it is denoted **I**.
+
+$$\mathbf{C} =  \left[
+\begin{array}{ccc}
+1 &0 &0\\
+0& 1 & 0\\
+0& 0& 1\\
+\end{array} \right] $$
+:::
+
+## Rectangular matrices
+
+A *rectangular matrix* is one where $n\neq m$.
+
+$$\mathbf{A} =  \left[
+\begin{array}{cc}
+1 &3 \\
+3& 5\\
+7& 2\\
+\end{array} \right] $$
+
+$$\mathbf{A} =  \left[
+\begin{array}{ccc}
+1 &3 &7\\
+3& 5& 2\\
+\end{array} \right] $$
+
+In the first, case, **A** is of order (3,2); in the second, **A** is of order (2,3).
+
+## Vectors
+
+A *vector* is a special kind of matrix wherein one of its dimensions is 1; the matrix has either one row or one column. Vectors are denoted by lower case, bold faced letters, **a** and may be *row* or *column* vectors.
+
+$$\mathbf{\beta} =  \left[
+\begin{array}{cccc}
+\beta_{1} &\beta_{2} &\beta_{3}&\beta_{4}\\
+\end{array} \right] 
+~~~~~~~~
+\mathbf{a} =  \left[
+\begin{array}{c}
+1 \\
+3\\
+5\\
+7\\
+\end{array} \right] $$
+
+Parameter matrices (e.g. $\beta$) follow the same notation except that they are indicated by Greek rather than Roman letters.
+
+# Operations
+
+## Transposition
+
+The *transpose* of a matrix **A** is the matrix flipped on its side such that its rows become columns and columns become rows; the transpose of **A** is denoted ${\mathbf A'}$ and is referred to as "${\mathbf A}$ transpose."
+
+$$\mathbf{X} =  \left[
+\begin{array}{cc}
+1 &3 \\
+3& 5\\
+7& 2\\
+\end{array} \right] 
+~~~~~~~~~~~
+\mathbf{X'} =  \left[
+\begin{array}{ccc}
+1 &3 &7\\
+3& 5 & 2\\
+\end{array} \right] $$
+
+so ${\mathbf X}$, a (3,2) matrix, becomes ${\mathbf X'}$, a (2,3) matrix.
+
+## Transposition
+
+If ${\mathbf A}$ is symmetric, then ${\mathbf A}={\mathbf A'}$ -- take a look at the following symmetric matrix and you'll see why:
+
+$$\mathbf{X} =  \left[
+\begin{array}{ccc}
+2 &4 &8\\
+4& 5& 3\\
+8& 3& 2\\
+\end{array} \right] 
+~~~~~~~~
+\mathbf{X'} =  \left[
+\begin{array}{ccc}
+2 &4 &8\\
+4& 5& 3\\
+8& 3& 2\\
+\end{array} \right] $$
+
+## Transposition
+
+Also note that the transpose of a transposed matrix results in the original matrix: $(\mathbf{X}')'=\mathbf{X}$.
+
+Transposing a row vector results in a column vector and vice versa:
+
+$$\mathbf{x} =  \left[
+\begin{array}{c}
+-1 \\
+-9\\
+4\\
+16\\
+\end{array} \right] 
+~~~~~~~~~
+\mathbf{x'} =  \left[
+\begin{array}{cccc}
+-1 & -9 &4 &16\\
+\end{array} \right] $$
+
+## Trace of a Matrix
+
+The *trace* of a matrix is the sum of the diagonal elements of a square matrix, and is denoted $tr(\mathbf{A})=a_{11}+a_{22}+a_{33}\ldots+a_{nn} = \sum\limits_{i=1}^{n}a_{ii}$
+
+$$\mathbf{A} =  \left[
+\begin{array}{ccc}
+2 &4 &8\\
+4& 5& 3\\
+8& 3& 2\\
+\end{array} \right] $$
+
+such that
+
+$tr(\mathbf{A})=2+5+2=9$
+
+## Addition & Subtraction
+
+-   Addition and subtraction of matrices is analogous to the same scalar operations, but depend on the *conformatibility* of the matrices to be added or subtracted.
+
+-   Two matrices are *conformable for addition or subtraction* iff they are of the same order.
+
+-   Note that conformability means something different for addition/subtraction than for multiplication.
+
+## Addition & Subtraction
+
+Consider the following (2,2) matrices and the problem $\mathbf{A}+\mathbf{B}=\mathbf{C}$:
+
+$$ \left[
+\begin{array}{cc}
+a_{11} & a_{12}\\
+a_{21}& a_{22} \\
+\end{array} \right] 
++
+ \left[
+\begin{array}{cc}
+b_{11} & b_{12}\\
+b_{21}& b_{22} \\
+\end{array} \right] 
+=
+\left[
+\begin{array}{cc}
+a_{11}+b_{11} & a_{12}+b_{12}\\
+a_{21}+b_{21}& a_{22}+b_{22} \\
+\end{array} \right] 
+=
+ \left[
+\begin{array}{cc}
+c_{11} & c_{12}\\
+c_{21}& c_{22} \\
+\end{array} \right] $$
+
+Addition and subtraction are only possible among matrices that share the same order; otherwise, they are nonconformable.
+
+## Addition & Subtraction
+
+Consider a second example of addition, and note that subtraction would follow directly:
+
+$$ \left[
+\begin{array}{ccc}
+2 &4 &8\\
+4& 5& 3\\
+8& 3& 2\\
+\end{array} \right] 
++
+ \left[
+\begin{array}{ccc}
+1 &5 &7\\
+3& 7& 1\\
+2& 4& 9\\
+\end{array} \right] 
+=
+  \left[
+\begin{array}{ccc}
+3 &9 &15\\
+7& 12& 4\\
+10& 7& 11\\
+\end{array} \right] $$
+
+Matrix addition adheres to the commutative and associative properties such that:
+
+$\mathbf{A}+\mathbf{B}=\mathbf{B}+\mathbf{A}$ (Commutative), and $(\mathbf{A}+\mathbf{B})+\mathbf{C}= \mathbf{A}+(\mathbf{B}+\mathbf{C})$ (Associative).
+
+## Multiplication
+
+Let's begin by multiplying a scalar and a matrix - the product is a matrix whose elements are the scalar multiplied by each element of the original matrix, so:
+
+$$ \beta
+ \left[
+\begin{array}{cc}
+x_{11} & x_{12}\\
+x_{21}& x_{22} \\
+\end{array} \right] 
+=
+ \left[
+\begin{array}{cc}
+\beta x_{11} & \beta x_{12}\\
+\beta x_{21}&  \beta x_{22} \\
+\end{array} \right] $$
+
+## Multiplication
+
+-   In order to multiply two matrices (or vectors), they must be *conformable for multiplication*.
+
+-   Two matrices are *conformable for multiplication* iff the number of columns in the first matrix is equal to the number of rows in the second matrix. That is, $\mathbf{A_{i,j}}$ and $\mathbf{B_{j,k}}$.
+
+-   An easy way to think of this is to write the dimensions of the two matrices, (i,j),(j,k) - the inner dimensions are the same, so the matrix is conformable for multiplication - moreover, the outer dimensions (i,k) give the dimension of the product matrix.
+
+## Multiplication - inner product
+
+-   To illustrate multiplication, let's start with a column vector, $\mathbf{e}$ whose order is (N,1) and take its *inner product*.
+
+-   The *inner product* of a column vector is the transpose of the column vector (thus, a row vector) post-multiplied by the column vector, so ${\mathbf e'\mathbf e}$. The inner product is a scalar.
+
+## Multiplication - inner product
+
+When we transpose the column vector ${\mathbf e}$ of (N,1) order, we get a row vector ${\mathbf e'}$ of (1,N) order. Inner dimensions match, so they are conformable.
+
+$$\mathbf{e'} =  \left[
+\begin{array}{rrrrr}
+-1 & -9 &4 &16 & -10\\
+\end{array} \right] 
+~~~~~
+\mathbf{e} =  \left[
+\begin{array}{r}
+-1 \\
+-9\\
+4\\
+16\\
+-10\\
+\end{array} \right] $$ $$=
+(-1 \cdot -1)+(-9 \cdot -9)+(4 \cdot 4)+ (16 \cdot 16)+ (-10 \cdot -10) = 454$$
+
+## Least Squares foreshadowing
+
+Note the inner product of a column vector is a scalar; the inner product of $\mathbf{e}$, is the *sum of the squares of* $\mathbf{e}$.
+
+$$\mathbf{e'e}= e_{1}e_{1}+e_{2}e_{2}+\ldots e_{N}e_{N} = \sum\limits_{i=1}^{N}e_{i}^{2}$$
+
+## Multiplication - outer product
+
+The *outer product* of a column vector is the transpose of the column vector (thus, a row vector) pre-multiplied by the column vector, so ${\mathbf e\mathbf e'}$. The outer product is an (N,N) matrix.
+
+$$\mathbf{e} =  \left[
+\begin{array}{r}
+-1 \\
+-9\\
+4\\
+16\\
+-10\\
+\end{array} \right] 
+\mathbf{e'} =  \left[
+\begin{array}{rrrrr}
+-1 & -9 &4 &16 & -10\\
+\end{array} \right] 
+$$
+
+Let's multiply ${\mathbf e\mathbf e'}$, a column vector of (5,1) by a row vector of (1,5); we'll obtain a square matrix of (5,5).
+
+<!-- ## Multiplication - outer product -->
+
+<!-- $${\mathbf e\mathbf e'} =  \left[ -->
+
+<!-- \begin{array}{rrrrr} -->
+
+<!-- (-1 \cdot -1) & (-1\cdot-9) &(-1\cdot4) &(-1\cdot16) &(-1\cdot -10)\\ -->
+
+<!-- (-9 \cdot -1) & (-9\cdot-9) &(-9\cdot4) &(-9\cdot16) &(-9\cdot -10)\\ -->
+
+<!-- (4 \cdot -1) & (4\cdot-9) &(4\cdot4) &(4\cdot16) &(4\cdot -10)\\ -->
+
+<!-- (16 \cdot -1) & (16\cdot-9) &(16\cdot4) &(16\cdot16) &(16\cdot -10)\\ -->
+
+<!-- (-10 \cdot -1) & (-10\cdot-9) &(-10\cdot4) &(-10\cdot16) &(-10\cdot -10)\\ -->
+
+<!-- \end{array} \right] $$ -->
+
+## Least Squares foreshadowing
+
+Let $\mathbf{e}$ represent the residuals or errors in our regression. The outer product
+
+$${\mathbf e\mathbf e'} =  \left[
+\begin{array}{rrrrr}
+1 & 9 &-4 &-16 &10\\
+9 & 81 &-36 &-144 &90\\
+-4 & -36 &16 &64 &-40\\
+-16 & -144 &64 &256 &-160\\
+10 & 90 &-40 &-160 &100\\
+\end{array} \right] $$
+
+is the *variance-covariance matrix of* $\mathbf{e}$. The squares on the main diagonal (which sums to the sum of squares) and the symmetry of the off-diagonal elements.
+
+# Inverting Matrices
+
+## Inverting Matrices
+
+-   You'll have noticed that division has been conspicuously absent so far. In scalar algebra, we sometimes represent division in fractions, $\frac{1}{2}$.
+
+-   Another way to represent the same quantity is $2^{-1}$, or the inverse of 2. Of course, in scalar algebra, a number multiplied by its inverse equals 1, e.g., $2 \cdot 2^{-1}=1$ or $2 \cdot \frac{1}{2}=1$. So, if we are given $4x=1$ and want to solve for $x$ what we really want to know is "what is the inverse of 4 such that $4 \cdot 4^{-1}=1$?" We consider matrices in a similar manner.
+
+## Inverting Square Matrices
+
+Imagine a square matrix, $\mathbf{X}$ and its inverse, denoted ${\mathbf{X^{-1}}}$ (read as "X inverse"). Analogous to scalar algebra, a matrix multiplied by its inverse is equal to the identity matrix, $\mathbf{I}$.
+
+So in order to find ${\mathbf{X^{-1}}}$, we must find the matrix that, when multiplied by $\mathbf{X}$, produces $\mathbf{I}$. Thus, for a square matrix, its inverse (if it exists) is such that
+
+$$\mathbf{X} \mathbf{X^{-1}}= \mathbf{X^{-1}} \mathbf{X}=\mathbf{I}$$
+
+Notice the commutative property at work here - this is because $\mathbf{X}$ is square, such that $n=m$, so $\mathbf{X}$ and ${\mathbf{X^{-1}}}$ have the same dimensions.
+
+## Determinant
+
+An important characteristic of square matrices is the *determinant*. The determinant, denoted $|X|$, is a scalar; every square matrix has one. We evaluate the determinant by examining the cross-products of the matrice's elements. This is simple in the 2x2 matrix, less so in larger matrices.
+
+$$ |\mathbf{X}|=\left|
+\begin{array}{cc}
+x_{11} & x_{12}\\
+x_{21}& x_{22} \\
+\end{array} \right| = x_{11}x_{22}-x_{12}x_{21}$$
+
+## Determinant
+
+In the 2x2 matrix, the determinant is the cross-product of the main diagonals minus the cross-product of the off-diagonals.
+
+$$ |\mathbf{X_{1}}|=\left|
+\begin{array}{cc}
+2 & 4\\
+6& 3 \\
+\end{array} \right| = 2 \cdot 3-4 \cdot 6 = -18 
+$$
+
+The determinant is -18; $|\mathbf{X_{1}}|=-18$.
+
+## Determinant
+
+This matrix has a determinant of zero - this is an important case.
+
+$$ |\mathbf{X_{2}}|=\left|
+\begin{array}{cc}
+3 & 6\\
+2& 4 \\
+\end{array} \right| = 3 \cdot 4-6 \cdot 2 =0 
+$$ A matrix with determinant zero is *singular*. A *singluar matrix* has no inverse.
+
+## Singular matrices
+
+There are some important conditions that will produce a determinant of zero and thus a singular matrix:
+
+-   If all the elements of any row or column of a matrix are equal to zero, then the determinant is zero.
+
+-   If two rows or columns of a matrix are identical, the determinant is zero.
+
+-   If a row or column of a matrix is a multiple of another row or column, the determinant is zero; if one row or column is a linear combination of other rows or columns, the determinant is zero.
+
+## Least Squares Foreshadowing
+
+For the linear model in least squares, this is important because computing estimates of $\beta$ requires inverting a matrix. Let's derive $\beta$ in matrix notation to see how:
+
+The estimated model is:
+
+$$\mathbf{y}={\mathbf X{\widehat{\beta}}}+\widehat{\mathbf{\epsilon}}$$ Minimizing $\widehat{\mathbf{\epsilon}}'\widehat{\mathbf{\epsilon}}$ (skipping the math for now), we get
+
+$$(\mathbf{X'X}) \widehat{\beta}=\mathbf{X'y}$$
+
+## Foreshadowing Least Squares
+
+The matrix $(\mathbf{X'X})$ gives the sums of squares (on the main diagonal) and the sums of cross products (in the off-diagonals) of all the $\mathbf{X}$ variables; the matrix is symmetric. Since $\beta$ is the unknown vector in this equation, solve for $\beta$ by dividing both sides by $(\mathbf{X'X})$ - in matrix terms, we premultiply each side by $(\mathbf{X'X)^{-1}}$:
+
+$$(\mathbf{X'X)^{-1}} (\mathbf{X'X}) \widehat{\beta}= (\mathbf{X'X)^{-1}} \mathbf{X'y}$$
+
+## Foreshadowing Least Squares
+
+As we know, $(\mathbf{X'X)^{-1}} (\mathbf{X'X}) = \mathbf{I}$. So,
+
+$$\mathbf{I}\widehat{\beta}= (\mathbf{X'X)^{-1}} \mathbf{X'y}$$ or $$\widehat{\beta}= (\mathbf{X'X)^{-1}} \mathbf{X'y}$$
+
+Estimating $\widehat{\beta}$ requires *inverting* $\mathbf{(X'X)}$ If the matrix $\mathbf{(X'X)}$ is singular, then $\mathbf{(X'X)^{-1}}$ does not exist, and we cannot estimate $\widehat{\beta}$. Least Squares fails.
+
+## Foreshadowing Least Squares
+
+Thinking specifically of the $\mathbf{X}$ variables in the model, any of these conditions produce perfect collinearity - estimation fails because the matrix can't invert.
+
+-   If all the elements of any row or column of $\mathbf{X}$ are equal to zero, then the determinant is zero.
+
+-   If two rows or columns of $\mathbf{X}$ are identical, the determinant is zero.
+
+-   If a row or column of $\mathbf{X}$ is a multiple of another row or column, the determinant is zero; if one row or column is a linear combination of other rows or columns, the determinant is zero.
+
+------------------------------------------------------------------------
+
+## Examples
+
+::: panel-tabset
+### Example 1
+
+${\mathbf X}$ below has a row of zeros; compute the determinant using the difference of cross-products.
+
+$$ |\mathbf{X}|=\left|
+\begin{array}{cc}
+0 & 0\\
+19& 12 \\
+\end{array} \right| = 0 \cdot 12-0 \cdot 19 = 0 $$
+
+You can see in ${\mathbf X}$ that because all the cross-products involve multiplying by zero, the determinant will always be zero; this applies to larger matrices as well.
+
+### Example 2
+
+$$ |\mathbf{X}|=\left|
+\begin{array}{cc}
+5 & 7\\
+5& 7 \\
+\end{array} \right| = 5 \cdot 7-5 \cdot 7 =0 $$
+
+In ${\mathbf X}$ it's easy to see that the cross-products will always be equal to one another if the rows or columns are identical, and the difference between identical values is zero.
+
+### Example 3
+
+$$ |\mathbf{X}|=\left|
+\begin{array}{cc}
+64 & 48\\
+16& 12 \\
+\end{array} \right| = 64 \cdot 12-48 \cdot 16 = 768-768=0$$
+
+Finally ${\mathbf X}$ shows that if one row or column is a linear combination of other rows or columns, the determinant will be zero; in that matrix, the top row is 4 times the bottom row.
+:::
+
+## Inversion
+
+The matrix we need to invert, $\mathbf{X'X}$ is rectangular, so inversion is more complex. I'm going to illustrate the method of *cofactor expansion* - the purpose here is to give you an idea what software does every time you estimate an OLS model.
+
+## Minor of a matrix
+
+The *minor* of a matrix is the determinant of a submatrix created by deleting the $i$th row and the $j$th column of the full matrix, where the minor is denoted by the element where the deleted rows intersect.
+
+$$ \mathbf{A} =  \left[
+\begin{array}{ccc}
+a_{11} & a_{12} &a_{13}\\
+a_{21}& a_{22} &a_{23}\\
+a_{31} &a_{32} & a_{33}\\
+\end{array} \right] $$ $$\text{so the minor of } a_{11} \text{ is }
+|\mathbf{M_{11}}| =  \left|
+\begin{array}{cc}
+ a_{22} &a_{23}\\
+a_{32} & a_{33}\\
+\end{array} \right|  =  a_{22} \cdot a_{33}- a_{23} \cdot a_{32}$$
+
+## Cofactor Matrix
+
+The *cofactor* of an element ($c_{ij}$) is the minor with a positive or negative sign depending on whether $i+j$ is odd (negative) or even (positive). This is given by:
+
+$$\theta_{ij}=(-1)^{i+j}|\mathbf{M_{ij}}|$$
+
+so, from the example finding the minor of $a_{11}$, $i$=1 and $j=1$; their sum is 2 which is even, so the cofactor is $+a_{22} \cdot a_{33}- a_{23} \cdot a_{32}$. If we find the cofactor for every element, $a_{ij}$ in a matrix and replace each element with its cofactor, the new matrix is called the *cofactor matrix of* $\mathbf{A}$.
+
+## Cofactor Matrix
+
+What we have so far is the signed matrix of minors:
+
+$$\mathbf{A} = \left[
+\begin{array}{ccc}
+1&4&2\\
+3&3&1\\
+2&2&4\\
+\end{array} \right]
+\mathbf{\Theta_{A}} \left[
+\begin{array}{cccccc}
+~\left| \begin{array}{cc}
+3&1\\
+2&4\\
+\end{array} \right|
+-\left| \begin{array}{cc}
+3&1\\
+2&4\\
+\end{array} \right|
+~\left|\begin{array}{cc}
+3&3\\
+2&2\\
+\end{array} \right|\\ \\
+-\left|  \begin{array}{cc}
+4&2\\
+2&4\\
+\end{array} \right|
+~\left|\begin{array}{cc}
+1&2\\
+2&4\\
+\end{array} \right|
+-\left|  \begin{array}{cc}
+1&4\\
+2&2\\
+\end{array} \right|\\ \\ 
+~\left|\begin{array}{cc}
+4&2\\
+3&1\\
+\end{array} \right|
+-\left| \begin{array}{cc}
+1&2\\
+3&1\\
+\end{array} \right|
+~\left|\begin{array}{cc}
+1&4\\
+3&3\\
+\end{array} \right|
+\end{array} \right]$$
+
+## Cofactor Expansion
+
+Find the signed determinant of each 2x2 submatrix.
+
+$$\mathbf{\Theta_{A}} \left[
+\begin{array}{cccccc}
+~\left| \begin{array}{cc}
+3&1\\
+2&4\\
+\end{array} \right|
+-\left| \begin{array}{cc}
+3&1\\
+2&4\\
+\end{array} \right|
+~\left|\begin{array}{cc}
+3&3\\
+2&2\\
+\end{array} \right|\\ \\
+-\left|  \begin{array}{cc}
+4&2\\
+2&4\\
+\end{array} \right|
+~\left|\begin{array}{cc}
+1&2\\
+2&4\\
+\end{array} \right|
+-\left|  \begin{array}{cc}
+1&4\\
+2&2\\
+\end{array} \right|\\ \\ 
+~\left|\begin{array}{cc}
+4&2\\
+3&1\\
+\end{array} \right|
+-\left| \begin{array}{cc}
+1&2\\
+3&1\\
+\end{array} \right|
+~\left|\begin{array}{cc}
+1&4\\
+3&3\\
+\end{array} \right|
+\end{array} \right]
+ \mathbf{\Theta_{A}} = \left[
+\begin{array}{rrr}
+10&-10&0\\
+-12&0&6\\
+-2&5&-9\\
+\end{array} \right]$$
+
+## Find the Determinant
+
+Using the cofactor matrix, $\mathbf{\Theta_{A}}$ we perform *cofactor expansion* in order to find the determinant, $|\mathbf{A}|$. Cofactor expansion is given by:
+
+$$|\mathbf{A}|=\sum\limits_{i,j=1}^{n}a_{ij}\Theta_{ij}$$
+
+which means that we take two corresponding rows or columns from $\mathbf{A}$ and $\mathbf{\Theta_{A}}$ and sum the products of their elements - this gives us the determinant of $\mathbf{A}$.
+
+## Find the Determinant
+
+So taking the first row from $\mathbf{A}$ (1,4,2) and from $\mathbf{\Theta_{A}}$ (10,-10,0) above, we compute
+
+$$a_{11} \cdot \Theta_{A11}+a_{12} \cdot \Theta_{A12}+a_{13} \cdot \Theta_{A13}$$
+
+$$1 \cdot 10+ 4 \cdot -10 + 2 \cdot 0 = -30$$ This is the determinant of $\mathbf{A}$ , $|\mathbf{A}|$. Note that any corresponding rows or columns from $\mathbf{A}$ and $\mathbf{\Theta_{A}}$ will produce the same result.
+
+## Adjoint Matrix
+
+If we transpose the cofactor matrix, (cof $\mathbf{A'}$), the new matrix is called the *adjoint matrix*, denoted adj$\mathbf{A}$=(cof $\mathbf{A'}$).
+
+$$adj\mathbf{A} = \mathbf{\Theta_{A}'} = \left[
+\begin{array}{rrr}
+10&-12&-2\\
+-10&0&5\\
+0&6&-9\\
+\end{array} \right]$$
+
+## Inverting the matrix
+
+Believe it or not, this all leads us to inverting the matrix, provided it is nonsingular.
+
+$$\mathbf{A^{-1}}=\frac{1}{|\mathbf{A}|}(adj {\mathbf A})$$ The inverse of A is equal to one over the determinant of A times the adjoint matrix of A. So we're pre-multiplying $adj {\mathbf A}$ by the (scalar) determinant, -30.
+
+## Inverse of Matrix A
+
+$${\mathbf A^{-1}}=-\frac{1}{30}\left[
+\begin{array}{rrr}
+10&-12&-2\\
+-10&0&5\\
+0&6&-9\\
+\end{array} \right]
+=\left[
+\begin{array}{rrr}
+-\frac{1}{3}&\frac{2}{5}&\frac{1}{15}\\
+\frac{1}{3}&0&-\frac{1}{6}\\
+0&-\frac{1}{5}&\frac{3}{10}\\
+\end{array} \right]$$
+
+## Checking our work
+
+We can check our work to be sure we've inverted correctly by making sure that $\mathbf{A^{-1}A}=\mathbf{I_{3}}$; so,
+
+$$-\frac{1}{30}\left[
+\begin{array}{rrr}
+10&-12&-2\\
+-10&0&5\\
+0&6&-9\\
+\end{array} \right]
+\left[
+\begin{array}{ccc}
+1&4&2\\
+3&3&1\\
+2&2&4\\
+\end{array} \right]
+= 
+-\frac{1}{30}\left[
+\begin{array}{rrr}
+-30&0&0\\
+0&-30&0\\
+0&0&-30\\
+\end{array} \right]$$
+
+# The data matrix and the model
+
+## Connecting data matrices to OLS
+
+Let's examine these matrices a little to get a feel for what the computation of $\widehat{\beta}$ involves: $\widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}$.
+
+$$
+\mathbf{X}= \left[
+\begin{matrix}
+  1& X_{1,2} & X_{1,3} & \cdots & X_{1,k} \\
+  1 & X_{2,2} & X_{2,3} &\cdots & X_{2,k} \\
+  1 & X_{3,2} & X_{3,3} &\cdots & X_{3,k} \\
+  \vdots & \vdots & \vdots & \vdots & \vdots \\
+  1 & X_{n,2} & X_{n,3} & \cdots & X_{n,k}  
+\end{matrix}  \right] 
+$$ The dimensions of $\mathbf{X}$ are $n x k$; the sample size by the number of regressors (including the constant).
+
+## Connecting data matrices to OLS
+
+$$\mathbf{X'X}= \left[
+\begin{matrix}
+  N& \sum X_{2,i} & \sum X_{3,i} & \cdots & \sum X_{k,i} \\
+  \sum X_{2,i}&\sum X_{2,2}^{2} & \sum X_{2,i} X_{3,i} &\cdots & \sum X_{2,i}X_{k,i} \\
+  \sum X_{3,i} & \sum X_{3,i}X_{2,i}& \sum X_{3,i}^{2} &\cdots & \sum X_{3,i}X_{k,i} \\
+  \vdots & \vdots & \vdots & \vdots & \vdots \\
+  \sum X_{k,i} & \sum X_{k,i}X_{2,i} & \sum X_{k,i}X_{3,i} & \cdots & \sum X_{k,i}^{2}  
+\end{matrix}  \right] $$
+
+In $\mathbf{X'X}$, the main diagonal is the sums of squares and the offdiagonals are the cross-products.
+
+## Connecting data matrices to OLS
+
+$$\mathbf{X'y}= \left[
+\begin{matrix}
+\sum Y_{i}\\
+\sum X_{2,i}Y_{i}\\
+\sum X_{3,i}Y_{i}\\
+\vdots \\
+\sum X_{k,i}Y_{i} 
+\end{matrix}  \right] $$
+
+When we compute $\widehat{\beta}$, $\mathbf{X'y}$ is the covariation of $X$ and $y$, and we pre-multiply by the inverse of $\mathbf{(X'X)^{-1}}$ to control for the relationships among $X_k$.

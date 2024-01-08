@@ -2,10 +2,12 @@
 title: "About"
 ---
 
-About this site
+About this site:
 
 Created with Quarto. 
 
-About me
+About me:
 
-Professor of political science, I've taught this class for a long time. My real effort in the last 15 years or so has been to retool it into a data-science-heavy class to leave students with modern coding, data wrangling, and modeling tools. PhD Florida State 1999. I study models of political violence.
+Professor of political science, PhD Florida State 1999. I've taught this class for a long time, but never the same way twice. I study models of political violence, collect data on [protests](https://massmobilization.github.io) and repression. 
+
+<!-- My real effort in the last 15 years or so has been to retool it into a data-science-heavy class to leave students with modern coding, data wrangling, and modeling tools. -->

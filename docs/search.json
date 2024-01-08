@@ -179,7 +179,7 @@
     "href": "probability24.html#binomial-4",
     "title": "Basic probability",
     "section": "Binomial",
-    "text": "Binomial\n\n\n\n\n\n\nExample\n\n\n\nHere’s another example: suppose we flip 5 fair coins once each; what is the PDF of the number of heads we expect? In other words, what is the probability associated with each possible number of successes (heads), from 0 to 5?\n\\[\nP(x=0)  =  \\begin{pmatrix}\n    5  \\\\\n    0\n  \\end{pmatrix} \\cdot  (.5)^{0} \\cdot (.5) ^{5} = 1 \\cdot 1 \\cdot 0.03125=0.03125\\\\\nP(x=1) =  \\begin{pmatrix}\n    5  \\\\\n    1\n  \\end{pmatrix} \\cdot (.5)^{1}\\cdot (.5)^{4} = 5 \\cdot .5 \\cdot 0.0625=0.15625 \\\\\nP(x=2) =  \\begin{pmatrix}\n    5  \\\\\n    2\n  \\end{pmatrix} \\cdot (.5)^{2}\\cdot (.5)^{3} = 10 \\cdot .25 \\cdot 0.125=0.3125 \\\\\n\\vdots \\vdots \\vdots\n\\]"
+    "text": "Binomial\n\n\n\n\n\n\nExample\n\n\n\nHere’s another example: suppose we flip 5 fair coins once each; what is the PDF of the number of heads we expect? In other words, what is the probability associated with each possible number of successes (heads), from 0 to 5?\n\\[\nP(x=0)  =  \\begin{pmatrix}\n    5  \\\\\n    0\n  \\end{pmatrix} \\cdot  (.5)^{0} \\cdot (.5) ^{5} = 1 \\cdot 1 \\cdot 0.03125=0.03125\\\\\n  \\] \\[\nP(x=1) =  \\begin{pmatrix}\n    5  \\\\\n    1\n  \\end{pmatrix} \\cdot (.5)^{1}\\cdot (.5)^{4} = 5 \\cdot .5 \\cdot 0.0625=0.15625 \\\\\n  \\] \\[P(x=2) =  \\begin{pmatrix}\n    5  \\\\\n    2\n  \\end{pmatrix} \\cdot (.5)^{2}\\cdot (.5)^{3} = 10 \\cdot .25 \\cdot 0.125=0.3125 \\\\\n\\] \\[\n\\vdots \\vdots \\vdots\n\\]"
   },
   {
     "objectID": "probability24.html#binomial-family-distributions",
@@ -592,7 +592,7 @@
     "href": "overview24.html",
     "title": "Course overview",
     "section": "",
-    "text": "“All models are wrong, some are useful.” Box & Draper (1987)\nThis course is based on the principle that to build useful models, we need:\n\nan intuitive understanding of regression models\ndata science skills\ncareful and creative thinking about politics\na general skepticism of individual models, but an optimism about the modeling enterprise\n\n\n\n\nThis course focuses on the linear regression model, but with a heavy emphasis on data science skills like data management/wrangling, and coding.\n\n\n\nIn May, you should be able to:\n\ndevelop and test hypotheses about politics.\nestimate, evaluate, and interpret basic linear and nonlinear regression models.\nevaluate, understand, clean, wrangle, join, and reshape data.\nwrite R code, to manage data, implement simulation methods, estimate models, visualize data/predictions.\nunderstand the data generation process as a motivation for modeling.\n\n\n\n\nIs not a math class,\n\n\n\n\n\nbut one that uses basic math toward an applied goal.\n\n\n\n\nis aimed at application; the more you struggle with code, the more you’ll learn.\nthe more you use other people’s code, the less you’ll learn.\nthe more you look at other people’s code, the more you’ll learn. You should live on stackoverflow etc.\nis applied - if you apply the tools we cover, you’ll learn a lot; if not, you won’t.\nthe students who do best later on in this program challenge themselves here.\n\n\n\n\n\nis a collaborative effort among you, and with me and Kathleen. We learn from each other when we collaborate.\nThis means having honest conversations in class about what we do and do not understand.\nIt means working together to learn R, to wrangle data, and to understand models; working together on your assignments.\nthe most successful cohorts are those that work collaboratively; this does not mean free-riding, but struggling with everything together.\n\n\n\n\nWhat do you need at the start?\n\nbasic R or this terrific bookdown book written by a graduate student for graduate students.\nbasic probability theory\nbasic matrix algebra\n\n\n\n\nYou should be able to make sense of this in terms of dimensions and operations:\n\\[\\beta = (X'X)^{-1} X'y\\] where \\(X\\) is a data matrix of rows and columns; these are the variables in a regression. \\(y\\) is the outcome variable, the same number of rows as \\(X\\). Define the dimensions of \\(X\\), \\(y\\), and \\(\\beta\\), of \\((X'X)^-1\\) and \\(X'y\\).\n\n\n\n\nwhat are probability distributions?\nwhat is the PDF of a variable?\nwhat is the CDF of a variable?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe class focuses on regression models of the general form (scalar notation):\n\\[ y_i = \\beta_0 + X_1\\beta_1 + X_2\\beta_2 \\ldots + X_k\\beta_k + \\epsilon\\]\nor in matrix notation,\n\\[ \\mathbf{y} = \\mathbf{X} \\mathbf{\\beta} + \\mathbf{\\epsilon} \\]\nAn outcome, \\(y\\) is a function of some combination of \\(X\\) variables, their coefficients (\\(\\beta\\), including an intercept), and an error term.\n\n\n\nPosit a statistical relationship between:\n\nan outcome variable, \\(y\\).\na covariate of interest, \\(x\\).\na set of controls, \\(\\mathbf{X}\\).\n\nThe effect of \\(x\\) is denoted \\(\\beta\\). It is the partial effect of x on y, because removed from that effect are the effects of x -&gt; X -&gt; y. This is what we mean by controlling for the effects of X. Much more on this later.\n\n\n\nCan be estimated using different technologies including:\n\nLeast Squares\nMaximum Likelihood\nBayesian methods\n\nThis course is about the technology of least squares; we will deal with one ML regression model (logit) later in the semester."
+    "text": "“All models are wrong, some are useful.” Box & Draper (1987)\nThis course is based on the principle that to build useful models, we need:\n\nan intuitive understanding of regression models\ndata science skills\ncareful and creative thinking about politics\na general skepticism of individual models, but an optimism about the modeling enterprise\n\n\n\n\nThis course focuses on the linear regression model, but with a heavy emphasis on data science skills like data management/wrangling, and coding.\n\n\n\nIn May, you should be able to:\n\ndevelop and test hypotheses about politics.\nestimate, evaluate, and interpret basic linear and nonlinear regression models.\nevaluate, understand, clean, wrangle, join, and reshape data.\nwrite R code, to manage data, implement simulation methods, estimate models, visualize data/predictions.\nunderstand the data generation process as a motivation for modeling.\n\n\n\n\nIs not a math class,\n\n\n\n\n\nbut one that uses basic math toward an applied goal.\n\n\n\n\nis aimed at application; the more you struggle with code, the more you’ll learn.\nthe more you use other people’s code, the less you’ll learn.\nthe more you look at other people’s code, the more you’ll learn. You should live on stackoverflow etc.\nis applied - if you apply the tools we cover, you’ll learn a lot; if not, you won’t.\nthe students who do best later on in this program challenge themselves here.\n\n\n\n\n\nis a collaborative effort among you, and with me and Kathleen. We learn from each other when we collaborate.\nThis means having honest conversations in class about what we do and do not understand.\nIt means working together to learn R, to wrangle data, and to understand models; working together on your assignments.\nthe most successful cohorts are those that work collaboratively; this does not mean free-riding, but struggling with everything together.\n\n\n\n\nWhat do you need at the start?\n\nbasic R or this terrific bookdown book written by a graduate student for graduate students.\nbasic probability theory\nbasic matrix algebra\n\n\n\n\nYou should be able to make sense of this in terms of dimensions and operations:\n\\[\\beta = (X'X)^{-1} X'y\\] where \\(X\\) is a data matrix of rows and columns; these are the variables in a regression. \\(y\\) is the outcome variable, the same number of rows as \\(X\\). Define the dimensions of \\(X\\), \\(y\\), and \\(\\beta\\), of \\((X'X)^-1\\) and \\(X'y\\).\n\n\n\n\nwhat are probability distributions?\nwhat is the PDF of a variable?\nwhat is the CDF of a variable?\n\n\n\n\nThe class focuses on regression models of the general form (scalar notation):\n\\[ y_i = \\beta_0 + X_1\\beta_1 + X_2\\beta_2 \\ldots + X_k\\beta_k + \\epsilon\\]\nor in matrix notation,\n\\[ \\mathbf{y} = \\mathbf{X} \\mathbf{\\beta} + \\mathbf{\\epsilon} \\]\nAn outcome, \\(y\\) is a function of some combination of \\(X\\) variables, their coefficients (\\(\\beta\\), including an intercept), and an error term.\n\n\n\nPosit a statistical relationship between:\n\nan outcome variable, \\(y\\).\na covariate of interest, \\(x\\).\na set of controls, \\(\\mathbf{X}\\).\n\nThe effect of \\(x\\) is denoted \\(\\beta\\). It is the partial effect of x on y, because removed from that effect are the effects of x -&gt; X -&gt; y. This is what we mean by controlling for the effects of X. Much more on this later.\n\n\n\nCan be estimated using different technologies including:\n\nLeast Squares\nMaximum Likelihood\nBayesian methods\n\nThis course is about the technology of least squares; we will deal with one ML regression model (logit) later in the semester."
   },
   {
     "objectID": "overview24.html#all-models-are-wrong-ldots",
@@ -683,20 +683,699 @@
     "href": "overview24.html#models-to-understand-politics",
     "title": "Course overview",
     "section": "Models to understand politics",
-    "text": "Models to understand politics\n\\(~\\)\nThis a methods class, but the methods are only meaningful to us insofar as they help us understand politics. So let’s motivate the class with a question about politics.\n\n\nRepression during the COVID-19 Pandemic\nAmong the products of the pandemic is an opportunity for governments, under the guise of protecting public health, to repress citizens.\nThere is some evidence of democratic backsliding prior to the pandemic, but the global public health crisis gave governments a specific and universal opportunity to take advantage of this softened ground and to become more authoritarian.\nWe’re going to examine the covariates of violence against civilians during the COVID period, focusing on how states of emergency create changes in government violence.\n\n\n\nData\nLet’s look at ACLED event data, and data on states of emergency during the COVID period from Lundgren et al (2020).\nThe next figure (which should look familiar), plots protests and repression since mid-2019, the onset of the pandemic marked at March 15, 2020.\nThe blue lines are local regressions showing trends; while protests return to pre-pandemic levels (similar to the years prior), repression increases since the onset of COVID-19.\n\n\n\nProtests\n\n\ncode\nacled&lt;-read.csv(\"/Users/dave/Documents/2013/PITF/analysis/protests2021/data/2022analysis/acled2022.csv\")\n\n##Event_date variable has a \"Chr\" format. \n#Need to convert it into date format to calculate 7 day averages for Protests and Violence against Civilians\n\nacled$event_date&lt;-as.Date(acled$event_date,format=\"%d %B %Y\")\n#class(acled$event_date)\n\n##Compute number of events per day\n\nacled$perday&lt;-1\n\nprotests&lt;-filter(acled,event_type==\"Protests\" )\nstateviol&lt;-filter(acled, event_type==\"Violence against civilians\")\nprotests&lt;-aggregate(perday ~ event_date, data = protests, sum)\nstateviol&lt;-aggregate(perday ~ event_date, data = stateviol, sum)\n\n\n##Calculating a 7 day moving average\nprotests$rollmean&lt;-rollmean(protests$perday,k=7, fill=NA)\nstateviol$rollmean&lt;-rollmean(stateviol$perday,k=7, fill=NA)\n\nprotests &lt;- protests %&gt;% filter(protests$event_date &lt; \"2022-06-25\")\nstateviol &lt;- stateviol %&gt;% filter(stateviol$event_date &lt; \"2022-06-25\")\n\nprotestplot &lt;- ggplot(data=protests, aes(x=event_date, y=rollmean)) +\n  geom_line()+\n  geom_smooth() +\n  geom_vline(xintercept=as.numeric(as.Date(\"2020-03-15\")), color=\"red\") +\n  scale_x_date(date_breaks = \"6 months\", date_labels = '%b %Y')  +\n  labs(x=\"Date\", y=\"Protests\", caption=\"7 day rolling averages; smoothed loess trend lines; red lines indicate 3.15.2020 COVID onset; 'ACLED data retrieved 7.18.22, http://acleddata.com\") + \n  ggtitle(\"Protests During the Pandemic\") \n   \n\nprotestplot\n\n\n\n\n\n\n\n\n\n\n\n\nRepression\n\n\ncode\nrepressionplot &lt;- ggplot(data=stateviol, aes(x=event_date, y=rollmean)) +\n  geom_line()+\n  geom_smooth() +\n  geom_vline(xintercept=as.numeric(as.Date(\"2020-03-15\")), color=\"red\") +\n  scale_x_date(date_breaks = \"6 months\", date_labels = '%b %Y')  +\n  labs(x=\"Date\", y=\"Violence against civilians\", caption=\"7 day rolling averages; smoothed loess trend lines; red lines indicate 3.15.2020 COVID onset; ACLED data retrieved 7.18.22, http://acleddata.com\") + \n  ggtitle(\"Violence Against Civilians During the Pandemic\") \n  \nrepressionplot\n\n\n\n\n\n\n\n\n\n\n\n\nStates of Emergency during the Pandemic\n\n\ncode\n####################\n#analysis data\n####################\n\n#make analysis data frame\nanalysisdata &lt;- left_join(perday, soe, by=c(\"ccode\"=\"ccode\", \"event_date\"=\"event_date\"))\nanalysisdata &lt;- left_join(analysisdata, covid, by=c(\"ccode\"=\"ccode\", \"event_date\"=\"date\"))\n\n#zeros for NA in soe_s\nanalysisdata &lt;- analysisdata %&gt;% mutate(across(soe_s, ~replace_na(., 0)))\n\n#fill soe series after onset\nanalysisdata &lt;- analysisdata %&gt;% group_by(ccode) %&gt;% mutate(cumSOE = cumsum(soe_s)) %&gt;% ungroup\n\n#plot cumulative states of emergency over time\ntotalsoe &lt;- analysisdata %&gt;% group_by(event_date) %&gt;%\n  summarise(across(cumSOE, sum)) %&gt;%\n  ungroup() \n\ntotalsoe$event_date &lt;- as.Date(totalsoe$event_date)\n\ntotalsoe &lt;- totalsoe %&gt;% filter(event_date &gt;\"2020-01-01\"& event_date &lt;\"2020-07-01\")\n\nggplot() +\n  geom_line(data=totalsoe, aes(x=event_date, y=cumSOE))+\n  scale_x_date(date_breaks = \"1 months\", date_labels = '%b %Y') +\n  labs ( colour = NULL, x = \"Date\", y =  \"Active States of Emergency\" )  \n\n\n\n\n\n\n\n\n\n\n\n\nModeling repression\nLet’s build a simple model predicting violence against civilians. The data here are daily, covering 167 countries between January 2020 and July 2022. We’ll predict the 7 day moving average of repression depending on whether a state of emergency is in place.\n\\(~\\)\nMy expectation is states of emergency will make repression easier to motivate and therefore, more frequent.\n\n\n\nThe model\n\\(y\\) = violence against civilians\n\\(x\\) = states of emergency\nControlling for:\n\nnew daily deaths from COVID (logged)\npercentage of the population over 65 years old\nthe Human Development Index\nthe 7 day average number of protests.\n\n\n\n\nModeling Repression and SoEs\n\n\ncode\n##################\n#models\n#################\n\nanalysisdata$soeprotests &lt;- analysisdata$cumSOE*analysisdata$protest7day\nanalysisdata$lnd =  log(analysisdata$new_deaths+.01)\n#label variables for coef plot\nlibrary(\"labelled\")\nanalysisdata &lt;- analysisdata %&gt;%\n  set_variable_labels(\n    cumSOE = \"State of Emergency\",\n    lnd = \"ln(New COVID deaths)\",\n    aged_65_older = \"% age 65 +\",\n    human_development_index = \"Human Development Index\",\n    protest7day = \"Protests, 7 day avg\",\n    soeprotests = \"SoE * Protests, 7 day avg\", \n    `Violence against civilians` = \"Violence against Civilians\"\n  )\n\n#model predicting repression during covid \n\nm1 &lt;- lm(data=analysisdata, `Violence against civilians` ~ cumSOE  + lnd + aged_65_older+human_development_index + protest7day )\n#summary(m1)  \n\nlibrary(sjPlot)\ntab_model(m1, show.se=TRUE,  p.style=\"stars\", show.ci=FALSE)\n\n\n\n\n\n\n\n\n\n\n \nViolence against\nCivilians\n\n\nPredictors\nEstimates\nstd. Error\n\n\n(Intercept)\n1.16 ***\n0.06\n\n\nState of Emergency\n0.13 ***\n0.02\n\n\nln(New COVID deaths)\n0.05 ***\n0.00\n\n\n%age 65+\n-0.03 ***\n0.00\n\n\nHuman Development Index\n-1.04 ***\n0.11\n\n\nProtests,7 day avg\n0.04 ***\n0.00\n\n\nObservations\n23625\n\n\nR2 / R2 adjusted\n0.070 / 0.070\n\n\n* p&lt;0.05   ** p&lt;0.01   *** p&lt;0.001\n\n\n\n\n\n\n\n\n\n\nAnother look\n\n\ncode\n#coefficient plot\nggcoef_model(\n  m1,show_p_values = FALSE,\n  signif_stars = FALSE, exponentiate =FALSE, intercept=TRUE,\n  colour=NULL, include = c(\"cumSOE\", \"lnd\", \"aged_65_older\", \"human_development_index\", \"protest7day\")\n)+\n  xlab(\"Average Marginal Effects\") +\n  ggtitle(\"Predictors of Violence Against Civilians\") \n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion\nThe estimates indicate:\n\nif all the \\(X\\) variables are set to zero, the expected violence against civilians is 1.16 (the intercept). Can we reasonably set all the \\(X\\) variables to zero?\nthe difference between a state with a SoE and without is different from zero, but quite small; 0.13 uses of violence.\nmore deaths from COVID are associated with more violence against civilians; \\(ln(\\beta) = .05\\). Exponentiate that, and the effect on violence is 1.05, so large compared to anything else in the model.\n\n\n\n\nQuantities of interest (simulation)\nLet’s generate predictions from the model by simulating the distribution of \\(\\widehat{\\beta}\\):\n\nsample 1000 times from a multivariate normal distribution with mean \\(\\widehat{\\beta}\\)s and variances of \\(var(\\widehat{\\beta})\\).\nplug those simulated \\(\\widehat{\\beta}\\)s into the equation using mean/median/mode values for the \\(X\\)s.\n\n\n\n\nSimulating quantities\nFirst, set \\(SoE = 0\\); vary \\(covid~deaths = ln(1 \\ldots 28000)\\), \\(\\%~age~ 65 = 6\\) (the median), \\(HDI = .74\\) (the median), and \\(protests = 2\\) (the median).\n\\[ \\widehat{y} = \\beta_0 + \\beta_1*   0 +\\beta_2*log(p) + \\beta_3*6 +\\beta_4*.74+ \\beta_5*2 \\]\nthen, repeat but with \\(SoE = 1\\):\n\\[ \\widehat{y} = \\beta_0 + \\beta_1*1 +\\beta_2*log(p) + \\beta_3*6 +\\beta_4*.74+ \\beta_5*2 \\]\n\n\n\nPredicted Violence against Civilians\n\n\ncode\n#simulated quantities\nsigma &lt;- vcov(m1)\nB &lt;- data.frame(rmvnorm(n=1000, mean=coef(m1), vcov(m1)))\n\ncolnames(B) &lt;-c('b0', 'b1', 'b2', 'b3', 'b4', 'b5')\n\npredictions &lt;- data.frame ( lb0 = numeric(0),med0= numeric(0),\n      ub0= numeric(0),lb1= numeric(0),med1= numeric(0),ub1= \n      numeric(0), deaths = numeric(0))\n\nfor (p in seq(0,28000,100)) {\n  \n  xbRA0  &lt;- quantile(B$b0 + B$b1*0 + B$b2*log(p) + B$b3*6 +B$b4*.74+ \n                       B$b5*2, probs=c(.025,.5,.975))\n  xbRA1 &lt;- quantile(B$b0 + B$b1*1 + B$b2*log(p) + B$b3*6 +B$b4*.74+ \n                      B$b5*2, probs=c(.025,.5,.975))\n  xbRA0&lt;- data.frame(t(xbRA0))\n  xbRA1&lt;- data.frame(t(xbRA1))\n  predictions[p:p,] &lt;- data.frame(xbRA0, xbRA1, p)\n}\npredictions$deaths &lt;- log(predictions$deaths)\n\n#plot \nggplot()+\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb0, ymax=ub0),fill = \"grey70\", alpha = .4, ) +\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb1, ymax=ub1), fill= \"grey60\",  alpha = .4, ) +\n  geom_line(data= predictions, aes(x=deaths, y=med0))+\n  geom_line(data= predictions, aes(x=deaths, y=med1))+\n  labs ( colour = NULL, x = \"ln(New COVID Deaths)\", y =  \"Expected Repression Episodes\" ) +\n  annotate(\"text\", x = 5.5, y = .82, label = \"State of Emergency\", size=3.5, colour=\"gray30\")+\n  annotate(\"text\", x = 6.5, y = .55, label = \"No State of Emergency\", size=3.5, colour=\"gray30\")\n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion\nSoE states have higher levels of violence against civilians, but the difference is very small, making me think we haven’t found anything particularly interesting here.\n\nCovid deaths is associated with more violence; though violence nearly doubles over the range of deaths (x-axis), the range is huge - from 1 to 28,000. If we transform the x-axis to deaths rather than \\(ln(deaths)\\), we can see this effect is pretty isolated.\n\n\n\n\nSimulated effects (again)\n\n\ncode\npredictions$deaths &lt;- exp(predictions$deaths)\n\n#plot \nggplot()+\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb0, ymax=ub0),fill = \"grey70\", alpha = .4, ) +\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb1, ymax=ub1), fill= \"grey60\",  alpha = .4, ) +\n  geom_line(data= predictions, aes(x=deaths, y=med0))+\n  geom_line(data= predictions, aes(x=deaths, y=med1))+\n  labs ( colour = NULL, x = \"New COVID Deaths\", y =  \"Expected Repression Episodes\" ) +\n  annotate(\"text\", x = 5000, y = 1, label = \"State of Emergency\", size=3.5, colour=\"gray30\")+\n  annotate(\"text\", x = 10000, y = .65, label = \"No State of Emergency\", size=3.5, colour=\"gray30\")\n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion\nThe increase in violence occurs almost entirely between zero and 5000 COVID deaths. We can speculate on why this might be; doing so might lead us to wonder how useful this model is.\n\\(~\\) \\(~\\)\nThat’s the primary question we’ll ask this semester."
+    "text": "Models to understand politics\n\\(~\\)\nThis a methods class, but the methods are only meaningful to us insofar as they help us understand politics. So let’s motivate the class with a question about politics."
   },
   {
     "objectID": "slides.html",
     "href": "slides.html",
-    "title": "slides",
+    "title": "Slides",
     "section": "",
-    "text": "Course overview\nMatrix algebra basics\nProbability basics"
+    "text": "Web page formatSlide format\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\n\n\nCourse overview\nMatrix algebra basics\nProbability basics"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site\nCreated with Quarto.\nAbout me\nProfessor of political science, I’ve taught this class for a long time. My real effort in the last 15 years or so has been to retool it into a data-science-heavy class to leave students with modern coding, data wrangling, and modeling tools. PhD Florida State 1999. I study models of political violence."
+    "text": "About this site:\nCreated with Quarto.\nAbout me:\nProfessor of political science, PhD Florida State 1999. I’ve taught this class for a long time, but never the same way twice. I study models of political violence, collect data on protests and repression."
+  },
+  {
+    "objectID": "overview24.html#careful-thinking",
+    "href": "overview24.html#careful-thinking",
+    "title": "Course overview",
+    "section": "Careful thinking",
+    "text": "Careful thinking\nCorrelation does not imply causation.\n\n\n\nRepression during the COVID-19 Pandemic\nAmong the products of the pandemic is an opportunity for governments, under the guise of protecting public health, to repress citizens.\nThere is some evidence of democratic backsliding prior to the pandemic, but the global public health crisis gave governments a specific and universal opportunity to take advantage of this softened ground and to become more authoritarian.\nWe’re going to examine the covariates of violence against civilians during the COVID period, focusing on how states of emergency create changes in government violence.\n\n\n\nData\nLet’s look at ACLED event data, and data on states of emergency during the COVID period from Lundgren et al (2020).\nThe next figure (which should look familiar), plots protests and repression since mid-2019, the onset of the pandemic marked at March 15, 2020.\nThe blue lines are local regressions showing trends; while protests return to pre-pandemic levels (similar to the years prior), repression increases since the onset of COVID-19.\n\n\n\nProtests\n\n\ncode\nacled&lt;-read.csv(\"/Users/dave/Documents/2013/PITF/analysis/protests2021/data/2022analysis/acled2022.csv\")\n\n##Event_date variable has a \"Chr\" format. \n#Need to convert it into date format to calculate 7 day averages for Protests and Violence against Civilians\n\nacled$event_date&lt;-as.Date(acled$event_date,format=\"%d %B %Y\")\n#class(acled$event_date)\n\n##Compute number of events per day\n\nacled$perday&lt;-1\n\nprotests&lt;-filter(acled,event_type==\"Protests\" )\nstateviol&lt;-filter(acled, event_type==\"Violence against civilians\")\nprotests&lt;-aggregate(perday ~ event_date, data = protests, sum)\nstateviol&lt;-aggregate(perday ~ event_date, data = stateviol, sum)\n\n\n##Calculating a 7 day moving average\nprotests$rollmean&lt;-rollmean(protests$perday,k=7, fill=NA)\nstateviol$rollmean&lt;-rollmean(stateviol$perday,k=7, fill=NA)\n\nprotests &lt;- protests %&gt;% filter(protests$event_date &lt; \"2022-06-25\")\nstateviol &lt;- stateviol %&gt;% filter(stateviol$event_date &lt; \"2022-06-25\")\n\nprotestplot &lt;- ggplot(data=protests, aes(x=event_date, y=rollmean)) +\n  geom_line()+\n  geom_smooth() +\n  geom_vline(xintercept=as.numeric(as.Date(\"2020-03-15\")), color=\"red\") +\n  scale_x_date(date_breaks = \"6 months\", date_labels = '%b %Y')  +\n  labs(x=\"Date\", y=\"Protests\", caption=\"7 day rolling averages; smoothed loess trend lines; red lines indicate 3.15.2020 COVID onset; 'ACLED data retrieved 7.18.22, http://acleddata.com\") + \n  ggtitle(\"Protests During the Pandemic\") \n   \n\nprotestplot\n\n\n\n\n\n\n\n\n\n\n\n\nRepression\n\n\ncode\nrepressionplot &lt;- ggplot(data=stateviol, aes(x=event_date, y=rollmean)) +\n  geom_line()+\n  geom_smooth() +\n  geom_vline(xintercept=as.numeric(as.Date(\"2020-03-15\")), color=\"red\") +\n  scale_x_date(date_breaks = \"6 months\", date_labels = '%b %Y')  +\n  labs(x=\"Date\", y=\"Violence against civilians\", caption=\"7 day rolling averages; smoothed loess trend lines; red lines indicate 3.15.2020 COVID onset; ACLED data retrieved 7.18.22, http://acleddata.com\") + \n  ggtitle(\"Violence Against Civilians During the Pandemic\") \n  \nrepressionplot\n\n\n\n\n\n\n\n\n\n\n\n\nStates of Emergency during the Pandemic\n\n\ncode\n####################\n#analysis data\n####################\n\n#make analysis data frame\nanalysisdata &lt;- left_join(perday, soe, by=c(\"ccode\"=\"ccode\", \"event_date\"=\"event_date\"))\nanalysisdata &lt;- left_join(analysisdata, covid, by=c(\"ccode\"=\"ccode\", \"event_date\"=\"date\"))\n\n#zeros for NA in soe_s\nanalysisdata &lt;- analysisdata %&gt;% mutate(across(soe_s, ~replace_na(., 0)))\n\n#fill soe series after onset\nanalysisdata &lt;- analysisdata %&gt;% group_by(ccode) %&gt;% mutate(cumSOE = cumsum(soe_s)) %&gt;% ungroup\n\n#plot cumulative states of emergency over time\ntotalsoe &lt;- analysisdata %&gt;% group_by(event_date) %&gt;%\n  summarise(across(cumSOE, sum)) %&gt;%\n  ungroup() \n\ntotalsoe$event_date &lt;- as.Date(totalsoe$event_date)\n\ntotalsoe &lt;- totalsoe %&gt;% filter(event_date &gt;\"2020-01-01\"& event_date &lt;\"2020-07-01\")\n\nggplot() +\n  geom_line(data=totalsoe, aes(x=event_date, y=cumSOE))+\n  scale_x_date(date_breaks = \"1 months\", date_labels = '%b %Y') +\n  labs ( colour = NULL, x = \"Date\", y =  \"Active States of Emergency\" )  \n\n\n\n\n\n\n\n\n\n\n\n\nModeling repression\nLet’s build a simple model predicting violence against civilians. The data here are daily, covering 167 countries between January 2020 and July 2022. We’ll predict the 7 day moving average of repression depending on whether a state of emergency is in place.\n\\(~\\)\nMy expectation is states of emergency will make repression easier to motivate and therefore, more frequent.\n\n\n\nThe model\n\\(y\\) = violence against civilians\n\\(x\\) = states of emergency\nControlling for:\n\nnew daily deaths from COVID (logged)\npercentage of the population over 65 years old\nthe Human Development Index\nthe 7 day average number of protests.\n\n\n\n\nModeling Repression and SoEs\n\n\ncode\n##################\n#models\n#################\n\nanalysisdata$soeprotests &lt;- analysisdata$cumSOE*analysisdata$protest7day\nanalysisdata$lnd =  log(analysisdata$new_deaths+.01)\n#label variables for coef plot\nlibrary(\"labelled\")\nanalysisdata &lt;- analysisdata %&gt;%\n  set_variable_labels(\n    cumSOE = \"State of Emergency\",\n    lnd = \"ln(New COVID deaths)\",\n    aged_65_older = \"% age 65 +\",\n    human_development_index = \"Human Development Index\",\n    protest7day = \"Protests, 7 day avg\",\n    soeprotests = \"SoE * Protests, 7 day avg\", \n    `Violence against civilians` = \"Violence against Civilians\"\n  )\n\n#model predicting repression during covid \n\nm1 &lt;- lm(data=analysisdata, `Violence against civilians` ~ cumSOE  + lnd + aged_65_older+human_development_index + protest7day )\n#summary(m1)  \n\nlibrary(sjPlot)\ntab_model(m1, show.se=TRUE,  p.style=\"stars\", show.ci=FALSE)\n\n\n\n\n\n\n\n\n\n\n \nViolence against\nCivilians\n\n\nPredictors\nEstimates\nstd. Error\n\n\n(Intercept)\n1.16 ***\n0.06\n\n\nState of Emergency\n0.13 ***\n0.02\n\n\nln(New COVID deaths)\n0.05 ***\n0.00\n\n\n%age 65+\n-0.03 ***\n0.00\n\n\nHuman Development Index\n-1.04 ***\n0.11\n\n\nProtests,7 day avg\n0.04 ***\n0.00\n\n\nObservations\n23625\n\n\nR2 / R2 adjusted\n0.070 / 0.070\n\n\n* p&lt;0.05   ** p&lt;0.01   *** p&lt;0.001\n\n\n\n\n\n\n\n\n\n\nAnother look\n\n\ncode\n#coefficient plot\nggcoef_model(\n  m1,show_p_values = FALSE,\n  signif_stars = FALSE, exponentiate =FALSE, intercept=TRUE,\n  colour=NULL, include = c(\"cumSOE\", \"lnd\", \"aged_65_older\", \"human_development_index\", \"protest7day\")\n)+\n  xlab(\"Average Marginal Effects\") +\n  ggtitle(\"Predictors of Violence Against Civilians\") \n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion\nThe estimates indicate:\n\nif all the \\(X\\) variables are set to zero, the expected violence against civilians is 1.16 (the intercept). Can we reasonably set all the \\(X\\) variables to zero?\nthe difference between a state with a SoE and without is different from zero, but quite small; 0.13 uses of violence.\nmore deaths from COVID are associated with more violence against civilians; \\(ln(\\beta) = .05\\). Exponentiate that, and the effect on violence is 1.05, so large compared to anything else in the model.\n\n\n\n\nQuantities of interest (simulation)\nLet’s generate predictions from the model by simulating the distribution of \\(\\widehat{\\beta}\\):\n\nsample 1000 times from a multivariate normal distribution with mean \\(\\widehat{\\beta}\\)s and variances of \\(var(\\widehat{\\beta})\\).\nplug those simulated \\(\\widehat{\\beta}\\)s into the equation using mean/median/mode values for the \\(X\\)s.\n\n\n\n\nSimulating quantities\nFirst, set \\(SoE = 0\\); vary \\(covid~deaths = ln(1 \\ldots 28000)\\), \\(\\%~age~ 65 = 6\\) (the median), \\(HDI = .74\\) (the median), and \\(protests = 2\\) (the median).\n\\[ \\widehat{y} = \\beta_0 + \\beta_1*   0 +\\beta_2*log(p) + \\beta_3*6 +\\beta_4*.74+ \\beta_5*2 \\]\nthen, repeat but with \\(SoE = 1\\):\n\\[ \\widehat{y} = \\beta_0 + \\beta_1*1 +\\beta_2*log(p) + \\beta_3*6 +\\beta_4*.74+ \\beta_5*2 \\]\n\n\n\nPredicted Violence against Civilians\n\n\ncode\n#simulated quantities\nsigma &lt;- vcov(m1)\nB &lt;- data.frame(rmvnorm(n=1000, mean=coef(m1), vcov(m1)))\n\ncolnames(B) &lt;-c('b0', 'b1', 'b2', 'b3', 'b4', 'b5')\n\npredictions &lt;- data.frame ( lb0 = numeric(0),med0= numeric(0),\n      ub0= numeric(0),lb1= numeric(0),med1= numeric(0),ub1= \n      numeric(0), deaths = numeric(0))\n\nfor (p in seq(0,28000,100)) {\n  \n  xbRA0  &lt;- quantile(B$b0 + B$b1*0 + B$b2*log(p) + B$b3*6 +B$b4*.74+ \n                       B$b5*2, probs=c(.025,.5,.975))\n  xbRA1 &lt;- quantile(B$b0 + B$b1*1 + B$b2*log(p) + B$b3*6 +B$b4*.74+ \n                      B$b5*2, probs=c(.025,.5,.975))\n  xbRA0&lt;- data.frame(t(xbRA0))\n  xbRA1&lt;- data.frame(t(xbRA1))\n  predictions[p:p,] &lt;- data.frame(xbRA0, xbRA1, p)\n}\npredictions$deaths &lt;- log(predictions$deaths)\n\n#plot \nggplot()+\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb0, ymax=ub0),fill = \"grey70\", alpha = .4, ) +\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb1, ymax=ub1), fill= \"grey60\",  alpha = .4, ) +\n  geom_line(data= predictions, aes(x=deaths, y=med0))+\n  geom_line(data= predictions, aes(x=deaths, y=med1))+\n  labs ( colour = NULL, x = \"ln(New COVID Deaths)\", y =  \"Expected Repression Episodes\" ) +\n  annotate(\"text\", x = 5.5, y = .82, label = \"State of Emergency\", size=3.5, colour=\"gray30\")+\n  annotate(\"text\", x = 6.5, y = .55, label = \"No State of Emergency\", size=3.5, colour=\"gray30\")\n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion\nSoE states have higher levels of violence against civilians, but the difference is very small, making me think we haven’t found anything particularly interesting here.\n\nCovid deaths is associated with more violence; though violence nearly doubles over the range of deaths (x-axis), the range is huge - from 1 to 28,000. If we transform the x-axis to deaths rather than \\(ln(deaths)\\), we can see this effect is pretty isolated.\n\n\n\n\nSimulated effects (again)\n\n\ncode\npredictions$deaths &lt;- exp(predictions$deaths)\n\n#plot \nggplot()+\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb0, ymax=ub0),fill = \"grey70\", alpha = .4, ) +\n  geom_ribbon(data=predictions, aes(x=deaths, ymin=lb1, ymax=ub1), fill= \"grey60\",  alpha = .4, ) +\n  geom_line(data= predictions, aes(x=deaths, y=med0))+\n  geom_line(data= predictions, aes(x=deaths, y=med1))+\n  labs ( colour = NULL, x = \"New COVID Deaths\", y =  \"Expected Repression Episodes\" ) +\n  annotate(\"text\", x = 5000, y = 1, label = \"State of Emergency\", size=3.5, colour=\"gray30\")+\n  annotate(\"text\", x = 10000, y = .65, label = \"No State of Emergency\", size=3.5, colour=\"gray30\")\n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion\nThe increase in violence occurs almost entirely between zero and 5000 COVID deaths. We can speculate on why this might be; doing so might lead us to wonder how useful this model is.\n\\(~\\) \\(~\\)\nThat’s the primary question we’ll ask this semester."
+  },
+  {
+    "objectID": "overview24s.html#all-models-are-wrong-ldots",
+    "href": "overview24s.html#all-models-are-wrong-ldots",
+    "title": "Course overview",
+    "section": "All models are wrong \\(\\ldots\\)",
+    "text": "All models are wrong \\(\\ldots\\)\n“All models are wrong, some are useful.” Box & Draper (1987)\nThis course is based on the principle that to build useful models, we need:\n\nan intuitive understanding of regression models\ndata science skills\ncareful and creative thinking about politics\na general skepticism of individual models, but an optimism about the modeling enterprise"
+  },
+  {
+    "objectID": "overview24s.html#the-regression-model",
+    "href": "overview24s.html#the-regression-model",
+    "title": "Course overview",
+    "section": "The regression model",
+    "text": "The regression model\nThis course focuses on the linear regression model, but with a heavy emphasis on data science skills like data management/wrangling, and coding."
+  },
+  {
+    "objectID": "overview24s.html#course-goals",
+    "href": "overview24s.html#course-goals",
+    "title": "Course overview",
+    "section": "Course Goals",
+    "text": "Course Goals\nIn May, you should be able to:\n\ndevelop and test hypotheses about politics.\nestimate, evaluate, and interpret basic linear and nonlinear regression models.\nevaluate, understand, clean, wrangle, join, and reshape data.\nwrite R code, to manage data, implement simulation methods, estimate models, visualize data/predictions.\nunderstand the data generation process as a motivation for modeling."
+  },
+  {
+    "objectID": "overview24s.html#this-class",
+    "href": "overview24s.html#this-class",
+    "title": "Course overview",
+    "section": "This class",
+    "text": "This class\nIs not a math class,\n\nbut one that uses basic math toward an applied goal."
+  },
+  {
+    "objectID": "overview24s.html#this-class-1",
+    "href": "overview24s.html#this-class-1",
+    "title": "Course overview",
+    "section": "This class",
+    "text": "This class\n\nis aimed at application; the more you struggle with code, the more you’ll learn.\nthe more you use other people’s code, the less you’ll learn.\nthe more you look at other people’s code, the more you’ll learn. You should live on stackoverflow etc.\nis applied - if you apply the tools we cover, you’ll learn a lot; if not, you won’t.\nthe students who do best later on in this program challenge themselves here."
+  },
+  {
+    "objectID": "overview24s.html#this-class-2",
+    "href": "overview24s.html#this-class-2",
+    "title": "Course overview",
+    "section": "This class",
+    "text": "This class\n\nis a collaborative effort among you, and with me and Kathleen. We learn from each other when we collaborate.\nThis means having honest conversations in class about what we do and do not understand.\nIt means working together to learn R, to wrangle data, and to understand models; working together on your assignments.\nthe most successful cohorts are those that work collaboratively; this does not mean free-riding, but struggling with everything together."
+  },
+  {
+    "objectID": "overview24s.html#what-do-you-need-to-know-for-501",
+    "href": "overview24s.html#what-do-you-need-to-know-for-501",
+    "title": "Course overview",
+    "section": "What do you need to know for 501?",
+    "text": "What do you need to know for 501?\nWhat do you need at the start?\n\nbasic R or this terrific bookdown book written by a graduate student for graduate students.\nbasic probability theory\nbasic matrix algebra"
+  },
+  {
+    "objectID": "overview24s.html#matrix-algebra",
+    "href": "overview24s.html#matrix-algebra",
+    "title": "Course overview",
+    "section": "Matrix algebra",
+    "text": "Matrix algebra\nYou should be able to make sense of this in terms of dimensions and operations:\n\\[\\beta = (X'X)^{-1} X'y\\] where \\(X\\) is a data matrix of rows and columns; these are the variables in a regression. \\(y\\) is the outcome variable, the same number of rows as \\(X\\). Define the dimensions of \\(X\\), \\(y\\), and \\(\\beta\\), of \\((X'X)^-1\\) and \\(X'y\\)."
+  },
+  {
+    "objectID": "overview24s.html#probability-theory",
+    "href": "overview24s.html#probability-theory",
+    "title": "Course overview",
+    "section": "Probability theory",
+    "text": "Probability theory\n\nwhat are probability distributions?\nwhat is the PDF of a variable?\nwhat is the CDF of a variable?"
+  },
+  {
+    "objectID": "overview24s.html#understanding-regression-models",
+    "href": "overview24s.html#understanding-regression-models",
+    "title": "Course overview",
+    "section": "Understanding Regression models",
+    "text": "Understanding Regression models\nThe class focuses on regression models of the general form (scalar notation):\n\\[ y_i = \\beta_0 + X_1\\beta_1 + X_2\\beta_2 \\ldots + X_k\\beta_k + \\epsilon\\]\nor in matrix notation,\n\\[ \\mathbf{y} = \\mathbf{X} \\mathbf{\\beta} + \\mathbf{\\epsilon} \\]\nAn outcome, \\(y\\) is a function of some combination of \\(X\\) variables, their coefficients (\\(\\beta\\), including an intercept), and an error term."
+  },
+  {
+    "objectID": "overview24s.html#regression-models",
+    "href": "overview24s.html#regression-models",
+    "title": "Course overview",
+    "section": "Regression models",
+    "text": "Regression models\nPosit a statistical relationship between:\n\nan outcome variable, \\(y\\).\na covariate of interest, \\(x\\).\na set of controls, \\(\\mathbf{X}\\).\n\nThe effect of \\(x\\) is denoted \\(\\beta\\). It is the partial effect of x on y, because removed from that effect are the effects of x -&gt; X -&gt; y. This is what we mean by controlling for the effects of X. Much more on this later."
+  },
+  {
+    "objectID": "overview24s.html#regression-models-1",
+    "href": "overview24s.html#regression-models-1",
+    "title": "Course overview",
+    "section": "Regression models",
+    "text": "Regression models\nCan be estimated using different technologies including:\n\nLeast Squares\nMaximum Likelihood\nBayesian methods\n\nThis course is about the technology of least squares; we will deal with one ML regression model (logit) later in the semester."
+  },
+  {
+    "objectID": "overview24s.html#models-to-understand-politics",
+    "href": "overview24s.html#models-to-understand-politics",
+    "title": "Course overview",
+    "section": "Models to understand politics",
+    "text": "Models to understand politics\n\\(~\\)\nThis a methods class, but the methods are only meaningful to us insofar as they help us understand politics. So let’s motivate the class with a question about politics."
+  },
+  {
+    "objectID": "overview24s.html#careful-thinking",
+    "href": "overview24s.html#careful-thinking",
+    "title": "Course overview",
+    "section": "Careful thinking",
+    "text": "Careful thinking\nCorrelation does not imply causation."
+  },
+  {
+    "objectID": "probability24s.html#why-probability-distributions",
+    "href": "probability24s.html#why-probability-distributions",
+    "title": "Basic probability",
+    "section": "Why Probability Distributions?",
+    "text": "Why Probability Distributions?\nInferential models depend on probability distributions:\n\nestimation - is not deterministic, and so admits the unknown via disturbances \\(\\epsilon\\). We characterize those unknowns as following some probability distribution.\ninference - is essential because of the unknowns. Inference is possible because of the probability distribution characterizing the unknowns."
+  },
+  {
+    "objectID": "probability24s.html#probability-distributions",
+    "href": "probability24s.html#probability-distributions",
+    "title": "Basic probability",
+    "section": "Probability Distributions",
+    "text": "Probability Distributions\nProbability distributions permit statements about relative scale, frequency, and uncertainty.\n\\(~\\)\nIf the relation between \\(x\\) and \\(y\\) is measured by \\(\\widehat{\\beta}\\), we need to know whether or not to take \\(\\widehat{\\beta}\\) seriously - is it representative of the population relationship between \\(x\\) and \\(y\\)?"
+  },
+  {
+    "objectID": "probability24s.html#things-we-want-to-know-about-x",
+    "href": "probability24s.html#things-we-want-to-know-about-x",
+    "title": "Basic probability",
+    "section": "Things we want to know about \\(x\\)",
+    "text": "Things we want to know about \\(x\\)\n\n\\(Pr(X = x)\\) - the probability of observing any particular value of \\(x\\); these together comprise the density.\n\\(Pr(X \\leq x)\\) - the probability of observing values up to and including \\(x\\) (or any range of \\(x\\)). (CDF)\ncentral tendency of \\(x\\) - mean, median, mode.\ndispersion - variance, or standard deviation (the average difference of any observation from the expected value)."
+  },
+  {
+    "objectID": "probability24s.html#types-of-variables",
+    "href": "probability24s.html#types-of-variables",
+    "title": "Basic probability",
+    "section": "Types of variables",
+    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+  },
+  {
+    "objectID": "probability24s.html#discrete-variables",
+    "href": "probability24s.html#discrete-variables",
+    "title": "Basic probability",
+    "section": "Discrete variables",
+    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+  },
+  {
+    "objectID": "probability24s.html#continuous-variables",
+    "href": "probability24s.html#continuous-variables",
+    "title": "Basic probability",
+    "section": "Continuous variables",
+    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+  },
+  {
+    "objectID": "probability24s.html#levels-of-measurement",
+    "href": "probability24s.html#levels-of-measurement",
+    "title": "Basic probability",
+    "section": "Levels of measurement",
+    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains, least to most:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+  },
+  {
+    "objectID": "probability24s.html#levels-of-measurement-and-models",
+    "href": "probability24s.html#levels-of-measurement-and-models",
+    "title": "Basic probability",
+    "section": "Levels of Measurement and Models",
+    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+  },
+  {
+    "objectID": "probability24s.html#pdf-and-cdf",
+    "href": "probability24s.html#pdf-and-cdf",
+    "title": "Basic probability",
+    "section": "PDF and CDF",
+    "text": "PDF and CDF\nProbability distributions can be described by\n\nProbability Density Function (PDF) which maps \\(X\\) onto the probability space describing the probabilities of every value of \\(X\\), \\(x\\).\nCumulative Distribution Function (CDF) which maps \\(X\\) onto the probability space describing the probability \\(X\\) is less than some value, \\(x\\)."
+  },
+  {
+    "objectID": "probability24s.html#pdf-density",
+    "href": "probability24s.html#pdf-density",
+    "title": "Basic probability",
+    "section": "PDF (Density)",
+    "text": "PDF (Density)\n\n\n\nDefinition\n\n\nThe Probability Density Function or PDF describes the probability a random variable takes on a particular value, and it does so for all values of that random variable."
+  },
+  {
+    "objectID": "probability24s.html#pdf-density-1",
+    "href": "probability24s.html#pdf-density-1",
+    "title": "Basic probability",
+    "section": "PDF (Density)",
+    "text": "PDF (Density)\n\n\n\nExample\n\n\nSuppose we toss a fair coin 1 time and want to describe the probability distribution of the outcome, \\(Y\\) which is a random variable. The possible outcomes are heads and tails, and the probability of each is .5. This is the PDF because it describes the probabilities associated with all possible outcomes of \\(Y\\)."
+  },
+  {
+    "objectID": "probability24s.html#pdf-density-2",
+    "href": "probability24s.html#pdf-density-2",
+    "title": "Basic probability",
+    "section": "PDF (Density)",
+    "text": "PDF (Density)\n\nWhile establishing the probability of a value of a discrete variable is possible, establishing the probability of a particular value of a continuous variable is not.\nInstead, the continuous PDF describes the instantaneous rate of change in \\(Pr(X=x)\\) for every value of \\(x\\)."
+  },
+  {
+    "objectID": "probability24s.html#pdf-plots",
+    "href": "probability24s.html#pdf-plots",
+    "title": "Basic probability",
+    "section": "PDF plots",
+    "text": "PDF plots"
+  },
+  {
+    "objectID": "probability24s.html#cdf",
+    "href": "probability24s.html#cdf",
+    "title": "Basic probability",
+    "section": "CDF",
+    "text": "CDF\n\n\n\nDefinition\n\n\nFor a random variable, \\(Y\\), the probability \\(Y\\) is less than or equal to some particular value, \\(y\\) in the range of \\(Y\\) defines the cumulative density function.\nFor a continuous variable:\n\\[P(Y \\leq j) =\\int\\limits_{-\\infty}^{j} f(X)dX\\]\nFor a discrete variable:\n\\[P(Y \\leq j) = \\sum\\limits_{y\\leq j} P(Y=y)\n= 1- \\sum\\limits_{y&gt; j} P(Y=y)\\]"
+  },
+  {
+    "objectID": "probability24s.html#cdf-plots",
+    "href": "probability24s.html#cdf-plots",
+    "title": "Basic probability",
+    "section": "CDF plots",
+    "text": "CDF plots"
+  },
+  {
+    "objectID": "probability24s.html#notation",
+    "href": "probability24s.html#notation",
+    "title": "Basic probability",
+    "section": "Notation",
+    "text": "Notation\n\n\\(f(x)\\) denotes the PDF of \\(x\\).\n\\(F(x)\\) denotes the CDF of \\(x\\).\nSubstitute either the appropriate name, symbol, or function for \\(F\\) or \\(f\\) to indicate the distribution.\nLower case Greek letters denote PDFs: e.g. \\(f(x)= \\phi(x)\\) denotes the normal PDF.\nUpper case Greek letters denote CDFs: e.g. \\(F(x)=\\Phi(x)\\) denotes the normal CDF."
+  },
+  {
+    "objectID": "probability24s.html#notation-1",
+    "href": "probability24s.html#notation-1",
+    "title": "Basic probability",
+    "section": "Notation",
+    "text": "Notation\n\n\n\nExample\n\n\n\\(x\\) is distributed Normal, \\(N(\\mu, \\sigma^{2})\\):\n\\[F(x) = \\Phi_{\\mu, \\sigma^{2}}(x)  =    \\int  \\phi_{\\mu, \\sigma^{2}} (x) f(x)d(x) \\]\n\\[ f(x) = \\phi_{\\mu, \\sigma^{2}}(x) =\\frac{1}{\\sigma \\sqrt{2\\pi}} \\exp \\left( - \\frac{(x-\\mu)^{2}}{2 \\sigma^{2}} \\right) \\]\nNote the first derivative of the CDF is the PDF; the integral of the PDF is the CDF."
+  },
+  {
+    "objectID": "probability24s.html#bernoulli",
+    "href": "probability24s.html#bernoulli",
+    "title": "Basic probability",
+    "section": "Bernoulli",
+    "text": "Bernoulli\nSuppose a binary variable \\(x\\) that takes on only the values of zero and one (\\(x \\in {0, 1}\\)):\n\\[\nPr(X=1)=\\pi\\nonumber \\\\\nPr(x=0)= 1-Pr(x=1) \\\\\n= 1-\\pi   \n\\]"
+  },
+  {
+    "objectID": "probability24s.html#bernoulli-1",
+    "href": "probability24s.html#bernoulli-1",
+    "title": "Basic probability",
+    "section": "Bernoulli",
+    "text": "Bernoulli\nThe PDF is:\n\\[ f(x) = \\\\\n          \\pi    ~~~~~~~~ ~ ~ ~~~~ \\text{if } x=1\\\\\n         1-\\pi   ~ ~ ~ ~~~~\\text{if } x=0\n     \\]\nor\n\\[f(x) = \\pi^{x}(1-\\pi)^{1-x} \\]"
+  },
+  {
+    "objectID": "probability24s.html#bernoulli-2",
+    "href": "probability24s.html#bernoulli-2",
+    "title": "Basic probability",
+    "section": "Bernoulli",
+    "text": "Bernoulli\nThe CDF is:\n\\[F(x) =\\sum_{x} f(x) \\]\nand the expected value is\n\\[\nE(x) =\\sum_{x}x f(x)    \\\\\n= (1)(\\pi)+(0)(1-\\pi)   \\\\\n= \\pi\n\\]"
+  },
+  {
+    "objectID": "probability24s.html#binomial",
+    "href": "probability24s.html#binomial",
+    "title": "Basic probability",
+    "section": "Binomial",
+    "text": "Binomial\nBernoulli is important because it is the foundation for a lot of other distributions, including the binomial distribution. The binomial describes the success probability function (where \\(x=1\\) is a “success”) from a set of \\(n\\) independent Bernoulli trials. So, the binomial is the probability of successes (“ones”) in \\(n\\) independent Bernoulli trials with identical probabilities, \\(\\pi\\).\n\\(~\\)\nThere are two essential parts to the binomial PDF - the probability of success, and the number of ways a success can occur."
+  },
+  {
+    "objectID": "probability24s.html#binomial-1",
+    "href": "probability24s.html#binomial-1",
+    "title": "Basic probability",
+    "section": "Binomial",
+    "text": "Binomial\nThe probability of success is the Bernoulli probability:\n\\[\nf(x) = \\pi^{x}(1-\\pi)^{1-x}\n\\]\nand the number of ways success can occur (called “n-tuples”) is\n\\[  \\begin{pmatrix}\n    n  \\\\\n    x\n  \\end{pmatrix} = \\frac{n!}{x!(n-x)!}\n\\]\nNotice the notation for the n-tuple."
+  },
+  {
+    "objectID": "probability24s.html#binomial-2",
+    "href": "probability24s.html#binomial-2",
+    "title": "Basic probability",
+    "section": "Binomial",
+    "text": "Binomial\nThe PDF combines these:\n\\[\nf(x)=\n  \\begin{pmatrix}\n    n  \\\\\n    x\n  \\end{pmatrix} \\pi^{x}(1-\\pi)^{n-x}\n\\]\nThere are \\(n\\) trials, \\(x\\) is the number of successes, and \\(n-x\\) is the number of failures. Each event in the n-tuple arises with the Bernoulli probability."
+  },
+  {
+    "objectID": "probability24s.html#binomial-3",
+    "href": "probability24s.html#binomial-3",
+    "title": "Basic probability",
+    "section": "Binomial",
+    "text": "Binomial\n\n\n\nExample\n\n\nSuppose we are going to toss a fair coin 4 times and want to know how many ways we can have heads come up twice.\n\\[\n\\frac{4!}{2!(4-2)!} = 6\n\\] Now, suppose we want to know the probability exactly 2 of those 4 tosses is heads.\n\\[\nPr(x=2) =\\frac{4!}{2!(4-2)!} (.5)^{2}(.5)^{2} \\\\\n= 6(0.0625) \\\\\n= 0.375\n\\]"
+  },
+  {
+    "objectID": "probability24s.html#binomial-4",
+    "href": "probability24s.html#binomial-4",
+    "title": "Basic probability",
+    "section": "Binomial",
+    "text": "Binomial\n\n\n\nExample\n\n\nHere’s another example: suppose we flip 5 fair coins once each; what is the PDF of the number of heads we expect? In other words, what is the probability associated with each possible number of successes (heads), from 0 to 5?\n\\[\nP(x=0)  =  \\begin{pmatrix}\n    5  \\\\\n    0\n  \\end{pmatrix} \\cdot  (.5)^{0} \\cdot (.5) ^{5} = 1 \\cdot 1 \\cdot 0.03125=0.03125 \\\\\nP(x=1) =  \\begin{pmatrix}\n    5  \\\\\n    1\n  \\end{pmatrix} \\cdot (.5)^{1}\\cdot (.5)^{4} = 5 \\cdot .5 \\cdot 0.0625=0.15625 \\\\\nP(x=2) =  \\begin{pmatrix}\n    5  \\\\\n    2\n  \\end{pmatrix} \\cdot (.5)^{2}\\cdot (.5)^{3} = 10 \\cdot .25 \\cdot 0.125=0.3125 \\\\\n\\vdots \\vdots \\vdots\n\\]"
+  },
+  {
+    "objectID": "probability24s.html#binomial-family-distributions",
+    "href": "probability24s.html#binomial-family-distributions",
+    "title": "Basic probability",
+    "section": "Binomial family distributions",
+    "text": "Binomial family distributions\n\nthe geometric distribution describes repeated Bernoulli trials with probability of success \\(\\pi\\), until the first success.\nthe negative binomial describes the number of Bernoulli failures prior to the first success - it can be thought of as a counting process up to the first success.\nthe poisson describes Bernoulli trials where \\(\\pi\\) for any particular trial is very small."
+  },
+  {
+    "objectID": "probability24s.html#the-normal-distribution",
+    "href": "probability24s.html#the-normal-distribution",
+    "title": "Basic probability",
+    "section": "The Normal Distribution",
+    "text": "The Normal Distribution\nThe Normal distribution is the most widely used distribution in the social sciences.\n\nThe normal seems to “fit” a lot of the variables social scientists measure and use in models.\nEstimation techniques we often employ assume the disturbance term is normally distributed; one result is the coefficients are either normally distributed or t-distributed."
+  },
+  {
+    "objectID": "probability24s.html#normal-pdf",
+    "href": "probability24s.html#normal-pdf",
+    "title": "Basic probability",
+    "section": "Normal PDF",
+    "text": "Normal PDF\nThe normal PDF: \\[\nPr(Y=y_{i})=\\frac{1}{\\sqrt{2 \\pi \\sigma^{2}}} exp \\left[\\frac{-(y_{i}-\\mu_{i})^{2}}{2\\sigma^{2}}\\right]\n\\]\nwhere two parameters, \\(\\mu\\) and \\(\\sigma^{2}\\) describe the location and shape of the distribution, the mean and variance respectively; we indicate a normally distributed variable and its parameters as\n\\[\nY \\sim \\text{Normal}(\\mu,\\sigma^{2}) \\nonumber\n\\]"
+  },
+  {
+    "objectID": "probability24s.html#standard-normal",
+    "href": "probability24s.html#standard-normal",
+    "title": "Basic probability",
+    "section": "Standard Normal",
+    "text": "Standard Normal\nA useful special case of the Normal is the standard normal, \\(z \\sim \\text{Normal}(0,1)\\). The PDF for the standard normal is given by\n\\[\n\\phi(z)=\\frac{1}{\\sqrt{2 \\pi }} exp \\left[\\frac{-z^{2}}{2}\\right] \\nonumber\n\\]\nwhere the parameters themselves drop out since we’d be subtracting a mean of zero and dividing/multiplying by a variance of 1. The standard normal CDF is denoted \\(\\Phi(z)\\); the standard normal PDF is denoted \\(\\phi(z)\\)."
+  },
+  {
+    "objectID": "probability24s.html#normal-pdfs-different-moments",
+    "href": "probability24s.html#normal-pdfs-different-moments",
+    "title": "Basic probability",
+    "section": "Normal PDFs different moments",
+    "text": "Normal PDFs different moments"
+  },
+  {
+    "objectID": "probability24s.html#models",
+    "href": "probability24s.html#models",
+    "title": "Basic probability",
+    "section": "Models",
+    "text": "Models\n\nProbability models include unobserved disturbances; we make assumptions about the distributions of those errors, \\(\\epsilon\\).\nWhat we assume about the unobservables is always informed by what we know about the observables, mainly \\(y\\).\nA useful way to describe or summarize \\(y\\) is to characterize its observed distribution.\nThe distribution of \\(y\\) informs our assumption about the distribution of \\(\\epsilon\\)."
+  },
+  {
+    "objectID": "probability24s.html#why-this-matters-to-ols",
+    "href": "probability24s.html#why-this-matters-to-ols",
+    "title": "Basic probability",
+    "section": "Why this matters to OLS",
+    "text": "Why this matters to OLS\nLinear regression is such an inferential model; we have a number of sources of uncertainty. We represent that uncertainty in the model via the disturbance term, \\(\\epsilon\\).\n\\(~\\)\nIn order to know things about \\(\\epsilon\\) and other parts of the model, we assume that the disturbances are normally distributed; \\(y\\) should be normal too."
+  },
+  {
+    "objectID": "probability24s.html#normality-and-centrality",
+    "href": "probability24s.html#normality-and-centrality",
+    "title": "Basic probability",
+    "section": "Normality and Centrality",
+    "text": "Normality and Centrality\nWe rely on stuff being normally distributed, and central tendency being meaningful. The Central Limit Theorem facilitates this."
+  },
+  {
+    "objectID": "probability24s.html#central-limit-theorem",
+    "href": "probability24s.html#central-limit-theorem",
+    "title": "Basic probability",
+    "section": "Central Limit Theorem",
+    "text": "Central Limit Theorem\nSuppose \\(n\\) random variables - call them \\(X_1, X_2 \\ldots X_n\\). These variables are not identically distributed; some are discrete, some continuous. Each variable, \\(X_i\\) has mean \\(\\bar{X_k}\\).\n\\[ {\\sum\\limits_{n \\rightarrow \\infty} (\\bar{X_i})} / {n}  \\sim N (\\mu, \\sigma^2) \\]\nAs \\(n\\) approaches infinity, the distribution of means, \\(\\bar{X_i}\\) is distributed Normal, with mean \\(\\widetilde{X_i}\\). We could accomplish the same thing by repeated sampling of a single variable."
+  },
+  {
+    "objectID": "probability24s.html#clt---why-is-this-valuable",
+    "href": "probability24s.html#clt---why-is-this-valuable",
+    "title": "Basic probability",
+    "section": "CLT - Why is this valuable?",
+    "text": "CLT - Why is this valuable?\n\nIf we assume repeated sampling and/or infinitely large samples, we can assume normality.\nWe know the properties of the Normal intimately well. We can use this knowledge to evaluate where some value of \\(x\\) lies on the Normal CDF, what the probability less than that value is - we can figure out what the probability of observing that value is (on the PDF).\nAs we’ll see, \\(\\widehat{\\beta}\\) is normally distributed in the OLS model (it is in MLE as well). The CLT and what we know about normality facilitate inference."
+  },
+  {
+    "objectID": "probability24s.html#inference",
+    "href": "probability24s.html#inference",
+    "title": "Basic probability",
+    "section": "Inference",
+    "text": "Inference\nInference is our effort to measure and characterize our uncertainty about the model and its parameters.\n\nuncertainty is the most important thing we estimate in inferential models.\ncharacterizing uncertainty relies on probability theory."
+  },
+  {
+    "objectID": "matrix24s.html#matrix-notation",
+    "href": "matrix24s.html#matrix-notation",
+    "title": "Matrix algebra basics",
+    "section": "Matrix notation",
+    "text": "Matrix notation\nFor our purposes, matrix algebra is useful for (at least) three reasons:\n\nSimplifies mathematical expressions.\nHas a clear, visual relationship to the data.\nProvides intuitive ways to understand elements of the model."
+  },
+  {
+    "objectID": "matrix24s.html#matrices",
+    "href": "matrix24s.html#matrices",
+    "title": "Matrix algebra basics",
+    "section": "Matrices",
+    "text": "Matrices\nA single number is known as a scalar.\nA matrix is a rectangular or square array of numbers arranged in rows and columns.\n\\[\\mathbf{A} = \\left[\n\\begin{array}{cccc}\na_{11} & a_{12} &\\cdots &a_{1m}\\\\\na_{21}& a_{22} &\\cdots &a_{2m}\\\\\n&&\\vdots\\\\\na_{n1} &a_{n2} &\\cdots & a_{nm}\\\\\n\\end{array} \\right] \\]\nwhere each element of the matrix is written as \\(a_{row,column}\\). Matrices are denoted by capital, bold faced letters, A."
+  },
+  {
+    "objectID": "matrix24s.html#dimensions",
+    "href": "matrix24s.html#dimensions",
+    "title": "Matrix algebra basics",
+    "section": "Dimensions",
+    "text": "Dimensions\nThe dimensions of a matrix are the number of rows (n) and columns (m) it contains. The dimensions of matrices are always read \\(n\\) by \\(m\\), row by column. We would say that matrix A is of order \\((n,m)\\).\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right] \\]\nA is of order (3,3) and is a square matrix. If matrix A is of order (1,1), then it is a scalar."
+  },
+  {
+    "objectID": "matrix24s.html#symmetric-matrices",
+    "href": "matrix24s.html#symmetric-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Symmetric matrices",
+    "text": "Symmetric matrices\n\nA is a square matrix if \\(n=m\\). This matrix is also symmetric.\nA symmetric matrix is one where each element \\(a_{n,m}\\) is equal to its opposite element, \\(a_{m,n}\\). In other words, a matrix is symmetric if \\(a_{n,m}=a_{n,m}\\), \\(\\forall\\) \\(n\\) and \\(m\\).\nAll symmetric matrices are square, but not all square matrices are symmetric. A correlation matrix is and example of a symmetric matrix."
+  },
+  {
+    "objectID": "matrix24s.html#rectangular-matrices",
+    "href": "matrix24s.html#rectangular-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Rectangular matrices",
+    "text": "Rectangular matrices\nA rectangular matrix is one where \\(n\\neq m\\).\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{cc}\n1 &3 \\\\\n3& 5\\\\\n7& 2\\\\\n\\end{array} \\right] \\]\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{ccc}\n1 &3 &7\\\\\n3& 5& 2\\\\\n\\end{array} \\right] \\]\nIn the first, case, A is of order (3,2); in the second, A is of order (2,3)."
+  },
+  {
+    "objectID": "matrix24s.html#vectors",
+    "href": "matrix24s.html#vectors",
+    "title": "Matrix algebra basics",
+    "section": "Vectors",
+    "text": "Vectors\nA vector is a special kind of matrix wherein one of its dimensions is 1; the matrix has either one row or one column. Vectors are denoted by lower case, bold faced letters, a and may be row or column vectors.\n\\[\\mathbf{\\beta} =  \\left[\n\\begin{array}{cccc}\n\\beta_{1} &\\beta_{2} &\\beta_{3}&\\beta_{4}\\\\\n\\end{array} \\right]\n~~~~~~~~\n\\mathbf{a} =  \\left[\n\\begin{array}{c}\n1 \\\\\n3\\\\\n5\\\\\n7\\\\\n\\end{array} \\right] \\]\nParameter matrices (e.g. \\(\\beta\\)) follow the same notation except that they are indicated by Greek rather than Roman letters."
+  },
+  {
+    "objectID": "matrix24s.html#transposition",
+    "href": "matrix24s.html#transposition",
+    "title": "Matrix algebra basics",
+    "section": "Transposition",
+    "text": "Transposition\nThe transpose of a matrix A is the matrix flipped on its side such that its rows become columns and columns become rows; the transpose of A is denoted \\({\\mathbf A'}\\) and is referred to as “\\({\\mathbf A}\\) transpose.”\n\\[\\mathbf{X} =  \\left[\n\\begin{array}{cc}\n1 &3 \\\\\n3& 5\\\\\n7& 2\\\\\n\\end{array} \\right]\n~~~~~~~~~~~\n\\mathbf{X'} =  \\left[\n\\begin{array}{ccc}\n1 &3 &7\\\\\n3& 5 & 2\\\\\n\\end{array} \\right] \\]\nso \\({\\mathbf X}\\), a (3,2) matrix, becomes \\({\\mathbf X'}\\), a (2,3) matrix."
+  },
+  {
+    "objectID": "matrix24s.html#transposition-1",
+    "href": "matrix24s.html#transposition-1",
+    "title": "Matrix algebra basics",
+    "section": "Transposition",
+    "text": "Transposition\nIf \\({\\mathbf A}\\) is symmetric, then \\({\\mathbf A}={\\mathbf A'}\\) – take a look at the following symmetric matrix and you’ll see why:\n\\[\\mathbf{X} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right]\n~~~~~~~~\n\\mathbf{X'} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "matrix24s.html#transposition-2",
+    "href": "matrix24s.html#transposition-2",
+    "title": "Matrix algebra basics",
+    "section": "Transposition",
+    "text": "Transposition\nAlso note that the transpose of a transposed matrix results in the original matrix: \\((\\mathbf{X}')'=\\mathbf{X}\\).\nTransposing a row vector results in a column vector and vice versa:\n\\[\\mathbf{x} =  \\left[\n\\begin{array}{c}\n-1 \\\\\n-9\\\\\n4\\\\\n16\\\\\n\\end{array} \\right]\n~~~~~~~~~\n\\mathbf{x'} =  \\left[\n\\begin{array}{cccc}\n-1 & -9 &4 &16\\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "matrix24s.html#trace-of-a-matrix",
+    "href": "matrix24s.html#trace-of-a-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Trace of a Matrix",
+    "text": "Trace of a Matrix\nThe trace of a matrix is the sum of the diagonal elements of a square matrix, and is denoted \\(tr(\\mathbf{A})=a_{11}+a_{22}+a_{33}\\ldots+a_{nn} = \\sum\\limits_{i=1}^{n}a_{ii}\\)\n\\[\\mathbf{A} =  \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right] \\]\nsuch that\n\\(tr(\\mathbf{A})=2+5+2=9\\)"
+  },
+  {
+    "objectID": "matrix24s.html#addition-subtraction",
+    "href": "matrix24s.html#addition-subtraction",
+    "title": "Matrix algebra basics",
+    "section": "Addition & Subtraction",
+    "text": "Addition & Subtraction\n\nAddition and subtraction of matrices is analogous to the same scalar operations, but depend on the conformatibility of the matrices to be added or subtracted.\nTwo matrices are conformable for addition or subtraction iff they are of the same order.\nNote that conformability means something different for addition/subtraction than for multiplication."
+  },
+  {
+    "objectID": "matrix24s.html#addition-subtraction-1",
+    "href": "matrix24s.html#addition-subtraction-1",
+    "title": "Matrix algebra basics",
+    "section": "Addition & Subtraction",
+    "text": "Addition & Subtraction\nConsider the following (2,2) matrices and the problem \\(\\mathbf{A}+\\mathbf{B}=\\mathbf{C}\\):\n\\[ \\left[\n\\begin{array}{cc}\na_{11} & a_{12}\\\\\na_{21}& a_{22} \\\\\n\\end{array} \\right]\n+\n\\left[\n\\begin{array}{cc}\nb_{11} & b_{12}\\\\\nb_{21}& b_{22} \\\\\n\\end{array} \\right]\n=\n\\left[\n\\begin{array}{cc}\na_{11}+b_{11} & a_{12}+b_{12}\\\\\na_{21}+b_{21}& a_{22}+b_{22} \\\\\n\\end{array} \\right]\n=\n\\left[\n\\begin{array}{cc}\nc_{11} & c_{12}\\\\\nc_{21}& c_{22} \\\\\n\\end{array} \\right] \\]\nAddition and subtraction are only possible among matrices that share the same order; otherwise, they are nonconformable."
+  },
+  {
+    "objectID": "matrix24s.html#addition-subtraction-2",
+    "href": "matrix24s.html#addition-subtraction-2",
+    "title": "Matrix algebra basics",
+    "section": "Addition & Subtraction",
+    "text": "Addition & Subtraction\nConsider a second example of addition, and note that subtraction would follow directly:\n\\[ \\left[\n\\begin{array}{ccc}\n2 &4 &8\\\\\n4& 5& 3\\\\\n8& 3& 2\\\\\n\\end{array} \\right]\n+\n\\left[\n\\begin{array}{ccc}\n1 &5 &7\\\\\n3& 7& 1\\\\\n2& 4& 9\\\\\n\\end{array} \\right]\n=\n  \\left[\n\\begin{array}{ccc}\n3 &9 &15\\\\\n7& 12& 4\\\\\n10& 7& 11\\\\\n\\end{array} \\right] \\]\nMatrix addition adheres to the commutative and associative properties such that:\n\\(\\mathbf{A}+\\mathbf{B}=\\mathbf{B}+\\mathbf{A}\\) (Commutative), and \\((\\mathbf{A}+\\mathbf{B})+\\mathbf{C}= \\mathbf{A}+(\\mathbf{B}+\\mathbf{C})\\) (Associative)."
+  },
+  {
+    "objectID": "matrix24s.html#multiplication",
+    "href": "matrix24s.html#multiplication",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication",
+    "text": "Multiplication\nLet’s begin by multiplying a scalar and a matrix - the product is a matrix whose elements are the scalar multiplied by each element of the original matrix, so:\n\\[ \\beta\n\\left[\n\\begin{array}{cc}\nx_{11} & x_{12}\\\\\nx_{21}& x_{22} \\\\\n\\end{array} \\right]\n=\n\\left[\n\\begin{array}{cc}\n\\beta x_{11} & \\beta x_{12}\\\\\n\\beta x_{21}&  \\beta x_{22} \\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "matrix24s.html#multiplication-1",
+    "href": "matrix24s.html#multiplication-1",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication",
+    "text": "Multiplication\n\nIn order to multiply two matrices (or vectors), they must be conformable for multiplication.\nTwo matrices are conformable for multiplication iff the number of columns in the first matrix is equal to the number of rows in the second matrix. That is, \\(\\mathbf{A_{i,j}}\\) and \\(\\mathbf{B_{j,k}}\\).\nAn easy way to think of this is to write the dimensions of the two matrices, (i,j),(j,k) - the inner dimensions are the same, so the matrix is conformable for multiplication - moreover, the outer dimensions (i,k) give the dimension of the product matrix."
+  },
+  {
+    "objectID": "matrix24s.html#multiplication---inner-product",
+    "href": "matrix24s.html#multiplication---inner-product",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication - inner product",
+    "text": "Multiplication - inner product\n\nTo illustrate multiplication, let’s start with a column vector, \\(\\mathbf{e}\\) whose order is (N,1) and take its inner product.\nThe inner product of a column vector is the transpose of the column vector (thus, a row vector) post-multiplied by the column vector, so \\({\\mathbf e'\\mathbf e}\\). The inner product is a scalar."
+  },
+  {
+    "objectID": "matrix24s.html#multiplication---inner-product-1",
+    "href": "matrix24s.html#multiplication---inner-product-1",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication - inner product",
+    "text": "Multiplication - inner product\nWhen we transpose the column vector \\({\\mathbf e}\\) of (N,1) order, we get a row vector \\({\\mathbf e'}\\) of (1,N) order. Inner dimensions match, so they are conformable.\n\\[\\mathbf{e'} =  \\left[\n\\begin{array}{rrrrr}\n-1 & -9 &4 &16 & -10\\\\\n\\end{array} \\right]\n~~~~~\n\\mathbf{e} =  \\left[\n\\begin{array}{r}\n-1 \\\\\n-9\\\\\n4\\\\\n16\\\\\n-10\\\\\n\\end{array} \\right] \\] \\[=\n(-1 \\cdot -1)+(-9 \\cdot -9)+(4 \\cdot 4)+ (16 \\cdot 16)+ (-10 \\cdot -10) = 454\\]"
+  },
+  {
+    "objectID": "matrix24s.html#least-squares-foreshadowing",
+    "href": "matrix24s.html#least-squares-foreshadowing",
+    "title": "Matrix algebra basics",
+    "section": "Least Squares foreshadowing",
+    "text": "Least Squares foreshadowing\nNote the inner product of a column vector is a scalar; the inner product of \\(\\mathbf{e}\\), is the sum of the squares of \\(\\mathbf{e}\\).\n\\[\\mathbf{e'e}= e_{1}e_{1}+e_{2}e_{2}+\\ldots e_{N}e_{N} = \\sum\\limits_{i=1}^{N}e_{i}^{2}\\]"
+  },
+  {
+    "objectID": "matrix24s.html#multiplication---outer-product",
+    "href": "matrix24s.html#multiplication---outer-product",
+    "title": "Matrix algebra basics",
+    "section": "Multiplication - outer product",
+    "text": "Multiplication - outer product\nThe outer product of a column vector is the transpose of the column vector (thus, a row vector) pre-multiplied by the column vector, so \\({\\mathbf e\\mathbf e'}\\). The outer product is an (N,N) matrix.\n\\[\\mathbf{e} =  \\left[\n\\begin{array}{r}\n-1 \\\\\n-9\\\\\n4\\\\\n16\\\\\n-10\\\\\n\\end{array} \\right]\n\\mathbf{e'} =  \\left[\n\\begin{array}{rrrrr}\n-1 & -9 &4 &16 & -10\\\\\n\\end{array} \\right]\n\\]\nLet’s multiply \\({\\mathbf e\\mathbf e'}\\), a column vector of (5,1) by a row vector of (1,5); we’ll obtain a square matrix of (5,5)."
+  },
+  {
+    "objectID": "matrix24s.html#least-squares-foreshadowing-1",
+    "href": "matrix24s.html#least-squares-foreshadowing-1",
+    "title": "Matrix algebra basics",
+    "section": "Least Squares foreshadowing",
+    "text": "Least Squares foreshadowing\nLet \\(\\mathbf{e}\\) represent the residuals or errors in our regression. The outer product\n\\[{\\mathbf e\\mathbf e'} =  \\left[\n\\begin{array}{rrrrr}\n1 & 9 &-4 &-16 &10\\\\\n9 & 81 &-36 &-144 &90\\\\\n-4 & -36 &16 &64 &-40\\\\\n-16 & -144 &64 &256 &-160\\\\\n10 & 90 &-40 &-160 &100\\\\\n\\end{array} \\right] \\]\nis the variance-covariance matrix of \\(\\mathbf{e}\\). The squares on the main diagonal (which sums to the sum of squares) and the symmetry of the off-diagonal elements."
+  },
+  {
+    "objectID": "matrix24s.html#inverting-matrices-1",
+    "href": "matrix24s.html#inverting-matrices-1",
+    "title": "Matrix algebra basics",
+    "section": "Inverting Matrices",
+    "text": "Inverting Matrices\n\nYou’ll have noticed that division has been conspicuously absent so far. In scalar algebra, we sometimes represent division in fractions, \\(\\frac{1}{2}\\).\nAnother way to represent the same quantity is \\(2^{-1}\\), or the inverse of 2. Of course, in scalar algebra, a number multiplied by its inverse equals 1, e.g., \\(2 \\cdot 2^{-1}=1\\) or \\(2 \\cdot \\frac{1}{2}=1\\). So, if we are given \\(4x=1\\) and want to solve for \\(x\\) what we really want to know is “what is the inverse of 4 such that \\(4 \\cdot 4^{-1}=1\\)?” We consider matrices in a similar manner."
+  },
+  {
+    "objectID": "matrix24s.html#inverting-square-matrices",
+    "href": "matrix24s.html#inverting-square-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Inverting Square Matrices",
+    "text": "Inverting Square Matrices\nImagine a square matrix, \\(\\mathbf{X}\\) and its inverse, denoted \\({\\mathbf{X^{-1}}}\\) (read as “X inverse”). Analogous to scalar algebra, a matrix multiplied by its inverse is equal to the identity matrix, \\(\\mathbf{I}\\).\nSo in order to find \\({\\mathbf{X^{-1}}}\\), we must find the matrix that, when multiplied by \\(\\mathbf{X}\\), produces \\(\\mathbf{I}\\). Thus, for a square matrix, its inverse (if it exists) is such that\n\\[\\mathbf{X} \\mathbf{X^{-1}}= \\mathbf{X^{-1}} \\mathbf{X}=\\mathbf{I}\\]\nNotice the commutative property at work here - this is because \\(\\mathbf{X}\\) is square, such that \\(n=m\\), so \\(\\mathbf{X}\\) and \\({\\mathbf{X^{-1}}}\\) have the same dimensions."
+  },
+  {
+    "objectID": "matrix24s.html#determinant",
+    "href": "matrix24s.html#determinant",
+    "title": "Matrix algebra basics",
+    "section": "Determinant",
+    "text": "Determinant\nAn important characteristic of square matrices is the determinant. The determinant, denoted \\(|X|\\), is a scalar; every square matrix has one. We evaluate the determinant by examining the cross-products of the matrice’s elements. This is simple in the 2x2 matrix, less so in larger matrices.\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\nx_{11} & x_{12}\\\\\nx_{21}& x_{22} \\\\\n\\end{array} \\right| = x_{11}x_{22}-x_{12}x_{21}\\]"
+  },
+  {
+    "objectID": "matrix24s.html#determinant-1",
+    "href": "matrix24s.html#determinant-1",
+    "title": "Matrix algebra basics",
+    "section": "Determinant",
+    "text": "Determinant\nIn the 2x2 matrix, the determinant is the cross-product of the main diagonals minus the cross-product of the off-diagonals.\n\\[ |\\mathbf{X_{1}}|=\\left|\n\\begin{array}{cc}\n2 & 4\\\\\n6& 3 \\\\\n\\end{array} \\right| = 2 \\cdot 3-4 \\cdot 6 = -18\n\\]\nThe determinant is -18; \\(|\\mathbf{X_{1}}|=-18\\)."
+  },
+  {
+    "objectID": "matrix24s.html#determinant-2",
+    "href": "matrix24s.html#determinant-2",
+    "title": "Matrix algebra basics",
+    "section": "Determinant",
+    "text": "Determinant\nThis matrix has a determinant of zero - this is an important case.\n\\[ |\\mathbf{X_{2}}|=\\left|\n\\begin{array}{cc}\n3 & 6\\\\\n2& 4 \\\\\n\\end{array} \\right| = 3 \\cdot 4-6 \\cdot 2 =0\n\\] A matrix with determinant zero is singular. A singluar matrix has no inverse."
+  },
+  {
+    "objectID": "matrix24s.html#singular-matrices",
+    "href": "matrix24s.html#singular-matrices",
+    "title": "Matrix algebra basics",
+    "section": "Singular matrices",
+    "text": "Singular matrices\nThere are some important conditions that will produce a determinant of zero and thus a singular matrix:\n\nIf all the elements of any row or column of a matrix are equal to zero, then the determinant is zero.\nIf two rows or columns of a matrix are identical, the determinant is zero.\nIf a row or column of a matrix is a multiple of another row or column, the determinant is zero; if one row or column is a linear combination of other rows or columns, the determinant is zero."
+  },
+  {
+    "objectID": "matrix24s.html#least-squares-foreshadowing-2",
+    "href": "matrix24s.html#least-squares-foreshadowing-2",
+    "title": "Matrix algebra basics",
+    "section": "Least Squares Foreshadowing",
+    "text": "Least Squares Foreshadowing\nFor the linear model in least squares, this is important because computing estimates of \\(\\beta\\) requires inverting a matrix. Let’s derive \\(\\beta\\) in matrix notation to see how:\nThe estimated model is:\n\\[\\mathbf{y}={\\mathbf X{\\widehat{\\beta}}}+\\widehat{\\mathbf{\\epsilon}}\\] Minimizing \\(\\widehat{\\mathbf{\\epsilon}}'\\widehat{\\mathbf{\\epsilon}}\\) (skipping the math for now), we get\n\\[(\\mathbf{X'X}) \\widehat{\\beta}=\\mathbf{X'y}\\]"
+  },
+  {
+    "objectID": "matrix24s.html#foreshadowing-least-squares",
+    "href": "matrix24s.html#foreshadowing-least-squares",
+    "title": "Matrix algebra basics",
+    "section": "Foreshadowing Least Squares",
+    "text": "Foreshadowing Least Squares\nThe matrix \\((\\mathbf{X'X})\\) gives the sums of squares (on the main diagonal) and the sums of cross products (in the off-diagonals) of all the \\(\\mathbf{X}\\) variables; the matrix is symmetric. Since \\(\\beta\\) is the unknown vector in this equation, solve for \\(\\beta\\) by dividing both sides by \\((\\mathbf{X'X})\\) - in matrix terms, we premultiply each side by \\((\\mathbf{X'X)^{-1}}\\):\n\\[(\\mathbf{X'X)^{-1}} (\\mathbf{X'X}) \\widehat{\\beta}= (\\mathbf{X'X)^{-1}} \\mathbf{X'y}\\]"
+  },
+  {
+    "objectID": "matrix24s.html#foreshadowing-least-squares-1",
+    "href": "matrix24s.html#foreshadowing-least-squares-1",
+    "title": "Matrix algebra basics",
+    "section": "Foreshadowing Least Squares",
+    "text": "Foreshadowing Least Squares\nAs we know, \\((\\mathbf{X'X)^{-1}} (\\mathbf{X'X}) = \\mathbf{I}\\). So,\n\\[\\mathbf{I}\\widehat{\\beta}= (\\mathbf{X'X)^{-1}} \\mathbf{X'y}\\] or \\[\\widehat{\\beta}= (\\mathbf{X'X)^{-1}} \\mathbf{X'y}\\]\nEstimating \\(\\widehat{\\beta}\\) requires inverting \\(\\mathbf{(X'X)}\\) If the matrix \\(\\mathbf{(X'X)}\\) is singular, then \\(\\mathbf{(X'X)^{-1}}\\) does not exist, and we cannot estimate \\(\\widehat{\\beta}\\). Least Squares fails."
+  },
+  {
+    "objectID": "matrix24s.html#foreshadowing-least-squares-2",
+    "href": "matrix24s.html#foreshadowing-least-squares-2",
+    "title": "Matrix algebra basics",
+    "section": "Foreshadowing Least Squares",
+    "text": "Foreshadowing Least Squares\nThinking specifically of the \\(\\mathbf{X}\\) variables in the model, any of these conditions produce perfect collinearity - estimation fails because the matrix can’t invert.\n\nIf all the elements of any row or column of \\(\\mathbf{X}\\) are equal to zero, then the determinant is zero.\nIf two rows or columns of \\(\\mathbf{X}\\) are identical, the determinant is zero.\nIf a row or column of \\(\\mathbf{X}\\) is a multiple of another row or column, the determinant is zero; if one row or column is a linear combination of other rows or columns, the determinant is zero."
+  },
+  {
+    "objectID": "matrix24s.html#examples",
+    "href": "matrix24s.html#examples",
+    "title": "Matrix algebra basics",
+    "section": "Examples",
+    "text": "Examples\n\nExample 1Example 2Example 3\n\n\n\\({\\mathbf X}\\) below has a row of zeros; compute the determinant using the difference of cross-products.\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\n0 & 0\\\\\n19& 12 \\\\\n\\end{array} \\right| = 0 \\cdot 12-0 \\cdot 19 = 0 \\]\nYou can see in \\({\\mathbf X}\\) that because all the cross-products involve multiplying by zero, the determinant will always be zero; this applies to larger matrices as well.\n\n\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\n5 & 7\\\\\n5& 7 \\\\\n\\end{array} \\right| = 5 \\cdot 7-5 \\cdot 7 =0 \\]\nIn \\({\\mathbf X}\\) it’s easy to see that the cross-products will always be equal to one another if the rows or columns are identical, and the difference between identical values is zero.\n\n\n\\[ |\\mathbf{X}|=\\left|\n\\begin{array}{cc}\n64 & 48\\\\\n16& 12 \\\\\n\\end{array} \\right| = 64 \\cdot 12-48 \\cdot 16 = 768-768=0\\]\nFinally \\({\\mathbf X}\\) shows that if one row or column is a linear combination of other rows or columns, the determinant will be zero; in that matrix, the top row is 4 times the bottom row."
+  },
+  {
+    "objectID": "matrix24s.html#inversion",
+    "href": "matrix24s.html#inversion",
+    "title": "Matrix algebra basics",
+    "section": "Inversion",
+    "text": "Inversion\nThe matrix we need to invert, \\(\\mathbf{X'X}\\) is rectangular, so inversion is more complex. I’m going to illustrate the method of cofactor expansion - the purpose here is to give you an idea what software does every time you estimate an OLS model."
+  },
+  {
+    "objectID": "matrix24s.html#minor-of-a-matrix",
+    "href": "matrix24s.html#minor-of-a-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Minor of a matrix",
+    "text": "Minor of a matrix\nThe minor of a matrix is the determinant of a submatrix created by deleting the \\(i\\)th row and the \\(j\\)th column of the full matrix, where the minor is denoted by the element where the deleted rows intersect.\n\\[ \\mathbf{A} =  \\left[\n\\begin{array}{ccc}\na_{11} & a_{12} &a_{13}\\\\\na_{21}& a_{22} &a_{23}\\\\\na_{31} &a_{32} & a_{33}\\\\\n\\end{array} \\right] \\] \\[\\text{so the minor of } a_{11} \\text{ is }\n|\\mathbf{M_{11}}| =  \\left|\n\\begin{array}{cc}\na_{22} &a_{23}\\\\\na_{32} & a_{33}\\\\\n\\end{array} \\right|  =  a_{22} \\cdot a_{33}- a_{23} \\cdot a_{32}\\]"
+  },
+  {
+    "objectID": "matrix24s.html#cofactor-matrix",
+    "href": "matrix24s.html#cofactor-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Cofactor Matrix",
+    "text": "Cofactor Matrix\nThe cofactor of an element (\\(c_{ij}\\)) is the minor with a positive or negative sign depending on whether \\(i+j\\) is odd (negative) or even (positive). This is given by:\n\\[\\theta_{ij}=(-1)^{i+j}|\\mathbf{M_{ij}}|\\]\nso, from the example finding the minor of \\(a_{11}\\), \\(i\\)=1 and \\(j=1\\); their sum is 2 which is even, so the cofactor is \\(+a_{22} \\cdot a_{33}- a_{23} \\cdot a_{32}\\). If we find the cofactor for every element, \\(a_{ij}\\) in a matrix and replace each element with its cofactor, the new matrix is called the cofactor matrix of \\(\\mathbf{A}\\)."
+  },
+  {
+    "objectID": "matrix24s.html#cofactor-matrix-1",
+    "href": "matrix24s.html#cofactor-matrix-1",
+    "title": "Matrix algebra basics",
+    "section": "Cofactor Matrix",
+    "text": "Cofactor Matrix\nWhat we have so far is the signed matrix of minors:\n\\[\\mathbf{A} = \\left[\n\\begin{array}{ccc}\n1&4&2\\\\\n3&3&1\\\\\n2&2&4\\\\\n\\end{array} \\right]\n\\mathbf{\\Theta_{A}} \\left[\n\\begin{array}{cccccc}\n~\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n3&3\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n-\\left|  \\begin{array}{cc}\n4&2\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&2\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left|  \\begin{array}{cc}\n1&4\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n~\\left|\\begin{array}{cc}\n4&2\\\\\n3&1\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n1&2\\\\\n3&1\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&4\\\\\n3&3\\\\\n\\end{array} \\right|\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24s.html#cofactor-expansion",
+    "href": "matrix24s.html#cofactor-expansion",
+    "title": "Matrix algebra basics",
+    "section": "Cofactor Expansion",
+    "text": "Cofactor Expansion\nFind the signed determinant of each 2x2 submatrix.\n\\[\\mathbf{\\Theta_{A}} \\left[\n\\begin{array}{cccccc}\n~\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n3&1\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n3&3\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n-\\left|  \\begin{array}{cc}\n4&2\\\\\n2&4\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&2\\\\\n2&4\\\\\n\\end{array} \\right|\n-\\left|  \\begin{array}{cc}\n1&4\\\\\n2&2\\\\\n\\end{array} \\right|\\\\ \\\\\n~\\left|\\begin{array}{cc}\n4&2\\\\\n3&1\\\\\n\\end{array} \\right|\n-\\left| \\begin{array}{cc}\n1&2\\\\\n3&1\\\\\n\\end{array} \\right|\n~\\left|\\begin{array}{cc}\n1&4\\\\\n3&3\\\\\n\\end{array} \\right|\n\\end{array} \\right]\n\\mathbf{\\Theta_{A}} = \\left[\n\\begin{array}{rrr}\n10&-10&0\\\\\n-12&0&6\\\\\n-2&5&-9\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24s.html#find-the-determinant",
+    "href": "matrix24s.html#find-the-determinant",
+    "title": "Matrix algebra basics",
+    "section": "Find the Determinant",
+    "text": "Find the Determinant\nUsing the cofactor matrix, \\(\\mathbf{\\Theta_{A}}\\) we perform cofactor expansion in order to find the determinant, \\(|\\mathbf{A}|\\). Cofactor expansion is given by:\n\\[|\\mathbf{A}|=\\sum\\limits_{i,j=1}^{n}a_{ij}\\Theta_{ij}\\]\nwhich means that we take two corresponding rows or columns from \\(\\mathbf{A}\\) and \\(\\mathbf{\\Theta_{A}}\\) and sum the products of their elements - this gives us the determinant of \\(\\mathbf{A}\\)."
+  },
+  {
+    "objectID": "matrix24s.html#find-the-determinant-1",
+    "href": "matrix24s.html#find-the-determinant-1",
+    "title": "Matrix algebra basics",
+    "section": "Find the Determinant",
+    "text": "Find the Determinant\nSo taking the first row from \\(\\mathbf{A}\\) (1,4,2) and from \\(\\mathbf{\\Theta_{A}}\\) (10,-10,0) above, we compute\n\\[a_{11} \\cdot \\Theta_{A11}+a_{12} \\cdot \\Theta_{A12}+a_{13} \\cdot \\Theta_{A13}\\]\n\\[1 \\cdot 10+ 4 \\cdot -10 + 2 \\cdot 0 = -30\\] This is the determinant of \\(\\mathbf{A}\\) , \\(|\\mathbf{A}|\\). Note that any corresponding rows or columns from \\(\\mathbf{A}\\) and \\(\\mathbf{\\Theta_{A}}\\) will produce the same result."
+  },
+  {
+    "objectID": "matrix24s.html#adjoint-matrix",
+    "href": "matrix24s.html#adjoint-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Adjoint Matrix",
+    "text": "Adjoint Matrix\nIf we transpose the cofactor matrix, (cof \\(\\mathbf{A'}\\)), the new matrix is called the adjoint matrix, denoted adj\\(\\mathbf{A}\\)=(cof \\(\\mathbf{A'}\\)).\n\\[adj\\mathbf{A} = \\mathbf{\\Theta_{A}'} = \\left[\n\\begin{array}{rrr}\n10&-12&-2\\\\\n-10&0&5\\\\\n0&6&-9\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24s.html#inverting-the-matrix",
+    "href": "matrix24s.html#inverting-the-matrix",
+    "title": "Matrix algebra basics",
+    "section": "Inverting the matrix",
+    "text": "Inverting the matrix\nBelieve it or not, this all leads us to inverting the matrix, provided it is nonsingular.\n\\[\\mathbf{A^{-1}}=\\frac{1}{|\\mathbf{A}|}(adj {\\mathbf A})\\] The inverse of A is equal to one over the determinant of A times the adjoint matrix of A. So we’re pre-multiplying \\(adj {\\mathbf A}\\) by the (scalar) determinant, -30."
+  },
+  {
+    "objectID": "matrix24s.html#inverse-of-matrix-a",
+    "href": "matrix24s.html#inverse-of-matrix-a",
+    "title": "Matrix algebra basics",
+    "section": "Inverse of Matrix A",
+    "text": "Inverse of Matrix A\n\\[{\\mathbf A^{-1}}=-\\frac{1}{30}\\left[\n\\begin{array}{rrr}\n10&-12&-2\\\\\n-10&0&5\\\\\n0&6&-9\\\\\n\\end{array} \\right]\n=\\left[\n\\begin{array}{rrr}\n-\\frac{1}{3}&\\frac{2}{5}&\\frac{1}{15}\\\\\n\\frac{1}{3}&0&-\\frac{1}{6}\\\\\n0&-\\frac{1}{5}&\\frac{3}{10}\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24s.html#checking-our-work",
+    "href": "matrix24s.html#checking-our-work",
+    "title": "Matrix algebra basics",
+    "section": "Checking our work",
+    "text": "Checking our work\nWe can check our work to be sure we’ve inverted correctly by making sure that \\(\\mathbf{A^{-1}A}=\\mathbf{I_{3}}\\); so,\n\\[-\\frac{1}{30}\\left[\n\\begin{array}{rrr}\n10&-12&-2\\\\\n-10&0&5\\\\\n0&6&-9\\\\\n\\end{array} \\right]\n\\left[\n\\begin{array}{ccc}\n1&4&2\\\\\n3&3&1\\\\\n2&2&4\\\\\n\\end{array} \\right]\n=\n-\\frac{1}{30}\\left[\n\\begin{array}{rrr}\n-30&0&0\\\\\n0&-30&0\\\\\n0&0&-30\\\\\n\\end{array} \\right]\\]"
+  },
+  {
+    "objectID": "matrix24s.html#connecting-data-matrices-to-ols",
+    "href": "matrix24s.html#connecting-data-matrices-to-ols",
+    "title": "Matrix algebra basics",
+    "section": "Connecting data matrices to OLS",
+    "text": "Connecting data matrices to OLS\nLet’s examine these matrices a little to get a feel for what the computation of \\(\\widehat{\\beta}\\) involves: \\(\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}\\).\n\\[\n\\mathbf{X}= \\left[\n\\begin{matrix}\n  1& X_{1,2} & X_{1,3} & \\cdots & X_{1,k} \\\\\n  1 & X_{2,2} & X_{2,3} &\\cdots & X_{2,k} \\\\\n  1 & X_{3,2} & X_{3,3} &\\cdots & X_{3,k} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  1 & X_{n,2} & X_{n,3} & \\cdots & X_{n,k}  \n\\end{matrix}  \\right]\n\\] The dimensions of \\(\\mathbf{X}\\) are \\(n x k\\); the sample size by the number of regressors (including the constant)."
+  },
+  {
+    "objectID": "matrix24s.html#connecting-data-matrices-to-ols-1",
+    "href": "matrix24s.html#connecting-data-matrices-to-ols-1",
+    "title": "Matrix algebra basics",
+    "section": "Connecting data matrices to OLS",
+    "text": "Connecting data matrices to OLS\n\\[\\mathbf{X'X}= \\left[\n\\begin{matrix}\n  N& \\sum X_{2,i} & \\sum X_{3,i} & \\cdots & \\sum X_{k,i} \\\\\n  \\sum X_{2,i}&\\sum X_{2,2}^{2} & \\sum X_{2,i} X_{3,i} &\\cdots & \\sum X_{2,i}X_{k,i} \\\\\n  \\sum X_{3,i} & \\sum X_{3,i}X_{2,i}& \\sum X_{3,i}^{2} &\\cdots & \\sum X_{3,i}X_{k,i} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  \\sum X_{k,i} & \\sum X_{k,i}X_{2,i} & \\sum X_{k,i}X_{3,i} & \\cdots & \\sum X_{k,i}^{2}  \n\\end{matrix}  \\right] \\]\nIn \\(\\mathbf{X'X}\\), the main diagonal is the sums of squares and the offdiagonals are the cross-products."
+  },
+  {
+    "objectID": "matrix24s.html#connecting-data-matrices-to-ols-2",
+    "href": "matrix24s.html#connecting-data-matrices-to-ols-2",
+    "title": "Matrix algebra basics",
+    "section": "Connecting data matrices to OLS",
+    "text": "Connecting data matrices to OLS\n\\[\\mathbf{X'y}= \\left[\n\\begin{matrix}\n\\sum Y_{i}\\\\\n\\sum X_{2,i}Y_{i}\\\\\n\\sum X_{3,i}Y_{i}\\\\\n\\vdots \\\\\n\\sum X_{k,i}Y_{i}\n\\end{matrix}  \\right] \\]\nWhen we compute \\(\\widehat{\\beta}\\), \\(\\mathbf{X'y}\\) is the covariation of \\(X\\) and \\(y\\), and we pre-multiply by the inverse of \\(\\mathbf{(X'X)^{-1}}\\) to control for the relationships among \\(X_k\\)."
+  },
+  {
+    "objectID": "overview24s.html",
+    "href": "overview24s.html",
+    "title": "Course overview",
+    "section": "",
+    "text": "“All models are wrong, some are useful.” Box & Draper (1987)\nThis course is based on the principle that to build useful models, we need:\n\nan intuitive understanding of regression models\ndata science skills\ncareful and creative thinking about politics\na general skepticism of individual models, but an optimism about the modeling enterprise\n\n\n\n\nThis course focuses on the linear regression model, but with a heavy emphasis on data science skills like data management/wrangling, and coding.\n\n\n\nIn May, you should be able to:\n\ndevelop and test hypotheses about politics.\nestimate, evaluate, and interpret basic linear and nonlinear regression models.\nevaluate, understand, clean, wrangle, join, and reshape data.\nwrite R code, to manage data, implement simulation methods, estimate models, visualize data/predictions.\nunderstand the data generation process as a motivation for modeling.\n\n\n\n\nIs not a math class,\n\n\n\n\n\nbut one that uses basic math toward an applied goal.\n\n\n\n\nis aimed at application; the more you struggle with code, the more you’ll learn.\nthe more you use other people’s code, the less you’ll learn.\nthe more you look at other people’s code, the more you’ll learn. You should live on stackoverflow etc.\nis applied - if you apply the tools we cover, you’ll learn a lot; if not, you won’t.\nthe students who do best later on in this program challenge themselves here.\n\n\n\n\n\nis a collaborative effort among you, and with me and Kathleen. We learn from each other when we collaborate.\nThis means having honest conversations in class about what we do and do not understand.\nIt means working together to learn R, to wrangle data, and to understand models; working together on your assignments.\nthe most successful cohorts are those that work collaboratively; this does not mean free-riding, but struggling with everything together.\n\n\n\n\nWhat do you need at the start?\n\nbasic R or this terrific bookdown book written by a graduate student for graduate students.\nbasic probability theory\nbasic matrix algebra\n\n\n\n\nYou should be able to make sense of this in terms of dimensions and operations:\n\\[\\beta = (X'X)^{-1} X'y\\] where \\(X\\) is a data matrix of rows and columns; these are the variables in a regression. \\(y\\) is the outcome variable, the same number of rows as \\(X\\). Define the dimensions of \\(X\\), \\(y\\), and \\(\\beta\\), of \\((X'X)^-1\\) and \\(X'y\\).\n\n\n\n\nwhat are probability distributions?\nwhat is the PDF of a variable?\nwhat is the CDF of a variable?\n\n\n\n\nThe class focuses on regression models of the general form (scalar notation):\n\\[ y_i = \\beta_0 + X_1\\beta_1 + X_2\\beta_2 \\ldots + X_k\\beta_k + \\epsilon\\]\nor in matrix notation,\n\\[ \\mathbf{y} = \\mathbf{X} \\mathbf{\\beta} + \\mathbf{\\epsilon} \\]\nAn outcome, \\(y\\) is a function of some combination of \\(X\\) variables, their coefficients (\\(\\beta\\), including an intercept), and an error term.\n\n\n\nPosit a statistical relationship between:\n\nan outcome variable, \\(y\\).\na covariate of interest, \\(x\\).\na set of controls, \\(\\mathbf{X}\\).\n\nThe effect of \\(x\\) is denoted \\(\\beta\\). It is the partial effect of x on y, because removed from that effect are the effects of x -&gt; X -&gt; y. This is what we mean by controlling for the effects of X. Much more on this later.\n\n\n\nCan be estimated using different technologies including:\n\nLeast Squares\nMaximum Likelihood\nBayesian methods\n\nThis course is about the technology of least squares; we will deal with one ML regression model (logit) later in the semester."
   }
 ]

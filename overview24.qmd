@@ -2,22 +2,25 @@
 title: "Course overview"
 author: "Dave Clark"
 institute: "Binghamton University"
-date: 01/17/2024
+date: today
 date-format: long
 title-block-banner: TRUE
 format: html
 editor: visual
 embed-resources: true
+#execute:
+ # freeze: true  # never re-render during project render
 ---
 
 # About this class
 
+```{=html}
 <style>
 table, th, td {
     font-size: 18px;
 }
 </style>
-
+```
 ```{r setup, include=FALSE ,echo=FALSE}
 options(htmltools.dir.version = FALSE)
 
@@ -41,10 +44,6 @@ library(mvtnorm)
 library(modelsummary)
 library("GGally")
 library(stargazer)
-
-mm <-read.csv("/Users/dave/Documents/2023/PITF/slides/mmALL_073120_csv.csv")
-tl <- read_dta("/Users/dave/Documents/2023/PITF/slides/Meng_exec_constraints_updated.dta")
-polity <- read_dta("/Users/dave/Documents/2023/PITF/slides/polity5.dta")
 
 ```
 
@@ -129,52 +128,6 @@ $$\beta = (X'X)^{-1} X'y$$ where $X$ is a data matrix of rows and columns; these
 -   what is the PDF of a variable?
 -   what is the CDF of a variable?
 
-<!-- bad_teeth -->
-
-<!-- alcohol_ -->
-
-<!-- body_mass_index_bmi_women_kgperm -->
-
-<!-- body_mass_index_bmi_men_kgperm2 -->
-
-<!-- electricity_generation_per_perso -->
-
-<!-- patent_applications_total -->
-
-<!-- pump_price_for_gasoline_us_per_l -->
-
-<!-- smoking_adults_percent_of_population_over_age_15 -->
-
-<!-- smoking_men_percent_of_men_over_age_15 -->
-
-<!-- smoking_women_percent_of_women_over_age_15 -->
-
-<!-- ## Protest data -->
-
-<!-- ```{r mm protests by year } -->
-
-<!-- annualprotests <- mm %>%  -->
-
-<!--   group_by(year) %>% -->
-
-<!--   mutate(protests = n())  -->
-
-<!-- ggplot(mm, aes(x=year, y=protest))+ -->
-
-<!--   geom_bar(stat="identity") + -->
-
-<!--    labs(x = "Year", y= "Protests", caption="Mass Mobilization (Clark & Regan 2021)")+ -->
-
-<!--   ggtitle("Protests, 1990-2020")  -->
-
-<!-- ``` -->
-
-<!-- draw histogram of var; draw pdf, talk pr(y=i), fold in half for cdf\ -->
-
-<!-- https://rdrr.io/github/stharms/realEstAnalytics.r/f/vignettes/zillow-vignette.Rmd -->
-
-<!-- https://osf.io/en9rk -->
-
 ## Understanding Regression models
 
 The class focuses on regression models of the general form (scalar notation):
@@ -214,6 +167,12 @@ This course is about the technology of least squares; we will deal with one ML r
 $~$
 
 This a methods class, but the methods are only meaningful to us insofar as they help us understand politics. So let's motivate the class with a question about politics.
+
+## Careful thinking
+
+Correlation does not imply causation.
+
+![](truck.jpeg)
 
 ------------------------------------------------------------------------
 
