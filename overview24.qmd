@@ -5,21 +5,19 @@ institute: "Binghamton University"
 date: 01/17/2024
 date-format: long
 title-block-banner: TRUE
-format: revealjs
+format: html
 editor: visual
 embed-resources: true
-cache: true
 ---
 
 # About this class
 
-```{=html}
 <style>
 table, th, td {
     font-size: 18px;
 }
 </style>
-```
+
 ```{r setup, include=FALSE ,echo=FALSE}
 options(htmltools.dir.version = FALSE)
 
@@ -93,7 +91,7 @@ but one that uses basic math toward an applied goal.
 
 -   the more you **use** other people's code, the less you'll learn.
 
--   the more you **look** at other people's code, the more you'll learn. You should live on  [stackoverflow](https://stackoverflow.com/) etc. 
+-   the more you **look** at other people's code, the more you'll learn. You should live on [stackoverflow](https://stackoverflow.com/) etc.
 
 -   is applied - if you apply the tools we cover, you'll learn a lot; if not, you won't.
 

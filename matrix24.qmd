@@ -4,12 +4,18 @@ author: "Dave Clark"
 institute: "Binghamton University"
 date: today
 date-format: long
-format: revealjs
+format: html
 editor: visual
+title-block-banner: true
 embed-resources: true
-cache: true
  # for pdf version,quarto render myslides.qmd --to pdf
 ---
+```{r setup, include=FALSE ,echo=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+
+```
 
 # Matrix basics
 

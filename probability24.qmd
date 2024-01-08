@@ -4,12 +4,13 @@ author: "Dave Clark"
 institute: "Binghamton University"
 date: today
 date-format: long
-format: revealjs
+format: html
 editor: visual
+title-block-banner: true
 embed-resources: true
-cache: true
  # for pdf version,quarto render myslides.qmd --to pdf
 ---
+
 ```{r setup, include=FALSE ,echo=FALSE}
 options(htmltools.dir.version = FALSE)
 
@@ -19,37 +20,31 @@ library(tidyverse)
 library(ggplot2)
 
 ```
+
 # Probability basics
 
-## Why Probability Distributions? 
+## Why Probability Distributions?
 
 Inferential models depend on probability distributions:
 
-- estimation - is not deterministic, and so admits the unknown via disturbances $\epsilon$. We characterize those unknowns as following some probability distribution.
+-   estimation - is not deterministic, and so admits the unknown via disturbances $\epsilon$. We characterize those unknowns as following some probability distribution.
 
-- inference - is essential because of the unknowns. Inference is possible because of the probability distribution characterizing the unknowns.
+-   inference - is essential because of the unknowns. Inference is possible because of the probability distribution characterizing the unknowns.
 
+## Probability Distributions
 
-
-
-## Probability Distributions 
-
-Probability distributions permit statements about relative scale, frequency, and uncertainty. 
+Probability distributions permit statements about relative scale, frequency, and uncertainty.
 
 $~$
 
+If the relation between $x$ and $y$ is measured by $\widehat{\beta}$, we need to know whether or not to take $\widehat{\beta}$ seriously - is it representative of the population relationship between $x$ and $y$?
 
-If the relation between $x$ and $y$ is measured by $\widehat{\beta}$, we need to know whether or not to take $\widehat{\beta}$ seriously - is it representative of the population relationship between $x$ and $y$? 
+## Things we want to know about $x$
 
-## Things we want to know about $x$ 
-
-
-- $Pr(X = x)$ - the probability of observing any particular value of $x$; these together comprise the *density*. 
-- $Pr(X \leq x)$ - the probability of observing values up to and including $x$ (or any range of $x$). (CDF)
-- central tendency of $x$ - mean, median, mode.
-- dispersion - variance, or standard deviation (the average difference of any observation from the expected value).
-
-
+-   $Pr(X = x)$ - the probability of observing any particular value of $x$; these together comprise the *density*.
+-   $Pr(X \leq x)$ - the probability of observing values up to and including $x$ (or any range of $x$). (CDF)
+-   central tendency of $x$ - mean, median, mode.
+-   dispersion - variance, or standard deviation (the average difference of any observation from the expected value).
 
 ## Types of variables
 
@@ -58,7 +53,6 @@ Variables are either
 -   *discrete* - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual's sex; Polity score.
 
 -   *continuous* - observations can take on any real value between boundaries (sometimes \$-\infty, +\infty); infinitely divisible. E.g., household income, GDP per capita.
-
 
 ## Discrete variables
 
@@ -98,48 +92,47 @@ In general, the level of measurement of $y$ (so the type and amount of informati
 
 -   continuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)
 
-
 # Distributions
 
 ## PDF and CDF
 
 Probability distributions can be described by
 
-- Probability Density Function (PDF) which maps $X$ onto the probability space describing the probabilities of every value of $X$, $x$. 
+-   Probability Density Function (PDF) which maps $X$ onto the probability space describing the probabilities of every value of $X$, $x$.
 
-- Cumulative Distribution Function (CDF) which maps $X$ onto the probability space describing the probability $X$ is less than some value, $x$.
+-   Cumulative Distribution Function (CDF) which maps $X$ onto the probability space describing the probability $X$ is less than some value, $x$.
 
- <!-- For a random variable, $Y$, the probability $Y$ is equal to some particular value, $y$ in the range of $Y$ defines the probability density function. -->
-
+<!-- For a random variable, $Y$, the probability $Y$ is equal to some particular value, $y$ in the range of $Y$ defines the probability density function. -->
 
 ## PDF (Density)
-::: {.callout-note icon=false} 
+
+::: {.callout-note icon="false"}
 ### Definition
 
-The Probability Density Function or PDF describes the probability a random variable takes on a particular value, and it does so for all values of that random variable.  
+The Probability Density Function or PDF describes the probability a random variable takes on a particular value, and it does so for all values of that random variable.
 :::
 
----
+------------------------------------------------------------------------
 
 ## PDF (Density)
-::: {.callout-note icon=false} 
+
+::: {.callout-note icon="false"}
 ### Example
 
-Suppose we toss a fair coin 1 time and want to describe the probability distribution of the outcome, $Y$ which is a random variable.  The possible outcomes are heads and tails, and the probability of each is .5.  This is the PDF because it describes the probabilities associated with all possible outcomes of $Y$. 
-
+Suppose we toss a fair coin 1 time and want to describe the probability distribution of the outcome, $Y$ which is a random variable. The possible outcomes are heads and tails, and the probability of each is .5. This is the PDF because it describes the probabilities associated with all possible outcomes of $Y$.
 :::
 
----
+------------------------------------------------------------------------
 
-##  PDF (Density)
+## PDF (Density)
 
-- While establishing the probability of a value of a discrete variable is possible, establishing the probability of a particular value of a continuous variable is not.  
+-   While establishing the probability of a value of a discrete variable is possible, establishing the probability of a particular value of a continuous variable is not.
 
-
-- Instead, the continuous PDF describes the instantaneous rate of change in $Pr(X=x)$ for every value of $x$. 
+-   Instead, the continuous PDF describes the instantaneous rate of change in $Pr(X=x)$ for every value of $x$.
 
 ## PDF plots
-```{r}
+
+```{r, echo=FALSE}
 z <-runif(10000, min = -4, max = 4)
 df <- data.frame(z, "z2"=z^2)
 
@@ -169,12 +162,12 @@ pdfplot
 
 ## CDF
 
-::: {.callout-note icon=false}
+::: {.callout-note icon="false"}
 ### Definition
 
 For a random variable, $Y$, the probability $Y$ is less than or equal to some particular value, $y$ in the range of $Y$ defines the cumulative density function.
 
-For a continuous variable: 
+For a continuous variable:
 
 $$P(Y \leq j) =\int\limits_{-\infty}^{j} f(X)dX$$
 
@@ -184,11 +177,9 @@ $$P(Y \leq j) = \sum\limits_{y\leq j} P(Y=y)
 = 1- \sum\limits_{y> j} P(Y=y)$$
 :::
 
-
-
 ## CDF plots
 
-```{r}
+```{r, echo=FALSE}
 #### CDFs ####
 
 cdfplot <- ggplot()+ geom_line(data = cdfs, aes(x=z, y=lcdf, lty=1), color="gray20", lty=1)+
@@ -205,41 +196,37 @@ cdfplot
 
 ## Notation
 
-- $f(x)$ denotes the PDF of $x$. 
+-   $f(x)$ denotes the PDF of $x$.
 
-- $F(x)$ denotes the CDF of $x$.
+-   $F(x)$ denotes the CDF of $x$.
 
--  Substitute either the appropriate name, symbol, or function for $F$ or $f$ to indicate the distribution.
+-   Substitute either the appropriate name, symbol, or function for $F$ or $f$ to indicate the distribution.
 
-- Lower case Greek letters denote PDFs: e.g. $f(x)= \phi(x)$ denotes the normal PDF.
+-   Lower case Greek letters denote PDFs: e.g. $f(x)= \phi(x)$ denotes the normal PDF.
 
--  Upper case Greek letters denote CDFs: e.g. $F(x)=\Phi(x)$ denotes the normal CDF.
+-   Upper case Greek letters denote CDFs: e.g. $F(x)=\Phi(x)$ denotes the normal CDF.
 
-
----
+------------------------------------------------------------------------
 
 ## Notation
-::: {.callout-note icon=false} 
+
+::: {.callout-note icon="false"}
 ### Example
 
-$x$ is distributed Normal, $N(\mu, \sigma^{2})$: 
+$x$ is distributed Normal, $N(\mu, \sigma^{2})$:
 
 $$F(x) = \Phi_{\mu, \sigma^{2}}(x)  =    \int  \phi_{\mu, \sigma^{2}} (x) f(x)d(x) $$
 
 $$ f(x) = \phi_{\mu, \sigma^{2}}(x) =\frac{1}{\sigma \sqrt{2\pi}} \exp \left( - \frac{(x-\mu)^{2}}{2 \sigma^{2}} \right) $$
 
-
-Note \ldots the first derivative of the CDF is the PDF; the integral of the PDF is the CDF. 
-
+Note \ldots the first derivative of the CDF is the PDF; the integral of the PDF is the CDF.
 :::
 
-
-# Discrete Probability Distributions 
+# Discrete Probability Distributions
 
 ## Bernoulli
 
 Suppose a binary variable $x$ that takes on only the values of zero and one ($x \in {0, 1}$):
-
 
 $$ 
 Pr(X=1)=\pi\nonumber \\
@@ -249,7 +236,7 @@ $$
 
 ## Bernoulli
 
-The PDF is: 
+The PDF is:
 
 $$ f(x) = \\
           \pi    ~~~~~~~~ ~ ~ ~~~~ \text{if } x=1\\
@@ -258,44 +245,39 @@ $$ f(x) = \\
 
 or
 
-
 $$f(x) = \pi^{x}(1-\pi)^{1-x} $$
 
+## Bernoulli
 
- 
- 
-## Bernoulli 
 The CDF is:
- 
+
 $$F(x) =\sum_{x} f(x) $$
 
-and the expected value is 
+and the expected value is
 
 $$
 E(x) =\sum_{x}x f(x)    \\
  = (1)(\pi)+(0)(1-\pi)   \\
  = \pi 
-$$ 
+$$
 
+## Binomial
 
- 
-## Binomial 
- 
-Bernoulli is important because it is the foundation for a lot of other distributions, including the *binomial distribution*. The binomial describes the success probability function (where $x=1$  is a "success") from a set of $n$ independent Bernoulli trials. So, the binomial is the probability of successes ("ones") in $n$ independent Bernoulli trials with identical probabilities, $\pi$. 
+Bernoulli is important because it is the foundation for a lot of other distributions, including the *binomial distribution*. The binomial describes the success probability function (where $x=1$ is a "success") from a set of $n$ independent Bernoulli trials. So, the binomial is the probability of successes ("ones") in $n$ independent Bernoulli trials with identical probabilities, $\pi$.
 
-$~$ 
- 
-There are two essential parts to the binomial PDF - the probability of success, and the number of ways a success can occur. 
- 
+$~$
+
+There are two essential parts to the binomial PDF - the probability of success, and the number of ways a success can occur.
+
 ## Binomial
 
 The probability of success is the Bernoulli probability:
- 
+
 $$
 f(x) = \pi^{x}(1-\pi)^{1-x} 
 $$
 
-and the number of ways success can occur (called "n-tuples") is 
+and the number of ways success can occur (called "n-tuples") is
 
 $$  \begin{pmatrix}
     n  \\
@@ -304,8 +286,8 @@ $$  \begin{pmatrix}
 $$
 
 Notice the notation for the n-tuple.
- 
-## Binomial 
+
+## Binomial
 
 The PDF combines these:
 
@@ -317,37 +299,32 @@ f(x)=
   \end{pmatrix} \pi^{x}(1-\pi)^{n-x}
 $$
 
-
-
-There are $n$ trials,  $x$ is the number of successes, and $n-x$ is the number of failures. Each event in the n-tuple arises with the Bernoulli probability.
-
+There are $n$ trials, $x$ is the number of successes, and $n-x$ is the number of failures. Each event in the n-tuple arises with the Bernoulli probability.
 
 ## Binomial
-::: {.callout-note icon=false} 
 
+::: {.callout-note icon="false"}
 ### Example
 
-Suppose we are going to toss a fair coin 4 times and want to know how many ways we can have heads come up twice. 
+Suppose we are going to toss a fair coin 4 times and want to know how many ways we can have heads come up twice.
 
 $$
  \frac{4!}{2!(4-2)!} = 6
-$$
-Now, suppose we want to know the probability exactly 2 of those 4 tosses is heads. 
+$$ Now, suppose we want to know the probability exactly 2 of those 4 tosses is heads.
 
 $$
 Pr(x=2) =\frac{4!}{2!(4-2)!} (.5)^{2}(.5)^{2} \\
 = 6(0.0625) \\
 = 0.375
 $$
-
 :::
 
 ## Binomial
-::: {.callout-note icon=false} 
 
+::: {.callout-note icon="false"}
 ### Example
 
-Here's another example: suppose we flip 5 fair coins once each; what is the PDF of the number of heads we expect?  In other words, what is the probability associated with each possible number of successes (heads), from 0 to 5? 
+Here's another example: suppose we flip 5 fair coins once each; what is the PDF of the number of heads we expect? In other words, what is the probability associated with each possible number of successes (heads), from 0 to 5?
 
 $$
 P(x=0)  =  \begin{pmatrix}
@@ -364,47 +341,39 @@ P(x=2) =  \begin{pmatrix}
   \end{pmatrix} \cdot (.5)^{2}\cdot (.5)^{3} = 10 \cdot .25 \cdot 0.125=0.3125 \\
 \vdots \vdots \vdots 
 $$
-
 :::
-
 
 ## Binomial family distributions
 
-- the geometric distribution describes repeated Bernoulli trials with probability of success $\pi$, until the first success.
+-   the geometric distribution describes repeated Bernoulli trials with probability of success $\pi$, until the first success.
 
-- the negative binomial describes the number of Bernoulli failures prior to the first success - it can be thought of as a counting process up to the first success.
+-   the negative binomial describes the number of Bernoulli failures prior to the first success - it can be thought of as a counting process up to the first success.
 
-- the poisson describes Bernoulli trials where $\pi$ for any particular trial is very small. 
-
-
+-   the poisson describes Bernoulli trials where $\pi$ for any particular trial is very small.
 
 # Continuous Probability Distributions {.smaller}
- 
 
 ## The Normal Distribution
 
 The Normal distribution is the most widely used distribution in the social sciences.
 
-- The normal seems to "fit" a lot of the variables social scientists measure and use in models. 
+-   The normal seems to "fit" a lot of the variables social scientists measure and use in models.
 
-- Estimation techniques we often employ assume the disturbance term is normally distributed; one result is the coefficients are either normally distributed or t-distributed. 
+-   Estimation techniques we often employ assume the disturbance term is normally distributed; one result is the coefficients are either normally distributed or t-distributed.
 
+## Normal PDF
 
-## Normal PDF 
-
- The normal PDF:
-$$
+The normal PDF: $$
 Pr(Y=y_{i})=\frac{1}{\sqrt{2 \pi \sigma^{2}}} exp \left[\frac{-(y_{i}-\mu_{i})^{2}}{2\sigma^{2}}\right] 
 $$
 
-where two parameters, $\mu$ and $\sigma^{2}$ describe the location and shape of the distribution, the mean and variance respectively; we indicate a normally distributed variable and its parameters as 
+where two parameters, $\mu$ and $\sigma^{2}$ describe the location and shape of the distribution, the mean and variance respectively; we indicate a normally distributed variable and its parameters as
 
 $$
 Y \sim \text{Normal}(\mu,\sigma^{2}) \nonumber
 $$
 
-
----
+------------------------------------------------------------------------
 
 ::: panel-tabset
 ### Describe these data
@@ -424,7 +393,7 @@ ggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +
 
 ```
 
-### Normal? 
+### Normal?
 
 ```{r}
 #| echo: true
@@ -444,48 +413,41 @@ ggplot() +
 ```
 :::
 
-
 ## Standard Normal
 
-A useful special case of the Normal is the standard normal, $z \sim \text{Normal}(0,1)$.  The PDF for the standard normal is given by
+A useful special case of the Normal is the standard normal, $z \sim \text{Normal}(0,1)$. The PDF for the standard normal is given by
 
 $$
 \phi(z)=\frac{1}{\sqrt{2 \pi }} exp \left[\frac{-z^{2}}{2}\right] \nonumber
 $$
 
-where the parameters themselves drop out since we'd be subtracting a mean of zero and dividing/multiplying by a variance of 1. The standard normal CDF is denoted $\Phi(z)$; the standard normal PDF is denoted $\phi(z)$. 
-
+where the parameters themselves drop out since we'd be subtracting a mean of zero and dividing/multiplying by a variance of 1. The standard normal CDF is denoted $\Phi(z)$; the standard normal PDF is denoted $\phi(z)$.
 
 ## Normal PDFs different moments
 
 # Why Distributions Matter to models
 
-## Models  
+## Models
 
--  Probability models include unobserved disturbances; we  make assumptions about the distributions of those errors, $\epsilon$. 
+-   Probability models include unobserved disturbances; we make assumptions about the distributions of those errors, $\epsilon$.
 
-- What we assume about the unobservables is always informed by what we know about the observables, mainly $y$. 
+-   What we assume about the unobservables is always informed by what we know about the observables, mainly $y$.
 
-- A useful way to describe or summarize $y$ is to characterize its observed distribution.  
+-   A useful way to describe or summarize $y$ is to characterize its observed distribution.
 
-- The distribution of $y$ informs our assumption about the distribution of $\epsilon$.
-
+-   The distribution of $y$ informs our assumption about the distribution of $\epsilon$.
 
 ## Why this matters to OLS
 
-Linear regression is such an inferential model; we have a number of sources of uncertainty. We represent that uncertainty in the model via the disturbance term, $\epsilon$. 
+Linear regression is such an inferential model; we have a number of sources of uncertainty. We represent that uncertainty in the model via the disturbance term, $\epsilon$.
 
 $~$
 
-In order to know things about $\epsilon$ and other parts of the model, we assume that the disturbances are normally distributed; $y$ should be normal too.  
-
-
+In order to know things about $\epsilon$ and other parts of the model, we assume that the disturbances are normally distributed; $y$ should be normal too.
 
 ## Normality and Centrality
 
-We rely on stuff being normally distributed, and central tendency being meaningful. The Central Limit Theorem facilitates this. 
-
-
+We rely on stuff being normally distributed, and central tendency being meaningful. The Central Limit Theorem facilitates this.
 
 ## Central Limit Theorem
 
@@ -493,21 +455,20 @@ Suppose $n$ random variables - call them $X_1, X_2 \ldots X_n$. These variables 
 
 $$ {\sum\limits_{n \rightarrow \infty} (\bar{X_i})} / {n}  \sim N (\mu, \sigma^2) $$
 
-As $n$ approaches infinity, the distribution of means, $\bar{X_i}$ is distributed Normal, with mean $\widetilde{X_i}$. We could accomplish the same thing by repeated sampling of a single variable. 
+As $n$ approaches infinity, the distribution of means, $\bar{X_i}$ is distributed Normal, with mean $\widetilde{X_i}$. We could accomplish the same thing by repeated sampling of a single variable.
 
 ## CLT - Why is this valuable?
 
-- If we assume repeated sampling and/or infinitely large samples, we can assume normality. 
+-   If we assume repeated sampling and/or infinitely large samples, we can assume normality.
 
-- We know the properties of the Normal intimately well. We can use this knowledge to evaluate where some value of $x$ lies on the Normal CDF, what the probability less than that value is - we can figure out what the probability of observing that value is (on the PDF).
+-   We know the properties of the Normal intimately well. We can use this knowledge to evaluate where some value of $x$ lies on the Normal CDF, what the probability less than that value is - we can figure out what the probability of observing that value is (on the PDF).
 
-- As we'll see, $\widehat{\beta}$ is normally distributed in the OLS model (it is in MLE as well). The CLT and what we know about normality facilitate inference.
+-   As we'll see, $\widehat{\beta}$ is normally distributed in the OLS model (it is in MLE as well). The CLT and what we know about normality facilitate inference.
 
-## Inference 
+## Inference
 
-Inference is our effort to measure and characterize our uncertainty about the model and its parameters. 
+Inference is our effort to measure and characterize our uncertainty about the model and its parameters.
 
-- uncertainty is the most important thing we estimate in inferential models. 
+-   uncertainty is the most important thing we estimate in inferential models.
 
-- characterizing uncertainty relies on probability theory. 
-
+-   characterizing uncertainty relies on probability theory.
