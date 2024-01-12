@@ -139,7 +139,7 @@ Attendance is expected, and is essential both in the seminars and lab sessions i
 
 ### Academic Integrity
 
-Ideas are the currency in academic exchange, so acknowledging where ideas come from is important. Acknowledging the sources of ideas also helps us identify an idea's lineage which can be important for understanding how that line of thought has developed, and toward promoting future growth. As graduate students, you should have a good understanding of academic honesty and best practices. Here are details of [Binghamton's honesty policy](https://www.binghamton.edu/academics/provost/faculty-resources/honesty.html).
+Ideas are the currency in academic exchange, so acknowledging where ideas come from is important. Acknowledging the sources of ideas also helps us identify an idea's lineage which can be important for understanding how that line of thought has developed, and toward promoting future growth. As graduate students, you should have a good understanding of academic honesty and best practices. Here are details of [Binghamton's honesty policy](https://www.binghamton.edu/academics/provost/faculty-resources/honesty.html){target="_blank"}.
 
 ## Course Schedule
 
@@ -206,4 +206,4 @@ Week 16, 1 May -- **Causal Inference**
 
 -   TBA
 
-# References {.unnumbered}
+# References {-}
