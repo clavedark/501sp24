@@ -1,0 +1,584 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={PLSC 501 Syllabus, spring 2024},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{PLSC 501 Syllabus, spring 2024}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, interior hidden, breakable, enhanced, sharp corners]}{\end{tcolorbox}}\fi
+
+\hypertarget{instructor}{%
+\subsubsection{Instructor}\label{instructor}}
+
+\begin{itemize}
+\tightlist
+\item
+  \faIcon{user} ~ \href{https://clavedark.github.io}{Prof.~Dave Clark}
+\item
+  \faIcon{university} ~ LNG 57
+\item
+  \faIcon{envelope} ~ dclark@binghamton.edu
+\item
+  \faIcon{github} ~ \href{https://clavedark.github.io}{clavedark}
+\end{itemize}
+
+\hypertarget{ta}{%
+\subsubsection{TA}\label{ta}}
+
+\begin{itemize}
+\tightlist
+\item
+  \faIcon{user} ~
+  \href{https://www.linkedin.com/in/kathleen-bannon/}{Kathleen Bannon}
+\item
+  \faIcon{envelope} ~ kbannon1@binghamton.edu
+\end{itemize}
+
+\hypertarget{course-details}{%
+\subsubsection{Course details}\label{course-details}}
+
+\begin{itemize}
+\tightlist
+\item
+  \faIcon{calendar-alt} ~ Spring 2024
+\item
+  \faIcon{calendar} ~ Wednesday
+\item
+  \faIcon{clock} ~ 9:40-12:40
+\item
+  \faIcon{location-dot} ~ LNG 332 Bing SSEL
+\end{itemize}
+
+\hypertarget{lab}{%
+\subsubsection{Lab}\label{lab}}
+
+\begin{itemize}
+\tightlist
+\item
+  \faIcon{calendar} ~ Thursday
+\item
+  \faIcon{clock} ~ 1:15-2:15
+\item
+  \faIcon{location-dot} ~ CW 309
+\end{itemize}
+
+\hypertarget{seminar-description}{%
+\subsection{Seminar Description}\label{seminar-description}}
+
+This 4 credit hour seminar is about the principles of linear regression
+models, focusing on the ordinary least squares approach to regression.
+The course is data science oriented, emphasizing data managment,
+wrangling, coding in \textbf{R}, and data visualization.
+
+The class requires some background (provided in preview materials) in
+probability theory, matrix algebra, and using \textbf{R}. A major goal
+of the class is to provide the intuition behind how and why we do
+empirical tests of theories of politics. Anyone can estimate a
+statistical model, but not everyone can estimate and interpret and
+informed, thoughful model. Understanding regression and linking
+regression with theories of political behavior are key steps toward
+saying insightful things about politics.
+
+An important thing to realize is that it takes time and repetition to
+really understand this stuff intuitively. Exposure to regression in
+general (whether OLS, MLE, Bayes, etc.) by reading, hearing, and doing
+over and over will make it stick. So don't get down or freaked out if
+you feel like you don't get it. Instead, ask questions - of me, of the
+TA, in class, in workshop, in office hours. Asking is essential.
+
+The class meets one time per week for three hours. The required workshop
+meets one time per week for 1 hour. My office hours are designed to be
+homework help hours where I'll work in the grad lab with any of you who
+are working on the exercises. The most productive pathway for this class
+is for your to get in the habit of working together, and those office
+hours are a good time for this.
+
+\hypertarget{course-purpose}{%
+\subsection{Course Purpose}\label{course-purpose}}
+
+This seminar is a requirement in the Political Science Ph.D.~curriculum.
+It is the second (of three) required quantitative methods courses aimed
+at giving students a wide set of empirical tools to put to use in
+testing hypotheses about politics. This seminar focuses on the method of
+Ordinary Least Squares, and the linear model, emphasizing data science
+skills.
+
+\hypertarget{learning-objectives}{%
+\subsection{Learning Objectives}\label{learning-objectives}}
+
+At the end of the semester, students will be able to describe the linear
+model, its assumptions, and interpretation. Students will be able to
+manage data, estimate linear models, diagnose and correct models, and
+generate quantities of interest. Students will be able to plot and
+analyze their estimates and quantities of interest. Students will be
+able to generate their own research designs, and test hypotheses using
+the linear model.
+
+\hypertarget{reading}{%
+\subsection{Reading}\label{reading}}
+
+The book for the class is:
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, J.M. 2013. \emph{Introductory Econometrics}. 5th edition,
+  South-Western/Cengage. ISBN 978-1-111-53104-1.
+\end{itemize}
+
+I'm assigning an older edition of Wooldridge (the 5th) so cheaper copies
+are easier to come by. If you choose an edition other than that, you'll
+need to reconcile chapters, etc. Also, be warned that the cheaper
+international edition (paperback) is alleged to differ in substantial
+ways.
+
+\hypertarget{this-is-the-most-important-section-of-the-syllabus}{%
+\subsection{This is the most important section of the
+syllabus}\label{this-is-the-most-important-section-of-the-syllabus}}
+
+It will rarely be the case that we discuss the readings in seminar.
+Their purposes are two-fold. First, the technical readings (Wooldridge)
+are to frame the derivations of the models and techniques. These are
+important because to understand how to interpret a model, you need a
+technical understanding of its origins. This is not to say you need to
+be able to derive these yourselves, or to perform complex mathematical
+computations. It is to say that if you carefully read about the models
+themselves, you will certainly find their interpretations easier. The
+mantra for this course is this - interpretation is everything. Without
+some understanding of how these models arise, you will find
+interpretation hard.
+
+Second, the applied readings (i.e.~articles) provide just that -
+application in a political, economic, or social context, and application
+in terms of interpretation of results. Some applications are nicely
+done, some less so. Not only are these useful examples of what to do and
+of what not to do, they will provide really useful models for your own
+efforts to apply these statistical models. Interpretation is everything.
+
+So reading is up to you, and is crucial. As much as I hate to say this,
+if I get the sense at any point during the term you are not reading, I
+will absolutely begin weekly reading quizzes; or perhaps require weekly
+papers on the readings. Making them up will suck. Taking them will suck.
+Grading them will suck. There really isn't much reading, and there's
+just no excuse not to do it.
+
+\hypertarget{how-to-read}{%
+\subsection{How to Read}\label{how-to-read}}
+
+Reading academic stuff is a bit different from most other reading.
+Especially since you're reading large amounts in graduate school (and
+the rest of your academic lives), it's important to think about what
+you're trying to accomplish. With journal articles, the goal has to be
+to understand the novel claim the paper makes, to understand why that
+novel claim is interesting or novel (at least according to the author),
+to understand how the author assesses the evidence, and to understand
+what that evidence tells us. Most importantly, you should have two
+answers to each of these - what the author says, and what you think. The
+author may tell you the argument is important for some reason, and you
+might disagree - you might think it's unimportant, or important for a
+different reason, or wrong, or whatever.
+
+Reading technical stuff is yet another category, but equally important.
+The best way to read math models is to read them aloud (yes, out loud)
+for three reasons. First, it forces you to slow down as you read it -
+you talk slower than your eyes move. Second, it forces you to deal with
+every element of the model - in silence, your mind will just skim right
+over it to the next set of English words. Third, it engages two senses
+reading silently does not - vocalization and hearing.
+
+Reading out loud is not going to make everything crystal clear - but it
+will open some pathways whereby math language isn't completely foreign.
+Most importantly, doing so bridges the gap between the math and the
+English accounts that normally follow, and make those English accounts
+easier to make sense of.
+
+\hypertarget{course-requirements-and-grades}{%
+\subsection{Course Requirements and
+Grades}\label{course-requirements-and-grades}}
+
+The seminar requires the following:
+
+\begin{itemize}
+\tightlist
+\item
+  Problem sets - 50\% total
+\item
+  Replication/Extension project (including log, poster, etc.) - 50\%
+\end{itemize}
+
+Please note that all written assignments must be submitted as PDFs
+either compiled in \(\LaTeX\) or in \textbf{R} markdown (Quarto).
+
+You'll complete a series of problem sets, mostly applied. How many will
+depend on how things move along during the term. Regarding the problem
+sets - the work you turn in for the problem sets should clearly be your
+own, but I urge you to work together - doing so is a great way to learn
+and to overcome problems.
+
+A word about completeness - attempt everything. To receive a passing
+grade in the course, you must finish all elements of the course, so all
+problem sets, all exams, papers, etc. To complete an element, you must
+at least attempt all parts of the element - so if a problem set has 10
+problems, you must attempt all 10 or the assignment is incomplete,
+you've not completed every element of the course, and you cannot pass. I
+realize there may be problems you have trouble with and even get wrong,
+but you must try - the bottom line is don't turn in incomplete work.
+Ever.
+
+For technical and statistics training and help, Kathleen will lead a
+\textbf{required workshop session every week, Thursday 1:15-2:15pm.}
+
+The paper assignment asks you to replicate some published piece of
+research (details on selecting this we'll discuss in seminar), to
+comment critically on the theory and design as you replicate, and then
+to build on the paper in a substantive way, extending the research. That
+extension is the main part of the assignment - this is one of your first
+major opportunities to develop a novel contribution to the empirical
+literature. The replication/extension paper is due the Monday of exam
+week. You'll keep a research log as you work on the paper during the
+semester - this is due along with the paper, and is part of your total
+grade. In addition, we'll have a poster session to present your
+extensions at the end of the semester. Details to follow.
+
+Grades will be assigned on the following scale:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1389}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1111}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Grade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Range
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Grade
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Range
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A & 94-100\% & C+ & 77-79\% \\
+A- & 90--93\% & C & 73-76\% \\
+B+ & 87--89\% & C- & 70-72\% \\
+B & 83-86\% & D & 60-69\% \\
+B- & 80-82\% & F & \textless60\% \\
+\end{longtable}
+
+\hypertarget{course-schedule}{%
+\subsection{Course Schedule}\label{course-schedule}}
+
+Referring to Wooldridge, 5th edition, 2013\}
+
+Week 1. 17 Jan \textbf{Introduction, Regression Discussion }
+
+\begin{itemize}
+\tightlist
+\item
+  matrix notes, preview materials
+\end{itemize}
+
+Week 2, 24 Jan -- \textbf{Matrix/Bivariate Regression}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 2, Appendix D, Appendix E
+\end{itemize}
+
+Week 3, 31 Jan -- \textbf{Implementing the Model}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 3, Appendix E
+\end{itemize}
+
+Week 4, 7 Feb -- \textbf{Multivariate Regression, statistical control}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 3, Appendix E
+\end{itemize}
+
+Week 5, 14 Feb -- \textbf{Inference in Regression}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 4
+\end{itemize}
+
+Week 6, 21 Feb -- \textbf{Specifying the Model}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapters 6 and 9
+\item
+  King (1986)
+\end{itemize}
+
+Week 7, 28 Feb -- \textbf{Dummy Variables \& Multiplicative
+Interactions}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 7
+\item
+  Brambor, Clark, and Golder (2006)
+\end{itemize}
+
+Week 8, 6 March -- \textbf{Spring Break}
+
+Week 9, 13 March -- \textbf{Interactions (continued)}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 7
+\item
+  Brambor, Clark, and Golder (2006)
+\end{itemize}
+
+Week 10, 20 March -- \textbf{Limited Dependent Variables}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 7.5, and 17.1
+\end{itemize}
+
+Week 11, 27 March -- \textbf{Panels, Fixed \& Random Effects} -
+Wooldridge, chapters 13, 14
+
+Week 12, 3 April-- \textbf{Time Series}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapters 10, 12
+\end{itemize}
+
+Week 13, 10 April -- \textbf{Non-constant Variance}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 8
+\end{itemize}
+
+Week 14, 17 April -- \textbf{IV models}
+
+\begin{itemize}
+\tightlist
+\item
+  Wooldridge, chapter 15
+\end{itemize}
+
+Week 15, 24 April -- \textbf{Passover, no classes}
+
+Week 16, 1 May -- \textbf{Causal Inference}
+
+\begin{itemize}
+\tightlist
+\item
+  TBA
+\end{itemize}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-brambor2006understanding}{}}%
+Brambor, T., W. R. Clark, and M. Golder. 2006. {``Understanding
+Interaction Models: Improving Empirical Analyses.''} \emph{Political
+Analysis} 14 (1): 63--82.
+
+\leavevmode\vadjust pre{\hypertarget{ref-king1986lie}{}}%
+King, Gary. 1986. {``How Not to Lie with Statistics: Avoiding Common
+Mistakes in Quantitative Political Science.''} \emph{American Journal of
+Political Science} 30 (3): 666--87.
+
+\end{CSLReferences}
+
+
+
+\end{document}

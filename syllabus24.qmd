@@ -1,0 +1,209 @@
+---
+title: "Syllabus"
+bibliography: refs501.bib
+---
+
+```{r setup, include=FALSE ,echo=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+
+library(tidyverse)
+library(ggplot2)
+library(tibble)
+library(pander)
+
+```
+
+::: {.grid .course-details .course-details-smaller}
+::: g-col-6
+### Instructor
+
+- {{< fa user >}} &nbsp; [{{< var instructor.name >}}]({{< var instructor.url >}})
+-   {{< fa university >}} &nbsp; {{< var instructor.office >}}
+-   {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
+-   {{< fa brands github >}} &nbsp; [{{< var instructor.gitname >}}](var instructor.url)
+
+### TA
+
+- {{< fa user >}} &nbsp; [{{< var instructor.TA >}}]({{< var instructor.taurl >}})
+-   {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.taemail >}}">{{< var instructor.taemail >}}</a>
+:::
+
+::: g-col-6
+### Course details
+
+-   {{< fa calendar-alt >}} &nbsp; {{< var course.semester >}}
+-   {{< fa calendar >}}  &nbsp; {{< var course.day >}}
+-   {{< fa clock >}} &nbsp; {{< var course.time >}}
+-   {{< fa location-dot >}} &nbsp; {{< var course.location >}}
+
+### Lab
+
+-   {{< fa calendar >}} &nbsp; {{< var course.labday >}}
+-   {{< fa clock >}} &nbsp; {{< var course.labtime >}}
+-   {{< fa location-dot >}} &nbsp; {{< var course.lablocation >}}
+:::
+:::
+
+## Seminar Description
+
+This 4 credit hour seminar is about the principles of linear regression models, focusing on the ordinary least squares approach to regression. The course is data science oriented, emphasizing data managment, wrangling, coding in **R**, and data visualization.
+
+<!-- The OLS model is powerful and robust, but it depends on a set of assumptions our data (and sometimes our theories) simply do not meet.  So our main goal will be to understand the model and its assumptions and to reconcile them with theory and data. Even though you will probably use methods other than OLS in your graduate and professional careers, this model provides a basis for understanding other statistical techniques you'll encounter.  -->
+
+The class requires some background (provided in preview materials) in probability theory, matrix algebra, and using **R**. A major goal of the class is to provide the intuition behind how and why we do empirical tests of theories of politics. Anyone can estimate a statistical model, but not everyone can estimate and interpret and informed, thoughful model. Understanding regression and linking regression with theories of political behavior are key steps toward saying insightful things about politics.
+
+An important thing to realize is that it takes time and repetition to really understand this stuff intuitively. Exposure to regression in general (whether OLS, MLE, Bayes, etc.) by reading, hearing, and doing over and over will make it stick. So don't get down or freaked out if you feel like you don't get it. Instead, ask questions - of me, of the TA, in class, in workshop, in office hours. Asking is essential.
+
+The class meets one time per week for three hours. The required workshop meets one time per week for 1 hour. My office hours are designed to be homework help hours where I'll work in the grad lab with any of you who are working on the exercises. The most productive pathway for this class is for your to get in the habit of working together, and those office hours are a good time for this.
+
+## Course Purpose
+
+This seminar is a requirement in the Political Science Ph.D. curriculum. It is the second (of three) required quantitative methods courses aimed at giving students a wide set of empirical tools to put to use in testing hypotheses about politics. This seminar focuses on the method of Ordinary Least Squares, and the linear model, emphasizing data science skills.
+
+## Learning Objectives
+
+At the end of the semester, students will be able to describe the linear model, its assumptions, and interpretation. Students will be able to manage data, estimate linear models, diagnose and correct models, and generate quantities of interest. Students will be able to plot and analyze their estimates and quantities of interest. Students will be able to generate their own research designs, and test hypotheses using the linear model.
+
+## Reading
+
+The book for the class is:
+
+-   Wooldridge, J.M. 2013. *Introductory Econometrics*. 5th edition, South-Western/Cengage. ISBN 978-1-111-53104-1.
+
+I'm assigning an older edition of Wooldridge (the 5th) so cheaper copies are easier to come by. If you choose an edition other than that, you'll need to reconcile chapters, etc. Also, be warned that the cheaper international edition (paperback) is alleged to differ in substantial ways.
+
+## This is the most important section of the syllabus
+
+It will rarely be the case that we discuss the readings in seminar. Their purposes are two-fold. First, the technical readings (Wooldridge) are to frame the derivations of the models and techniques. These are important because to understand how to interpret a model, you need a technical understanding of its origins. This is not to say you need to be able to derive these yourselves, or to perform complex mathematical computations. It is to say that if you carefully read about the models themselves, you will certainly find their interpretations easier. The mantra for this course is this - interpretation is everything. Without some understanding of how these models arise, you will find interpretation hard.
+
+Second, the applied readings (i.e. articles) provide just that - application in a political, economic, or social context, and application in terms of interpretation of results. Some applications are nicely done, some less so. Not only are these useful examples of what to do and of what not to do, they will provide really useful models for your own efforts to apply these statistical models. Interpretation is everything.
+
+So reading is up to you, and is crucial. As much as I hate to say this, if I get the sense at any point during the term you are not reading, I will absolutely begin weekly reading quizzes; or perhaps require weekly papers on the readings. Making them up will suck. Taking them will suck. Grading them will suck. There really isn't much reading, and there's just no excuse not to do it.
+
+## How to Read
+
+Reading academic stuff is a bit different from most other reading. Especially since you're reading large amounts in graduate school (and the rest of your academic lives), it's important to think about what you're trying to accomplish. With journal articles, the goal has to be to understand the novel claim the paper makes, to understand why that novel claim is interesting or novel (at least according to the author), to understand how the author assesses the evidence, and to understand what that evidence tells us. Most importantly, you should have two answers to each of these - what the author says, and what you think. The author may tell you the argument is important for some reason, and you might disagree - you might think it's unimportant, or important for a different reason, or wrong, or whatever.
+
+Reading technical stuff is yet another category, but equally important. The best way to read math models is to read them aloud (yes, out loud) for three reasons. First, it forces you to slow down as you read it - you talk slower than your eyes move. Second, it forces you to deal with every element of the model - in silence, your mind will just skim right over it to the next set of English words. Third, it engages two senses reading silently does not - vocalization and hearing.
+
+Reading out loud is not going to make everything crystal clear - but it will open some pathways whereby math language isn't completely foreign. Most importantly, doing so bridges the gap between the math and the English accounts that normally follow, and make those English accounts easier to make sense of.
+
+## Course Requirements and Grades
+
+The seminar requires the following:
+
+-   Problem sets - 50% total
+-   Replication/Extension project (including log, poster, etc.) - 50%
+
+Please note that all written assignments must be submitted as PDFs either compiled in $\LaTeX$ or in **R** markdown (Quarto).
+
+You'll complete a series of problem sets, mostly applied. How many will depend on how things move along during the term. Regarding the problem sets - the work you turn in for the problem sets should clearly be your own, but I urge you to work together - doing so is a great way to learn and to overcome problems.
+
+A word about completeness - attempt everything. To receive a passing grade in the course, you must finish all elements of the course, so all problem sets, all exams, papers, etc. To complete an element, you must at least attempt all parts of the element - so if a problem set has 10 problems, you must attempt all 10 or the assignment is incomplete, you've not completed every element of the course, and you cannot pass. I realize there may be problems you have trouble with and even get wrong, but you must try - the bottom line is don't turn in incomplete work. Ever.
+
+For technical and statistics training and help, Kathleen will lead a **required workshop session every week, Thursday 1:15-2:15pm.**
+
+The paper assignment asks you to replicate some published piece of research (details on selecting this we'll discuss in seminar), to comment critically on the theory and design as you replicate, and then to build on the paper in a substantive way, extending the research. That extension is the main part of the assignment - this is one of your first major opportunities to develop a novel contribution to the empirical literature. The replication/extension paper is due the Monday of exam week. You'll keep a research log as you work on the paper during the semester - this is due along with the paper, and is part of your total grade. In addition, we'll have a poster session to present your extensions at the end of the semester. Details to follow.
+
+Grades will be assigned on the following scale:
+
+```{r grades, include=FALSE}
+
+grading <- tibble::tribble(
+  ~Grade, ~Range,  ~Grade1, ~Range1,
+  "A",  "94-100%", "C+", "77-79%",
+  "A-", "90–93%",  "C", "73-76%",
+  "B+", "87–89%",  "C-",  "70-72%",
+  "B",  "83-86%",  "D", "60-69%" ,
+  "B-",  "80-82%" , "F", "<60%"
+)
+```
+
+<div class="centered-table">
+
+```{r show-grades-table, echo=FALSE, results="asis"}
+grading %>%
+  pandoc.table(justify = "lclc", 
+               col.names = c("Grade", "Range", "Grade", "Range"))
+```
+
+<div>
+
+## Course Policies
+
+### Attendance
+
+Attendance is expected, and is essential both in the seminars and lab sessions if you're to succeed in this class.
+
+### Academic Integrity
+
+Ideas are the currency in academic exchange, so acknowledging where ideas come from is important. Acknowledging the sources of ideas also helps us identify an idea's lineage which can be important for understanding how that line of thought has developed, and toward promoting future growth. As graduate students, you should have a good understanding of academic honesty and best practices. Here are details of [Binghamton's honesty policy](https://www.binghamton.edu/academics/provost/faculty-resources/honesty.html).
+
+## Course Schedule
+
+*Referring to Wooldridge, 5th edition, 2013*
+
+Week 1. 17 Jan **Introduction, Regression Discussion**
+
+-   matrix notes, preview materials
+
+Week 2, 24 Jan -- **Matrix/Bivariate Regression**
+
+-   Wooldridge, chapter 2, Appendix D, Appendix E
+
+Week 3, 31 Jan -- **Implementing the Model**
+
+-   Wooldridge, chapter 3, Appendix E
+
+Week 4, 7 Feb -- **Multivariate Regression, statistical control**
+
+-   Wooldridge, chapter 3, Appendix E
+
+Week 5, 14 Feb -- **Inference in Regression**
+
+-   Wooldridge, chapter 4
+
+Week 6, 21 Feb -- **Specifying the Model**
+
+-   Wooldridge, chapters 6 and 9
+-   @king1986lie
+
+Week 7, 28 Feb -- **Dummy Variables & Multiplicative Interactions**
+
+-   Wooldridge, chapter 7
+-   @brambor2006understanding
+
+Week 8, 6 March -- **Spring Break**
+
+Week 9, 13 March -- **Interactions (continued)**
+
+-   Wooldridge, chapter 7
+-   @brambor2006understanding
+
+Week 10, 20 March -- **Limited Dependent Variables**
+
+-   Wooldridge, chapter 7.5, and 17.1
+
+Week 11, 27 March -- **Panels, Fixed & Random Effects** - Wooldridge, chapters 13, 14
+
+Week 12, 3 April-- **Time Series**
+
+-   Wooldridge, chapters 10, 12
+
+Week 13, 10 April -- **Non-constant Variance**
+
+-   Wooldridge, chapter 8
+
+Week 14, 17 April -- **IV models**
+
+-   Wooldridge, chapter 15
+
+Week 15, 24 April -- **Passover, no classes**
+
+Week 16, 1 May -- **Causal Inference**
+
+-   TBA
+
+# References {.unnumbered}

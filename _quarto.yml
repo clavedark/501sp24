@@ -10,7 +10,9 @@ website:
         text: Home
       - about.qmd
       - slides.qmd
-  google-analytics: "G-LTETWM0ZFY"
+      - syllabus24.qmd
+
+  # google-analytics: "G-LTETWM0ZFY"
   
 format:
   html:

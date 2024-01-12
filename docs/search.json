@@ -263,7 +263,7 @@
     "href": "index.html",
     "title": "PLSC 501 - Spring 2024",
     "section": "",
-    "text": "This is the course website for PLSC 501 - it is a data science course focused on data management, coding in R, and learning basic regression techniques in OLS and MLE.\nSlides"
+    "text": "This is the course website for PLSC 501 - it is a data science course focused on data management, coding in R, and learning basic regression techniques in OLS and MLE.\n\nSyllabus\nSlides"
   },
   {
     "objectID": "matrix24.html",
@@ -1377,5 +1377,166 @@
     "title": "Course overview",
     "section": "",
     "text": "“All models are wrong, some are useful.” Box & Draper (1987)\nThis course is based on the principle that to build useful models, we need:\n\nan intuitive understanding of regression models\ndata science skills\ncareful and creative thinking about politics\na general skepticism of individual models, but an optimism about the modeling enterprise\n\n\n\n\nThis course focuses on the linear regression model, but with a heavy emphasis on data science skills like data management/wrangling, and coding.\n\n\n\nIn May, you should be able to:\n\ndevelop and test hypotheses about politics.\nestimate, evaluate, and interpret basic linear and nonlinear regression models.\nevaluate, understand, clean, wrangle, join, and reshape data.\nwrite R code, to manage data, implement simulation methods, estimate models, visualize data/predictions.\nunderstand the data generation process as a motivation for modeling.\n\n\n\n\nIs not a math class,\n\n\n\n\n\nbut one that uses basic math toward an applied goal.\n\n\n\n\nis aimed at application; the more you struggle with code, the more you’ll learn.\nthe more you use other people’s code, the less you’ll learn.\nthe more you look at other people’s code, the more you’ll learn. You should live on stackoverflow etc.\nis applied - if you apply the tools we cover, you’ll learn a lot; if not, you won’t.\nthe students who do best later on in this program challenge themselves here.\n\n\n\n\n\nis a collaborative effort among you, and with me and Kathleen. We learn from each other when we collaborate.\nThis means having honest conversations in class about what we do and do not understand.\nIt means working together to learn R, to wrangle data, and to understand models; working together on your assignments.\nthe most successful cohorts are those that work collaboratively; this does not mean free-riding, but struggling with everything together.\n\n\n\n\nWhat do you need at the start?\n\nbasic R or this terrific bookdown book written by a graduate student for graduate students.\nbasic probability theory\nbasic matrix algebra\n\n\n\n\nYou should be able to make sense of this in terms of dimensions and operations:\n\\[\\beta = (X'X)^{-1} X'y\\] where \\(X\\) is a data matrix of rows and columns; these are the variables in a regression. \\(y\\) is the outcome variable, the same number of rows as \\(X\\). Define the dimensions of \\(X\\), \\(y\\), and \\(\\beta\\), of \\((X'X)^-1\\) and \\(X'y\\).\n\n\n\n\nwhat are probability distributions?\nwhat is the PDF of a variable?\nwhat is the CDF of a variable?\n\n\n\n\nThe class focuses on regression models of the general form (scalar notation):\n\\[ y_i = \\beta_0 + X_1\\beta_1 + X_2\\beta_2 \\ldots + X_k\\beta_k + \\epsilon\\]\nor in matrix notation,\n\\[ \\mathbf{y} = \\mathbf{X} \\mathbf{\\beta} + \\mathbf{\\epsilon} \\]\nAn outcome, \\(y\\) is a function of some combination of \\(X\\) variables, their coefficients (\\(\\beta\\), including an intercept), and an error term.\n\n\n\nPosit a statistical relationship between:\n\nan outcome variable, \\(y\\).\na covariate of interest, \\(x\\).\na set of controls, \\(\\mathbf{X}\\).\n\nThe effect of \\(x\\) is denoted \\(\\beta\\). It is the partial effect of x on y, because removed from that effect are the effects of x -&gt; X -&gt; y. This is what we mean by controlling for the effects of X. Much more on this later.\n\n\n\nCan be estimated using different technologies including:\n\nLeast Squares\nMaximum Likelihood\nBayesian methods\n\nThis course is about the technology of least squares; we will deal with one ML regression model (logit) later in the semester."
+  },
+  {
+    "objectID": "syllabus24.html",
+    "href": "syllabus24.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "Prof. Dave Clark\n   LNG 57\n   dclark@binghamton.edu\n   clavedark\n\n\n\n\n\n   Kathleen Bannon\n   kbannon1@binghamton.edu\n\n\n\n\n\n\n\n   Spring 2024\n   Wednesday\n   9:40-12:40\n   LNG 332 Bing SSEL\n\n\n\n\n\n   Thursday\n   1:15-2:15\n   CW 309"
+  },
+  {
+    "objectID": "syllabus24.html#seminar-description",
+    "href": "syllabus24.html#seminar-description",
+    "title": "Syllabus",
+    "section": "Seminar Description",
+    "text": "Seminar Description\nThis 4 credit hour seminar is about the principles of linear regression models, focusing on the ordinary least squares approach to regression. The course is data science oriented, emphasizing data managment, wrangling, coding in R, and data visualization.\n\nThe class requires some background (provided in preview materials) in probability theory, matrix algebra, and using R. A major goal of the class is to provide the intuition behind how and why we do empirical tests of theories of politics. Anyone can estimate a statistical model, but not everyone can estimate and interpret and informed, thoughful model. Understanding regression and linking regression with theories of political behavior are key steps toward saying insightful things about politics.\nAn important thing to realize is that it takes time and repetition to really understand this stuff intuitively. Exposure to regression in general (whether OLS, MLE, Bayes, etc.) by reading, hearing, and doing over and over will make it stick. So don’t get down or freaked out if you feel like you don’t get it. Instead, ask questions - of me, of the TA, in class, in workshop, in office hours. Asking is essential.\nThe class meets one time per week for three hours. The required workshop meets one time per week for 1 hour. My office hours are designed to be homework help hours where I’ll work in the grad lab with any of you who are working on the exercises. The most productive pathway for this class is for your to get in the habit of working together, and those office hours are a good time for this."
+  },
+  {
+    "objectID": "syllabus24.html#course-purpose",
+    "href": "syllabus24.html#course-purpose",
+    "title": "Syllabus",
+    "section": "Course Purpose",
+    "text": "Course Purpose\nThis seminar is a requirement in the Political Science Ph.D. curriculum. It is the second (of three) required quantitative methods courses aimed at giving students a wide set of empirical tools to put to use in testing hypotheses about politics. This seminar focuses on the method of Ordinary Least Squares, and the linear model, emphasizing data science skills."
+  },
+  {
+    "objectID": "syllabus24.html#learning-objectives",
+    "href": "syllabus24.html#learning-objectives",
+    "title": "Syllabus",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nAt the end of the semester, students will be able to describe the linear model, its assumptions, and interpretation. Students will be able to manage data, estimate linear models, diagnose and correct models, and generate quantities of interest. Students will be able to plot and analyze their estimates and quantities of interest. Students will be able to generate their own research designs, and test hypotheses using the linear model."
+  },
+  {
+    "objectID": "syllabus24.html#reading",
+    "href": "syllabus24.html#reading",
+    "title": "Syllabus",
+    "section": "Reading",
+    "text": "Reading\nThe book for the class is:\n\nWooldridge, J.M. 2013. Introductory Econometrics. 5th edition, South-Western/Cengage. ISBN 978-1-111-53104-1.\n\nI’m assigning an older edition of Wooldridge (the 5th) so cheaper copies are easier to come by. If you choose an edition other than that, you’ll need to reconcile chapters, etc. Also, be warned that the cheaper international edition (paperback) is alleged to differ in substantial ways."
+  },
+  {
+    "objectID": "syllabus24.html#this-is-the-most-important-section-of-the-syllabus",
+    "href": "syllabus24.html#this-is-the-most-important-section-of-the-syllabus",
+    "title": "Syllabus",
+    "section": "This is the most important section of the syllabus",
+    "text": "This is the most important section of the syllabus\nIt will rarely be the case that we discuss the readings in seminar. Their purposes are two-fold. First, the technical readings (Wooldridge) are to frame the derivations of the models and techniques. These are important because to understand how to interpret a model, you need a technical understanding of its origins. This is not to say you need to be able to derive these yourselves, or to perform complex mathematical computations. It is to say that if you carefully read about the models themselves, you will certainly find their interpretations easier. The mantra for this course is this - interpretation is everything. Without some understanding of how these models arise, you will find interpretation hard.\nSecond, the applied readings (i.e. articles) provide just that - application in a political, economic, or social context, and application in terms of interpretation of results. Some applications are nicely done, some less so. Not only are these useful examples of what to do and of what not to do, they will provide really useful models for your own efforts to apply these statistical models. Interpretation is everything.\nSo reading is up to you, and is crucial. As much as I hate to say this, if I get the sense at any point during the term you are not reading, I will absolutely begin weekly reading quizzes; or perhaps require weekly papers on the readings. Making them up will suck. Taking them will suck. Grading them will suck. There really isn’t much reading, and there’s just no excuse not to do it."
+  },
+  {
+    "objectID": "syllabus24.html#on-reading-or-how-to-read",
+    "href": "syllabus24.html#on-reading-or-how-to-read",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "On reading, or How to Read",
+    "text": "On reading, or How to Read\nReading academic stuff is a bit different from most other reading. Especially since you’re reading large amounts in graduate school (and the rest of your academic lives), it’s important to think about what you’re trying to accomplish. With journal articles, the goal has to be to understand the novel claim the paper makes, to understand why that novel claim is interesting or novel (at least according to the author), to understand how the author assesses the evidence, and to understand what that evidence tells us. Most importantly, you should have two answers to each of these - what the author says, and what you think. The author may tell you the argument is important for some reason, and you might disagree - you might think it’s unimportant, or important for a different reason, or wrong, or whatever. \\\nReading technical stuff is yet another category, but equally important. The best way to read math models is to read them aloud (yes, out loud) for three reasons. First, it forces you to slow down as you read it - you talk slower than your eyes move. Second, it forces you to deal with every element of the model - in silence, your mind will just skim right over it to the next set of English words. Third, it engages two senses reading silently does not - vocalization and hearing. \\\nReading out loud is not going to make everything crystal clear - but it will open some pathways whereby math language isn’t completely foreign. Most importantly, doing so bridges the gap between the math and the English accounts that normally follow, and make those English accounts easier to make sense of."
+  },
+  {
+    "objectID": "syllabus24.html#course-requirements",
+    "href": "syllabus24.html#course-requirements",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "Course Requirements",
+    "text": "Course Requirements\nThe seminar requires the following:\n\nProblem sets - 50% total\nReplication/Extension project (including log, poster, etc.) - 50%\n\nPlease note that all written assignments must be submitted as PDFs either compiled in \\(\\LaTeX\\) or in R markdown (Quarto).\nYou’ll complete a series of problem sets, mostly applied. How many will depend on how things move along during the term. Regarding the problem sets - the work you turn in for the problem sets should clearly be your own, but I urge you to work together - doing so is a great way to learn and to overcome problems.\nA word about completeness - attempt everything. To receive a passing grade in the course, you must finish all elements of the course, so all problem sets, all exams, papers, etc. To complete an element, you must at least attempt all parts of the element - so if a problem set has 10 problems, you must attempt all 10 or the assignment is incomplete, you’ve not completed every element of the course, and you cannot pass. I realize there may be problems you have trouble with and even get wrong, but you must try - the bottom line is don’t turn in incomplete work. Ever.\nFor technical and statistics training and help, Kathleen will lead a required workshop session every week, Thursday 1:15-2:15pm.\nThe paper assignment asks you to replicate some published piece of research (details on selecting this we’ll discuss in seminar), to comment critically on the theory and design as you replicate, and then to build on the paper in a substantive way, extending the research. That extension is the main part of the assignment - this is one of your first major opportunities to develop a novel contribution to the empirical literature. The replication/extension paper is due the Monday of exam week. You’ll keep a research log as you work on the paper during the semester - this is due along with the paper, and is part of your total grade. In addition, we’ll have a poster session to present your extensions at the end of the semester. Details to follow.\nGrades will be assigned on the following scale:\n“D”, “60-69%”\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGrade\nRange\nGrade\nRange\n\n\n\n\nA\n94-100%\nC+\n77-79%\n\n\nA-\n90–93%\nC\n73-76%\n\n\nB+\n87–89%\nC-\n70-72%\n\n\nB\n83-86%\nD\n60-69%\n\n\nB-\n80-82%\nF\n&lt;70%"
+  },
+  {
+    "objectID": "syllabus24.html#how-to-read",
+    "href": "syllabus24.html#how-to-read",
+    "title": "Syllabus",
+    "section": "How to Read",
+    "text": "How to Read\nReading academic stuff is a bit different from most other reading. Especially since you’re reading large amounts in graduate school (and the rest of your academic lives), it’s important to think about what you’re trying to accomplish. With journal articles, the goal has to be to understand the novel claim the paper makes, to understand why that novel claim is interesting or novel (at least according to the author), to understand how the author assesses the evidence, and to understand what that evidence tells us. Most importantly, you should have two answers to each of these - what the author says, and what you think. The author may tell you the argument is important for some reason, and you might disagree - you might think it’s unimportant, or important for a different reason, or wrong, or whatever.\nReading technical stuff is yet another category, but equally important. The best way to read math models is to read them aloud (yes, out loud) for three reasons. First, it forces you to slow down as you read it - you talk slower than your eyes move. Second, it forces you to deal with every element of the model - in silence, your mind will just skim right over it to the next set of English words. Third, it engages two senses reading silently does not - vocalization and hearing.\nReading out loud is not going to make everything crystal clear - but it will open some pathways whereby math language isn’t completely foreign. Most importantly, doing so bridges the gap between the math and the English accounts that normally follow, and make those English accounts easier to make sense of."
+  },
+  {
+    "objectID": "syllabus24.html#course-requirements-and-grades",
+    "href": "syllabus24.html#course-requirements-and-grades",
+    "title": "Syllabus",
+    "section": "Course Requirements and Grades",
+    "text": "Course Requirements and Grades\nThe seminar requires the following:\n\nProblem sets - 50% total\nReplication/Extension project (including log, poster, etc.) - 50%\n\nPlease note that all written assignments must be submitted as PDFs either compiled in \\(\\LaTeX\\) or in R markdown (Quarto).\nYou’ll complete a series of problem sets, mostly applied. How many will depend on how things move along during the term. Regarding the problem sets - the work you turn in for the problem sets should clearly be your own, but I urge you to work together - doing so is a great way to learn and to overcome problems.\nA word about completeness - attempt everything. To receive a passing grade in the course, you must finish all elements of the course, so all problem sets, all exams, papers, etc. To complete an element, you must at least attempt all parts of the element - so if a problem set has 10 problems, you must attempt all 10 or the assignment is incomplete, you’ve not completed every element of the course, and you cannot pass. I realize there may be problems you have trouble with and even get wrong, but you must try - the bottom line is don’t turn in incomplete work. Ever.\nFor technical and statistics training and help, Kathleen will lead a required workshop session every week, Thursday 1:15-2:15pm.\nThe paper assignment asks you to replicate some published piece of research (details on selecting this we’ll discuss in seminar), to comment critically on the theory and design as you replicate, and then to build on the paper in a substantive way, extending the research. That extension is the main part of the assignment - this is one of your first major opportunities to develop a novel contribution to the empirical literature. The replication/extension paper is due the Monday of exam week. You’ll keep a research log as you work on the paper during the semester - this is due along with the paper, and is part of your total grade. In addition, we’ll have a poster session to present your extensions at the end of the semester. Details to follow.\nGrades will be assigned on the following scale:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGrade\nRange\nGrade\nRange\n\n\n\n\nA\n94-100%\nC+\n77-79%\n\n\nA-\n90–93%\nC\n73-76%\n\n\nB+\n87–89%\nC-\n70-72%\n\n\nB\n83-86%\nD\n60-69%\n\n\nB-\n80-82%\nF\n&lt;60%"
+  },
+  {
+    "objectID": "syllabus24.html#course-schedule",
+    "href": "syllabus24.html#course-schedule",
+    "title": "Syllabus",
+    "section": "Course Schedule",
+    "text": "Course Schedule\nReferring to Wooldridge, 5th edition, 2013\nWeek 1. 17 Jan Introduction, Regression Discussion\n\nmatrix notes, preview materials\n\nWeek 2, 24 Jan – Matrix/Bivariate Regression\n\nWooldridge, chapter 2, Appendix D, Appendix E\n\nWeek 3, 31 Jan – Implementing the Model\n\nWooldridge, chapter 3, Appendix E\n\nWeek 4, 7 Feb – Multivariate Regression, statistical control\n\nWooldridge, chapter 3, Appendix E\n\nWeek 5, 14 Feb – Inference in Regression\n\nWooldridge, chapter 4\n\nWeek 6, 21 Feb – Specifying the Model\n\nWooldridge, chapters 6 and 9\nKing (1986)\n\nWeek 7, 28 Feb – Dummy Variables & Multiplicative Interactions\n\nWooldridge, chapter 7\nBrambor, Clark, and Golder (2006)\n\nWeek 8, 6 March – Spring Break\nWeek 9, 13 March – Interactions (continued)\n\nWooldridge, chapter 7\nBrambor, Clark, and Golder (2006)\n\nWeek 10, 20 March – Limited Dependent Variables\n\nWooldridge, chapter 7.5, and 17.1\n\nWeek 11, 27 March – Panels, Fixed & Random Effects - Wooldridge, chapters 13, 14\nWeek 12, 3 April– Time Series\n\nWooldridge, chapters 10, 12\n\nWeek 13, 10 April – Non-constant Variance\n\nWooldridge, chapter 8\n\nWeek 14, 17 April – IV models\n\nWooldridge, chapter 15\n\nWeek 15, 24 April – Passover, no classes\nWeek 16, 1 May – Causal Inference\n\nTBA"
+  },
+  {
+    "objectID": "pdf.html",
+    "href": "pdf.html",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "",
+    "text": "Prof. Dave Clark\n   LNG 57\n   dclark@binghamton.edu\n   clavedark\n\n\n\n\n\n   Kathleen Bannon\n   kbannon1@binghamton.edu\n\n\n\n\n\n\n\n   Spring 2024\n   Wednesday\n   9:40-12:40\n   LNG 332 Bing SSEL\n\n\n\n\n\n   Thursday\n   1:15-2:15\n   CW 309"
+  },
+  {
+    "objectID": "pdf.html#seminar-description",
+    "href": "pdf.html#seminar-description",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "Seminar Description",
+    "text": "Seminar Description\nThis 4 credit hour seminar is about the principles of linear regression models, focusing on the ordinary least squares approach to regression. The course is data science oriented, emphasizing data managment, wrangling, coding in R, and data visualization.\n\nThe class requires some background (provided in preview materials) in probability theory, matrix algebra, and using R. A major goal of the class is to provide the intuition behind how and why we do empirical tests of theories of politics. Anyone can estimate a statistical model, but not everyone can estimate and interpret and informed, thoughful model. Understanding regression and linking regression with theories of political behavior are key steps toward saying insightful things about politics.\nAn important thing to realize is that it takes time and repetition to really understand this stuff intuitively. Exposure to regression in general (whether OLS, MLE, Bayes, etc.) by reading, hearing, and doing over and over will make it stick. So don’t get down or freaked out if you feel like you don’t get it. Instead, ask questions - of me, of the TA, in class, in workshop, in office hours. Asking is essential.\nThe class meets one time per week for three hours. The required workshop meets one time per week for 1 hour. My office hours are designed to be homework help hours where I’ll work in the grad lab with any of you who are working on the exercises. The most productive pathway for this class is for your to get in the habit of working together, and those office hours are a good time for this."
+  },
+  {
+    "objectID": "pdf.html#course-purpose",
+    "href": "pdf.html#course-purpose",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "Course Purpose",
+    "text": "Course Purpose\nThis seminar is a requirement in the Political Science Ph.D. curriculum. It is the second (of three) required quantitative methods courses aimed at giving students a wide set of empirical tools to put to use in testing hypotheses about politics. This seminar focuses on the method of Ordinary Least Squares, and the linear model, emphasizing data science skills."
+  },
+  {
+    "objectID": "pdf.html#learning-objectives",
+    "href": "pdf.html#learning-objectives",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nAt the end of the semester, students will be able to describe the linear model, its assumptions, and interpretation. Students will be able to manage data, estimate linear models, diagnose and correct models, and generate quantities of interest. Students will be able to plot and analyze their estimates and quantities of interest. Students will be able to generate their own research designs, and test hypotheses using the linear model."
+  },
+  {
+    "objectID": "pdf.html#reading",
+    "href": "pdf.html#reading",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "Reading",
+    "text": "Reading\nThe book for the class is:\n\nWooldridge, J.M. 2013. Introductory Econometrics. 5th edition, South-Western/Cengage. ISBN 978-1-111-53104-1.\n\nI’m assigning an older edition of Wooldridge (the 5th) so cheaper copies are easier to come by. If you choose an edition other than that, you’ll need to reconcile chapters, etc. Also, be warned that the cheaper international edition (paperback) is alleged to differ in substantial ways."
+  },
+  {
+    "objectID": "pdf.html#this-is-the-most-important-section-of-the-syllabus",
+    "href": "pdf.html#this-is-the-most-important-section-of-the-syllabus",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "This is the most important section of the syllabus",
+    "text": "This is the most important section of the syllabus\nIt will rarely be the case that we discuss the readings in seminar. Their purposes are two-fold. First, the technical readings (Wooldridge) are to frame the derivations of the models and techniques. These are important because to understand how to interpret a model, you need a technical understanding of its origins. This is not to say you need to be able to derive these yourselves, or to perform complex mathematical computations. It is to say that if you carefully read about the models themselves, you will certainly find their interpretations easier. The mantra for this course is this - interpretation is everything. Without some understanding of how these models arise, you will find interpretation hard.\nSecond, the applied readings (i.e. articles) provide just that - application in a political, economic, or social context, and application in terms of interpretation of results. Some applications are nicely done, some less so. Not only are these useful examples of what to do and of what not to do, they will provide really useful models for your own efforts to apply these statistical models. Interpretation is everything.\nSo reading is up to you, and is crucial. As much as I hate to say this, if I get the sense at any point during the term you are not reading, I will absolutely begin weekly reading quizzes; or perhaps require weekly papers on the readings. Making them up will suck. Taking them will suck. Grading them will suck. There really isn’t much reading, and there’s just no excuse not to do it."
+  },
+  {
+    "objectID": "pdf.html#how-to-read",
+    "href": "pdf.html#how-to-read",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "How to Read",
+    "text": "How to Read\nReading academic stuff is a bit different from most other reading. Especially since you’re reading large amounts in graduate school (and the rest of your academic lives), it’s important to think about what you’re trying to accomplish. With journal articles, the goal has to be to understand the novel claim the paper makes, to understand why that novel claim is interesting or novel (at least according to the author), to understand how the author assesses the evidence, and to understand what that evidence tells us. Most importantly, you should have two answers to each of these - what the author says, and what you think. The author may tell you the argument is important for some reason, and you might disagree - you might think it’s unimportant, or important for a different reason, or wrong, or whatever.\nReading technical stuff is yet another category, but equally important. The best way to read math models is to read them aloud (yes, out loud) for three reasons. First, it forces you to slow down as you read it - you talk slower than your eyes move. Second, it forces you to deal with every element of the model - in silence, your mind will just skim right over it to the next set of English words. Third, it engages two senses reading silently does not - vocalization and hearing.\nReading out loud is not going to make everything crystal clear - but it will open some pathways whereby math language isn’t completely foreign. Most importantly, doing so bridges the gap between the math and the English accounts that normally follow, and make those English accounts easier to make sense of."
+  },
+  {
+    "objectID": "pdf.html#course-requirements-and-grades",
+    "href": "pdf.html#course-requirements-and-grades",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "Course Requirements and Grades",
+    "text": "Course Requirements and Grades\nThe seminar requires the following:\n\nProblem sets - 50% total\nReplication/Extension project (including log, poster, etc.) - 50%\n\nPlease note that all written assignments must be submitted as PDFs either compiled in \\(\\LaTeX\\) or in R markdown (Quarto).\nYou’ll complete a series of problem sets, mostly applied. How many will depend on how things move along during the term. Regarding the problem sets - the work you turn in for the problem sets should clearly be your own, but I urge you to work together - doing so is a great way to learn and to overcome problems.\nA word about completeness - attempt everything. To receive a passing grade in the course, you must finish all elements of the course, so all problem sets, all exams, papers, etc. To complete an element, you must at least attempt all parts of the element - so if a problem set has 10 problems, you must attempt all 10 or the assignment is incomplete, you’ve not completed every element of the course, and you cannot pass. I realize there may be problems you have trouble with and even get wrong, but you must try - the bottom line is don’t turn in incomplete work. Ever.\nFor technical and statistics training and help, Kathleen will lead a required workshop session every week, Thursday 1:15-2:15pm.\nThe paper assignment asks you to replicate some published piece of research (details on selecting this we’ll discuss in seminar), to comment critically on the theory and design as you replicate, and then to build on the paper in a substantive way, extending the research. That extension is the main part of the assignment - this is one of your first major opportunities to develop a novel contribution to the empirical literature. The replication/extension paper is due the Monday of exam week. You’ll keep a research log as you work on the paper during the semester - this is due along with the paper, and is part of your total grade. In addition, we’ll have a poster session to present your extensions at the end of the semester. Details to follow.\nGrades will be assigned on the following scale:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGrade\nRange\nGrade\nRange\n\n\n\n\nA\n94-100%\nC+\n77-79%\n\n\nA-\n90–93%\nC\n73-76%\n\n\nB+\n87–89%\nC-\n70-72%\n\n\nB\n83-86%\nD\n60-69%\n\n\nB-\n80-82%\nF\n&lt;60%"
+  },
+  {
+    "objectID": "pdf.html#course-schedule",
+    "href": "pdf.html#course-schedule",
+    "title": "PLSC 501 Syllabus, spring 2024",
+    "section": "Course Schedule",
+    "text": "Course Schedule\nReferring to Wooldridge, 5th edition, 2013}\nWeek 1. 17 Jan Introduction, Regression Discussion \n\nmatrix notes, preview materials\n\nWeek 2, 24 Jan – Matrix/Bivariate Regression\n\nWooldridge, chapter 2, Appendix D, Appendix E\n\nWeek 3, 31 Jan – Implementing the Model\n\nWooldridge, chapter 3, Appendix E\n\nWeek 4, 7 Feb – Multivariate Regression, statistical control\n\nWooldridge, chapter 3, Appendix E\n\nWeek 5, 14 Feb – Inference in Regression\n\nWooldridge, chapter 4\n\nWeek 6, 21 Feb – Specifying the Model\n\nWooldridge, chapters 6 and 9\nKing (1986)\n\nWeek 7, 28 Feb – Dummy Variables & Multiplicative Interactions\n\nWooldridge, chapter 7\nBrambor, Clark, and Golder (2006)\n\nWeek 8, 6 March – Spring Break\nWeek 9, 13 March – Interactions (continued)\n\nWooldridge, chapter 7\nBrambor, Clark, and Golder (2006)\n\nWeek 10, 20 March – Limited Dependent Variables\n\nWooldridge, chapter 7.5, and 17.1\n\nWeek 11, 27 March – Panels, Fixed & Random Effects - Wooldridge, chapters 13, 14\nWeek 12, 3 April– Time Series\n\nWooldridge, chapters 10, 12\n\nWeek 13, 10 April – Non-constant Variance\n\nWooldridge, chapter 8\n\nWeek 14, 17 April – IV models\n\nWooldridge, chapter 15\n\nWeek 15, 24 April – Passover, no classes\nWeek 16, 1 May – Causal Inference\n\nTBA"
+  },
+  {
+    "objectID": "syllabus24.html#attendance",
+    "href": "syllabus24.html#attendance",
+    "title": "Syllabus",
+    "section": "Attendance",
+    "text": "Attendance\nAttendance is expected, and is essential both in the seminars and lab sessions if you’re to succeed in this class."
+  },
+  {
+    "objectID": "syllabus24.html#academic-integrity",
+    "href": "syllabus24.html#academic-integrity",
+    "title": "Syllabus",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity\nIdeas are the currency in academic exchange, so acknowledging where ideas come from is important. Acknowledging the sources of ideas also helps us identify an idea’s lineage which can be important for understanding how that line of thought has developed, and toward promoting future growth. As graduate students, you should have a good understanding of academic honesty and best practices. Here are details of Binghamton’s honesty policy."
+  },
+  {
+    "objectID": "syllabus24.html#course-policies",
+    "href": "syllabus24.html#course-policies",
+    "title": "Syllabus",
+    "section": "Course Policies",
+    "text": "Course Policies\n\nAttendance\nAttendance is expected, and is essential both in the seminars and lab sessions if you’re to succeed in this class.\n\n\nAcademic Integrity\nIdeas are the currency in academic exchange, so acknowledging where ideas come from is important. Acknowledging the sources of ideas also helps us identify an idea’s lineage which can be important for understanding how that line of thought has developed, and toward promoting future growth. As graduate students, you should have a good understanding of academic honesty and best practices. Here are details of Binghamton’s honesty policy."
   }
 ]

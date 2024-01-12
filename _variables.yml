@@ -1,0 +1,31 @@
+author: Dave Clark
+
+instructor:
+  name: Prof. Dave Clark
+  name_no_title: Dave Clark
+  email: "dclark@binghamton.edu"
+  url: "https://clavedark.github.io"
+  gitname: clavedark
+  github: "https://github.com/clavedark"
+  office: "LNG 57"
+  contact_policy: "Email is easiest"
+  TA: Kathleen Bannon
+  taurl: "https://www.linkedin.com/in/kathleen-bannon/"
+  taemail: "kbannon1@binghamton.edu"
+
+course:
+  number: "PLSC 501"
+  semester: "Spring 2024"
+  day: "Wednesday"
+  time: "9:40-12:40"
+  location: "LNG 332 Bing SSEL"
+  github: "https://www.github.com/lbelzile/experimental"
+  labday: "Thursday"
+  labtime: "1:15-2:15"
+  lablocation: "CW 309"
+  
+
+university:
+  name: "Binghamton University"
+  url: "https://www.binghamton.edu"
+
