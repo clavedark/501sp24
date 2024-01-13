@@ -20,39 +20,37 @@ library(pander)
 ```
 
 <!-- ::: {.grid .course-details .course-details-smaller} -->
+
 <!-- ::: g-col-6 -->
 
-::: {layout-ncol=2}
+::: {layout-ncol="2"}
 ### Instructor
 
-- {{< fa user >}} &nbsp; [{{< var instructor.name >}}]({{< var instructor.url >}})
--   {{< fa university >}} &nbsp; {{< var instructor.office >}}
--   {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
--   {{< fa brands github >}} &nbsp; [{{< var instructor.gitname >}}]({{< var instructor.github >}})
+-   {{< fa user >}}   [{{< var instructor.name >}}](%7B%7B%3C%20var%20instructor.url%20%3E%7D%7D)
+-   {{< fa university >}}   {{< var instructor.office >}}
+-   {{< fa envelope >}}   <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
+-   {{< fa brands github >}}   [{{< var instructor.gitname >}}](%7B%7B%3C%20var%20instructor.github%20%3E%7D%7D)
 
 ### Course details
 
--   {{< fa calendar-alt >}} &nbsp; {{< var course.semester >}}
--   {{< fa calendar >}}  &nbsp; {{< var course.day >}}
--   {{< fa clock >}} &nbsp; {{< var course.time >}}
--   {{< fa globe >}} &nbsp; {{< var course.location >}}
-
+-   {{< fa calendar-alt >}}   {{< var course.semester >}}
+-   {{< fa calendar >}}   {{< var course.day >}}
+-   {{< fa clock >}}   {{< var course.time >}}
+-   {{< fa map-marker >}}   {{< var course.location >}}
 :::
 
-::: {layout-ncol=2}
+::: {layout-ncol="2"}
 ### TA
 
-- {{< fa user >}} &nbsp; [{{< var instructor.TA >}}]({{< var instructor.taurl >}})
--   {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.taemail >}}">{{< var instructor.taemail >}}</a>
-
+-   {{< fa user >}}   [{{< var instructor.TA >}}](%7B%7B%3C%20var%20instructor.taurl%20%3E%7D%7D)
+-   {{< fa envelope >}}   <a href="mailto:{{< var instructor.taemail >}}">{{< var instructor.taemail >}}</a>
 
 ### Lab
 
--   {{< fa calendar >}} &nbsp; {{< var course.labday >}}
--   {{< fa clock >}} &nbsp; {{< var course.labtime >}}
--   {{< fa globe >}} &nbsp; {{< var course.lablocation >}}
+-   {{< fa calendar >}}   {{< var course.labday >}}
+-   {{< fa clock >}}   {{< var course.labtime >}}
+-   {{< fa globe >}}   {{< var course.lablocation >}}
 :::
-
 
 ## Seminar Description
 
@@ -60,7 +58,7 @@ This 4 credit hour seminar is about the principles of linear regression models, 
 
 <!-- The OLS model is powerful and robust, but it depends on a set of assumptions our data (and sometimes our theories) simply do not meet.  So our main goal will be to understand the model and its assumptions and to reconcile them with theory and data. Even though you will probably use methods other than OLS in your graduate and professional careers, this model provides a basis for understanding other statistical techniques you'll encounter.  -->
 
-The class requires some background (provided in preview materials) in probability theory, matrix algebra, and using **R**. A major goal of the class is to provide the intuition behind how and why we do empirical tests of theories of politics. Anyone can estimate a statistical model, but not everyone can estimate and interpret an informed, thoughful model. Understanding regression and linking regression with theories of political behavior are key steps toward saying insightful things about politics.
+The class requires some background (provided in preview materials) in probability theory, matrix algebra, and using **R**. A major goal of the class is to provide the intuition behind how and why we do empirical tests of theories of politics. Anyone can estimate a statistical model, but not everyone can estimate and interpret and informed, thoughful model. Understanding regression and linking regression with theories of political behavior are key steps toward saying insightful things about politics.
 
 An important thing to realize is that it takes time and repetition to really understand this stuff intuitively. Exposure to regression in general (whether OLS, MLE, Bayes, etc.) by reading, hearing, and doing over and over will make it stick. So don't get down or freaked out if you feel like you don't get it. Instead, ask questions - of me, of the TA, in class, in workshop, in office hours. Asking is essential.
 
@@ -80,9 +78,9 @@ The book for the class is:
 
 -   Wooldridge, J.M. 2013. *Introductory Econometrics*. 5th edition, South-Western/Cengage. ISBN 978-1-111-53104-1.
 
-I'm assigning an older edition of Wooldridge (the 5th) so cheaper copies are easier to come by. If you choose an edition other than that, you'll need to reconcile chapters, etc. Also, be warned that the cheaper international edition (paperback) is alleged to differ in substantial ways. 
+I'm assigning an older edition of Wooldridge (the 5th) so cheaper copies are easier to come by. If you choose an edition other than that, you'll need to reconcile chapters, etc. Also, be warned that the cheaper international edition (paperback) is alleged to differ in substantial ways.
 
-In addition, I'll assign a small number of articles over the course of the term. 
+In addition, I'll assign a small number of articles over the course of the term.
 
 ## This is the most important section of the syllabus
 
@@ -218,4 +216,4 @@ Week 16, 1 May -- **Causal Inference**
 
 -   TBA
 
-# References {-}
+# References {.unnumbered}
