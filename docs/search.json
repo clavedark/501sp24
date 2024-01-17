@@ -1383,7 +1383,7 @@
     "href": "syllabus24.html",
     "title": "Syllabus",
     "section": "",
-    "text": "Dave Clark\n   LNG 57\n   dclark@binghamton.edu\n   clavedark\n\n\n\n\n\n   Spring 2024\n   Wednesday\n   9:40-12:40\n   LNG 332 Bing SSEL"
+    "text": "Dave Clark\n   LNG 57; LN2430\n   dclark@binghamton.edu\n   clavedark\noffice hours: M 1:30-3:30pm\n\n\n\n\n\n   Spring 2024\n   Wednesday\n   9:40-12:40\n   LNG 332 Bing SSEL"
   },
   {
     "objectID": "syllabus24.html#seminar-description",
@@ -1608,5 +1608,859 @@
     "title": "Syllabus",
     "section": "Course Schedule",
     "text": "Course Schedule\nReferring to Wooldridge, 5th edition, 2013\nWeek 1. 17 Jan Introduction, Regression Discussion\n\nmatrix notes, preview materials\n\nWeek 2, 24 Jan – Matrix/Bivariate Regression\n\nWooldridge, chapter 2, Appendix D, Appendix E\n\nWeek 3, 31 Jan – Implementing the Model\n\nWooldridge, chapter 3, Appendix E\n\nWeek 4, 7 Feb – Multivariate Regression, statistical control\n\nWooldridge, chapter 3, Appendix E\n\nWeek 5, 14 Feb – Inference in Regression\n\nWooldridge, chapter 4\n\nWeek 6, 21 Feb – Specifying the Model\n\nWooldridge, chapters 6 and 9\nKing (1986)\n\nWeek 7, 28 Feb – Dummy Variables & Multiplicative Interactions\n\nWooldridge, chapter 7\nBrambor, Clark, and Golder (2006)\n\nWeek 8, 6 March – Spring Break\nWeek 9, 13 March – Interactions (continued)\n\nWooldridge, chapter 7\nBrambor, Clark, and Golder (2006)\n\nWeek 10, 20 March – Limited Dependent Variables\n\nWooldridge, chapter 7.5, and 17.1\n\nWeek 11, 27 March – Panels, Fixed & Random Effects - Wooldridge, chapters 13, 14\nWeek 12, 3 April– Time Series\n\nWooldridge, chapters 10, 12\n\nWeek 13, 10 April – Non-constant Variance\n\nWooldridge, chapter 8\n\nWeek 14, 17 April – IV models\n\nWooldridge, chapter 15\n\nWeek 15, 24 April – Passover, no classes\nWeek 16, 1 May – Causal Inference\n\nTBA"
+  },
+  {
+    "objectID": "data.html#get-to-know-your-data-explore-etc",
+    "href": "data.html#get-to-know-your-data-explore-etc",
+    "title": "Thinking About Data",
+    "section": "Get to know your data, explore etc",
+    "text": "Get to know your data, explore etc\n\nAnscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n# kable(anscombe, format=\"html\", row.names = FALSE, align=\"cccccccc\", caption=\"Anscombe's Quartet\")\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's data, Relationships of x, y\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE\n)\n\n\n\n\n\nAnscombe’s data, Relationships of x, y\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "data.html#data-generating-process",
+    "href": "data.html#data-generating-process",
+    "title": "Thinking About Data",
+    "section": "Data Generating Process",
+    "text": "Data Generating Process\n\nWhat produced the data we observe?\nWhy do we observe the data we see and not the data we don’t?\n\nA Terrible Map\n\nWar outcomes\n\nwar outcome/duration data\n\nObservability\n\nAsking the right question"
+  },
+  {
+    "objectID": "data.html#data-in-the-regression-context",
+    "href": "data.html#data-in-the-regression-context",
+    "title": "Thinking About Data",
+    "section": "Data in the regression context",
+    "text": "Data in the regression context\n\nmatrix"
+  },
+  {
+    "objectID": "data.html#data",
+    "href": "data.html#data",
+    "title": "Thinking About Data",
+    "section": "Data",
+    "text": "Data\nCollections of alike units, their characteristics, features, choice sets, behaviors, etc.\n\nwhat are the units? In what ways are they heterogeneous?\nwhat units are included? Which ones are missing? Why?\nwhat do the variables measure?\nhow are the variables measured?\nwhat observations are missing? Why?\nwhat is the sample; what is the population (sampling frame) from which the sample is drawn?"
+  },
+  {
+    "objectID": "data.html#types-of-variables",
+    "href": "data.html#types-of-variables",
+    "title": "Thinking About Data",
+    "section": "Types of variables",
+    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+  },
+  {
+    "objectID": "data.html#discrete-variables",
+    "href": "data.html#discrete-variables",
+    "title": "Thinking About Data",
+    "section": "Discrete variables",
+    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+  },
+  {
+    "objectID": "data.html#continuous-variables",
+    "href": "data.html#continuous-variables",
+    "title": "Thinking About Data",
+    "section": "Continuous variables",
+    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+  },
+  {
+    "objectID": "data.html#levels-of-measurement",
+    "href": "data.html#levels-of-measurement",
+    "title": "Thinking About Data",
+    "section": "Levels of measurement",
+    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+  },
+  {
+    "objectID": "data.html#levels-of-measurement-and-models",
+    "href": "data.html#levels-of-measurement-and-models",
+    "title": "Thinking About Data",
+    "section": "Levels of Measurement and Models",
+    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+  },
+  {
+    "objectID": "data.html#describe-these-data",
+    "href": "data.html#describe-these-data",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nAlcohol consumptionNormal PDF overlay\n\n\n\n\ncode\ngap &lt;- read.csv(\"/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv\")\n\nggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +\n  geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+\n geom_density(alpha=.2, fill=\"#FF6666\") +\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Density - Alcohol Consumption per Adult (Liters)\") \n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\ngap$nalc &lt;- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))\n\nggplot() + \n  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour=\"black\", fill=\"white\") +\n  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill=\"#FF6666\")  +\n geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype=\"longdash\", size=1)+\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Alcohol Consumption per Adult (Liters), Normal PDF\")"
+  },
+  {
+    "objectID": "data.html#describe-these-data-1",
+    "href": "data.html#describe-these-data-1",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\nPolity Scores\n\n\ncode\npolity &lt;- polity %&gt;% mutate(era = ifelse(year==1980, 1980, ifelse(year==2018, 2018, 0)))\n\np &lt;- ggplot(data=polity %&gt;% filter(era!=0), aes(y=polity2), colour=\"black\", fill=\"white\")+\n  geom_bar()+\n  geom_text(aes(label = ..count..),stat=\"count\", hjust = -.2, colour = \"black\", size=2.5, \n            position = position_dodge(0.9)) \n\np + facet_wrap(era ~ .) +\n  labs(y = \"Polity score\", x= \"Countries\", caption=\"Polity project\")+\n  ggtitle(\"Polity Scores, 1980 and 2018\")"
+  },
+  {
+    "objectID": "data.html#overstaying-terms",
+    "href": "data.html#overstaying-terms",
+    "title": "Thinking About Data",
+    "section": "Overstaying Terms",
+    "text": "Overstaying Terms\n\n\nexpand for full code\n#polity &lt;- read_dta(\"/Users/dave/Documents/2023/PITF/slides/polity5.dta\")\noverpolity &lt;- left_join(tl, polity, by=c(\"ccode\"=\"ccode\", \"year\"=\"year\"))\n\nsuccess &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_success\"), sum) %&gt;%\n  filter(!is.na(polity2)) %&gt;%\n  mutate(outcome = \"succeeded\") %&gt;%\n  mutate(events=tl_success)%&gt;%\n  subset(select = -c(tl_success))\n\nfail &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_failed\"), sum) %&gt;%\n  filter(!is.na(polity2))  %&gt;%\n  mutate(outcome = \"failed\") %&gt;%\n  mutate(events=tl_failed) %&gt;%\n  subset(select = -c(tl_failed))\n\ntlpolity &lt;- rbind(success, fail)\n\nggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +\n  geom_bar(position=\"stack\", stat=\"identity\",)+\n  scale_fill_manual(values=c(\"dark green\", \"light green\")) +\n  labs(x = \"Polity\", y= \"Frequency\", caption=\"Overstaying data (Versteeg et al. 2020)\") +\n  ggtitle(\"Overstay Attempts over Regime\") +\n  scale_x_continuous(breaks=seq(-10, 10, 1))"
+  },
+  {
+    "objectID": "thinkingdata.html",
+    "href": "thinkingdata.html",
+    "title": "Thinking About Data",
+    "section": "",
+    "text": "Anscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n# kable(anscombe, format=\"html\", row.names = FALSE, align=\"cccccccc\", caption=\"Anscombe's Quartet\")\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's data, Relationships of x, y\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE\n)\n\n\n\n\n\nAnscombe’s data, Relationships of x, y\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "thinkingdata.html#get-to-know-your-data-explore-etc",
+    "href": "thinkingdata.html#get-to-know-your-data-explore-etc",
+    "title": "Thinking About Data",
+    "section": "",
+    "text": "Anscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n# kable(anscombe, format=\"html\", row.names = FALSE, align=\"cccccccc\", caption=\"Anscombe's Quartet\")\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's data, Relationships of x, y\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE\n)\n\n\n\n\n\nAnscombe’s data, Relationships of x, y\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "thinkingdata.html#data-generating-process",
+    "href": "thinkingdata.html#data-generating-process",
+    "title": "Thinking About Data",
+    "section": "Data Generating Process",
+    "text": "Data Generating Process\n\nWhat produced the data we observe?\nWhy do we observe the data we see and not the data we don’t?\n\n\nA Terrible Map\n\n\n\nWar outcomes\n\nwar outcome/duration data\n\n\n\nObservability\n\n\n\nAsking the right question"
+  },
+  {
+    "objectID": "thinkingdata.html#data-in-the-regression-context",
+    "href": "thinkingdata.html#data-in-the-regression-context",
+    "title": "Thinking About Data",
+    "section": "Data in the regression context",
+    "text": "Data in the regression context\n\nmatrix"
+  },
+  {
+    "objectID": "thinkingdata.html#data",
+    "href": "thinkingdata.html#data",
+    "title": "Thinking About Data",
+    "section": "Data",
+    "text": "Data\nCollections of alike units, their characteristics, features, choice sets, behaviors, etc.\n\nwhat are the units? In what ways are they heterogeneous?\nwhat units are included? Which ones are missing? Why?\nwhat do the variables measure?\nhow are the variables measured?\nwhat observations are missing? Why?\nwhat is the sample; what is the population (sampling frame) from which the sample is drawn?"
+  },
+  {
+    "objectID": "thinkingdata.html#types-of-variables",
+    "href": "thinkingdata.html#types-of-variables",
+    "title": "Thinking About Data",
+    "section": "Types of variables",
+    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+  },
+  {
+    "objectID": "thinkingdata.html#discrete-variables",
+    "href": "thinkingdata.html#discrete-variables",
+    "title": "Thinking About Data",
+    "section": "Discrete variables",
+    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+  },
+  {
+    "objectID": "thinkingdata.html#continuous-variables",
+    "href": "thinkingdata.html#continuous-variables",
+    "title": "Thinking About Data",
+    "section": "Continuous variables",
+    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+  },
+  {
+    "objectID": "thinkingdata.html#levels-of-measurement",
+    "href": "thinkingdata.html#levels-of-measurement",
+    "title": "Thinking About Data",
+    "section": "Levels of measurement",
+    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+  },
+  {
+    "objectID": "thinkingdata.html#levels-of-measurement-and-models",
+    "href": "thinkingdata.html#levels-of-measurement-and-models",
+    "title": "Thinking About Data",
+    "section": "Levels of Measurement and Models",
+    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+  },
+  {
+    "objectID": "thinkingdata.html#describe-these-data",
+    "href": "thinkingdata.html#describe-these-data",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nAlcohol consumptionNormal PDF overlay\n\n\n\n\ncode\ngap &lt;- read.csv(\"/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv\")\n\nggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +\n  geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+\n geom_density(alpha=.2, fill=\"#FF6666\") +\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Density - Alcohol Consumption per Adult (Liters)\") \n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\ngap$nalc &lt;- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))\n\nggplot() + \n  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour=\"black\", fill=\"white\") +\n  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill=\"#FF6666\")  +\n geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype=\"longdash\", size=1)+\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Alcohol Consumption per Adult (Liters), Normal PDF\")"
+  },
+  {
+    "objectID": "thinkingdata.html#describe-these-data-1",
+    "href": "thinkingdata.html#describe-these-data-1",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nPolity Scores\n\n\ncode\npolity &lt;- polity %&gt;% mutate(era = ifelse(year==1980, 1980, ifelse(year==2018, 2018, 0)))\n\np &lt;- ggplot(data=polity %&gt;% filter(era!=0), aes(y=polity2), colour=\"black\", fill=\"white\")+\n  geom_bar()+\n  geom_text(aes(label = ..count..),stat=\"count\", hjust = -.2, colour = \"black\", size=2.5, \n            position = position_dodge(0.9)) \n\np + facet_wrap(era ~ .) +\n  labs(y = \"Polity score\", x= \"Countries\", caption=\"Polity project\")+\n  ggtitle(\"Polity Scores, 1980 and 2018\")"
+  },
+  {
+    "objectID": "thinkingdata.html#overstaying-terms",
+    "href": "thinkingdata.html#overstaying-terms",
+    "title": "Thinking About Data",
+    "section": "Overstaying Terms",
+    "text": "Overstaying Terms\n\n\nexpand for full code\n#polity &lt;- read_dta(\"/Users/dave/Documents/2023/PITF/slides/polity5.dta\")\noverpolity &lt;- left_join(tl, polity, by=c(\"ccode\"=\"ccode\", \"year\"=\"year\"))\n\nsuccess &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_success\"), sum) %&gt;%\n  filter(!is.na(polity2)) %&gt;%\n  mutate(outcome = \"succeeded\") %&gt;%\n  mutate(events=tl_success)%&gt;%\n  subset(select = -c(tl_success))\n\nfail &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_failed\"), sum) %&gt;%\n  filter(!is.na(polity2))  %&gt;%\n  mutate(outcome = \"failed\") %&gt;%\n  mutate(events=tl_failed) %&gt;%\n  subset(select = -c(tl_failed))\n\ntlpolity &lt;- rbind(success, fail)\n\nggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +\n  geom_bar(position=\"stack\", stat=\"identity\",)+\n  scale_fill_manual(values=c(\"dark green\", \"light green\")) +\n  labs(x = \"Polity\", y= \"Frequency\", caption=\"Overstaying data (Versteeg et al. 2020)\") +\n  ggtitle(\"Overstay Attempts over Regime\") +\n  scale_x_continuous(breaks=seq(-10, 10, 1))"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html",
+    "href": "thinkingdata/thinking-data24.html",
+    "title": "Thinking About Data",
+    "section": "",
+    "text": "Anscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n# kable(anscombe, format=\"html\", row.names = FALSE, align=\"cccccccc\", caption=\"Anscombe's Quartet\")\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's data, Relationships of x, y\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE\n)\n\n\n\n\n\nAnscombe’s data, Relationships of x, y\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#get-to-know-your-data-explore-etc",
+    "href": "thinkingdata/thinking-data24.html#get-to-know-your-data-explore-etc",
+    "title": "Thinking About Data",
+    "section": "",
+    "text": "Anscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n# kable(anscombe, format=\"html\", row.names = FALSE, align=\"cccccccc\", caption=\"Anscombe's Quartet\")\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's data, Relationships of x, y\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE\n)\n\n\n\n\n\nAnscombe’s data, Relationships of x, y\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#data-generating-process",
+    "href": "thinkingdata/thinking-data24.html#data-generating-process",
+    "title": "Thinking About Data",
+    "section": "Data Generating Process",
+    "text": "Data Generating Process\n\nWhat produced the data we observe?\nWhy do we observe the data we see and not the data we don’t?\n\n\nA Terrible Map\n\n\n\nWar outcomes\n\nwar outcome/duration data\n\n\n\nObservability\n\n\n\nAsking the right question"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#data-in-the-regression-context",
+    "href": "thinkingdata/thinking-data24.html#data-in-the-regression-context",
+    "title": "Thinking About Data",
+    "section": "Data in the regression context",
+    "text": "Data in the regression context\n\nmatrix"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#data",
+    "href": "thinkingdata/thinking-data24.html#data",
+    "title": "Thinking About Data",
+    "section": "Data",
+    "text": "Data\nCollections of alike units, their characteristics, features, choice sets, behaviors, etc.\n\nwhat are the units? In what ways are they heterogeneous?\nwhat units are included? Which ones are missing? Why?\nwhat do the variables measure?\nhow are the variables measured?\nwhat observations are missing? Why?\nwhat is the sample; what is the population (sampling frame) from which the sample is drawn?"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#types-of-variables",
+    "href": "thinkingdata/thinking-data24.html#types-of-variables",
+    "title": "Thinking About Data",
+    "section": "Types of variables",
+    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#discrete-variables",
+    "href": "thinkingdata/thinking-data24.html#discrete-variables",
+    "title": "Thinking About Data",
+    "section": "Discrete variables",
+    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#continuous-variables",
+    "href": "thinkingdata/thinking-data24.html#continuous-variables",
+    "title": "Thinking About Data",
+    "section": "Continuous variables",
+    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#levels-of-measurement",
+    "href": "thinkingdata/thinking-data24.html#levels-of-measurement",
+    "title": "Thinking About Data",
+    "section": "Levels of measurement",
+    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#levels-of-measurement-and-models",
+    "href": "thinkingdata/thinking-data24.html#levels-of-measurement-and-models",
+    "title": "Thinking About Data",
+    "section": "Levels of Measurement and Models",
+    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#describe-these-data",
+    "href": "thinkingdata/thinking-data24.html#describe-these-data",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nAlcohol consumptionNormal PDF overlay\n\n\n\n\ncode\ngap &lt;- read.csv(\"/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv\")\n\nggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +\n  geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+\n geom_density(alpha=.2, fill=\"#FF6666\") +\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Density - Alcohol Consumption per Adult (Liters)\") \n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\ngap$nalc &lt;- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))\n\nggplot() + \n  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour=\"black\", fill=\"white\") +\n  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill=\"#FF6666\")  +\n geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype=\"longdash\", size=1)+\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Alcohol Consumption per Adult (Liters), Normal PDF\")"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#describe-these-data-1",
+    "href": "thinkingdata/thinking-data24.html#describe-these-data-1",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nPolity Scores\n\n\ncode\npolity &lt;- polity %&gt;% mutate(era = ifelse(year==1980, 1980, ifelse(year==2018, 2018, 0)))\n\np &lt;- ggplot(data=polity %&gt;% filter(era!=0), aes(y=polity2), colour=\"black\", fill=\"white\")+\n  geom_bar()+\n  geom_text(aes(label = ..count..),stat=\"count\", hjust = -.2, colour = \"black\", size=2.5, \n            position = position_dodge(0.9)) \n\np + facet_wrap(era ~ .) +\n  labs(y = \"Polity score\", x= \"Countries\", caption=\"Polity project\")+\n  ggtitle(\"Polity Scores, 1980 and 2018\")"
+  },
+  {
+    "objectID": "thinkingdata/thinking-data24.html#overstaying-terms",
+    "href": "thinkingdata/thinking-data24.html#overstaying-terms",
+    "title": "Thinking About Data",
+    "section": "Overstaying Terms",
+    "text": "Overstaying Terms\n\n\nexpand for full code\n#polity &lt;- read_dta(\"/Users/dave/Documents/2023/PITF/slides/polity5.dta\")\noverpolity &lt;- left_join(tl, polity, by=c(\"ccode\"=\"ccode\", \"year\"=\"year\"))\n\nsuccess &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_success\"), sum) %&gt;%\n  filter(!is.na(polity2)) %&gt;%\n  mutate(outcome = \"succeeded\") %&gt;%\n  mutate(events=tl_success)%&gt;%\n  subset(select = -c(tl_success))\n\nfail &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_failed\"), sum) %&gt;%\n  filter(!is.na(polity2))  %&gt;%\n  mutate(outcome = \"failed\") %&gt;%\n  mutate(events=tl_failed) %&gt;%\n  subset(select = -c(tl_failed))\n\ntlpolity &lt;- rbind(success, fail)\n\nggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +\n  geom_bar(position=\"stack\", stat=\"identity\",)+\n  scale_fill_manual(values=c(\"dark green\", \"light green\")) +\n  labs(x = \"Polity\", y= \"Frequency\", caption=\"Overstaying data (Versteeg et al. 2020)\") +\n  ggtitle(\"Overstay Attempts over Regime\") +\n  scale_x_continuous(breaks=seq(-10, 10, 1))"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#get-to-know-your-data-explore-etc",
+    "href": "thinkingdata/tdata.html#get-to-know-your-data-explore-etc",
+    "title": "Thinking About Data",
+    "section": "Get to know your data, explore etc",
+    "text": "Get to know your data, explore etc\n\nAnscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n# kable(anscombe, format=\"html\", row.names = FALSE, align=\"cccccccc\", caption=\"Anscombe's Quartet\")\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's data, Relationships of x, y\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE\n)\n\n\n\n\n\nAnscombe’s data, Relationships of x, y\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#data-generating-process",
+    "href": "thinkingdata/tdata.html#data-generating-process",
+    "title": "Thinking About Data",
+    "section": "Data Generating Process",
+    "text": "Data Generating Process\n\nWhat produced the data we observe?\nWhy do we observe the data we see and not the data we don’t?\n\nA Terrible Map\n\nWar outcomes\n\nwar outcome/duration data\n\nObservability\n\nAsking the right question"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#data-in-the-regression-context",
+    "href": "thinkingdata/tdata.html#data-in-the-regression-context",
+    "title": "Thinking About Data",
+    "section": "Data in the regression context",
+    "text": "Data in the regression context\n\nmatrix"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#data",
+    "href": "thinkingdata/tdata.html#data",
+    "title": "Thinking About Data",
+    "section": "Data",
+    "text": "Data\nCollections of alike units, their characteristics, features, choice sets, behaviors, etc.\n\nwhat are the units? In what ways are they heterogeneous?\nwhat units are included? Which ones are missing? Why?\nwhat do the variables measure?\nhow are the variables measured?\nwhat observations are missing? Why?\nwhat is the sample; what is the population (sampling frame) from which the sample is drawn?"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#types-of-variables",
+    "href": "thinkingdata/tdata.html#types-of-variables",
+    "title": "Thinking About Data",
+    "section": "Types of variables",
+    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#discrete-variables",
+    "href": "thinkingdata/tdata.html#discrete-variables",
+    "title": "Thinking About Data",
+    "section": "Discrete variables",
+    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#continuous-variables",
+    "href": "thinkingdata/tdata.html#continuous-variables",
+    "title": "Thinking About Data",
+    "section": "Continuous variables",
+    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#levels-of-measurement",
+    "href": "thinkingdata/tdata.html#levels-of-measurement",
+    "title": "Thinking About Data",
+    "section": "Levels of measurement",
+    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#levels-of-measurement-and-models",
+    "href": "thinkingdata/tdata.html#levels-of-measurement-and-models",
+    "title": "Thinking About Data",
+    "section": "Levels of Measurement and Models",
+    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#describe-these-data",
+    "href": "thinkingdata/tdata.html#describe-these-data",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nAlcohol consumptionNormal PDF overlay\n\n\n\n\ncode\ngap &lt;- read.csv(\"/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv\")\n\nggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +\n  geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+\n geom_density(alpha=.2, fill=\"#FF6666\") +\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Density - Alcohol Consumption per Adult (Liters)\") \n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\ngap$nalc &lt;- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))\n\nggplot() + \n  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour=\"black\", fill=\"white\") +\n  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill=\"#FF6666\")  +\n geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype=\"longdash\", size=1)+\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Alcohol Consumption per Adult (Liters), Normal PDF\")"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#describe-these-data-1",
+    "href": "thinkingdata/tdata.html#describe-these-data-1",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\nPolity Scores\n\n\ncode\npolity &lt;- polity %&gt;% mutate(era = ifelse(year==1980, 1980, ifelse(year==2018, 2018, 0)))\n\np &lt;- ggplot(data=polity %&gt;% filter(era!=0), aes(y=polity2), colour=\"black\", fill=\"white\")+\n  geom_bar()+\n  geom_text(aes(label = ..count..),stat=\"count\", hjust = -.2, colour = \"black\", size=2.5, \n            position = position_dodge(0.9)) \n\np + facet_wrap(era ~ .) +\n  labs(y = \"Polity score\", x= \"Countries\", caption=\"Polity project\")+\n  ggtitle(\"Polity Scores, 1980 and 2018\")"
+  },
+  {
+    "objectID": "thinkingdata/tdata.html#overstaying-terms",
+    "href": "thinkingdata/tdata.html#overstaying-terms",
+    "title": "Thinking About Data",
+    "section": "Overstaying Terms",
+    "text": "Overstaying Terms\n\n\nexpand for full code\n#polity &lt;- read_dta(\"/Users/dave/Documents/2023/PITF/slides/polity5.dta\")\noverpolity &lt;- left_join(tl, polity, by=c(\"ccode\"=\"ccode\", \"year\"=\"year\"))\n\nsuccess &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_success\"), sum) %&gt;%\n  filter(!is.na(polity2)) %&gt;%\n  mutate(outcome = \"succeeded\") %&gt;%\n  mutate(events=tl_success)%&gt;%\n  subset(select = -c(tl_success))\n\nfail &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_failed\"), sum) %&gt;%\n  filter(!is.na(polity2))  %&gt;%\n  mutate(outcome = \"failed\") %&gt;%\n  mutate(events=tl_failed) %&gt;%\n  subset(select = -c(tl_failed))\n\ntlpolity &lt;- rbind(success, fail)\n\nggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +\n  geom_bar(position=\"stack\", stat=\"identity\",)+\n  scale_fill_manual(values=c(\"dark green\", \"light green\")) +\n  labs(x = \"Polity\", y= \"Frequency\", caption=\"Overstaying data (Versteeg et al. 2020)\") +\n  ggtitle(\"Overstay Attempts over Regime\") +\n  scale_x_continuous(breaks=seq(-10, 10, 1))"
+  },
+  {
+    "objectID": "tdata.html#get-to-know-your-data-explore-etc",
+    "href": "tdata.html#get-to-know-your-data-explore-etc",
+    "title": "Thinking About Data",
+    "section": "Get to know your data, explore etc",
+    "text": "Get to know your data, explore etc\n\nAnscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's Quartet and Coefficients\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE,\n)\n\n\n\n\n\nAnscombe’s Quartet and Coefficients\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "tdata.html#data-generating-process",
+    "href": "tdata.html#data-generating-process",
+    "title": "Thinking About Data",
+    "section": "Data Generating Process",
+    "text": "Data Generating Process\n\nWhat produced the data we observe?\n\npolitical process, actors, etc.\ndata collector; choices, biases, mistakes.\n\nWhy do we observe the data we see and not the data we don’t?\n\nexistence is not randomly determined.\nresearch questions are usually about things that happen, not things that do not or cannot.\nreporting itself is a political process.\nreporting is shaped by resources"
+  },
+  {
+    "objectID": "tdata.html#data-in-the-regression-context",
+    "href": "tdata.html#data-in-the-regression-context",
+    "title": "Thinking About Data",
+    "section": "Data in the regression context",
+    "text": "Data in the regression context\n\nmatrix"
+  },
+  {
+    "objectID": "tdata.html#data",
+    "href": "tdata.html#data",
+    "title": "Thinking About Data",
+    "section": "Data",
+    "text": "Data\nCollections of alike units, their characteristics, features, choice sets, behaviors, etc.\n\nwhat are the units? In what ways are they heterogeneous?\nwhat units are included? Which ones are missing? Why?\nwhat do the variables measure?\nhow are the variables measured?\nwhat observations are missing? Why?\nwhat is the sample; what is the population (sampling frame) from which the sample is drawn?"
+  },
+  {
+    "objectID": "tdata.html#types-of-variables",
+    "href": "tdata.html#types-of-variables",
+    "title": "Thinking About Data",
+    "section": "Types of variables",
+    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+  },
+  {
+    "objectID": "tdata.html#discrete-variables",
+    "href": "tdata.html#discrete-variables",
+    "title": "Thinking About Data",
+    "section": "Discrete variables",
+    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+  },
+  {
+    "objectID": "tdata.html#continuous-variables",
+    "href": "tdata.html#continuous-variables",
+    "title": "Thinking About Data",
+    "section": "Continuous variables",
+    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+  },
+  {
+    "objectID": "tdata.html#levels-of-measurement",
+    "href": "tdata.html#levels-of-measurement",
+    "title": "Thinking About Data",
+    "section": "Levels of measurement",
+    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+  },
+  {
+    "objectID": "tdata.html#levels-of-measurement-and-models",
+    "href": "tdata.html#levels-of-measurement-and-models",
+    "title": "Thinking About Data",
+    "section": "Levels of Measurement and Models",
+    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+  },
+  {
+    "objectID": "tdata.html#describe-these-data",
+    "href": "tdata.html#describe-these-data",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nAlcohol consumptionNormal PDF overlay\n\n\n\n\ncode\ngap &lt;- read.csv(\"/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv\")\n\nggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +\n  geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+\n geom_density(alpha=.2, fill=\"#FF6666\") +\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Density - Alcohol Consumption per Adult (Liters)\") \n\n\n\n\n\n\n\n\n\ncode\ngap$nalc &lt;- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))\n\nggplot() + \n  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour=\"black\", fill=\"white\") +\n  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill=\"#FF6666\")  +\n geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype=\"longdash\", size=1)+\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Alcohol Consumption per Adult (Liters), Normal PDF\")"
+  },
+  {
+    "objectID": "tdata.html#describe-these-data-1",
+    "href": "tdata.html#describe-these-data-1",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\nPolity Scores\n\n\ncode\npolity &lt;- polity %&gt;% mutate(era = ifelse(year==1980, 1980, ifelse(year==2018, 2018, 0)))\n\np &lt;- ggplot(data=polity %&gt;% filter(era!=0), aes(y=polity2), colour=\"black\", fill=\"white\")+\n  geom_bar()+\n  geom_text(aes(label = ..count..),stat=\"count\", hjust = -.2, colour = \"black\", size=2.5, \n            position = position_dodge(0.9)) \n\np + facet_wrap(era ~ .) +\n  labs(y = \"Polity score\", x= \"Countries\", caption=\"Polity project\")+\n  ggtitle(\"Polity Scores, 1980 and 2018\")"
+  },
+  {
+    "objectID": "tdata.html#overstaying-terms",
+    "href": "tdata.html#overstaying-terms",
+    "title": "Thinking About Data",
+    "section": "Overstaying Terms",
+    "text": "Overstaying Terms\n\n\nexpand for full code\n#polity &lt;- read_dta(\"/Users/dave/Documents/2023/PITF/slides/polity5.dta\")\noverpolity &lt;- left_join(tl, polity, by=c(\"ccode\"=\"ccode\", \"year\"=\"year\"))\n\nsuccess &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_success\"), sum) %&gt;%\n  filter(!is.na(polity2)) %&gt;%\n  mutate(outcome = \"succeeded\") %&gt;%\n  mutate(events=tl_success)%&gt;%\n  subset(select = -c(tl_success))\n\nfail &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_failed\"), sum) %&gt;%\n  filter(!is.na(polity2))  %&gt;%\n  mutate(outcome = \"failed\") %&gt;%\n  mutate(events=tl_failed) %&gt;%\n  subset(select = -c(tl_failed))\n\ntlpolity &lt;- rbind(success, fail)\n\nggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +\n  geom_bar(position=\"stack\", stat=\"identity\",)+\n  scale_fill_manual(values=c(\"dark green\", \"light green\")) +\n  labs(x = \"Polity\", y= \"Frequency\", caption=\"Overstaying data (Versteeg et al. 2020)\") +\n  ggtitle(\"Overstay Attempts over Regime\") +\n  scale_x_continuous(breaks=seq(-10, 10, 1))"
+  },
+  {
+    "objectID": "thinking-data24.html",
+    "href": "thinking-data24.html",
+    "title": "Thinking About Data",
+    "section": "",
+    "text": "Anscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's Quartet and Coefficients\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE,\n)\n\n\n\n\n\nAnscombe’s Quartet and Coefficients\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "thinking-data24.html#get-to-know-your-data-explore-etc",
+    "href": "thinking-data24.html#get-to-know-your-data-explore-etc",
+    "title": "Thinking About Data",
+    "section": "",
+    "text": "Anscombe’s QuartetAnscombe’s Quartet Viz\n\n\n\n\ncode\n# anscombes quartet \nlonganscombe &lt;- anscombe %&gt;%\n\npivot_longer(cols = everything(), #pivot all the columns\n             cols_vary = \"slowest\", #keep the datasets together \n              names_to = c(\".value\", \"set\"), #new var names; .value=stem of vars\n              names_pattern = \"(.)(.)\") #to extract var names \n\nB &lt;- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))\nfor (i in longanscombe$set) {\n    m &lt;- lm(y ~ x, data=longanscombe %&gt;% filter(set==i))\n    B[i:i,] &lt;- data.frame(i, coef(m)[1], coef(m)[2])\n}\n\n\nkable(\n  list(B, anscombe),\n  caption=\"Anscombe's Quartet and Coefficients\",\n  booktabs = TRUE,\n  valign = 't',\n  row.names = FALSE,\n)\n\n\n\n\n\nAnscombe’s Quartet and Coefficients\n\n\n\n\n\n\n\nset\nb0\nb1\n\n\n\n\n1\n3.000091\n0.5000909\n\n\n2\n3.000909\n0.5000000\n\n\n3\n3.002454\n0.4997273\n\n\n4\n3.001727\n0.4999091\n\n\n\n\n\n\n\n\nx1\nx2\nx3\nx4\ny1\ny2\ny3\ny4\n\n\n\n\n10\n10\n10\n8\n8.04\n9.14\n7.46\n6.58\n\n\n8\n8\n8\n8\n6.95\n8.14\n6.77\n5.76\n\n\n13\n13\n13\n8\n7.58\n8.74\n12.74\n7.71\n\n\n9\n9\n9\n8\n8.81\n8.77\n7.11\n8.84\n\n\n11\n11\n11\n8\n8.33\n9.26\n7.81\n8.47\n\n\n14\n14\n14\n8\n9.96\n8.10\n8.84\n7.04\n\n\n6\n6\n6\n8\n7.24\n6.13\n6.08\n5.25\n\n\n4\n4\n4\n19\n4.26\n3.10\n5.39\n12.50\n\n\n12\n12\n12\n8\n10.84\n9.13\n8.15\n5.56\n\n\n7\n7\n7\n8\n4.82\n7.26\n6.42\n7.91\n\n\n5\n5\n5\n8\n5.68\n4.74\n5.73\n6.89\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\nggplot(longanscombe, aes(x = x, y = y)) +\n  geom_point() + \n  facet_wrap(~set) +\n  geom_smooth(method = \"lm\", se = FALSE, color=\"red\")"
+  },
+  {
+    "objectID": "thinking-data24.html#data-generating-process",
+    "href": "thinking-data24.html#data-generating-process",
+    "title": "Thinking About Data",
+    "section": "Data Generating Process",
+    "text": "Data Generating Process\n\nWhat produced the data we observe?\n\npolitical process, actors, etc.\nare those actors purposeful wrt the observed data?\ndata collector; choices, biases, mistakes."
+  },
+  {
+    "objectID": "thinking-data24.html#data-in-the-regression-context",
+    "href": "thinking-data24.html#data-in-the-regression-context",
+    "title": "Thinking About Data",
+    "section": "Data in the regression context",
+    "text": "Data in the regression context\n\nmatrix"
+  },
+  {
+    "objectID": "thinking-data24.html#data",
+    "href": "thinking-data24.html#data",
+    "title": "Thinking About Data",
+    "section": "Data",
+    "text": "Data\nCollections of alike units, their characteristics, features, choice sets, behaviors, etc.\n\nwhat are the units? In what ways are they heterogeneous?\nwhat units are included? Which ones are missing? Why?\nwhat do the variables measure?\nhow are the variables measured?\nwhat observations are missing? Why?\nwhat is the sample; what is the population (sampling frame) from which the sample is drawn?"
+  },
+  {
+    "objectID": "thinking-data24.html#types-of-variables",
+    "href": "thinking-data24.html#types-of-variables",
+    "title": "Thinking About Data",
+    "section": "Types of variables",
+    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+  },
+  {
+    "objectID": "thinking-data24.html#discrete-variables",
+    "href": "thinking-data24.html#discrete-variables",
+    "title": "Thinking About Data",
+    "section": "Discrete variables",
+    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+  },
+  {
+    "objectID": "thinking-data24.html#continuous-variables",
+    "href": "thinking-data24.html#continuous-variables",
+    "title": "Thinking About Data",
+    "section": "Continuous variables",
+    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+  },
+  {
+    "objectID": "thinking-data24.html#levels-of-measurement",
+    "href": "thinking-data24.html#levels-of-measurement",
+    "title": "Thinking About Data",
+    "section": "Levels of measurement",
+    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+  },
+  {
+    "objectID": "thinking-data24.html#levels-of-measurement-and-models",
+    "href": "thinking-data24.html#levels-of-measurement-and-models",
+    "title": "Thinking About Data",
+    "section": "Levels of Measurement and Models",
+    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+  },
+  {
+    "objectID": "thinking-data24.html#describe-these-data",
+    "href": "thinking-data24.html#describe-these-data",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nAlcohol consumptionNormal PDF overlay\n\n\n\n\ncode\ngap &lt;- read.csv(\"/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv\")\n\nggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +\n  geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+\n geom_density(alpha=.2, fill=\"#FF6666\") +\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Density - Alcohol Consumption per Adult (Liters)\") \n\n\nWarning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.\nℹ Please use `after_stat(density)` instead.\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\nWarning: Removed 78900 rows containing non-finite values (`stat_bin()`).\n\n\nWarning: Removed 78900 rows containing non-finite values (`stat_density()`).\n\n\n\n\n\n\n\n\n\ncode\ngap$nalc &lt;- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))\n\nggplot() + \n  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour=\"black\", fill=\"white\") +\n  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill=\"#FF6666\")  +\n geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype=\"longdash\", size=1)+\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Alcohol Consumption per Adult (Liters), Normal PDF\")\n\n\nWarning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.\nℹ Please use `linewidth` instead.\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\nWarning: Removed 78900 rows containing non-finite values (`stat_bin()`).\n\n\nWarning: Removed 78900 rows containing non-finite values (`stat_density()`).\n\n\nWarning: Removed 78900 rows containing missing values (`geom_line()`)."
+  },
+  {
+    "objectID": "thinking-data24.html#describe-these-data-1",
+    "href": "thinking-data24.html#describe-these-data-1",
+    "title": "Thinking About Data",
+    "section": "Describe these data",
+    "text": "Describe these data\n\nPolity Scores\n\n\ncode\npolity &lt;- polity %&gt;% mutate(era = ifelse(year==1980, 1980, ifelse(year==2018, 2018, 0)))\n\np &lt;- ggplot(data=polity %&gt;% filter(era!=0), aes(y=polity2), colour=\"black\", fill=\"white\")+\n  geom_bar()+\n  geom_text(aes(label = ..count..),stat=\"count\", hjust = -.2, colour = \"black\", size=2.5, \n            position = position_dodge(0.9)) \n\np + facet_wrap(era ~ .) +\n  labs(y = \"Polity score\", x= \"Countries\", caption=\"Polity project\")+\n  ggtitle(\"Polity Scores, 1980 and 2018\") \n\n\nWarning: Removed 3 rows containing non-finite values (`stat_count()`).\nRemoved 3 rows containing non-finite values (`stat_count()`)."
+  },
+  {
+    "objectID": "thinking-data24.html#overstaying-terms",
+    "href": "thinking-data24.html#overstaying-terms",
+    "title": "Thinking About Data",
+    "section": "Overstaying Terms",
+    "text": "Overstaying Terms\n\n\nexpand for full code\n#polity &lt;- read_dta(\"/Users/dave/Documents/2023/PITF/slides/polity5.dta\")\noverpolity &lt;- left_join(tl, polity, by=c(\"ccode\"=\"ccode\", \"year\"=\"year\"))\n\nsuccess &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_success\"), sum) %&gt;%\n  filter(!is.na(polity2)) %&gt;%\n  mutate(outcome = \"succeeded\") %&gt;%\n  mutate(events=tl_success)%&gt;%\n  subset(select = -c(tl_success))\n\nfail &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_failed\"), sum) %&gt;%\n  filter(!is.na(polity2))  %&gt;%\n  mutate(outcome = \"failed\") %&gt;%\n  mutate(events=tl_failed) %&gt;%\n  subset(select = -c(tl_failed))\n\ntlpolity &lt;- rbind(success, fail)\n\nggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +\n  geom_bar(position=\"stack\", stat=\"identity\",)+\n  scale_fill_manual(values=c(\"dark green\", \"light green\")) +\n  labs(x = \"Polity\", y= \"Frequency\", caption=\"Overstaying data (Versteeg et al. 2020)\") +\n  ggtitle(\"Overstay Attempts over Regime\") +\n  scale_x_continuous(breaks=seq(-10, 10, 1))"
+  },
+  {
+    "objectID": "tdata.html#a-terrible-map",
+    "href": "tdata.html#a-terrible-map",
+    "title": "Thinking About Data",
+    "section": "A Terrible Map",
+    "text": "A Terrible Map"
+  },
+  {
+    "objectID": "tdata.html#war-outcomes",
+    "href": "tdata.html#war-outcomes",
+    "title": "Thinking About Data",
+    "section": "War outcomes",
+    "text": "War outcomes\n\nwar outcome/duration data"
+  },
+  {
+    "objectID": "tdata.html#observability",
+    "href": "tdata.html#observability",
+    "title": "Thinking About Data",
+    "section": "Observability",
+    "text": "Observability"
+  },
+  {
+    "objectID": "tdata.html#asking-the-right-question",
+    "href": "tdata.html#asking-the-right-question",
+    "title": "Thinking About Data",
+    "section": "Asking the right question",
+    "text": "Asking the right question"
+  },
+  {
+    "objectID": "thinking-data24.html#a-terrible-map",
+    "href": "thinking-data24.html#a-terrible-map",
+    "title": "Thinking About Data",
+    "section": "A Terrible Map",
+    "text": "A Terrible Map"
+  },
+  {
+    "objectID": "thinking-data24.html#war-outcomes",
+    "href": "thinking-data24.html#war-outcomes",
+    "title": "Thinking About Data",
+    "section": "War outcomes",
+    "text": "War outcomes\n\n\n\nOutcome\nAutocrat\nDemocrat\nTotal\n\n\n\n\nLoser\n42\n9\n51\n\n\nWinner\n32\n38\n70\n\n\nTotal\n74 47\n121\n\n\n\n\nFrom Lake (1992), p. 31"
+  },
+  {
+    "objectID": "thinking-data24.html#observability",
+    "href": "thinking-data24.html#observability",
+    "title": "Thinking About Data",
+    "section": "Observability",
+    "text": "Observability"
+  },
+  {
+    "objectID": "thinking-data24.html#asking-the-right-question",
+    "href": "thinking-data24.html#asking-the-right-question",
+    "title": "Thinking About Data",
+    "section": "Asking the right question",
+    "text": "Asking the right question"
+  },
+  {
+    "objectID": "thinking-data24.html#ooof",
+    "href": "thinking-data24.html#ooof",
+    "title": "Thinking About Data",
+    "section": "ooof",
+    "text": "ooof\n\nunordered list\n\nsub-item 1\nsub-item 2\n\nsub-sub-item 1"
+  },
+  {
+    "objectID": "tdata.html#ooof",
+    "href": "tdata.html#ooof",
+    "title": "Thinking About Data",
+    "section": "ooof",
+    "text": "ooof\n\nunordered list\n\nsub-item 1\nsub-item 2\n\nsub-sub-item 1"
+  },
+  {
+    "objectID": "thinking-data24.html#data-generating-process-1",
+    "href": "thinking-data24.html#data-generating-process-1",
+    "title": "Thinking About Data",
+    "section": "Data Generating Process",
+    "text": "Data Generating Process\n\nWhy do we observe the data we see and not the data we don’t?\n\nexistence is not randomly determined.\nresearch questions are usually about things that happen, not things that do not or cannot.\nreporting itself is a political process.\nreporting is shaped by resources"
+  },
+  {
+    "objectID": "thinking-data24.html#war-outcomes-lake92-p.-31",
+    "href": "thinking-data24.html#war-outcomes-lake92-p.-31",
+    "title": "Thinking About Data",
+    "section": "War outcomes (Lake (1992) p. 31)",
+    "text": "War outcomes (Lake (1992) p. 31)\n\n\n\nOutcome\nAutocrat\nDemocrat\nTotal\n\n\n\n\nLoser\n42\n9\n51\n\n\nWinner\n32\n38\n70\n\n\nTotal\n74\n47\n12 1\n\n\n\nFrom Lake (1992), p. 31"
+  },
+  {
+    "objectID": "bivariate24.html",
+    "href": "bivariate24.html",
+    "title": "The Bivariate Model",
+    "section": "",
+    "text": "Regression in any form is based on the conditional expectation of \\(Y\\) - the expected value of \\(Y\\) is conditional on some \\(X\\)s, but we don’t know the actual conditions or effects of those \\(X\\)s. So we can write the regression like this:\n\\[E[y|X_{1}, \\ldots,X_{k}]= \\beta_{0}+\\beta_{1}X_{1}+\\ldots+\\beta_{k}X_{k}\\]\n\n\nLet \\(y\\) be a linear function of the \\(X\\)s and the unknowns, \\(\\beta\\), so the following produces a straight line:\n\\[y_{i}=\\beta_{0}+\\beta_{1}X_{1} + \\epsilon \\]\nand \\(\\epsilon\\) are the errors or disturbances.\n\n\n\nThe predicted points that form the line are \\(\\widehat{y_{i}}\\)\n\\[\\widehat{y_{i}}=\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{1,i}\\]\n\\(\\widehat{y_{i}}\\) is the sum of the \\(\\beta\\)s multiplied by each value of the appropriate \\(X_i\\), for \\(i=1 \\ldots N\\).\n\\(\\widehat{y_{i}}\\) is referred to as the “linear prediction” or as \\(x\\hat{\\beta}\\).\n\n\n\nThe differences between those predicted points, \\(\\widehat{y_{i}}\\) and the observed values \\(y_i\\) are:\n\\[\n\\begin{align}\n  \\widehat{u} = y_{i}-\\widehat{y_{i}} \\\\\n= y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{1,i}\\\\\n= y_{i}-\\mathbf{x_i\\widehat{\\beta}}  \\nonumber\n\\end{align}\n\\]\nThese are the residuals, \\(\\widehat{u}\\) - the observed measure of the unobserved disturbances, \\(\\epsilon\\).\n\n\n\nRestating in matrix notation:\n\\[\n\\begin{align}\ny_{i} = \\mathbf{X_i}  \\beta_{k}  +\\varepsilon_i \\nonumber \\\\\n\\widehat{y_{i}}= \\mathbf{X_i} \\widehat{\\beta_{k}}   \\nonumber \\\\\n\\widehat{u_{i}} = y_i - \\mathbf{X_i} \\beta_k  \\nonumber \\\\\n\\widehat{u_i} = y_i - \\widehat{y_{i}}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#regression",
+    "href": "bivariate24.html#regression",
+    "title": "The Bivariate Model",
+    "section": "Regression",
+    "text": "Regression\nRegression in any form is based on the conditional expectation of \\(Y\\) - the expected value of \\(Y\\) is conditional on some \\(X\\)s, but we don’t know the actual conditions or effects of those \\(X\\)s. So we can write the regression like this:\n\\[E[y|X_{1}, \\ldots,X_{k}]= \\beta_{0}+\\beta_{1}X_{1}+\\ldots+\\beta_{k}X_{k}\\]"
+  },
+  {
+    "objectID": "bivariate24.html#regression-1",
+    "href": "bivariate24.html#regression-1",
+    "title": "The Bivariate Model",
+    "section": "",
+    "text": "Let \\(y\\) be a linear function of the \\(X\\)s and the unknowns, \\(\\beta\\), so the following produces a straight line:\n\\[y_{i}=\\beta_{0}+\\beta_{1}X_{1} + \\epsilon \\]\nand \\(\\epsilon\\) are the errors or disturbances."
+  },
+  {
+    "objectID": "bivariate24.html#linear-predictions-residuals",
+    "href": "bivariate24.html#linear-predictions-residuals",
+    "title": "The Bivariate Model",
+    "section": "Linear predictions, Residuals",
+    "text": "Linear predictions, Residuals\nThe predicted points that form the line are \\(\\widehat{Y_{i}}\\)\n\\[\\widehat{y_{i}}=\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{1,i}\\]\n\\(\\widehat{y_{i}}\\) is the sum of the \\(\\beta\\)s multiplied by each value of the appropriate \\(X_i\\), for \\(i=1 \\ldots N\\).\n\\(\\widehat{y_{i}}\\) is referred to as the “linear prediction” or as \\(x\\hat{\\beta}\\).\nThe differences between those predicted points, \\(\\widehat{Y_{i}}\\) and the observed values \\(Y_i\\) are:\n\\[Y_{i}-\\widehat{Y_{i}} = e  \\\\\n= Y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{1,i} \\nonumber \\\\\n= Y_{i}-\\mathbf{x_i\\widehat{\\beta}}  \\nonumber\n\\]\nThese are the residuals, \\(e\\) - the observed measure of the unobserved disturbances, \\(\\epsilon\\)."
+  },
+  {
+    "objectID": "bivariate24.html#in-matrix",
+    "href": "bivariate24.html#in-matrix",
+    "title": "The Bivariate Model",
+    "section": "in matrix",
+    "text": "in matrix\nRestating in matrix notation:\n\\[\ny_{i} = \\mathbf{X_i}  \\beta_{k}  +\\varepsilon_i \\nonumber \\\\\n\\widehat{y_{i}}= \\mathbf{X_i} \\widehat{\\beta_{k}}   \\nonumber \\\\\n\\widehat{e_{i}} = y_i - \\mathbf{X_i} \\beta_k  \\nonumber \\\\\n\\widehat{e_i} = y_i - \\widehat{y_{i}}  \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#getting-to-ols-i",
+    "href": "bivariate24.html#getting-to-ols-i",
+    "title": "The Bivariate Model",
+    "section": "Getting to OLS I",
+    "text": "Getting to OLS I\n\\[\ny_{i}=\\beta_{0}+\\beta_{1}X_{1} + u \\nonumber\n\\]\n\\(\\ldots\\) over the sample, \\(N\\), sum of squares of the deviations, \\(\\widehat{S}\\) \\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})^{2} \\nonumber\n\\]\n\\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}^{2}-2y_i \\widehat{\\beta_{0}}- 2y_i\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{0}}^{2}  \\nonumber \\\\\n+2\\widehat{\\beta_{0}}\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{1}^{2}}X_{i}^{2} ) \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-1",
+    "href": "bivariate24.html#ols-1",
+    "title": "The Bivariate Model",
+    "section": "OLS 1",
+    "text": "OLS 1\nTo minimize \\(S\\) with respect to \\(\\beta_0\\):\n\\[\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{0}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})  \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i} \\nonumber\n\\]\nAnd do the same with respect to \\(\\beta_{1}\\):\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{1}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}) X_{i} \\nonumber \\\\\n=-2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})X_{i} \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i}  X_i\\nonumber\n\\end{align}\n\\]\n\\(\\ldots\\) illustrating explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:\n\\[y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}\\]\n\\[\\mathbf{y} - \\mathbf{X}\\widehat{\\beta}\\]\n\\[\\mathbf{y} - \\mathbf{\\widehat{y}}\\]\n\\[\\mathbf{\\widehat{u}}\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-1-1",
+    "href": "bivariate24.html#ols-1-1",
+    "title": "The Bivariate Model",
+    "section": "OLS 1",
+    "text": "OLS 1\nSubstituting the unknowns back in, setting equal to zero, and rearranging gives the “normal equations”:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\beta_{0}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber\n\\end{align}\n\\]\nSolving, we get the estimating equations, here for \\(\\widehat{\\beta_0}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\nn \\widehat{\\beta_0} =  \\sum \\limits_{i=1}^{n}y_{i} - \\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\widehat{\\beta_0} =  \\bar{y} - \\widehat{\\beta_{1}}\\bar{X_{i}} \\nonumber\n\\end{align}\n\\]\nAnd here, for \\(\\widehat{\\beta_1}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber \\\\\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\end{align}\n\\]\nNote the parts of \\(\\widehat{\\beta_1}\\):\n\\[\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\]\nThe numerator is the covariance of \\(X\\) and \\(y\\) - the denominator is the variance of \\(X\\). The estimated coefficient \\(\\widehat{\\beta_{1}}\\) is the covariance of (X,y) weighted by the variance in \\(X\\). \\(\\widehat{\\beta_{1}}\\) measures the estimated change in \\(y\\) given a one-unit change in \\(X\\)."
+  },
+  {
+    "objectID": "bivariate24.html#getting-to-ols-ii",
+    "href": "bivariate24.html#getting-to-ols-ii",
+    "title": "The Bivariate Model",
+    "section": "Getting to OLS II",
+    "text": "Getting to OLS II\nHere’s another way to achieve the same thing, but for illustration purposes, a second time around might be useful. Suppose in the population, we have the equation\n\\[\ny= \\beta_{0}+\\beta_{1}x_{i} + e_{i} \\nonumber\n\\]\nAssume the mean of \\(e\\) to be zero and that \\(x\\) and \\(e\\) are uncorrelated, so\n\\[E[e]=0 \\nonumber\n\\]\n\\[\nCov[x,e]=0 \\nonumber\n\\]\nThis is equivalent to saying the expected value of the product of \\(x\\) and \\(e\\) is zero:\n\\[E[x \\cdot e]=0 \\nonumber\n\\]\nNow, let’s solve the original population function for \\(e\\):\n\\[\n\\begin{align}\ny=\\beta_0 + \\beta_1 x_i+ e_i \\nonumber \\\\ \\nonumber \\\\\ne_i = y-\\beta_0 - \\beta_1 x_i  \\nonumber\n\\end{align}\n\\]\nand then restate these assumptions in terms of \\(y\\):\n\\[\n\\begin{align}\nE[y-\\beta_0 - \\beta_1 x_i]=0    \\nonumber \\\\  \\nonumber \\\\\nCov[x,(y-\\beta_0 - \\beta_1 x_i)]=0 \\nonumber\n\\end{align}\n\\]\nwhere the first expects the mean of the disturbances to be zero and second expects the covariance of the \\(X\\)s and the disturbances to be zero.\nSince we want estimates of \\(\\beta_0\\) and \\(\\beta_1\\) for a sample (so \\(\\hat{\\beta_0}\\) and \\(\\hat{\\beta_1}\\)), state these expectations with respect to a sample (of size \\(n\\)):\n\\[\n\\begin{align}\n\\frac{\\sum\\limits_{i=1}^{n}(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0   \\nonumber \\\\ \\nonumber \\\\\n\\frac{\\sum\\limits_{i=1}^{n}x(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0 \\nonumber\n\\end{align}\n\\]\nThese first order conditions are equivalent to those in the derivation above where we solved them by taking the partial derivatives of the sum of squares with respect to the unknowns.\nRecalling that the mean of a variable\n\\[\\bar{y}=\\frac{\\sum\\limits_{i=1}^{n}y_i}{n}\\]\nwe can write each of these in terms of the means of \\(x\\) and \\(y\\) - first, here is the mean zero statement (from above):\n\\[\n\\begin{align}\n\\bar{y}-\\hat{\\beta_0} - \\hat{\\beta_1} \\bar{x}=0 \\nonumber \\\\ \\nonumber \\\\\n\\bar{y}=\\hat{\\beta_0} + \\hat{\\beta_1} \\bar{x} \\nonumber\n\\end{align}\n\\]\nand we can rearrange to solve for \\(\\beta_0\\)\n\\[\n\\hat{\\beta_0}= \\bar{y}- \\hat{\\beta_1} \\bar{x} \\nonumber\n\\]\nNow, rewrite the second assumption (\\(E[x \\cdot e]=0\\)) in the same way:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i[y_i-(\\bar{y}-\\hat{\\beta_{1}}\\bar{x})-\\hat{\\beta_{1}}x_{i}] =0  \\nonumber \\\\ \\text{and rearrange,} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber\n\\end{align}\n\\]\nBecause of the properties of the summation operator,\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2  \\nonumber \\\\ \\text{and} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y}) \\nonumber\n\\end{align}\n\\]\nSo, substituting these equations into\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber\n\\end{align}\\]\nand solving for \\(\\hat{\\beta}_1\\) gives:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})= \\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2 \\nonumber \\\\\n\\hat{\\beta_{1}}=\\frac{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2} \\nonumber\n\\end{align}\n\\]\nWhy can we drop \\(n\\) from these calculations? Recall that\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}\\widehat{e_{i}} = 0 \\nonumber \\\\\n\\text{so} \\nonumber \\\\\n\\frac{\\sum \\limits_{i=1}^{n}\\widehat{e_{i}}}{n} = 0 \\nonumber\n\\end{align}\n\\]\nThe same is true for the covariance assumption."
+  },
+  {
+    "objectID": "bivariate24.html#getting-to-ols-iii",
+    "href": "bivariate24.html#getting-to-ols-iii",
+    "title": "The Bivariate Model",
+    "section": "Getting to OLS III",
+    "text": "Getting to OLS III\nOne more time, but now in matrix form:\n\\[\ny_{i} = \\mathbf{X_i}  \\widehat{\\beta}  +\\epsilon \\nonumber\n\\]\nSkipping a lot of steps we’ll cover soon, solve for\n\\[ \\widehat{\\beta} = \\mathbf{X'X}^{-1} \\mathbf{X'}y\\]"
+  },
+  {
+    "objectID": "bivariate24.html#matrices",
+    "href": "bivariate24.html#matrices",
+    "title": "The Bivariate Model",
+    "section": "Matrices",
+    "text": "Matrices\n\\[\n\\left[\n\\begin{matrix}\n  y_1 \\\\\n  y_2\\\\\n  y_3  \\\\\n  \\vdots \\\\\n  y_n    \\nonumber\n\\end{matrix}  \\right]\n= \\left[\n\\begin{matrix}\n  1& X_{1,2} & X_{1,3} & \\cdots & X_{1,k} \\\\\n  1 & X_{2,2} & X_{2,3} &\\cdots & X_{2,k} \\\\\n  1 & X_{3,2} & X_{3,3} &\\cdots & X_{3,k} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  1 & X_{n,2} & X_{n,3} & \\cdots & X_{n,k}  \\nonumber\n\\end{matrix}  \\right]\n\\left[\n\\begin{matrix}\n  \\beta_1 \\\\\n  \\beta_2\\\\\n  \\beta_3  \\\\\n  \\vdots \\\\\n  \\beta_k    \\nonumber\n\\end{matrix}  \\right]\n+\n\\left[\n\\begin{matrix}\n  \\epsilon_1 \\\\\n  \\epsilon_2\\\\\n  \\epsilon_3  \\\\\n  \\vdots \\\\\n  \\epsilon_n    \\nonumber\n\\end{matrix}  \\right]\n\\]\n\\[\n\\mathbf{X'X}= \\left[\n\\begin{matrix}\n  N& \\sum X_{2,i} & \\sum X_{3,i} & \\cdots & \\sum X_{k,i} \\\\\n  \\sum X_{2,i}&\\sum X_{2,2}^{2} & \\sum X_{2,i} X_{3,i} &\\cdots & \\sum X_{2,i}X_{k,i} \\\\\n  \\sum X_{3,i} & \\sum X_{3,i}X_{2,i}& \\sum X_{3,i}^{2} &\\cdots & \\sum X_{3,i}X_{k,i} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  \\sum X_{k,i} & \\sum X_{k,i}X_{2,i} & \\sum X_{k,i}X_{3,i} & \\cdots & \\sum X_{k,i}^{2}  \\nonumber\n\\end{matrix}  \\right]\n\\]\nIn \\(\\mathbf{X'X}\\), the main diagonal is the sums of squares and the offdiagonals are the cross-products."
+  },
+  {
+    "objectID": "bivariate24.html#covariation-xy",
+    "href": "bivariate24.html#covariation-xy",
+    "title": "The Bivariate Model",
+    "section": "Covariation X’y",
+    "text": "Covariation X’y\n\\[\n\\mathbf{X'y}= \\left[\n\\begin{matrix}\n\\sum Y_{i}\\\\\n\\sum X_{2,i}Y_{i}\\\\\n\\sum X_{3,i}Y_{i}\\\\\n\\vdots \\\\\n\\sum X_{k,i}Y_{i} \\nonumber\n\\end{matrix}  \\right]\n\\]\nWhen we compute \\(\\widehat{\\beta}\\), \\(\\mathbf{X'y}\\) is the covariation of \\(X\\) and \\(Y\\), and we pre-multiply by the inverse of \\(\\mathbf{(X'X)^{-1}}\\) to control for the relationship between \\(X_{1}\\) and \\(X_{2}\\)."
+  },
+  {
+    "objectID": "bivariate24.html#matrices-and-regression",
+    "href": "bivariate24.html#matrices-and-regression",
+    "title": "The Bivariate Model",
+    "section": "Matrices and Regression",
+    "text": "Matrices and Regression\nNow that we’ve seen all the algebra and what the data matrix looks like, let’s revisit the derivation of \\(\\beta\\), beginning with the estimating equation:\n\\[\n\\mathbf{y}={\\mathbf X{\\widehat{\\beta}}}+\\widehat{\\mathbf{\\epsilon}} \\nonumber\n\\]\nand solve for \\(\\beta\\) by minimizing the sum of the squared errors:\n\n\n\n\n\n\n\n\n\\[\n\\begin{align}\n\\sum\\limits_{i=1}^{n} \\epsilon^2= \\widehat{\\epsilon}'\\widehat{\\epsilon} \\nonumber \\\\  \\nonumber \\\\\n= (\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})'(\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\mathbf{y}'\\mathbf{X}\\widehat{\\beta}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-2\\widehat{\\beta}'\\mathbf{X'y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#check-this-out",
+    "href": "bivariate24.html#check-this-out",
+    "title": "The Bivariate Model",
+    "section": "check this out",
+    "text": "check this out\nagain: \\[\n\\begin{align}\n\\sum\\limits_{i=1}^{n} \\epsilon^2= \\widehat{\\epsilon}'\\widehat{\\epsilon} \\nonumber \\\\  \\nonumber \\\\\n= (\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})'(\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\mathbf{y}'\\mathbf{X}\\widehat{\\beta}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-2\\widehat{\\beta}'\\mathbf{X'y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#matrices-and-regression-1",
+    "href": "bivariate24.html#matrices-and-regression-1",
+    "title": "The Bivariate Model",
+    "section": "Matrices and Regression",
+    "text": "Matrices and Regression\nDifferentiating with respect to \\(\\widehat{\\beta}\\), and setting equal to zero,\n\\[\n\\frac{\\partial{\\widehat{\\epsilon}'\\widehat{\\epsilon}}}{\\partial{\\widehat{\\beta}}} = -2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X}'\\mathbf{X}\\widehat{\\beta} \\nonumber \\\\  \\nonumber \\\\\n-2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X'X}\\widehat{\\beta}=0  \\nonumber \\\\  \\nonumber \\\\\n\\mathbf{X'X}\\widehat{\\beta}=\\mathbf{X'y}  \\nonumber \\\\  \\nonumber \\\\\n(\\mathbf{X'X})^{-1}\\mathbf{X'X}\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}   \\nonumber \\\\  \\nonumber \\\\\n\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}  \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#variance-covariance-matrix-of-epsilon",
+    "href": "bivariate24.html#variance-covariance-matrix-of-epsilon",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance Matrix of \\(\\epsilon\\)",
+    "text": "Variance-Covariance Matrix of \\(\\epsilon\\)\n\\[\n\\begin{align}\nE(\\mathbf{\\epsilon\\epsilon'})= E \\left[\n\\begin{array}{c}\n\\epsilon_{1} \\\\\n\\vdots \\\\\n\\epsilon_{n}\\\\\n\\end{array} \\right]\nE \\left[\n\\begin{array}{cccc}\n\\epsilon_{1} & \\cdots &\\epsilon_{n}\\\\\n\\end{array} \\right] \\\\ ~\\\\\n= E\n\\left[\n\\begin{array}{cccc}\n\\epsilon_{1}^{2} & \\epsilon_{1}\\epsilon_{2} &\\cdots &\\epsilon_{1}\\epsilon_{n}\\\\\n\\epsilon_{2}\\epsilon_{1}& \\epsilon_{2}^{2} &\\cdots &\\epsilon_{2}\\epsilon_{n}\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\n\\epsilon_{n}\\epsilon_{1} &\\epsilon_{n}\\epsilon_{2} &\\cdots & \\epsilon_{n}^{2}\\\\\n\\end{array} \\right]\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#variance-covariance-matrix-of-epsilon-1",
+    "href": "bivariate24.html#variance-covariance-matrix-of-epsilon-1",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance Matrix of \\(\\epsilon\\)",
+    "text": "Variance-Covariance Matrix of \\(\\epsilon\\)\nBecause we assume constant variance and no serial correlation, we know\n\\[\nE(\\mathbf{\\epsilon\\epsilon'})=\n\\left[\n\\begin{array}{cccc}\n\\sigma^{2} & 0 &\\cdots &0\\\\\n0&\\sigma^{2} &\\cdots &0\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\n0 &0 &\\cdots & \\sigma^{2}\\\\\n\\end{array} \\right]\n= \\sigma^{2}\n\\left[\n\\begin{array}{cccc}\n1 & 0 &\\cdots &0\\\\\n0&1 &\\cdots &0\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\n0 &0 &\\cdots & 1\\\\\n\\end{array} \\right]\n= \\sigma^{2} \\mathbf{I}\n\\]\nThis is the variance-covariance matrix of the disturbances (var-cov(e)); it is symmetric, the main diagonal containing the variances, the off-diagonal containing the covariances."
+  },
+  {
+    "objectID": "bivariate24.html#variance-covariance-of-widehatbeta",
+    "href": "bivariate24.html#variance-covariance-of-widehatbeta",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)",
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\nThe variance-covariance of the estimate, \\(\\widehat{\\beta}\\) derives as follows:\n\\[\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'y}\\]\nsubstituting \\(\\mathbf{X\\beta}+\\epsilon\\) for \\(\\mathbf{y}\\), we get\n\\[\n\\begin{align}\n\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'(X\\beta + \\epsilon)}  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}}\\mathbf{X'X\\beta}+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\\\nonumber \\\\\n=\\beta+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\ \\nonumber \\\\\n\\widehat{\\mathbf{\\beta}}-\\beta=\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#variance-covariance-of-widehatbeta-1",
+    "href": "bivariate24.html#variance-covariance-of-widehatbeta-1",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)",
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\n\\[\n\\begin{align}\nE[(\\widehat{\\beta}-\\beta)(\\widehat{\\beta}-\\beta)']  \n= E[(\\mathbf{(X'X)^{-1}X'\\epsilon})(\\mathbf{(X'X)^{-1}X'\\epsilon})']  \\nonumber \\\\ \\nonumber \\\\\n= E[\\mathbf{(X'X)^{-1}X'\\epsilon \\epsilon'\\mathbf{X(X'X)^{-1}}}]  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}X'} E(\\epsilon \\epsilon')\\mathbf{X(X'X)^{-1}}  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}X'} \\sigma^{2}\\mathbf{I} \\mathbf{X(X'X)^{-1}}   \\nonumber \\\\ \\nonumber \\\\\n= \\sigma^{2} \\mathbf{(X'X)^{-1}}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#variance-covariance-of-widehatbeta-2",
+    "href": "bivariate24.html#variance-covariance-of-widehatbeta-2",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)",
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\n\\[ E[(\\widehat{\\beta}-\\beta)(\\widehat{\\beta}-\\beta)'] = \\] \\(~\\)\n\\[\\left[\n\\begin{array}{cccc}\nvar(\\beta_1) & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k)\\\\\ncov(\\beta_2,\\beta_1)& var(\\beta_2) &\\cdots &cov(\\beta_2,\\beta_k)\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_2,\\beta_k) &\\cdots & var(\\beta_k)\\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "bivariate24.html#standard-errors-of-beta_k",
+    "href": "bivariate24.html#standard-errors-of-beta_k",
+    "title": "The Bivariate Model",
+    "section": "Standard Errors of \\(\\beta_k\\)",
+    "text": "Standard Errors of \\(\\beta_k\\)\n\\[\n\\left[\n\\begin{array}{cccc}\n\\sqrt{var(\\beta_1)} & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k)\\\\\ncov(\\beta_2,\\beta_1)& \\sqrt{var(\\beta_2)} &\\cdots &cov(\\beta_2,\\beta_k)\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_2,\\beta_k) &\\cdots & \\sqrt{var(\\beta_k)}\\\\\n\\end{array} \\right]\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#property-1",
+    "href": "bivariate24.html#property-1",
+    "title": "The Bivariate Model",
+    "section": "Property 1",
+    "text": "Property 1\nIf \\(X' \\widehat{\\epsilon} = 0\\) holds, then the following properties exist:\n\n\n\n\n\n\nProposition\n\n\n\nEach \\(x\\) variable (each column vector of \\(\\mathbf{X}\\)) is uncorrelated with \\(\\epsilon\\)."
+  },
+  {
+    "objectID": "bivariate24.html#property-2",
+    "href": "bivariate24.html#property-2",
+    "title": "The Bivariate Model",
+    "section": "Property 2",
+    "text": "Property 2\nAssuming a constant in the matrix \\(\\mathbf{X}\\),\n\n\n\n\n\n\nProposition\n\n\n\n\\(\\sum\\limits_{i-1}^{n} \\epsilon_i = 0\\)\nbecause each element of the matrix \\(X' \\widehat{\\epsilon}\\) would be nonzero due to the constant; only by multiplying by \\(\\epsilon_i=0\\) would each element equal zero, and then the sum must be zero."
+  },
+  {
+    "objectID": "bivariate24.html#property-3",
+    "href": "bivariate24.html#property-3",
+    "title": "The Bivariate Model",
+    "section": "Property 3",
+    "text": "Property 3\n\n\n\n\n\n\nProposition\n\n\n\nThe mean of the residuals is zero.\nIf the sum of the residuals is zero, that sum divided by \\(N\\) must also be zero."
+  },
+  {
+    "objectID": "bivariate24.html#property-4",
+    "href": "bivariate24.html#property-4",
+    "title": "The Bivariate Model",
+    "section": "Property 4",
+    "text": "Property 4\n\n\n\n\n\n\nProposition\n\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{mutliplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it.\n\n\nNote that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step, for next week, is to make a set of assumptions regarding the error term in order to facilitate statements about \\(\\widehat{\\beta}\\), and inferences about those estimates."
+  },
+  {
+    "objectID": "bivariate24.html#linear-predictions",
+    "href": "bivariate24.html#linear-predictions",
+    "title": "The Bivariate Model",
+    "section": "",
+    "text": "The predicted points that form the line are \\(\\widehat{y_{i}}\\)\n\\[\\widehat{y_{i}}=\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{1,i}\\]\n\\(\\widehat{y_{i}}\\) is the sum of the \\(\\beta\\)s multiplied by each value of the appropriate \\(X_i\\), for \\(i=1 \\ldots N\\).\n\\(\\widehat{y_{i}}\\) is referred to as the “linear prediction” or as \\(x\\hat{\\beta}\\)."
+  },
+  {
+    "objectID": "bivariate24.html#residuals",
+    "href": "bivariate24.html#residuals",
+    "title": "The Bivariate Model",
+    "section": "",
+    "text": "The differences between those predicted points, \\(\\widehat{y_{i}}\\) and the observed values \\(y_i\\) are:\n\\[\n\\begin{align}\n  \\widehat{u} = y_{i}-\\widehat{y_{i}} \\\\\n= y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{1,i}\\\\\n= y_{i}-\\mathbf{x_i\\widehat{\\beta}}  \\nonumber\n\\end{align}\n\\]\nThese are the residuals, \\(\\widehat{u}\\) - the observed measure of the unobserved disturbances, \\(\\epsilon\\)."
+  },
+  {
+    "objectID": "bivariate24.html#in-matrix-notation",
+    "href": "bivariate24.html#in-matrix-notation",
+    "title": "The Bivariate Model",
+    "section": "",
+    "text": "Restating in matrix notation:\n\\[\n\\begin{align}\ny_{i} = \\mathbf{X_i}  \\beta_{k}  +\\varepsilon_i \\nonumber \\\\\n\\widehat{y_{i}}= \\mathbf{X_i} \\widehat{\\beta_{k}}   \\nonumber \\\\\n\\widehat{u_{i}} = y_i - \\mathbf{X_i} \\beta_k  \\nonumber \\\\\n\\widehat{u_i} = y_i - \\widehat{y_{i}}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#the-equation",
+    "href": "bivariate24.html#the-equation",
+    "title": "The Bivariate Model",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\left[\n\\begin{matrix}\n  y_1 \\\\\n  y_2\\\\\n  y_3  \\\\\n  \\vdots \\\\\n  y_n    \\nonumber\n\\end{matrix}  \\right]\n= \\left[\n\\begin{matrix}\n  1& X_{1,2} & X_{1,3} & \\cdots & X_{1,k} \\\\\n  1 & X_{2,2} & X_{2,3} &\\cdots & X_{2,k} \\\\\n  1 & X_{3,2} & X_{3,3} &\\cdots & X_{3,k} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  1 & X_{n,2} & X_{n,3} & \\cdots & X_{n,k}  \\nonumber\n\\end{matrix}  \\right]\n\\left[\n\\begin{matrix}\n  \\beta_1 \\\\\n  \\beta_2\\\\\n  \\beta_3  \\\\\n  \\vdots \\\\\n  \\beta_k    \\nonumber\n\\end{matrix}  \\right]\n+\n\\left[\n\\begin{matrix}\n  \\epsilon_1 \\\\\n  \\epsilon_2\\\\\n  \\epsilon_3  \\\\\n  \\vdots \\\\\n  \\epsilon_n    \\nonumber\n\\end{matrix}  \\right]\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#mathbfxx",
+    "href": "bivariate24.html#mathbfxx",
+    "title": "The Bivariate Model",
+    "section": "\\(\\mathbf{X'X}\\)",
+    "text": "\\(\\mathbf{X'X}\\)\n\\[\n\\mathbf{X'X}= \\left[\n\\begin{matrix}\n  N& \\sum X_{2,i} & \\sum X_{3,i} & \\cdots & \\sum X_{k,i} \\\\\n  \\sum X_{2,i}&\\sum X_{2,2}^{2} & \\sum X_{2,i} X_{3,i} &\\cdots & \\sum X_{2,i}X_{k,i} \\\\\n  \\sum X_{3,i} & \\sum X_{3,i}X_{2,i}& \\sum X_{3,i}^{2} &\\cdots & \\sum X_{3,i}X_{k,i} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  \\sum X_{k,i} & \\sum X_{k,i}X_{2,i} & \\sum X_{k,i}X_{3,i} & \\cdots & \\sum X_{k,i}^{2}  \\nonumber\n\\end{matrix}  \\right]\n\\]\nIn \\(\\mathbf{X'X}\\), the main diagonal is the sums of squares and the offdiagonals are the cross-products."
+  },
+  {
+    "objectID": "bivariate24.html#the-components",
+    "href": "bivariate24.html#the-components",
+    "title": "The Bivariate Model",
+    "section": "The components",
+    "text": "The components\n\\[\n\\left[\n\\begin{matrix}\n  y_1 \\\\\n  y_2\\\\\n  y_3  \\\\\n  \\vdots \\\\\n  y_n    \\nonumber\n\\end{matrix}  \\right]\n= \\left[\n\\begin{matrix}\n  1& X_{1,2} & X_{1,3} & \\cdots & X_{1,k} \\\\\n  1 & X_{2,2} & X_{2,3} &\\cdots & X_{2,k} \\\\\n  1 & X_{3,2} & X_{3,3} &\\cdots & X_{3,k} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  1 & X_{n,2} & X_{n,3} & \\cdots & X_{n,k}  \\nonumber\n\\end{matrix}  \\right]\n\\left[\n\\begin{matrix}\n  \\beta_1 \\\\\n  \\beta_2\\\\\n  \\beta_3  \\\\\n  \\vdots \\\\\n  \\beta_k    \\nonumber\n\\end{matrix}  \\right]\n+\n\\left[\n\\begin{matrix}\n  \\epsilon_1 \\\\\n  \\epsilon_2\\\\\n  \\epsilon_3  \\\\\n  \\vdots \\\\\n  \\epsilon_n    \\nonumber\n\\end{matrix}  \\right]\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#components---covariation-mathbfxx",
+    "href": "bivariate24.html#components---covariation-mathbfxx",
+    "title": "The Bivariate Model",
+    "section": "Components - Covariation \\(\\mathbf{X'X}\\)",
+    "text": "Components - Covariation \\(\\mathbf{X'X}\\)\n\\[\n\\mathbf{X'X}= \\left[\n\\begin{matrix}\n  N& \\sum X_{2,i} & \\sum X_{3,i} & \\cdots & \\sum X_{k,i} \\\\\n  \\sum X_{2,i}&\\sum X_{2,2}^{2} & \\sum X_{2,i} X_{3,i} &\\cdots & \\sum X_{2,i}X_{k,i} \\\\\n  \\sum X_{3,i} & \\sum X_{3,i}X_{2,i}& \\sum X_{3,i}^{2} &\\cdots & \\sum X_{3,i}X_{k,i} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  \\sum X_{k,i} & \\sum X_{k,i}X_{2,i} & \\sum X_{k,i}X_{3,i} & \\cdots & \\sum X_{k,i}^{2}  \\nonumber\n\\end{matrix}  \\right]\n\\]\nIn \\(\\mathbf{X'X}\\), the main diagonal is the sums of squares and the offdiagonals are the cross-products."
+  },
+  {
+    "objectID": "bivariate24.html#components---covariation-mathbfxy",
+    "href": "bivariate24.html#components---covariation-mathbfxy",
+    "title": "The Bivariate Model",
+    "section": "Components - Covariation \\(\\mathbf{X'y}\\)",
+    "text": "Components - Covariation \\(\\mathbf{X'y}\\)\n\\[\n\\mathbf{X'y}= \\left[\n\\begin{matrix}\n\\sum Y_{i}\\\\\n\\sum X_{2,i}Y_{i}\\\\\n\\sum X_{3,i}Y_{i}\\\\\n\\vdots \\\\\n\\sum X_{k,i}Y_{i} \\nonumber\n\\end{matrix}  \\right]\n\\]\nWhen we compute \\(\\widehat{\\beta}\\), \\(\\mathbf{X'y}\\) is the covariation of \\(X\\) and \\(Y\\), and we pre-multiply by the inverse of \\(\\mathbf{(X'X)^{-1}}\\) to control for the relationship between \\(X_{1}\\), \\(X_{2}\\), etc."
+  },
+  {
+    "objectID": "bivariate24.html#ols-matrix-derivation",
+    "href": "bivariate24.html#ols-matrix-derivation",
+    "title": "The Bivariate Model",
+    "section": "OLS matrix derivation",
+    "text": "OLS matrix derivation\nNow that we’ve seen all the algebra and what the data matrix looks like, let’s revisit the derivation of \\(\\beta\\), beginning with the estimating equation:\n\\[\n\\mathbf{y}={\\mathbf X{\\widehat{\\beta}}}+\\widehat{\\mathbf{\\epsilon}} \\nonumber\n\\]\nand solve for \\(\\beta\\) by minimizing the sum of the squared errors:\n\\[\n\\begin{align}\n\\sum\\limits_{i=1}^{n} \\epsilon^2= \\widehat{\\epsilon}'\\widehat{\\epsilon} \\nonumber \\\\  \\nonumber \\\\\n= (\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})'(\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\mathbf{y}'\\mathbf{X}\\widehat{\\beta}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-2\\widehat{\\beta}'\\mathbf{X'y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-matrix-derivation-1",
+    "href": "bivariate24.html#ols-matrix-derivation-1",
+    "title": "The Bivariate Model",
+    "section": "OLS matrix derivation",
+    "text": "OLS matrix derivation\nDifferentiating with respect to \\(\\widehat{\\beta}\\), and setting equal to zero,\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{\\epsilon}'\\widehat{\\epsilon}}}{\\partial{\\widehat{\\beta}}} = -2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X}'\\mathbf{X}\\widehat{\\beta} \\nonumber \\\\  \\nonumber \\\\\n-2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X'X}\\widehat{\\beta}=0  \\nonumber \\\\  \\nonumber \\\\\n\\mathbf{X'X}\\widehat{\\beta}=\\mathbf{X'y}  \\nonumber \\\\  \\nonumber \\\\\n(\\mathbf{X'X})^{-1}\\mathbf{X'X}\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}   \\nonumber \\\\  \\nonumber \\\\\n\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}  \\nonumber\n\\end{align}\n\\]"
   }
 ]

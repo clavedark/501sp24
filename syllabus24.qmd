@@ -20,39 +20,38 @@ library(pander)
 ```
 
 <!-- ::: {.grid .course-details .course-details-smaller} -->
+
 <!-- ::: g-col-6 -->
 
-::: {layout-ncol=2}
+::: {layout-ncol="2"}
 ### Instructor
 
-- {{< fa user >}} &nbsp; [{{< var instructor.name >}}]({{< var instructor.url >}})
--   {{< fa university >}} &nbsp; {{< var instructor.office >}}
--   {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
--   {{< fa brands github >}} &nbsp; [{{< var instructor.gitname >}}]({{< var instructor.github >}})
+-   {{< fa user >}}   [{{< var instructor.name >}}](%7B%7B%3C%20var%20instructor.url%20%3E%7D%7D)
+-   {{< fa university >}}   {{< var instructor.office >}}
+-   {{< fa envelope >}}   <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
+-   {{< fa brands github >}}   [{{< var instructor.gitname >}}](%7B%7B%3C%20var%20instructor.github%20%3E%7D%7D)
+- office hours: M 1:30-3:30pm
 
 ### Course details
 
--   {{< fa calendar-alt >}} &nbsp; {{< var course.semester >}}
--   {{< fa calendar >}}  &nbsp; {{< var course.day >}}
--   {{< fa clock >}} &nbsp; {{< var course.time >}}
--   {{< fa globe >}} &nbsp; {{< var course.location >}}
-
+-   {{< fa calendar-alt >}}   {{< var course.semester >}}
+-   {{< fa calendar >}}   {{< var course.day >}}
+-   {{< fa clock >}}   {{< var course.time >}}
+-   {{< fa globe >}}   {{< var course.location >}}
 :::
 
-::: {layout-ncol=2}
+::: {layout-ncol="2"}
 ### TA
 
-- {{< fa user >}} &nbsp; [{{< var instructor.TA >}}]({{< var instructor.taurl >}})
--   {{< fa envelope >}} &nbsp; <a href="mailto:{{< var instructor.taemail >}}">{{< var instructor.taemail >}}</a>
-
+-   {{< fa user >}}   [{{< var instructor.TA >}}](%7B%7B%3C%20var%20instructor.taurl%20%3E%7D%7D)
+-   {{< fa envelope >}}   <a href="mailto:{{< var instructor.taemail >}}">{{< var instructor.taemail >}}</a>
 
 ### Lab
 
--   {{< fa calendar >}} &nbsp; {{< var course.labday >}}
--   {{< fa clock >}} &nbsp; {{< var course.labtime >}}
--   {{< fa globe >}} &nbsp; {{< var course.lablocation >}}
+-   {{< fa calendar >}}   {{< var course.labday >}}
+-   {{< fa clock >}}   {{< var course.labtime >}}
+-   {{< fa globe >}}   {{< var course.lablocation >}}
 :::
-
 
 ## Seminar Description
 
@@ -80,9 +79,9 @@ The book for the class is:
 
 -   Wooldridge, J.M. 2013. *Introductory Econometrics*. 5th edition, South-Western/Cengage. ISBN 978-1-111-53104-1.
 
-I'm assigning an older edition of Wooldridge (the 5th) so cheaper copies are easier to come by. If you choose an edition other than that, you'll need to reconcile chapters, etc. Also, be warned that the cheaper international edition (paperback) is alleged to differ in substantial ways. 
+I'm assigning an older edition of Wooldridge (the 5th) so cheaper copies are easier to come by. If you choose an edition other than that, you'll need to reconcile chapters, etc. Also, be warned that the cheaper international edition (paperback) is alleged to differ in substantial ways.
 
-In addition, I'll assign a small number of articles over the course of the term. 
+In addition, I'll assign a small number of articles over the course of the term.
 
 ## This is the most important section of the syllabus
 
@@ -218,4 +217,4 @@ Week 16, 1 May -- **Causal Inference**
 
 -   TBA
 
-# References {-}
+# References {.unnumbered}

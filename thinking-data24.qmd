@@ -1,0 +1,327 @@
+---
+title: "Thinking About Data"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: tdata.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+</style>
+
+
+<!-- # Thinking about data -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) #read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+
+mm <-read.csv("/Users/dave/Documents/2023/PITF/slides/mmALL_073120_csv.csv")
+tl <- read_dta("/Users/dave/Documents/2023/PITF/slides/Meng_exec_constraints_updated.dta")
+polity <- read_dta("/Users/dave/Documents/2023/PITF/slides/polity5.dta")
+
+
+```
+
+
+
+## Get to know your data, explore etc
+
+::: panel-tabset
+## Anscombe's Quartet
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+# anscombes quartet 
+longanscombe <- anscombe %>%
+
+pivot_longer(cols = everything(), #pivot all the columns
+             cols_vary = "slowest", #keep the datasets together 
+              names_to = c(".value", "set"), #new var names; .value=stem of vars
+              names_pattern = "(.)(.)") #to extract var names 
+
+B <- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))
+for (i in longanscombe$set) {
+    m <- lm(y ~ x, data=longanscombe %>% filter(set==i))
+    B[i:i,] <- data.frame(i, coef(m)[1], coef(m)[2])
+}
+
+
+kable(
+  list(B, anscombe),
+  caption="Anscombe's Quartet and Coefficients",
+  booktabs = TRUE,
+  valign = 't',
+  row.names = FALSE,
+)
+
+```
+
+## Anscombe's Quartet Viz
+
+```{r message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+ggplot(longanscombe, aes(x = x, y = y)) +
+  geom_point() + 
+  facet_wrap(~set) +
+  geom_smooth(method = "lm", se = FALSE, color="red")
+
+```
+:::
+
+
+        
+## Data Generating Process
+        
+-   What produced the data we observe?
+    - political process, actors, etc. 
+    - are those actors purposeful wrt the observed data?
+    - data collector; choices, biases, mistakes.
+
+## Data Generating Process
+
+-   Why do we observe the data we see and not the data we don't?
+    + existence is not randomly determined.
+    + research questions are usually about things that happen, not things that do not or cannot. 
+    + reporting itself is a political process.
+    + reporting is shaped by resources 
+
+
+
+## A Terrible Map
+
+![](terriblemap.png)
+
+---
+
+## War outcomes 
+
+| Outcome | Autocrat | Democrat | Total |
+|:------|:-----:|:------:|:------:|
+|Loser  |   42  |    9   |    51  |
+|Winner |    32 |   38   |   70  |
+| Total |    74     47   |   121 |
+
+From @Lake92, p. 31
+
+---
+
+## Observability
+
+![](selection.jpeg)
+
+
+---
+
+## Asking the right question
+
+![](squirrels.png)
+
+---
+
+
+## Data in the regression context
+
+-   matrix
+
+## Data
+
+Collections of alike units, their characteristics, features, choice sets, behaviors, etc.
+
+-   what are the units? In what ways are they heterogeneous?
+-   what units are included? Which ones are missing? Why?
+-   what do the variables measure?
+-   how are the variables measured?
+-   what observations are missing? Why?
+-   what is the sample; what is the population (sampling frame) from which the sample is drawn?
+
+## Types of variables
+
+Variables are either
+
+-   *discrete* - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual's sex; Polity score.
+
+-   *continuous* - observations can take on any real value between boundaries (sometimes \$-\infty, +\infty); infinitely divisible. E.g., household income, GDP per capita.
+
+## Discrete variables
+
+May be of two types or levels of measurement:
+
+-   *nominal* - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).
+
+-   *ordinal* - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, $\ldots$ 0, 1, $\ldots$ 9, 10 increasing in democracy; survey responses "Do you feel safe traveling abroad?" Not at all; sometimes; yes, completely.
+
+## Continuous variables
+
+Can be of two types (levels of measurement):
+
+-   *interval* - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.
+
+-   *ratio* - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there's no war.
+
+## Levels of measurement
+
+These four levels or measurement can be ordered by the amount of information a variable contains:
+
+-   nominal
+
+-   ordinal
+
+-   interval
+
+-   ratio
+
+We can turn higher levels to lower levels, but not the opposite - doing so sacrifices information.
+
+## Levels of Measurement and Models
+
+In general, the level of measurement of $y$ (so the type and amount of information in a variable) shapes what type of model is appropriate.
+
+-   discrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)
+
+-   continuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)
+
+------------------------------------------------------------------------
+
+## Describe these data
+
+::: panel-tabset
+### Alcohol consumption
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+gap <- read.csv("/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv")
+
+ggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +
+  geom_histogram(aes(y=..density..), colour="black", fill="white")+
+ geom_density(alpha=.2, fill="#FF6666") +
+   labs(x = "Liters of Booze", y= "Density", caption="Alcohol Consumption, Gapminder")+
+  ggtitle("Density - Alcohol Consumption per Adult (Liters)") 
+
+```
+
+### Normal PDF overlay
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+gap$nalc <- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))
+
+ggplot() + 
+  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour="black", fill="white") +
+  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill="#FF6666")  +
+ geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype="longdash", size=1)+
+   labs(x = "Liters of Booze", y= "Density", caption="Alcohol Consumption, Gapminder")+
+  ggtitle("Alcohol Consumption per Adult (Liters), Normal PDF")
+
+
+```
+:::
+
+------------------------------------------------------------------------
+
+## Describe these data
+
+### Polity Scores
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+polity <- polity %>% mutate(era = ifelse(year==1980, 1980, ifelse(year==2018, 2018, 0)))
+
+p <- ggplot(data=polity %>% filter(era!=0), aes(y=polity2), colour="black", fill="white")+
+  geom_bar()+
+  geom_text(aes(label = ..count..),stat="count", hjust = -.2, colour = "black", size=2.5, 
+            position = position_dodge(0.9)) 
+
+p + facet_wrap(era ~ .) +
+  labs(y = "Polity score", x= "Countries", caption="Polity project")+
+  ggtitle("Polity Scores, 1980 and 2018") 
+
+```
+
+## Overstaying Terms
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "expand for full code"
+
+#polity <- read_dta("/Users/dave/Documents/2023/PITF/slides/polity5.dta")
+overpolity <- left_join(tl, polity, by=c("ccode"="ccode", "year"="year"))
+
+success <- overpolity %>%
+  group_by(polity2) %>%
+  summarise_at(c("tl_success"), sum) %>%
+  filter(!is.na(polity2)) %>%
+  mutate(outcome = "succeeded") %>%
+  mutate(events=tl_success)%>%
+  subset(select = -c(tl_success))
+
+fail <- overpolity %>%
+  group_by(polity2) %>%
+  summarise_at(c("tl_failed"), sum) %>%
+  filter(!is.na(polity2))  %>%
+  mutate(outcome = "failed") %>%
+  mutate(events=tl_failed) %>%
+  subset(select = -c(tl_failed))
+
+tlpolity <- rbind(success, fail)
+
+ggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +
+  geom_bar(position="stack", stat="identity",)+
+  scale_fill_manual(values=c("dark green", "light green")) +
+  labs(x = "Polity", y= "Frequency", caption="Overstaying data (Versteeg et al. 2020)") +
+  ggtitle("Overstay Attempts over Regime") +
+  scale_x_continuous(breaks=seq(-10, 10, 1))
+
+
+```
+
+# References {.unnumbered}

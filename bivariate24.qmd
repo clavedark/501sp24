@@ -1,0 +1,661 @@
+---
+title: "The Bivariate Model"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: tdata.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+</style>
+
+
+<!-- # Thinking about data -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) #read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+
+
+
+```
+
+
+
+
+
+
+
+# Regression
+
+Regression in any form is based on the conditional expectation of $Y$ - the expected value of $Y$ is conditional on some $X$s, but we don't know the actual conditions or effects of those $X$s.  So we can write the regression like this:
+
+
+$$E[y|X_{1}, \ldots,X_{k}]= \beta_{0}+\beta_{1}X_{1}+\ldots+\beta_{k}X_{k}$$
+
+## Regression
+
+\noindent Let $y$ be a linear function of the $X$s and the unknowns,  $\beta$, so the following produces a straight line: 
+
+
+$$y_{i}=\beta_{0}+\beta_{1}X_{1} + \epsilon $$
+
+
+and $\epsilon$ are the errors or disturbances. 
+
+## Linear predictions
+
+The predicted points that form the line are $\widehat{y_{i}}$ 
+
+$$\widehat{y_{i}}=\widehat{\beta_{0}}+\widehat{\beta_{1}}X_{1,i}$$
+
+
+$\widehat{y_{i}}$ is the sum of the $\beta$s multiplied by each value of the appropriate $X_i$, for $i=1 \ldots N$. 
+
+**$\widehat{y_{i}}$ is  referred to as the "linear prediction" or as $x\hat{\beta}$.**
+
+## Residuals
+
+The differences between those predicted points, $\widehat{y_{i}}$ and the observed values  $y_i$ are:
+
+$$
+\begin{align}
+  \widehat{u} = y_{i}-\widehat{y_{i}} \\ 
+= y_{i}-\widehat{\beta_{0}}-\widehat{\beta_{1}}X_{1,i}\\
+= y_{i}-\mathbf{x_i\widehat{\beta}}  \nonumber 
+\end{align}
+$$
+
+These are the residuals, $\widehat{u}$ - the observed measure of the unobserved disturbances, $\epsilon$. 
+
+ 
+## In matrix notation 
+Restating in matrix notation: 
+
+$$
+\begin{align}
+y_{i} = \mathbf{X_i}  \beta_{k}  +\varepsilon_i \nonumber \\
+\widehat{y_{i}}= \mathbf{X_i} \widehat{\beta_{k}}   \nonumber \\
+\widehat{u_{i}} = y_i - \mathbf{X_i} \beta_k  \nonumber \\
+\widehat{u_i} = y_i - \widehat{y_{i}}  \nonumber
+\end{align}
+$$ 
+
+
+# Deriving the OLS estimator
+There are multiple ways to derive the least squares estimator - here are three.
+
+
+
+
+## Getting to OLS I
+$$
+y_{i}=\beta_{0}+\beta_{1}X_{1} + u \nonumber
+$$
+
+$\ldots$ over the sample, $N$, sum of squares of the deviations, $\widehat{S}$
+$$
+\widehat{S} = \sum \limits_{i=1}^{n} (y_{i}-\widehat{\beta_{0}}-\widehat{\beta_{1}}X_{i})^{2} \nonumber
+$$
+
+$$
+\widehat{S} = \sum \limits_{i=1}^{n} (y_{i}^{2}-2y_i \widehat{\beta_{0}}- 2y_i\widehat{\beta_{1}}X_{i} + \widehat{\beta_{0}}^{2}  \nonumber \\ 
++2\widehat{\beta_{0}}\widehat{\beta_{1}}X_{i} + \widehat{\beta_{1}^{2}}X_{i}^{2} ) \nonumber
+$$
+
+
+
+## OLS 1 
+To minimize $S$ with respect to $\beta_0$: 
+
+$$
+\frac{\partial{\widehat{S}}}{\partial{\widehat{\beta_{0}}}} = -2 \sum \limits_{i=1}^{n} (y_{i}-\widehat{\beta_{0}}-\widehat{\beta_{1}}X_{i})  \nonumber \\
+ = -2 \sum \limits_{i=1}^{n}  \hat{u_i} \nonumber
+$$ 
+
+And do the same with respect to $\beta_{1}$:
+
+$$
+\begin{align}
+\frac{\partial{\widehat{S}}}{\partial{\widehat{\beta_{1}}}} = -2 \sum \limits_{i=1}^{n} (y_{i}-\widehat{\beta_{0}}+\widehat{\beta_{1}}X_{i}) X_{i} \nonumber \\
+ =-2 \sum \limits_{i=1}^{n} (y_{i}-\widehat{\beta_{0}}-\widehat{\beta_{1}}X_{i})X_{i} \nonumber \\
+ = -2 \sum \limits_{i=1}^{n}  \hat{u_i}  X_i\nonumber 
+ \end{align}
+$$
+
+$\ldots$ illustrating explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:
+
+$$y_{i}-\widehat{\beta_{0}}+\widehat{\beta_{1}}X_{i}$$
+
+$$\mathbf{y} - \mathbf{X}\widehat{\beta}$$
+
+$$\mathbf{y} - \mathbf{\widehat{y}}$$
+
+$$\mathbf{\widehat{u}}$$  
+
+ 
+ 
+
+## OLS 1
+
+Substituting the unknowns back in, setting equal to zero, and rearranging gives the "normal equations":
+
+$$
+\begin{align}
+ \sum \limits_{i=1}^{n}y_{i}= n \beta_{0}+\beta_{1}\sum \limits_{i=1}^{n}X_{i} \nonumber \\
+\sum \limits_{i=1}^{n}X_{i}y_{i} = \beta_{0}\sum \limits_{i=1}^{n}X_{i}+\beta_{1}\sum \limits_{i=1}^{n}X_{i}^{2}\nonumber 
+\end{align}
+$$
+
+Solving, we get the estimating equations, here for $\widehat{\beta_0}$:
+
+$$ 
+\begin{align}
+\sum \limits_{i=1}^{n}y_{i}= n \widehat{\beta_{0}}+\widehat{\beta_{1}}\sum \limits_{i=1}^{n}X_{i} \nonumber \\
+n \widehat{\beta_0} =  \sum \limits_{i=1}^{n}y_{i} - \widehat{\beta_{1}}\sum \limits_{i=1}^{n}X_{i} \nonumber \\
+\widehat{\beta_0} =  \bar{y} - \widehat{\beta_{1}}\bar{X_{i}} \nonumber 
+\end{align}
+$$
+
+And here, for $\widehat{\beta_1}$:
+
+$$
+\begin{align}
+\sum \limits_{i=1}^{n}X_{i}y_{i} = \beta_{0}\sum \limits_{i=1}^{n}X_{i}+\beta_{1}\sum \limits_{i=1}^{n}X_{i}^{2}\nonumber \\
+\widehat{\beta_{1}} = \frac{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})(y_i-\bar{y})}{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})^2} \nonumber
+\end{align}
+$$
+ 
+
+Note the parts of  $\widehat{\beta_1}$:
+
+$$
+\widehat{\beta_{1}} = \frac{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})(y_i-\bar{y})}{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})^2} \nonumber
+$$
+
+The numerator is the covariance of $X$ and $y$ - the denominator is the variance of $X$. The estimated coefficient $\widehat{\beta_{1}}$ is the covariance of (X,y) weighted by the variance in $X$.  $\widehat{\beta_{1}}$ measures the estimated change in $y$ given a one-unit change in $X$. 
+
+
+
+## Getting to OLS II
+
+Here's another way to achieve the same thing, but for illustration purposes, a second time around might be useful.  Suppose in the population, we have the equation
+
+$$
+y= \beta_{0}+\beta_{1}x_{i} + e_{i} \nonumber 
+$$
+
+
+Assume the mean of $e$ to be zero and that $x$ and $e$ are uncorrelated, so
+
+$$E[e]=0 \nonumber
+$$
+
+$$
+Cov[x,e]=0 \nonumber
+$$
+
+
+
+
+\noindent This is equivalent to saying the expected value of the product of $x$ and $e$ is zero:
+
+$$E[x \cdot e]=0 \nonumber
+$$ 
+
+
+
+Now, let's solve the original population function for $e$:
+
+$$
+\begin{align}
+y=\beta_0 + \beta_1 x_i+ e_i \nonumber \\ \nonumber \\ 
+e_i = y-\beta_0 - \beta_1 x_i  \nonumber
+\end{align}
+$$
+
+
+
+\noindent and then restate these assumptions in terms of $y$: 
+
+
+$$
+\begin{align}
+E[y-\beta_0 - \beta_1 x_i]=0    \nonumber \\  \nonumber \\
+Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
+\end{align}
+$$
+
+where the first expects the mean of the disturbances to be zero and second expects the covariance of the $X$s and the disturbances to be zero.
+
+
+
+Since we want estimates of $\beta_0$ and $\beta_1$ for a sample (so $\hat{\beta_0}$ and $\hat{\beta_1}$), state these expectations with respect to a sample (of size $n$):
+
+$$
+\begin{align}
+\frac{\sum\limits_{i=1}^{n}(y-\hat{\beta_0} - \hat{\beta_1} x_i)}{n}=0   \nonumber \\ \nonumber \\
+\frac{\sum\limits_{i=1}^{n}x(y-\hat{\beta_0} - \hat{\beta_1} x_i)}{n}=0 \nonumber
+\end{align} 
+$$
+
+
+These first order conditions are equivalent to those in the derivation above where we solved them by taking the partial derivatives of the sum of squares with respect to the unknowns.  
+
+\noindent Recalling that the mean of a variable 
+
+$$\bar{y}=\frac{\sum\limits_{i=1}^{n}y_i}{n}$$
+
+we can write each of these in terms of the means of $x$ and $y$ - first, here is the mean zero statement (from above):
+
+$$
+\begin{align}
+\bar{y}-\hat{\beta_0} - \hat{\beta_1} \bar{x}=0 \nonumber \\ \nonumber \\
+\bar{y}=\hat{\beta_0} + \hat{\beta_1} \bar{x} \nonumber
+\end{align}
+$$
+
+and we can rearrange to solve for $\beta_0$
+
+$$
+\hat{\beta_0}= \bar{y}- \hat{\beta_1} \bar{x} \nonumber
+$$
+
+Now, rewrite the second assumption ($E[x \cdot e]=0$) in the same way:
+
+$$
+\begin{align}
+\sum \limits_{i=1}^{n}x_i[y_i-(\bar{y}-\hat{\beta_{1}}\bar{x})-\hat{\beta_{1}}x_{i}] =0  \nonumber \\ \text{and rearrange,} \nonumber \\ 
+\sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber
+\end{align}
+$$
+
+Because of the properties of the summation operator,
+
+$$
+\begin{align}
+\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) = \sum \limits_{i=1}^{n}(x_i-\bar{x})^2  \nonumber \\ \text{and} \nonumber \\
+\sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) = \sum \limits_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y}) \nonumber
+\end{align}
+$$
+
+
+
+So, substituting these equations into 
+
+$$
+\begin{align}
+\sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber
+\end{align}$$
+
+
+and solving for  $\hat{\beta}_1$ gives:
+
+$$
+\begin{align}
+\sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber \\
+\sum \limits_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})= \hat{\beta_{1}}\sum \limits_{i=1}^{n}(x_i-\bar{x})^2 \nonumber \\ 
+\hat{\beta_{1}}=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2} \nonumber
+\end{align}
+$$
+
+
+
+Why can we drop $n$ from these calculations?  Recall that
+
+$$
+\begin{align}
+\sum \limits_{i=1}^{n}\widehat{e_{i}} = 0 \nonumber \\
+\text{so} \nonumber \\
+\frac{\sum \limits_{i=1}^{n}\widehat{e_{i}}}{n} = 0 \nonumber
+\end{align}
+$$
+
+
+\noindent The same is true for the covariance assumption.
+
+
+
+
+## Getting to OLS III
+
+One more time, but now in matrix form:
+
+$$
+y_{i} = \mathbf{X_i}  \widehat{\beta}  +\epsilon \nonumber
+$$
+
+Skipping a lot of steps we'll cover soon, solve for 
+
+$$ \widehat{\beta} = \mathbf{X'X}^{-1} \mathbf{X'}y$$
+
+
+## The components
+
+$$
+\left[
+\begin{matrix}
+  y_1 \\
+  y_2\\
+  y_3  \\
+  \vdots \\
+  y_n    \nonumber
+\end{matrix}  \right] 
+= \left[
+\begin{matrix}
+  1& X_{1,2} & X_{1,3} & \cdots & X_{1,k} \\
+  1 & X_{2,2} & X_{2,3} &\cdots & X_{2,k} \\
+  1 & X_{3,2} & X_{3,3} &\cdots & X_{3,k} \\
+  \vdots & \vdots & \vdots & \vdots & \vdots \\
+  1 & X_{n,2} & X_{n,3} & \cdots & X_{n,k}  \nonumber
+\end{matrix}  \right] 
+\left[
+\begin{matrix}
+  \beta_1 \\
+  \beta_2\\
+  \beta_3  \\
+  \vdots \\
+  \beta_k    \nonumber
+\end{matrix}  \right] 
++
+\left[
+\begin{matrix}
+  \epsilon_1 \\
+  \epsilon_2\\
+  \epsilon_3  \\
+  \vdots \\
+  \epsilon_n    \nonumber
+\end{matrix}  \right] 
+$$
+
+
+##  Components - Covariation $\mathbf{X'X}$
+
+$$
+\mathbf{X'X}= \left[
+\begin{matrix}
+  N& \sum X_{2,i} & \sum X_{3,i} & \cdots & \sum X_{k,i} \\
+  \sum X_{2,i}&\sum X_{2,2}^{2} & \sum X_{2,i} X_{3,i} &\cdots & \sum X_{2,i}X_{k,i} \\
+  \sum X_{3,i} & \sum X_{3,i}X_{2,i}& \sum X_{3,i}^{2} &\cdots & \sum X_{3,i}X_{k,i} \\
+  \vdots & \vdots & \vdots & \vdots & \vdots \\
+  \sum X_{k,i} & \sum X_{k,i}X_{2,i} & \sum X_{k,i}X_{3,i} & \cdots & \sum X_{k,i}^{2}  \nonumber
+\end{matrix}  \right] 
+$$
+
+\noindent In $\mathbf{X'X}$, the main diagonal is the sums of squares and the offdiagonals are the cross-products. 
+ 
+
+## Components - Covariation $\mathbf{X'y}$
+
+$$
+\mathbf{X'y}= \left[
+\begin{matrix}
+\sum Y_{i}\\
+\sum X_{2,i}Y_{i}\\
+\sum X_{3,i}Y_{i}\\
+\vdots \\
+\sum X_{k,i}Y_{i} \nonumber
+\end{matrix}  \right] 
+$$
+
+\noindent When we compute $\widehat{\beta}$, $\mathbf{X'y}$ is the covariation of $X$ and $Y$, and we pre-multiply by the inverse of $\mathbf{(X'X)^{-1}}$ to control for the relationship between $X_{1}$, $X_{2}$, etc.
+
+
+
+
+## OLS matrix derivation
+
+Now that we've seen all the algebra and what the data matrix looks like, let's revisit the derivation of $\beta$, beginning with the estimating equation:
+
+$$
+\mathbf{y}={\mathbf X{\widehat{\beta}}}+\widehat{\mathbf{\epsilon}} \nonumber
+$$
+
+
+and solve for $\beta$ by minimizing the sum of the squared errors:
+
+
+$$
+\begin{align}
+\sum\limits_{i=1}^{n} \epsilon^2= \widehat{\epsilon}'\widehat{\epsilon} \nonumber \\  \nonumber \\
+= (\mathbf{y}-\mathbf{X}\widehat{\beta})'(\mathbf{y}-\mathbf{X}\widehat{\beta})  \nonumber \\  \nonumber \\
+=\mathbf{y'y}-\mathbf{y}'\mathbf{X}\widehat{\beta}-\widehat{\beta}'\mathbf{X}'\mathbf{y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta}  \nonumber \\  \nonumber \\
+=\mathbf{y'y}-\widehat{\beta}'\mathbf{X}'\mathbf{y}-\widehat{\beta}'\mathbf{X}'\mathbf{y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta}  \nonumber \\  \nonumber \\
+=\mathbf{y'y}-2\widehat{\beta}'\mathbf{X'y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta} \nonumber
+\end{align}
+$$
+
+
+
+## OLS matrix derivation
+
+Differentiating with respect to $\widehat{\beta}$, and setting equal to zero, 
+
+$$
+\begin{align}
+\frac{\partial{\widehat{\epsilon}'\widehat{\epsilon}}}{\partial{\widehat{\beta}}} = -2\mathbf{X}'\mathbf{y}+2\mathbf{X}'\mathbf{X}\widehat{\beta} \nonumber \\  \nonumber \\
+-2\mathbf{X}'\mathbf{y}+2\mathbf{X'X}\widehat{\beta}=0  \nonumber \\  \nonumber \\
+\mathbf{X'X}\widehat{\beta}=\mathbf{X'y}  \nonumber \\  \nonumber \\
+(\mathbf{X'X})^{-1}\mathbf{X'X}\widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}   \nonumber \\  \nonumber \\
+\widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}  \nonumber
+\end{align}
+$$
+
+## Variance-Covariance Matrix of $\epsilon$
+
+$$
+\begin{align}
+E(\mathbf{\epsilon\epsilon'})= E \left[
+\begin{array}{c}
+\epsilon_{1} \\
+\vdots \\
+\epsilon_{n}\\
+\end{array} \right] 
+E \left[
+\begin{array}{cccc}
+\epsilon_{1} & \cdots &\epsilon_{n}\\
+\end{array} \right] \\ ~\\
+= E
+\left[
+\begin{array}{cccc}
+\epsilon_{1}^{2} & \epsilon_{1}\epsilon_{2} &\cdots &\epsilon_{1}\epsilon_{n}\\
+\epsilon_{2}\epsilon_{1}& \epsilon_{2}^{2} &\cdots &\epsilon_{2}\epsilon_{n}\\
+\vdots&\vdots&\ddots& \vdots\\
+\epsilon_{n}\epsilon_{1} &\epsilon_{n}\epsilon_{2} &\cdots & \epsilon_{n}^{2}\\
+\end{array} \right]
+\end{align}
+$$
+
+## Variance-Covariance Matrix of $\epsilon$
+
+Because we assume constant variance and no serial correlation, we know
+
+$$ 
+E(\mathbf{\epsilon\epsilon'})=
+\left[
+\begin{array}{cccc}
+\sigma^{2} & 0 &\cdots &0\\
+0&\sigma^{2} &\cdots &0\\
+\vdots&\vdots&\ddots& \vdots\\
+0 &0 &\cdots & \sigma^{2}\\
+\end{array} \right]
+= \sigma^{2}
+\left[
+\begin{array}{cccc}
+1 & 0 &\cdots &0\\
+0&1 &\cdots &0\\
+\vdots&\vdots&\ddots& \vdots\\
+0 &0 &\cdots & 1\\
+\end{array} \right]
+= \sigma^{2} \mathbf{I}
+$$
+
+\noindent This is the variance-covariance matrix of the disturbances (var-cov(e)); it is symmetric, the main diagonal containing the variances, the off-diagonal containing the covariances.
+
+
+## Variance-Covariance of $\widehat{\beta}$
+
+The variance-covariance of the estimate, $\widehat{\beta}$ derives as follows:
+
+$$\widehat{\mathbf{\beta}}=\mathbf{(X'X)^{-1}} \mathbf{X'y}$$ 
+
+substituting $\mathbf{X\beta}+\epsilon$ for $\mathbf{y}$, we get 
+
+$$
+\begin{align}
+\widehat{\mathbf{\beta}}=\mathbf{(X'X)^{-1}} \mathbf{X'(X\beta + \epsilon)}  \nonumber \\ \nonumber \\
+= \mathbf{(X'X)^{-1}}\mathbf{X'X\beta}+\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber \\\nonumber \\
+=\beta+\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber \\ \nonumber \\
+\widehat{\mathbf{\beta}}-\beta=\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber 
+\end{align}
+$$
+
+## Variance-Covariance of $\widehat{\beta}$
+
+$$
+\begin{align}
+E[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)']  
+= E[(\mathbf{(X'X)^{-1}X'\epsilon})(\mathbf{(X'X)^{-1}X'\epsilon})']  \nonumber \\ \nonumber \\
+= E[\mathbf{(X'X)^{-1}X'\epsilon \epsilon'\mathbf{X(X'X)^{-1}}}]  \nonumber \\ \nonumber \\
+= \mathbf{(X'X)^{-1}X'} E(\epsilon \epsilon')\mathbf{X(X'X)^{-1}}  \nonumber \\ \nonumber \\
+= \mathbf{(X'X)^{-1}X'} \sigma^{2}\mathbf{I} \mathbf{X(X'X)^{-1}}   \nonumber \\ \nonumber \\
+= \sigma^{2} \mathbf{(X'X)^{-1}}  \nonumber 
+\end{align}
+$$
+
+
+## Variance-Covariance of $\widehat{\beta}$
+
+ 
+$$ E[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)'] = $$ $~$
+
+
+
+$$\left[
+\begin{array}{cccc}
+var(\beta_1) & cov(\beta_1,\beta_2) &\cdots &cov(\beta_1,\beta_k)\\
+cov(\beta_2,\beta_1)& var(\beta_2) &\cdots &cov(\beta_2,\beta_k)\\
+\vdots&\vdots&\ddots& \vdots\\
+cov(\beta_k,\beta_1) &cov(\beta_2,\beta_k) &\cdots & var(\beta_k)\\
+\end{array} \right] $$
+
+
+## Standard Errors of $\beta_k$ 
+
+$$
+\left[
+\begin{array}{cccc}
+\sqrt{var(\beta_1)} & cov(\beta_1,\beta_2) &\cdots &cov(\beta_1,\beta_k)\\
+cov(\beta_2,\beta_1)& \sqrt{var(\beta_2)} &\cdots &cov(\beta_2,\beta_k)\\
+\vdots&\vdots&\ddots& \vdots\\
+cov(\beta_k,\beta_1) &cov(\beta_2,\beta_k) &\cdots & \sqrt{var(\beta_k)}\\
+\end{array} \right] 
+$$
+
+
+# Properties of OLS Estimators
+
+Return to the normal equation:
+
+$$
+\begin{align}
+\widehat{\mathbf{\beta}}=\mathbf{(X'X)^{-1}} \mathbf{X'y} \\ \\
+\mathbf{(X'X)} \widehat{\mathbf{\beta}} = \mathbf{X'y} \nonumber \\ \\
+\mathbf{(X'X)} \widehat{\mathbf{\beta}}  = \mathbf{X'(X\widehat{\beta}} + \mathbf{\widehat{\epsilon}}) \nonumber \\ \\
+\mathbf{X' \widehat{\epsilon}}  = 0 \nonumber
+\end{align}
+$$
+
+
+
+## Property 1
+
+If $X' \widehat{\epsilon}  = 0$ holds, then the following properties exist:
+
+::: {.callout-note icon="false"}
+### Proposition
+
+Each $x$ variable (each column vector of $\mathbf{X}$) is uncorrelated with $\epsilon$. 
+
+:::
+
+
+## Property 2
+
+Assuming a constant in the matrix $\mathbf{X}$,
+
+::: {.callout-note icon="true"}
+### Proposition
+
+$\sum\limits_{i-1}^{n} \epsilon_i = 0$
+
+
+because each element of the matrix $X' \widehat{\epsilon}$ would be nonzero due to the constant; only by multiplying by $\epsilon_i=0$ would each element equal zero, and then the sum must be zero. 
+:::
+
+## Property 3
+
+::: {.callout-note icon="false"}
+### Proposition
+
+The mean of the residuals is zero.
+
+If the sum of the residuals is zero, that sum divided by $N$ must also be zero.
+:::
+
+## Property 4
+
+::: {.callout-note icon="false"}
+### Proposition
+The regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, 
+$\mathbf{X}$ and $y$.
+
+$$
+\begin{align}
+\epsilon = y - X\widehat{\beta} \nonumber \\ \\
+\text{mutliplying by} ~  N^{-1} \nonumber \\ \\
+\bar{\epsilon} = \bar{y} - \bar{X} \widehat{\beta} = 0  \nonumber 
+\end{align}
+$$
+
+$\bar{y} - \bar{X} \widehat{\beta}=0$ implies $\bar{y} = \bar{X} \widehat{\beta}$, and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane $\bar{y} - \bar{X} \widehat{\beta}$, the mean of the residuals equals zero, implying the regression line or hyperplane passes through it. 
+:::
+
+
+
+Note that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step, for next week, is to make a set of assumptions regarding the error term in order to facilitate statements about $\widehat{\beta}$, and inferences about those estimates. 
+
+
