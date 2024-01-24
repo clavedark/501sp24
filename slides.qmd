@@ -10,7 +10,7 @@ title: "Slides"
 
 [Probability basics](probability24.qmd)
 
-[Thinking about data](thinking-data24.qmd)
+[Thinking about data](thinkingdata24.qmd)
 
 ## Slide format
 
