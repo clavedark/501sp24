@@ -10,6 +10,8 @@ title: "Slides"
 
 [Probability basics](probability24.qmd)
 
+[Thinking about data](thinking-data24.qmd)
+
 ## Slide format
 
 [Course overview](overview24s.qmd)
