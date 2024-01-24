@@ -8,8 +8,8 @@ title-block-banner: TRUE
 bibliography: refs501.bib
 format: 
    html: default
-   # revealjs:
-   #   output-file: tdata.html
+   revealjs:
+     output-file: tdata.html
 editor: source
 embed-resources: true
 cache: true
@@ -32,7 +32,7 @@ tr:nth-child(odd) {
 
 <!-- # Thinking about data -->
 
-```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE, message=FALSE}
 options(htmltools.dir.version = FALSE)
 
 knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
@@ -76,6 +76,23 @@ pivot_longer(cols = everything(), #pivot all the columns
               names_to = c(".value", "set"), #new var names; .value=stem of vars
               names_pattern = "(.)(.)") #to extract var names 
 
+
+kable(
+  list(anscombe),
+  caption="Anscombe's Quartet",
+  booktabs = TRUE,
+  valign = 't',
+  row.names = FALSE,
+)
+
+```
+## Quartet $\beta$s 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
 B <- data.frame(set=numeric(0), b0=numeric(0), b1=numeric(0))
 for (i in longanscombe$set) {
     m <- lm(y ~ x, data=longanscombe %>% filter(set==i))
@@ -84,8 +101,8 @@ for (i in longanscombe$set) {
 
 
 kable(
-  list(B, anscombe),
-  caption="Anscombe's Quartet and Coefficients",
+  list(B),
+  caption="Anscombe's Quartet",
   booktabs = TRUE,
   valign = 't',
   row.names = FALSE,
@@ -93,7 +110,7 @@ kable(
 
 ```
 
-## Anscombe's Quartet Viz
+## Quartet Viz
 
 ```{r message=FALSE}
 #| echo: true
@@ -157,11 +174,6 @@ From @Lake92, p. 31
 ![](squirrels.png)
 
 ---
-
-
-## Data in the regression context
-
--   matrix
 
 ## Data
 
@@ -227,7 +239,7 @@ In general, the level of measurement of $y$ (so the type and amount of informati
 ::: panel-tabset
 ### Alcohol consumption
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 #| echo: true
 #| code-fold: true
 #| code-summary: "code"
@@ -244,7 +256,7 @@ ggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +
 
 ### Normal PDF overlay
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 #| echo: true
 #| code-fold: true
 #| code-summary: "code"
@@ -268,7 +280,7 @@ ggplot() +
 
 ### Polity Scores
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 #| echo: true
 #| code-fold: true
 #| code-summary: "code"
@@ -288,7 +300,7 @@ p + facet_wrap(era ~ .) +
 
 ## Overstaying Terms
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 #| echo: true
 #| code-fold: true
 #| code-summary: "expand for full code"
@@ -323,5 +335,16 @@ ggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +
 
 
 ```
+
+
+# Thinking about data
+
+- what are the units? Why? 
+- why are *these* variables in the data? Why not others?
+- what is purposely *not* in the data?
+- what in *incidentally* not in the data?
+- why were the data generated? Does that purpose fit your purpose? 
+- are the data dynamic or static over time? 
+
 
 # References {.unnumbered}
