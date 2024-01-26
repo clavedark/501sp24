@@ -53,7 +53,7 @@ Variables are either
 
 -   *discrete* - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual's sex; Polity score.
 
--   *continuous* - observations can take on any real value between boundaries (sometimes \$-\infty, +\infty); infinitely divisible. E.g., household income, GDP per capita.
+-   *continuous* - observations can take on any real value between boundaries (sometimes $-\infty, +\infty$); infinitely divisible. E.g., household income, GDP per capita.
 
 ## Discrete variables
 
