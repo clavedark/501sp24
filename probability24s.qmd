@@ -2,7 +2,7 @@
 title: "Basic probability"
 author: "Dave Clark"
 institute: "Binghamton University"
-date: today
+date: January 7, 2024
 date-format: long
 format: revealjs
 editor: visual
