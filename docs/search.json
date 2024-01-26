@@ -808,57 +808,57 @@
     "objectID": "probability24s.html#why-probability-distributions",
     "href": "probability24s.html#why-probability-distributions",
     "title": "Basic probability",
-    "section": "Why Probability Distributions?",
-    "text": "Why Probability Distributions?\nInferential models depend on probability distributions:\n\nestimation - is not deterministic, and so admits the unknown via disturbances \\(\\epsilon\\). We characterize those unknowns as following some probability distribution.\ninference - is essential because of the unknowns. Inference is possible because of the probability distribution characterizing the unknowns."
+    "section": "",
+    "text": "Inferential models depend on probability distributions:\n\nestimation - is not deterministic, and so admits the unknown via disturbances \\(\\epsilon\\). We characterize those unknowns as following some probability distribution.\ninference - is essential because of the unknowns. Inference is possible because of the probability distribution characterizing the unknowns."
   },
   {
     "objectID": "probability24s.html#probability-distributions",
     "href": "probability24s.html#probability-distributions",
     "title": "Basic probability",
-    "section": "Probability Distributions",
-    "text": "Probability Distributions\nProbability distributions permit statements about relative scale, frequency, and uncertainty.\n\\(~\\)\nIf the relation between \\(x\\) and \\(y\\) is measured by \\(\\widehat{\\beta}\\), we need to know whether or not to take \\(\\widehat{\\beta}\\) seriously - is it representative of the population relationship between \\(x\\) and \\(y\\)?"
+    "section": "",
+    "text": "Probability distributions permit statements about relative scale, frequency, and uncertainty.\n\\(~\\)\nIf the relation between \\(x\\) and \\(y\\) is measured by \\(\\widehat{\\beta}\\), we need to know whether or not to take \\(\\widehat{\\beta}\\) seriously - is it representative of the population relationship between \\(x\\) and \\(y\\)?"
   },
   {
     "objectID": "probability24s.html#things-we-want-to-know-about-x",
     "href": "probability24s.html#things-we-want-to-know-about-x",
     "title": "Basic probability",
-    "section": "Things we want to know about \\(x\\)",
-    "text": "Things we want to know about \\(x\\)\n\n\\(Pr(X = x)\\) - the probability of observing any particular value of \\(x\\); these together comprise the density.\n\\(Pr(X \\leq x)\\) - the probability of observing values up to and including \\(x\\) (or any range of \\(x\\)). (CDF)\ncentral tendency of \\(x\\) - mean, median, mode.\ndispersion - variance, or standard deviation (the average difference of any observation from the expected value)."
+    "section": "",
+    "text": "\\(Pr(X = x)\\) - the probability of observing any particular value of \\(x\\); these together comprise the density.\n\\(Pr(X \\leq x)\\) - the probability of observing values up to and including \\(x\\) (or any range of \\(x\\)). (CDF)\ncentral tendency of \\(x\\) - mean, median, mode.\ndispersion - variance, or standard deviation (the average difference of any observation from the expected value)."
   },
   {
     "objectID": "probability24s.html#types-of-variables",
     "href": "probability24s.html#types-of-variables",
     "title": "Basic probability",
-    "section": "Types of variables",
-    "text": "Types of variables\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
+    "section": "",
+    "text": "Variables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita."
   },
   {
     "objectID": "probability24s.html#discrete-variables",
     "href": "probability24s.html#discrete-variables",
     "title": "Basic probability",
-    "section": "Discrete variables",
-    "text": "Discrete variables\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
+    "section": "",
+    "text": "May be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely."
   },
   {
     "objectID": "probability24s.html#continuous-variables",
     "href": "probability24s.html#continuous-variables",
     "title": "Basic probability",
-    "section": "Continuous variables",
-    "text": "Continuous variables\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
+    "section": "",
+    "text": "Can be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war."
   },
   {
     "objectID": "probability24s.html#levels-of-measurement",
     "href": "probability24s.html#levels-of-measurement",
     "title": "Basic probability",
-    "section": "Levels of measurement",
-    "text": "Levels of measurement\nThese four levels or measurement can be ordered by the amount of information a variable contains, least to most:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
+    "section": "",
+    "text": "These four levels or measurement can be ordered by the amount of information a variable contains, least to most:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information."
   },
   {
     "objectID": "probability24s.html#levels-of-measurement-and-models",
     "href": "probability24s.html#levels-of-measurement-and-models",
     "title": "Basic probability",
-    "section": "Levels of Measurement and Models",
-    "text": "Levels of Measurement and Models\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
+    "section": "",
+    "text": "In general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
   },
   {
     "objectID": "probability24s.html#pdf-and-cdf",
@@ -872,14 +872,14 @@
     "href": "probability24s.html#pdf-density",
     "title": "Basic probability",
     "section": "PDF (Density)",
-    "text": "PDF (Density)\n\n\n\nDefinition\n\n\nThe Probability Density Function or PDF describes the probability a random variable takes on a particular value, and it does so for all values of that random variable."
+    "text": "PDF (Density)\n\n\n\n\n\n\nDefinition\n\n\n\nThe Probability Density Function or PDF describes the probability a random variable takes on a particular value, and it does so for all values of that random variable."
   },
   {
     "objectID": "probability24s.html#pdf-density-1",
     "href": "probability24s.html#pdf-density-1",
     "title": "Basic probability",
     "section": "PDF (Density)",
-    "text": "PDF (Density)\n\n\n\nExample\n\n\nSuppose we toss a fair coin 1 time and want to describe the probability distribution of the outcome, \\(Y\\) which is a random variable. The possible outcomes are heads and tails, and the probability of each is .5. This is the PDF because it describes the probabilities associated with all possible outcomes of \\(Y\\)."
+    "text": "PDF (Density)\n\n\n\n\n\n\nExample\n\n\n\nSuppose we toss a fair coin 1 time and want to describe the probability distribution of the outcome, \\(Y\\) which is a random variable. The possible outcomes are heads and tails, and the probability of each is .5. This is the PDF because it describes the probabilities associated with all possible outcomes of \\(Y\\)."
   },
   {
     "objectID": "probability24s.html#pdf-density-2",
@@ -900,7 +900,7 @@
     "href": "probability24s.html#cdf",
     "title": "Basic probability",
     "section": "CDF",
-    "text": "CDF\n\n\n\nDefinition\n\n\nFor a random variable, \\(Y\\), the probability \\(Y\\) is less than or equal to some particular value, \\(y\\) in the range of \\(Y\\) defines the cumulative density function.\nFor a continuous variable:\n\\[P(Y \\leq j) =\\int\\limits_{-\\infty}^{j} f(X)dX\\]\nFor a discrete variable:\n\\[P(Y \\leq j) = \\sum\\limits_{y\\leq j} P(Y=y)\n= 1- \\sum\\limits_{y&gt; j} P(Y=y)\\]"
+    "text": "CDF\n\n\n\n\n\n\nDefinition\n\n\n\nFor a random variable, \\(Y\\), the probability \\(Y\\) is less than or equal to some particular value, \\(y\\) in the range of \\(Y\\) defines the cumulative density function.\nFor a continuous variable:\n\\[P(Y \\leq j) =\\int\\limits_{-\\infty}^{j} f(X)dX\\]\nFor a discrete variable:\n\\[P(Y \\leq j) = \\sum\\limits_{y\\leq j} P(Y=y)\n= 1- \\sum\\limits_{y&gt; j} P(Y=y)\\]"
   },
   {
     "objectID": "probability24s.html#cdf-plots",
@@ -921,7 +921,7 @@
     "href": "probability24s.html#notation-1",
     "title": "Basic probability",
     "section": "Notation",
-    "text": "Notation\n\n\n\nExample\n\n\n\\(x\\) is distributed Normal, \\(N(\\mu, \\sigma^{2})\\):\n\\[F(x) = \\Phi_{\\mu, \\sigma^{2}}(x)  =    \\int  \\phi_{\\mu, \\sigma^{2}} (x) f(x)d(x) \\]\n\\[ f(x) = \\phi_{\\mu, \\sigma^{2}}(x) =\\frac{1}{\\sigma \\sqrt{2\\pi}} \\exp \\left( - \\frac{(x-\\mu)^{2}}{2 \\sigma^{2}} \\right) \\]\nNote the first derivative of the CDF is the PDF; the integral of the PDF is the CDF."
+    "text": "Notation\n\n\n\n\n\n\nExample\n\n\n\n\\(x\\) is distributed Normal, \\(N(\\mu, \\sigma^{2})\\):\n\\[F(x) = \\Phi_{\\mu, \\sigma^{2}}(x)  =    \\int  \\phi_{\\mu, \\sigma^{2}} (x) f(x)d(x) \\]\n\\[ f(x) = \\phi_{\\mu, \\sigma^{2}}(x) =\\frac{1}{\\sigma \\sqrt{2\\pi}} \\exp \\left( - \\frac{(x-\\mu)^{2}}{2 \\sigma^{2}} \\right) \\]\nNote the first derivative of the CDF is the PDF; the integral of the PDF is the CDF."
   },
   {
     "objectID": "probability24s.html#bernoulli",
@@ -970,14 +970,14 @@
     "href": "probability24s.html#binomial-3",
     "title": "Basic probability",
     "section": "Binomial",
-    "text": "Binomial\n\n\n\nExample\n\n\nSuppose we are going to toss a fair coin 4 times and want to know how many ways we can have heads come up twice.\n\\[\n\\frac{4!}{2!(4-2)!} = 6\n\\] Now, suppose we want to know the probability exactly 2 of those 4 tosses is heads.\n\\[\nPr(x=2) =\\frac{4!}{2!(4-2)!} (.5)^{2}(.5)^{2} \\\\\n= 6(0.0625) \\\\\n= 0.375\n\\]"
+    "text": "Binomial\n\n\n\n\n\n\nExample\n\n\n\nSuppose we are going to toss a fair coin 4 times and want to know how many ways we can have heads come up twice.\n\\[\n\\frac{4!}{2!(4-2)!} = 6\n\\] Now, suppose we want to know the probability exactly 2 of those 4 tosses is heads.\n\\[\nPr(x=2) =\\frac{4!}{2!(4-2)!} (.5)^{2}(.5)^{2} \\\\\n= 6(0.0625) \\\\\n= 0.375\n\\]"
   },
   {
     "objectID": "probability24s.html#binomial-4",
     "href": "probability24s.html#binomial-4",
     "title": "Basic probability",
     "section": "Binomial",
-    "text": "Binomial\n\n\n\nExample\n\n\nHere’s another example: suppose we flip 5 fair coins once each; what is the PDF of the number of heads we expect? In other words, what is the probability associated with each possible number of successes (heads), from 0 to 5?\n\\[\nP(x=0)  =  \\begin{pmatrix}\n    5  \\\\\n    0\n  \\end{pmatrix} \\cdot  (.5)^{0} \\cdot (.5) ^{5} = 1 \\cdot 1 \\cdot 0.03125=0.03125 \\\\\nP(x=1) =  \\begin{pmatrix}\n    5  \\\\\n    1\n  \\end{pmatrix} \\cdot (.5)^{1}\\cdot (.5)^{4} = 5 \\cdot .5 \\cdot 0.0625=0.15625 \\\\\nP(x=2) =  \\begin{pmatrix}\n    5  \\\\\n    2\n  \\end{pmatrix} \\cdot (.5)^{2}\\cdot (.5)^{3} = 10 \\cdot .25 \\cdot 0.125=0.3125 \\\\\n\\vdots \\vdots \\vdots\n\\]"
+    "text": "Binomial\n\n\n\n\n\n\nExample\n\n\n\nHere’s another example: suppose we flip 5 fair coins once each; what is the PDF of the number of heads we expect? In other words, what is the probability associated with each possible number of successes (heads), from 0 to 5?\n\\[\nP(x=0)  =  \\begin{pmatrix}\n    5  \\\\\n    0\n  \\end{pmatrix} \\cdot  (.5)^{0} \\cdot (.5) ^{5} = 1 \\cdot 1 \\cdot 0.03125=0.03125 \\\\\nP(x=1) =  \\begin{pmatrix}\n    5  \\\\\n    1\n  \\end{pmatrix} \\cdot (.5)^{1}\\cdot (.5)^{4} = 5 \\cdot .5 \\cdot 0.0625=0.15625 \\\\\nP(x=2) =  \\begin{pmatrix}\n    5  \\\\\n    2\n  \\end{pmatrix} \\cdot (.5)^{2}\\cdot (.5)^{3} = 10 \\cdot .25 \\cdot 0.125=0.3125 \\\\\n\\vdots \\vdots \\vdots\n\\]"
   },
   {
     "objectID": "probability24s.html#binomial-family-distributions",
@@ -998,7 +998,7 @@
     "href": "probability24s.html#normal-pdf",
     "title": "Basic probability",
     "section": "Normal PDF",
-    "text": "Normal PDF\nThe normal PDF: \\[\nPr(Y=y_{i})=\\frac{1}{\\sqrt{2 \\pi \\sigma^{2}}} exp \\left[\\frac{-(y_{i}-\\mu_{i})^{2}}{2\\sigma^{2}}\\right]\n\\]\nwhere two parameters, \\(\\mu\\) and \\(\\sigma^{2}\\) describe the location and shape of the distribution, the mean and variance respectively; we indicate a normally distributed variable and its parameters as\n\\[\nY \\sim \\text{Normal}(\\mu,\\sigma^{2}) \\nonumber\n\\]"
+    "text": "Normal PDF\nThe normal PDF: \\[\nPr(Y=y_{i})=\\frac{1}{\\sqrt{2 \\pi \\sigma^{2}}} exp \\left[\\frac{-(y_{i}-\\mu_{i})^{2}}{2\\sigma^{2}}\\right]\n\\]\nwhere two parameters, \\(\\mu\\) and \\(\\sigma^{2}\\) describe the location and shape of the distribution, the mean and variance respectively; we indicate a normally distributed variable and its parameters as\n\\[\nY \\sim \\text{Normal}(\\mu,\\sigma^{2}) \\nonumber\n\\]\n\n\nDescribe these dataNormal?\n\n\n\n\ncode\ngap &lt;- read.csv(\"/Users/dave/documents/teaching/501/2024/slides/L1-data/data/gapminder.csv\")\n\nggplot(gap, aes(x=alcohol_consumption_per_adult_15plus_litres)) +\n  geom_histogram(aes(y=..density..), colour=\"black\", fill=\"white\")+\n geom_density(alpha=.2, fill=\"#FF6666\") +\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Density - Alcohol Consumption per Adult (Liters)\") \n\n\n\n\n\n\n\n\n\n\n\n\n\ncode\ngap$nalc &lt;- dnorm(gap$alcohol_consumption_per_adult_15plus_litres, mean=mean(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE), sd=sd(gap$alcohol_consumption_per_adult_15plus_litres, na.rm = TRUE))\n\nggplot() + \n  geom_histogram(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=..density..), colour=\"black\", fill=\"white\") +\n  geom_density(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres), alpha=.2, fill=\"#FF6666\")  +\n geom_line(data=gap, aes(x=alcohol_consumption_per_adult_15plus_litres, y=nalc), linetype=\"longdash\", size=1)+\n   labs(x = \"Liters of Booze\", y= \"Density\", caption=\"Alcohol Consumption, Gapminder\")+\n  ggtitle(\"Alcohol Consumption per Adult (Liters), Normal PDF\")"
   },
   {
     "objectID": "probability24s.html#standard-normal",
@@ -2588,5 +2588,12 @@
     "title": "Thinking About Data",
     "section": "Overstaying Terms",
     "text": "Overstaying Terms\n\n\nexpand for full code\n#polity &lt;- read_dta(\"/Users/dave/Documents/2023/PITF/slides/polity5.dta\")\noverpolity &lt;- left_join(tl, polity, by=c(\"ccode\"=\"ccode\", \"year\"=\"year\"))\n\nsuccess &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_success\"), sum) %&gt;%\n  filter(!is.na(polity2)) %&gt;%\n  mutate(outcome = \"succeeded\") %&gt;%\n  mutate(events=tl_success)%&gt;%\n  subset(select = -c(tl_success))\n\nfail &lt;- overpolity %&gt;%\n  group_by(polity2) %&gt;%\n  summarise_at(c(\"tl_failed\"), sum) %&gt;%\n  filter(!is.na(polity2))  %&gt;%\n  mutate(outcome = \"failed\") %&gt;%\n  mutate(events=tl_failed) %&gt;%\n  subset(select = -c(tl_failed))\n\ntlpolity &lt;- rbind(success, fail)\n\nggplot(tlpolity, aes(fill=outcome, y=events, x=polity2)) +\n  geom_bar(position=\"stack\", stat=\"identity\",)+\n  scale_fill_manual(values=c(\"dark green\", \"light green\")) +\n  labs(x = \"Polity\", y= \"Frequency\", caption=\"Overstaying data (Versteeg et al. 2020)\") +\n  ggtitle(\"Overstay Attempts over Regime\") +\n  scale_x_continuous(breaks=seq(-10, 10, 1))"
+  },
+  {
+    "objectID": "probability24s.html",
+    "href": "probability24s.html",
+    "title": "Basic probability",
+    "section": "",
+    "text": "Inferential models depend on probability distributions:\n\nestimation - is not deterministic, and so admits the unknown via disturbances \\(\\epsilon\\). We characterize those unknowns as following some probability distribution.\ninference - is essential because of the unknowns. Inference is possible because of the probability distribution characterizing the unknowns.\n\n\n\n\nProbability distributions permit statements about relative scale, frequency, and uncertainty.\n\\(~\\)\nIf the relation between \\(x\\) and \\(y\\) is measured by \\(\\widehat{\\beta}\\), we need to know whether or not to take \\(\\widehat{\\beta}\\) seriously - is it representative of the population relationship between \\(x\\) and \\(y\\)?\n\n\n\n\n\\(Pr(X = x)\\) - the probability of observing any particular value of \\(x\\); these together comprise the density.\n\\(Pr(X \\leq x)\\) - the probability of observing values up to and including \\(x\\) (or any range of \\(x\\)). (CDF)\ncentral tendency of \\(x\\) - mean, median, mode.\ndispersion - variance, or standard deviation (the average difference of any observation from the expected value).\n\n\n\n\nVariables are either\n\ndiscrete - observations match to integers; all possible values are clearly distinguishable; not divisible. E.g., number of protests in DC this year; an individual’s sex; Polity score.\ncontinuous - observations can take on any real value between boundaries (sometimes $-, +); infinitely divisible. E.g., household income, GDP per capita.\n\n\n\n\nMay be of two types or levels of measurement:\n\nnominal - categories are distinct, but lack order. E.g., religion = Hindu, Muslim, Catholic, Protestent, Jewish. Binary variables are nominal, e.g., Sex = male (0), female (1); do you have blue eyes? yes (0), no (1).\nordinal - take on countable values, increasing/decreasing in some dimension. E.g., Polity -10, -9, \\(\\ldots\\) 0, 1, \\(\\ldots\\) 9, 10 increasing in democracy; survey responses “Do you feel safe traveling abroad?” Not at all; sometimes; yes, completely.\n\n\n\n\nCan be of two types (levels of measurement):\n\ninterval - 1 unit increase has same meaning across the scale (i.e., the intervals are the same); e.g., degrees Celsius or Fahrenheit.\nratio - intervals but also has a meaningful absolute zero; e.g., weight in pounds; zero lbs indicates the absence of weight; Venmo balance = zero, means actually no money; degrees Kelvin. Duration of a war in days - zero days means there’s no war.\n\n\n\n\nThese four levels or measurement can be ordered by the amount of information a variable contains, least to most:\n\nnominal\nordinal\ninterval\nratio\n\nWe can turn higher levels to lower levels, but not the opposite - doing so sacrifices information.\n\n\n\nIn general, the level of measurement of \\(y\\) (so the type and amount of information in a variable) shapes what type of model is appropriate.\n\ndiscrete variables usually require statistics/models in the Binomial family (for our purposes, mostly MLE models like the Logit.)\ncontinuous variables usually require statistics/models in the Normal/Gaussian family (for our purposes, mostly OLS models like the linear regression.)"
   }
 ]

@@ -118,7 +118,7 @@ The Probability Density Function or PDF describes the probability a random varia
 ## PDF (Density)
 
 ::: {.callout-note icon="false"}
-### Example
+### Example 
 
 Suppose we toss a fair coin 1 time and want to describe the probability distribution of the outcome, $Y$ which is a random variable. The possible outcomes are heads and tails, and the probability of each is .5. This is the PDF because it describes the probabilities associated with all possible outcomes of $Y$.
 :::
