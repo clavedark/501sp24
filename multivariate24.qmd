@@ -1,0 +1,359 @@
+---
+title: "The Multivariate Model"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   #  revealjs:
+   #    output-file: tdata.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+
+<!-- #  Thinking about data -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+
+
+
+```
+
+
+
+
+#  The Multivariate Model
+
+The key issue in the multivariate regression is *statistical control* - our effort to mimic experimental conditions. 
+
+
+
+#  Experimental Control
+
+In an experiment, the research randomizes on all variables except the variable of interest (the treatment). This means the sample and all conditions the subjects in the sample face are random, or are explicitly fixed by the researcher. For example, in a diet pill study, the sample will be randomized with respect to demographics, health, weight, etc. The subjects' diets during the study will be fixed or controlled by the researcher so they all eat the same. The lone exception will the administration of the diet pill - the treatment group will get the pill, the control group will get a placebo. 
+
+
+
+
+#  In the regression setting
+
+
+One of the reasons we use models like the linear regression is to mimic the conditions of an experiment. The model allows us to isolate the effect of $x_1$ while accounting for the independent effect of $x_2$ on $y$. So we're able to say ``the effect of $x_1$, controlling for the influence of $x_2$ is $\beta_1$.'' 
+
+
+
+
+
+#  Holding constant at mean
+
+This linear regression :
+
+$$y_i = \hat{\beta_0} + \hat{\beta_1}x_1 + \hat{\beta_2} x_2 + \epsilon_i$$
+
+is equivalent to this one :: 
+
+$$y_i = \widehat{\beta_0} + \widehat{\beta_1}x_1 + \widehat{\beta_2^*}( x_2-\bar{x_2}) + \epsilon_i$$
+
+Only the constant shifts (think back to linear transformations; $\widehat{\beta_0}$ shifts by a factor of $-k\widehat{\beta}$).
+
+
+# Constant at mean
+
+What this shows is that even without transforming $x_2$, we are holding its effect constant at its mean while we estimate the effect of $x_1$. 
+
+
+
+
+# Conditional Means
+
+Let $D_1$ be a binary variable:
+
+$$y_i = \hat{\beta_0} + \hat{\beta_1}D_1 + \hat{\beta_2} x_1 + \epsilon_i$$
+
+The partial effect of $D_1$ measures the difference between the means for $D_1=0,1$, given the mean effect of $x_1$. 
+
+
+
+Suppose we estimate a model predicting anti-government protests, and we think the main predictor will be liberal political institutions, controlling for  per capita wealth. We think as liberalism increases, so do protests; they decrease with authoritarianism. So the regression looks like this: 
+
+$$\text{Protests}_i = \hat{\beta_0} + \hat{\beta_1}\text{Politics}_i + \hat{\beta_2} \text{GDPpc}_i + \epsilon_i$$
+
+What is the effect of liberal political institutions controlling for GDP per capita? 
+
+
+
+When we ``control'' for a variable like GDP per capita, we are trying to evaluate two things: 
+
+
+-  the direct or immediate effect of institutions on protests -this is because liberalism might promote free assembly.
+-  the indirect of effect of institutions on GDP per capita, and then on protests - this is because liberalism might promote economic growth and development, and thereby influence protests.
+ 
+
+
+
+
+In our regression 
+
+$$\text{Protests}_i = \hat{\beta_0} + \hat{\beta_1}\text{Politics}_i + \hat{\beta_2} \text{GDPpc}_i + \epsilon_i$$
+
+
+this means  $\hat{\beta_1}$ is the effect of liberalism that does not go through GDP (or any other control variable).
+
+
+
+
+From our regression, 
+
+$$\text{Protests}_i = \hat{\beta_0} + \hat{\beta_1}\text{Politics}_i + \hat{\beta_2} \text{GDPpc}_i + \epsilon_i$$
+
+Political institutions influence GDP per capita:
+
+$$\text{GDPpc}_i = \hat{\gamma_0} + \hat{\gamma_1}\text{Politics}_i  + \upsilon_i$$
+
+Substituting, 
+
+$$\text{Protests}_i = \hat{\beta_0} + \hat{\beta_1}\text{Politics}_i +\hat{\beta_2}(\hat{\gamma_0} + \hat{\gamma_1}\text{Politics}_i  + \upsilon_i )+ \epsilon_i$$
+
+
+
+so, the partial effect of liberal institutions is
+
+$$\frac{\partial(protests)}{\partial(politics)} = \hat{\beta_1} $$
+
+The effect is partial because it excludes the effect of politics that runs through GDP per capita. Here's the total effect: 
+
+$$\frac{\partial(protests)}{\partial(politics)} = \hat{\beta_1} + \hat{\beta_2}\hat{\gamma_1}$$
+
+Notice that if liberalism has {\bf no effect} on GDP, so $\hat{\gamma_1}=0$, then there is no indirect effect and the partial and total effects are the same. 
+
+
+
+# Counterfactuals 
+
+Another way to think about statistical control is to think about counterfactuals we'd want to evaluate:
+
+-  democracy promotes protests; but what if the state is rich? 
+-  democracy promotes protests; but what if the state is poor? 
+
+
+# Randomization
+
+The intuition is the same as in the experimental ideal. In the experiment the control and treatment groups are randomized with respect to all things but the treatment itself. In the regression, we want observations randomized over dimensions like wealth (i.e., we have rich and poor, etc) and all other things except the treatment itself - liberal institutions. If it were possible, we might collect data on protests and GDP but for states that are otherwise exactly the same. 
+
+
+
+# Other ways to exert control
+
+Collecting data on protests and GDP for states that are otherwise exactly the same - this the foundation of what are called \alert{matching} methods. Matching is aimed at mimicking experimental design, exerting control via sampling. \alert{Synthetic control} is a related technique that estimates weights for the control so it more closely resembles the treatment group. 
+
+
+
+
+# Frisch-Waugh-Lovell Theorem
+
+In the linear least squares regression $y=\beta_0+\beta_1 x_1+\beta_2 x_2+\epsilon$ produces an estimate for $\hat{\beta_1}$ that is the same as the estimate of $\hat{\beta_1^*}$ produced by estimating the regression $y$ on $x_1$, saving the residuals  $\hat{r_1}$,  then regressing  $x_1$ on $x_2$, computing the residuals, $\hat{r_2}$, and then regressing  $\hat{r_1}$ on $\hat{r_2}$. 
+
+
+
+-  $\hat{r_1}$ measures the part of $y$ that is unrelated to   $x_1$.
+
+-  The regression $x_1=\beta_0+ \beta_2 x_2$ measures the overlapping (correlated) parts of $x_1$ and $x_2$.
+
+-  $\hat{r_2}$ measures the unrelated parts of $x_1$ and $x_2$, the part of $x_1$ unrelated to $x_2$.
+
+-  $\hat{r_1}$ measures the part of $x_2$ that is totally independent of $x_1$
+
+-  the regression $\hat{r_1}=\beta_0+ \beta_1^* \hat{r_2}$ estimates $\beta_1^*$ which measures the effect of the part of $x_1$ that is unrelated to $x_2$. 
+
+-  $\beta_1^*$ is the partial effect of $x_1$; we measured that *part* of $x_1$ using $\hat{r_1}$.
+
+
+
+# Regression Anatomy
+
+One final way to think about this is a variant on FWL called ``regression anatomy'' by Angrist and Pischke in their terrific book *Mostly Harmless Econometrics*. 
+
+
+
+# Anatomy
+
+In the bivariate case, the slope on $\beta_1$ is: 
+
+$$\beta_1 = \frac{cov(y_i, x_i)}{V(x_i)}$$
+
+
+ 
+In the multivariate case, the slope on $\beta_1$ is: 
+
+$$\beta_1 = \frac{cov(y_i, \tilde{x_{k,i}})}{V(\tilde{x_{k,i}}) }$$
+
+where $\tilde{x_{k,i}}$ refers to the residuals from the regression of $x_{k,i}$ on  $\mathbf{X}$, where  $X$ is all other right-side variables. 
+
+-  The residual from that regression measures the part of $x$ that is unrelated to $X$. 
+
+-  The estimate of $\beta_1$ then is the correlation of $y$ and the part of $x$ that is unrelated to $X$.
+
+-  Since $\tilde{x_{k,i}}$ is unrelated to $X$, its correlation to $y$ is purged of any part through $X$, and is therefore partial. 
+
+
+
+
+# Omitted Variable Bias
+
+In the population, the true regression is:
+
+$$y = \widehat{\beta_0} + \widehat{\beta_1}x_1 + \widehat{\beta_2}x_2 + \varepsilon $$
+
+In our sample, the regression we estimate is:
+
+$$y = \widehat{\beta_0} + \widehat{\beta_1}x_1 + \varepsilon $$
+
+So the model omits a variable.  What's the effect? 
+
+
+
+
+# Omitted Variable Bias
+
+
+-  In the bivariate regression, the estimate is $\widehat{\beta_1}$
+
+-  In the multivariate regression, the estimate is $\widetilde{\beta_1} = \widehat{\beta_1} + \widehat{\beta_2}\widetilde{\delta_1}$. That is, the estimate for $\widetilde{\beta_1}$ now accounts for the relationship of $x_1,x_2$, measured in $\widetilde{\delta_1}$. $\widetilde{\beta_1}$ now measures the partial effect of $x_1$ on $y$. 
+
+
+-  If we exclude $x_2$, we misestimate $\widehat{\beta_1}$ by $\pm \widehat{\beta_2}\widetilde{\delta_1}$
+
+
+![](omitted_bias.jpg)
+
+
+
+
+# Evaluating an Estimator
+
+What criteria make for a "good" estimator? 
+
+1. Unbiasedness: 
+
+-  Is the expected value of $\hat{\beta}$ equal to $\beta$? 
+-  How far away do we expect $\hat{\beta}$ to be from $\beta$?
+-  $E[\hat{\beta} - \beta]$
+-  The estimator for which this quantity is smallest is the least biased.
+
+Bias will always exist, but we want it to be as small as possible, and random (not systematic).
+
+2. Efficiency:
+
+-  Efficiency measures how close to the true $\beta$ we are {\it on average}.
+-  Efficiency describes the average size of bias; the average distance of $E[\hat{\beta} - \beta]$.
+-  This is about the size of the variance; large variance estimates will, on average, miss the true $\beta$ by a lot. Small variance estimators will miss the true $\beta$ by a little, on average.
+
+
+
+3. Consistency:
+ 
+-  Consistency can be thought of as large-sample-unbiasedness.
+-  $E[\hat{\beta} - \beta] \rightarrow$  as $N \rightarrow \infty$
+-  This is considerably less important to us than bias and efficiency. In part, this is due to the reality that our (non experimental) data are small samples in many cases. It's also true OLS has good small sample properties. 
+-  MLE does not have good small sample properties, and relies strongly on consistency. 
+
+
+
+#  Assumptions
+
+Under the following four assumptions, the OLS estimator $\hat{\beta}$ is an unbiased estimator of $\beta$: 
+
+
+-  Linear in parameters.
+-  Random Sampling.
+-  Zero Conditional Mean of Disturbances.
+-  No Perfect Collinearity.
+
+::: {.callout-note icon="false"}
+###  Theorem :Unbiasedness of OLS: 
+
+Under these four assumptions, OLS estimators are unbiased estimators of the population parameters: 
+
+$$
+E[{\widehat{\beta_{j}}]= \beta_{j} ~\forall ~ j} \nonumber
+$$
+:::
+
+
+#  OLS
+If the model also meets these two assumptions, then the OLS estimator has the smallest variance of all estimators:
+
+
+
+-  Homoskedastic disturbances;  $Var(u|x_1,x_2,\ldots,x_k)=\sigma^2$.
+
+-  Uncorrelated disturbances;  $cov(u_i,u_j|x_1,x_2,\ldots,x_k)=0$.
+
+ If Assumptions 1-6 are all met, then the model is BLUE and thus satisfies the Gauss-Markov Theorem.  Additionally, these assumptions provide us the first two moments of the sampling distribution for the $\hat{\beta}$s.  
+
+::: {.callout-note icon="false"}
+###  Theorem: Gauss Markov 
+
+Under these assumptions, the OLS estimator is unbiased and has the smallest variance among all linear unbiased estimators.
+
+
+:::
+
+#  OLS
+
+However, in order to talk precisely about the uncertainty surrounding the point estimates, we need to make one more assumption about the error term:
+
+
+
+-  The disturbances, $u_i$ are independent of the $X$s and are normally distributed: $u \sim N(0,\sigma^{2})$.
+
+
+
+# If assumptions fail $\ldots$
+
+-  sample is not random - bias.
+-  $E[u | X] \neq 0$ - endogeneity; bias and standard errors are too small.
+-  perfect collinearity - matrix is singular, regression fails.
+-  correlated $X$ variables (imperfect collinearity) - unbiased estimates, inefficient standard errors.
+-  errors are not identically distributed (heteroskedastic) -  inefficiency.
+-  errors are not independently distributed (correlated errors) - inefficiency.
+
+ 
+
+
+
+
