@@ -546,10 +546,17 @@ $$
 
 \noindent This is the variance-covariance matrix of the disturbances (var-cov(e)); it is symmetric, the main diagonal containing the variances, the off-diagonal containing the covariances.
 
-## Variance-Covariance Matrix of $\epsilon$
+## Aside on $\sigma^2$
 
-This matrix is important because it gives us our estimate of $\sigma^2$. This is important enough to merit its own slide.
+$\widehat{\sigma^2}$ is our estimate of the error variance. 
 
+$$\widehat{\sigma^2} = (u'u) \frac{1}{n-k-1}$$
+This is the sum squared error (inner product of the residuals) distributed across our degrees of freedom. You should see that small samples will have smaller denominators, so potentially larger error variance.
+
+## Average error
+
+$$\widehat{\sigma} = \sqrt{\widehat{\sigma^2}}$$
+The square root of $\widehat{\sigma^2}$ gives us the the *residual standard error* also called the *root mean squared error (RMSE)* - it is in the same metric as $y$, so is useful as an indicator of the average error in the regression. 
 
 ## Variance-Covariance of $\widehat{\beta}$
 
@@ -671,7 +678,7 @@ $\mathbf{X}$ and $y$.
 $$
 \begin{align}
 \epsilon = y - X\widehat{\beta} \nonumber \\ \\
-\text{mutliplying by} ~  N^{-1} \nonumber \\ \\
+\text{multiplying by} ~  N^{-1} \nonumber \\ \\
 \bar{\epsilon} = \bar{y} - \bar{X} \widehat{\beta} = 0  \nonumber 
 \end{align}
 $$

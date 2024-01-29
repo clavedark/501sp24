@@ -2391,7 +2391,7 @@
     "href": "bivariate24.html#property-4",
     "title": "The Bivariate Model",
     "section": "Property 4",
-    "text": "Property 4\n\n\n\n\n\n\nProposition\n\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{mutliplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it."
+    "text": "Property 4\n\n\n\n\n\n\nProposition\n\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{multiplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it."
   },
   {
     "objectID": "bivariate24.html#linear-predictions",
@@ -2769,7 +2769,7 @@
     "href": "bivariate24s.html#property-4",
     "title": "The Bivariate Model",
     "section": "Property 4",
-    "text": "Property 4\n\n\n\nProposition\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{mutliplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it."
+    "text": "Property 4\n\n\n\nProposition\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{multiplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it."
   },
   {
     "objectID": "bivariate24.html#derivation-i",
@@ -3106,5 +3106,33 @@
     "title": "The Bivariate Model",
     "section": "Variance-Covariance Matrix of \\(\\epsilon\\)",
     "text": "Variance-Covariance Matrix of \\(\\epsilon\\)\nThis matrix is important because it gives us our estimate of \\(\\sigma^2\\). This is important enough to merit its own slide."
+  },
+  {
+    "objectID": "bivariate24.html#aside-on-sigma2",
+    "href": "bivariate24.html#aside-on-sigma2",
+    "title": "The Bivariate Model",
+    "section": "Aside on \\(\\sigma^2\\)",
+    "text": "Aside on \\(\\sigma^2\\)\n\\(\\widehat{\\sigma^2}\\) is our estimate of the error variance.\n\\[\\widehat{\\sigma^2} = (u'u) \\frac{1}{n-k-1}\\] This is the sum squared error (inner product of the residuals) distributed across our degrees of freedom. You should see that small samples will have smaller denominators, so potentially larger error variance."
+  },
+  {
+    "objectID": "bivariate24.html#average-error",
+    "href": "bivariate24.html#average-error",
+    "title": "The Bivariate Model",
+    "section": "Average error",
+    "text": "Average error\n\\[\\widehat{\\sigma} = \\sqrt{\\widehat{\\sigma^2}}\\] The square root of \\(\\widehat{\\sigma^2}\\) gives us the the residual standard error also called the root mean squared error (RMSE) - it is in the same metric as \\(y\\), so is useful as an indicator of the average error in the regression."
+  },
+  {
+    "objectID": "bivariate24s.html#aside-on-sigma2",
+    "href": "bivariate24s.html#aside-on-sigma2",
+    "title": "The Bivariate Model",
+    "section": "Aside on \\(\\sigma^2\\)",
+    "text": "Aside on \\(\\sigma^2\\)\n\\(\\widehat{\\sigma^2}\\) is our estimate of the error variance.\n\\[\\widehat{\\sigma^2} = (u'u) \\frac{1}{n-k-1}\\] This is the sum squared error (inner product of the residuals) distributed across our degrees of freedom. You should see that small samples will have smaller denominators, so potentially larger error variance."
+  },
+  {
+    "objectID": "bivariate24s.html#average-error",
+    "href": "bivariate24s.html#average-error",
+    "title": "The Bivariate Model",
+    "section": "Average error",
+    "text": "Average error\n\\[\\widehat{\\sigma} = \\sqrt{\\widehat{\\sigma^2}}\\] The square root of \\(\\widehat{\\sigma^2}\\) gives us the the residual standard error also called the root mean squared error (RMSE) - it is in the same metric as \\(y\\), so is useful as an indicator of the average error in the regression."
   }
 ]

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Dave Clark">
-<meta name="dcterms.date" content="2024-01-28">
+<meta name="dcterms.date" content="2024-01-29">
 
 <title>PLSC 501 - Spring 2024 - The Bivariate Model</title>
 <style>
@@ -4626,7 +4626,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">January 28, 2024</p>
+        <p class="date">January 29, 2024</p>
       </div>
     </div>
     
@@ -4680,7 +4680,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
   <li><a href="#ols-matrix-derivation-2" id="toc-ols-matrix-derivation-2" class="nav-link" data-scroll-target="#ols-matrix-derivation-2">OLS matrix derivation</a></li>
   <li><a href="#variance-covariance-matrix-of-epsilon" id="toc-variance-covariance-matrix-of-epsilon" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-epsilon">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></a></li>
   <li><a href="#variance-covariance-matrix-of-epsilon-1" id="toc-variance-covariance-matrix-of-epsilon-1" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-epsilon-1">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></a></li>
-  <li><a href="#variance-covariance-matrix-of-epsilon-2" id="toc-variance-covariance-matrix-of-epsilon-2" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-epsilon-2">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></a></li>
+  <li><a href="#aside-on-sigma2" id="toc-aside-on-sigma2" class="nav-link" data-scroll-target="#aside-on-sigma2">Aside on <span class="math inline">\(\sigma^2\)</span></a></li>
+  <li><a href="#average-error" id="toc-average-error" class="nav-link" data-scroll-target="#average-error">Average error</a></li>
   <li><a href="#variance-covariance-of-widehatbeta" id="toc-variance-covariance-of-widehatbeta" class="nav-link" data-scroll-target="#variance-covariance-of-widehatbeta">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
   <li><a href="#variance-covariance-of-widehatbeta-1" id="toc-variance-covariance-of-widehatbeta-1" class="nav-link" data-scroll-target="#variance-covariance-of-widehatbeta-1">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
   <li><a href="#variance-covariance-of-widehatbeta-2" id="toc-variance-covariance-of-widehatbeta-2" class="nav-link" data-scroll-target="#variance-covariance-of-widehatbeta-2">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
@@ -5117,9 +5118,14 @@ E(\mathbf{\epsilon\epsilon&#39;})=
 \]</span></p>
 <p>This is the variance-covariance matrix of the disturbances (var-cov(e)); it is symmetric, the main diagonal containing the variances, the off-diagonal containing the covariances.</p>
 </section>
-<section id="variance-covariance-matrix-of-epsilon-2" class="level2">
-<h2 class="anchored" data-anchor-id="variance-covariance-matrix-of-epsilon-2">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></h2>
-<p>This matrix is important because it gives us our estimate of <span class="math inline">\(\sigma^2\)</span>. This is important enough to merit its own slide.</p>
+<section id="aside-on-sigma2" class="level2">
+<h2 class="anchored" data-anchor-id="aside-on-sigma2">Aside on <span class="math inline">\(\sigma^2\)</span></h2>
+<p><span class="math inline">\(\widehat{\sigma^2}\)</span> is our estimate of the error variance.</p>
+<p><span class="math display">\[\widehat{\sigma^2} = (u&#39;u) \frac{1}{n-k-1}\]</span> This is the sum squared error (inner product of the residuals) distributed across our degrees of freedom. You should see that small samples will have smaller denominators, so potentially larger error variance.</p>
+</section>
+<section id="average-error" class="level2">
+<h2 class="anchored" data-anchor-id="average-error">Average error</h2>
+<p><span class="math display">\[\widehat{\sigma} = \sqrt{\widehat{\sigma^2}}\]</span> The square root of <span class="math inline">\(\widehat{\sigma^2}\)</span> gives us the the <em>residual standard error</em> also called the <em>root mean squared error (RMSE)</em> - it is in the same metric as <span class="math inline">\(y\)</span>, so is useful as an indicator of the average error in the regression.</p>
 </section>
 <section id="variance-covariance-of-widehatbeta" class="level2">
 <h2 class="anchored" data-anchor-id="variance-covariance-of-widehatbeta">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></h2>
@@ -5251,7 +5257,7 @@ Proposition
 <p><span class="math display">\[
 \begin{align}
 \epsilon = y - X\widehat{\beta} \nonumber \\ \\
-\text{mutliplying by} ~  N^{-1} \nonumber \\ \\
+\text{multiplying by} ~  N^{-1} \nonumber \\ \\
 \bar{\epsilon} = \bar{y} - \bar{X} \widehat{\beta} = 0  \nonumber
 \end{align}
 \]</span></p>
