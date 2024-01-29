@@ -8,8 +8,8 @@ title-block-banner: TRUE
 bibliography: refs501.bib
 format: 
    html: default
-   # revealjs:
-   #   output-file: tdata.html
+   revealjs:
+     output-file: bivariate24s.html
 editor: source
 embed-resources: true
 cache: true
@@ -115,13 +115,13 @@ y_{i} = \mathbf{X_i}  \beta_{k}  +\varepsilon_i \nonumber \\
 $$ 
 
 
-# Deriving the OLS estimator
+# Deriving the estimator
 There are multiple ways to derive the least squares estimator - here are three.
 
 
 
 
-## Getting to OLS I
+## Derivation I
 $$
 y_{i}=\beta_{0}+\beta_{1}X_{1} + u \nonumber
 $$
@@ -138,14 +138,17 @@ $$
 
 
 
-## OLS 1 
-To minimize $S$ with respect to $\beta_0$: 
+## OLS I
+
+Minimize $S$ with respect to $\beta_0$: 
 
 $$
 \frac{\partial{\widehat{S}}}{\partial{\widehat{\beta_{0}}}} = -2 \sum \limits_{i=1}^{n} (y_{i}-\widehat{\beta_{0}}-\widehat{\beta_{1}}X_{i})  \nonumber \\
  = -2 \sum \limits_{i=1}^{n}  \hat{u_i} \nonumber
 $$ 
 
+
+## OLS I
 And do the same with respect to $\beta_{1}$:
 
 $$
@@ -156,7 +159,9 @@ $$
  \end{align}
 $$
 
-$\ldots$ illustrating explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:
+## OLS I 
+
+This shows explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:
 
 $$y_{i}-\widehat{\beta_{0}}+\widehat{\beta_{1}}X_{i}$$
 
@@ -169,7 +174,7 @@ $$\mathbf{\widehat{u}}$$
  
  
 
-## OLS 1
+## OLS I
 
 Substituting the unknowns back in, setting equal to zero, and rearranging gives the "normal equations":
 
@@ -179,6 +184,8 @@ $$
 \sum \limits_{i=1}^{n}X_{i}y_{i} = \beta_{0}\sum \limits_{i=1}^{n}X_{i}+\beta_{1}\sum \limits_{i=1}^{n}X_{i}^{2}\nonumber 
 \end{align}
 $$
+
+## OLS I
 
 Solving, we get the estimating equations, here for $\widehat{\beta_0}$:
 
@@ -190,6 +197,7 @@ n \widehat{\beta_0} =  \sum \limits_{i=1}^{n}y_{i} - \widehat{\beta_{1}}\sum \li
 \end{align}
 $$
 
+## OLS I
 And here, for $\widehat{\beta_1}$:
 
 $$
@@ -199,6 +207,7 @@ $$
 \end{align}
 $$
  
+## OLS I
 
 Note the parts of  $\widehat{\beta_1}$:
 
@@ -210,7 +219,7 @@ The numerator is the covariance of $X$ and $y$ - the denominator is the variance
 
 
 
-## Getting to OLS II
+## Derivation II
 
 Here's another way to achieve the same thing, but for illustration purposes, a second time around might be useful.  Suppose in the population, we have the equation
 
@@ -230,13 +239,14 @@ $$
 
 
 
+## OLS II 
 
 \noindent This is equivalent to saying the expected value of the product of $x$ and $e$ is zero:
 
 $$E[x \cdot e]=0 \nonumber
 $$ 
 
-
+## OLS II
 
 Now, let's solve the original population function for $e$:
 
@@ -247,7 +257,7 @@ e_i = y-\beta_0 - \beta_1 x_i  \nonumber
 \end{align}
 $$
 
-
+## OLS II
 
 \noindent and then restate these assumptions in terms of $y$: 
 
@@ -261,7 +271,7 @@ $$
 
 where the first expects the mean of the disturbances to be zero and second expects the covariance of the $X$s and the disturbances to be zero.
 
-
+## OLS II
 
 Since we want estimates of $\beta_0$ and $\beta_1$ for a sample (so $\hat{\beta_0}$ and $\hat{\beta_1}$), state these expectations with respect to a sample (of size $n$):
 
@@ -273,12 +283,15 @@ $$
 $$
 
 
+## OLS II 
 These first order conditions are equivalent to those in the derivation above where we solved them by taking the partial derivatives of the sum of squares with respect to the unknowns.  
 
-\noindent Recalling that the mean of a variable 
+
+Recalling the mean of a variable is
 
 $$\bar{y}=\frac{\sum\limits_{i=1}^{n}y_i}{n}$$
 
+## OLS II
 we can write each of these in terms of the means of $x$ and $y$ - first, here is the mean zero statement (from above):
 
 $$
@@ -288,11 +301,14 @@ $$
 \end{align}
 $$
 
+## OLS II
 and we can rearrange to solve for $\beta_0$
 
 $$
 \hat{\beta_0}= \bar{y}- \hat{\beta_1} \bar{x} \nonumber
 $$
+
+## OLS II
 
 Now, rewrite the second assumption ($E[x \cdot e]=0$) in the same way:
 
@@ -303,6 +319,9 @@ $$
 \end{align}
 $$
 
+
+## OLS II
+
 Because of the properties of the summation operator,
 
 $$
@@ -312,17 +331,17 @@ $$
 \end{align}
 $$
 
+## OLS II
+
+So, substituting and  solving for  $\hat{\beta}_1$ gives:
+
+<!-- $$ -->
+<!-- \begin{align} -->
+<!-- \sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber -->
+<!-- \end{align}$$ -->
 
 
-So, substituting these equations into 
 
-$$
-\begin{align}
-\sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber
-\end{align}$$
-
-
-and solving for  $\hat{\beta}_1$ gives:
 
 $$
 \begin{align}
@@ -333,6 +352,7 @@ $$
 $$
 
 
+## OLS II
 
 Why can we drop $n$ from these calculations?  Recall that
 
@@ -345,12 +365,12 @@ $$
 $$
 
 
-\noindent The same is true for the covariance assumption.
+The same is true for the covariance assumption.
 
 
 
 
-## Getting to OLS III
+## Derivation III
 
 One more time, but now in matrix form:
 
@@ -444,16 +464,17 @@ $$
 \mathbf{y}={\mathbf X{\widehat{\beta}}}+\widehat{\mathbf{\epsilon}} \nonumber
 $$
 
+## OLS matrix derivation
 
 and solve for $\beta$ by minimizing the sum of the squared errors:
 
 
 $$
 \begin{align}
-\sum\limits_{i=1}^{n} \epsilon^2= \widehat{\epsilon}'\widehat{\epsilon} \nonumber \\  \nonumber \\
-= (\mathbf{y}-\mathbf{X}\widehat{\beta})'(\mathbf{y}-\mathbf{X}\widehat{\beta})  \nonumber \\  \nonumber \\
-=\mathbf{y'y}-\mathbf{y}'\mathbf{X}\widehat{\beta}-\widehat{\beta}'\mathbf{X}'\mathbf{y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta}  \nonumber \\  \nonumber \\
-=\mathbf{y'y}-\widehat{\beta}'\mathbf{X}'\mathbf{y}-\widehat{\beta}'\mathbf{X}'\mathbf{y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta}  \nonumber \\  \nonumber \\
+\sum\limits_{i=1}^{n} \epsilon^2= \widehat{\epsilon}'\widehat{\epsilon} \nonumber \\  
+= (\mathbf{y}-\mathbf{X}\widehat{\beta})'(\mathbf{y}-\mathbf{X}\widehat{\beta})  \nonumber \\   
+=\mathbf{y'y}-\mathbf{y}'\mathbf{X}\widehat{\beta}-\widehat{\beta}'\mathbf{X}'\mathbf{y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta}  \nonumber \\  
+=\mathbf{y'y}-\widehat{\beta}'\mathbf{X}'\mathbf{y}-\widehat{\beta}'\mathbf{X}'\mathbf{y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta}  \nonumber \\  
 =\mathbf{y'y}-2\widehat{\beta}'\mathbf{X'y}+\widehat{\beta}'\mathbf{X'X}\widehat{\beta} \nonumber
 \end{align}
 $$
@@ -466,10 +487,10 @@ Differentiating with respect to $\widehat{\beta}$, and setting equal to zero,
 
 $$
 \begin{align}
-\frac{\partial{\widehat{\epsilon}'\widehat{\epsilon}}}{\partial{\widehat{\beta}}} = -2\mathbf{X}'\mathbf{y}+2\mathbf{X}'\mathbf{X}\widehat{\beta} \nonumber \\  \nonumber \\
--2\mathbf{X}'\mathbf{y}+2\mathbf{X'X}\widehat{\beta}=0  \nonumber \\  \nonumber \\
-\mathbf{X'X}\widehat{\beta}=\mathbf{X'y}  \nonumber \\  \nonumber \\
-(\mathbf{X'X})^{-1}\mathbf{X'X}\widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}   \nonumber \\  \nonumber \\
+\frac{\partial{\widehat{\epsilon}'\widehat{\epsilon}}}{\partial{\widehat{\beta}}} = -2\mathbf{X}'\mathbf{y}+2\mathbf{X}'\mathbf{X}\widehat{\beta} \nonumber \\  
+-2\mathbf{X}'\mathbf{y}+2\mathbf{X'X}\widehat{\beta}=0  \nonumber \\  
+\mathbf{X'X}\widehat{\beta}=\mathbf{X'y}  \nonumber \\
+(\mathbf{X'X})^{-1}\mathbf{X'X}\widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}   \nonumber \\  
 \widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}  \nonumber
 \end{align}
 $$
@@ -525,6 +546,10 @@ $$
 
 \noindent This is the variance-covariance matrix of the disturbances (var-cov(e)); it is symmetric, the main diagonal containing the variances, the off-diagonal containing the covariances.
 
+## Variance-Covariance Matrix of $\epsilon$
+
+This matrix is important because it gives us our estimate of $\sigma^2$. This is important enough to merit its own slide.
+
 
 ## Variance-Covariance of $\widehat{\beta}$
 
@@ -536,9 +561,9 @@ substituting $\mathbf{X\beta}+\epsilon$ for $\mathbf{y}$, we get
 
 $$
 \begin{align}
-\widehat{\mathbf{\beta}}=\mathbf{(X'X)^{-1}} \mathbf{X'(X\beta + \epsilon)}  \nonumber \\ \nonumber \\
-= \mathbf{(X'X)^{-1}}\mathbf{X'X\beta}+\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber \\\nonumber \\
-=\beta+\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber \\ \nonumber \\
+\widehat{\mathbf{\beta}}=\mathbf{(X'X)^{-1}} \mathbf{X'(X\beta + \epsilon)}  \nonumber \\  
+= \mathbf{(X'X)^{-1}}\mathbf{X'X\beta}+\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber \\  
+=\beta+\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber \\ 
 \widehat{\mathbf{\beta}}-\beta=\mathbf{(X'X)^{-1}}\mathbf{X'\epsilon} \nonumber 
 \end{align}
 $$
@@ -586,7 +611,7 @@ cov(\beta_k,\beta_1) &cov(\beta_2,\beta_k) &\cdots & \sqrt{var(\beta_k)}\\
 $$
 
 
-# Properties of OLS Estimators
+# Properties of OLS
 
 Return to the normal equation:
 
@@ -617,7 +642,7 @@ Each $x$ variable (each column vector of $\mathbf{X}$) is uncorrelated with $\ep
 
 Assuming a constant in the matrix $\mathbf{X}$,
 
-::: {.callout-note icon="true"}
+::: {.callout-note icon="false"}
 ### Proposition
 
 $\sum\limits_{i-1}^{n} \epsilon_i = 0$
@@ -655,7 +680,8 @@ $\bar{y} - \bar{X} \widehat{\beta}=0$ implies $\bar{y} = \bar{X} \widehat{\beta}
 :::
 
 
+## Properties
 
-Note that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step, for next week, is to make a set of assumptions regarding the error term in order to facilitate statements about $\widehat{\beta}$, and inferences about those estimates. 
+Note that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step is to make a set of assumptions regarding the error term in order to facilitate statements about $\widehat{\beta}$, and inferences about those estimates. 
 
 

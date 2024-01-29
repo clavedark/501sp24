@@ -690,7 +690,7 @@
     "href": "slides.html",
     "title": "Slides",
     "section": "",
-    "text": "Web page formatSlide format\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\n\n\nCourse overview\nMatrix algebra basics\nProbability basics"
+    "text": "Web page formatSlide format\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nBivariate model"
   },
   {
     "objectID": "about.html",
@@ -2342,7 +2342,7 @@
     "href": "bivariate24.html#variance-covariance-of-widehatbeta",
     "title": "The Bivariate Model",
     "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)",
-    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\nThe variance-covariance of the estimate, \\(\\widehat{\\beta}\\) derives as follows:\n\\[\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'y}\\]\nsubstituting \\(\\mathbf{X\\beta}+\\epsilon\\) for \\(\\mathbf{y}\\), we get\n\\[\n\\begin{align}\n\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'(X\\beta + \\epsilon)}  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}}\\mathbf{X'X\\beta}+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\\\nonumber \\\\\n=\\beta+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\ \\nonumber \\\\\n\\widehat{\\mathbf{\\beta}}-\\beta=\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber\n\\end{align}\n\\]"
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\nThe variance-covariance of the estimate, \\(\\widehat{\\beta}\\) derives as follows:\n\\[\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'y}\\]\nsubstituting \\(\\mathbf{X\\beta}+\\epsilon\\) for \\(\\mathbf{y}\\), we get\n\\[\n\\begin{align}\n\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'(X\\beta + \\epsilon)}  \\nonumber \\\\  \n= \\mathbf{(X'X)^{-1}}\\mathbf{X'X\\beta}+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\  \n=\\beta+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\\n\\widehat{\\mathbf{\\beta}}-\\beta=\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber\n\\end{align}\n\\]"
   },
   {
     "objectID": "bivariate24.html#variance-covariance-of-widehatbeta-1",
@@ -2391,7 +2391,7 @@
     "href": "bivariate24.html#property-4",
     "title": "The Bivariate Model",
     "section": "Property 4",
-    "text": "Property 4\n\n\n\n\n\n\nProposition\n\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{mutliplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it.\n\n\nNote that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step, for next week, is to make a set of assumptions regarding the error term in order to facilitate statements about \\(\\widehat{\\beta}\\), and inferences about those estimates."
+    "text": "Property 4\n\n\n\n\n\n\nProposition\n\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{mutliplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it."
   },
   {
     "objectID": "bivariate24.html#linear-predictions",
@@ -2454,14 +2454,14 @@
     "href": "bivariate24.html#ols-matrix-derivation",
     "title": "The Bivariate Model",
     "section": "OLS matrix derivation",
-    "text": "OLS matrix derivation\nNow that we’ve seen all the algebra and what the data matrix looks like, let’s revisit the derivation of \\(\\beta\\), beginning with the estimating equation:\n\\[\n\\mathbf{y}={\\mathbf X{\\widehat{\\beta}}}+\\widehat{\\mathbf{\\epsilon}} \\nonumber\n\\]\nand solve for \\(\\beta\\) by minimizing the sum of the squared errors:\n\\[\n\\begin{align}\n\\sum\\limits_{i=1}^{n} \\epsilon^2= \\widehat{\\epsilon}'\\widehat{\\epsilon} \\nonumber \\\\  \\nonumber \\\\\n= (\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})'(\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\mathbf{y}'\\mathbf{X}\\widehat{\\beta}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \\nonumber \\\\\n=\\mathbf{y'y}-2\\widehat{\\beta}'\\mathbf{X'y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta} \\nonumber\n\\end{align}\n\\]"
+    "text": "OLS matrix derivation\nNow that we’ve seen all the algebra and what the data matrix looks like, let’s revisit the derivation of \\(\\beta\\), beginning with the estimating equation:\n\\[\n\\mathbf{y}={\\mathbf X{\\widehat{\\beta}}}+\\widehat{\\mathbf{\\epsilon}} \\nonumber\n\\]"
   },
   {
     "objectID": "bivariate24.html#ols-matrix-derivation-1",
     "href": "bivariate24.html#ols-matrix-derivation-1",
     "title": "The Bivariate Model",
     "section": "OLS matrix derivation",
-    "text": "OLS matrix derivation\nDifferentiating with respect to \\(\\widehat{\\beta}\\), and setting equal to zero,\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{\\epsilon}'\\widehat{\\epsilon}}}{\\partial{\\widehat{\\beta}}} = -2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X}'\\mathbf{X}\\widehat{\\beta} \\nonumber \\\\  \\nonumber \\\\\n-2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X'X}\\widehat{\\beta}=0  \\nonumber \\\\  \\nonumber \\\\\n\\mathbf{X'X}\\widehat{\\beta}=\\mathbf{X'y}  \\nonumber \\\\  \\nonumber \\\\\n(\\mathbf{X'X})^{-1}\\mathbf{X'X}\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}   \\nonumber \\\\  \\nonumber \\\\\n\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}  \\nonumber\n\\end{align}\n\\]"
+    "text": "OLS matrix derivation\nand solve for \\(\\beta\\) by minimizing the sum of the squared errors:\n\\[\n\\begin{align}\n\\sum\\limits_{i=1}^{n} \\epsilon^2= \\widehat{\\epsilon}'\\widehat{\\epsilon} \\nonumber \\\\  \n= (\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})'(\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})  \\nonumber \\\\   \n=\\mathbf{y'y}-\\mathbf{y}'\\mathbf{X}\\widehat{\\beta}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \n=\\mathbf{y'y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \n=\\mathbf{y'y}-2\\widehat{\\beta}'\\mathbf{X'y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta} \\nonumber\n\\end{align}\n\\]"
   },
   {
     "objectID": "tdata.html#data-generating-process-1",
@@ -2602,5 +2602,509 @@
     "title": "The Multivariate Model",
     "section": "",
     "text": "The Multivariate Model\nThe key issue in the multivariate regression is statistical control - our effort to mimic experimental conditions.\n\n\nExperimental Control\nIn an experiment, the research randomizes on all variables except the variable of interest (the treatment). This means the sample and all conditions the subjects in the sample face are random, or are explicitly fixed by the researcher. For example, in a diet pill study, the sample will be randomized with respect to demographics, health, weight, etc. The subjects’ diets during the study will be fixed or controlled by the researcher so they all eat the same. The lone exception will the administration of the diet pill - the treatment group will get the pill, the control group will get a placebo.\n\n\nIn the regression setting\nOne of the reasons we use models like the linear regression is to mimic the conditions of an experiment. The model allows us to isolate the effect of \\(x_1\\) while accounting for the independent effect of \\(x_2\\) on \\(y\\). So we’re able to say ``the effect of \\(x_1\\), controlling for the influence of \\(x_2\\) is \\(\\beta_1\\).’’\n\n\nHolding constant at mean\nThis linear regression :\n\\[y_i = \\hat{\\beta_0} + \\hat{\\beta_1}x_1 + \\hat{\\beta_2} x_2 + \\epsilon_i\\]\nis equivalent to this one ::\n\\[y_i = \\widehat{\\beta_0} + \\widehat{\\beta_1}x_1 + \\widehat{\\beta_2^*}( x_2-\\bar{x_2}) + \\epsilon_i\\]\nOnly the constant shifts (think back to linear transformations; \\(\\widehat{\\beta_0}\\) shifts by a factor of \\(-k\\widehat{\\beta}\\)).\n\n\nConstant at mean\nWhat this shows is that even without transforming \\(x_2\\), we are holding its effect constant at its mean while we estimate the effect of \\(x_1\\).\n\n\nConditional Means\nLet \\(D_1\\) be a binary variable:\n\\[y_i = \\hat{\\beta_0} + \\hat{\\beta_1}D_1 + \\hat{\\beta_2} x_1 + \\epsilon_i\\]\nThe partial effect of \\(D_1\\) measures the difference between the means for \\(D_1=0,1\\), given the mean effect of \\(x_1\\).\nSuppose we estimate a model predicting anti-government protests, and we think the main predictor will be liberal political institutions, controlling for per capita wealth. We think as liberalism increases, so do protests; they decrease with authoritarianism. So the regression looks like this:\n\\[\\text{Protests}_i = \\hat{\\beta_0} + \\hat{\\beta_1}\\text{Politics}_i + \\hat{\\beta_2} \\text{GDPpc}_i + \\epsilon_i\\]\nWhat is the effect of liberal political institutions controlling for GDP per capita?\nWhen we ``control’’ for a variable like GDP per capita, we are trying to evaluate two things:\n\nthe direct or immediate effect of institutions on protests -this is because liberalism might promote free assembly.\nthe indirect of effect of institutions on GDP per capita, and then on protests - this is because liberalism might promote economic growth and development, and thereby influence protests.\n\nIn our regression\n\\[\\text{Protests}_i = \\hat{\\beta_0} + \\hat{\\beta_1}\\text{Politics}_i + \\hat{\\beta_2} \\text{GDPpc}_i + \\epsilon_i\\]\nthis means \\(\\hat{\\beta_1}\\) is the effect of liberalism that does not go through GDP (or any other control variable).\nFrom our regression,\n\\[\\text{Protests}_i = \\hat{\\beta_0} + \\hat{\\beta_1}\\text{Politics}_i + \\hat{\\beta_2} \\text{GDPpc}_i + \\epsilon_i\\]\nPolitical institutions influence GDP per capita:\n\\[\\text{GDPpc}_i = \\hat{\\gamma_0} + \\hat{\\gamma_1}\\text{Politics}_i  + \\upsilon_i\\]\nSubstituting,\n\\[\\text{Protests}_i = \\hat{\\beta_0} + \\hat{\\beta_1}\\text{Politics}_i +\\hat{\\beta_2}(\\hat{\\gamma_0} + \\hat{\\gamma_1}\\text{Politics}_i  + \\upsilon_i )+ \\epsilon_i\\]\nso, the partial effect of liberal institutions is\n\\[\\frac{\\partial(protests)}{\\partial(politics)} = \\hat{\\beta_1} \\]\nThe effect is partial because it excludes the effect of politics that runs through GDP per capita. Here’s the total effect:\n\\[\\frac{\\partial(protests)}{\\partial(politics)} = \\hat{\\beta_1} + \\hat{\\beta_2}\\hat{\\gamma_1}\\]\nNotice that if liberalism has {} on GDP, so \\(\\hat{\\gamma_1}=0\\), then there is no indirect effect and the partial and total effects are the same.\n\n\nCounterfactuals\nAnother way to think about statistical control is to think about counterfactuals we’d want to evaluate:\n\ndemocracy promotes protests; but what if the state is rich?\ndemocracy promotes protests; but what if the state is poor?\n\n\n\nRandomization\nThe intuition is the same as in the experimental ideal. In the experiment the control and treatment groups are randomized with respect to all things but the treatment itself. In the regression, we want observations randomized over dimensions like wealth (i.e., we have rich and poor, etc) and all other things except the treatment itself - liberal institutions. If it were possible, we might collect data on protests and GDP but for states that are otherwise exactly the same.\n\n\nOther ways to exert control\nCollecting data on protests and GDP for states that are otherwise exactly the same - this the foundation of what are called methods. Matching is aimed at mimicking experimental design, exerting control via sampling. is a related technique that estimates weights for the control so it more closely resembles the treatment group.\n\n\nFrisch-Waugh-Lovell Theorem\nIn the linear least squares regression \\(y=\\beta_0+\\beta_1 x_1+\\beta_2 x_2+\\epsilon\\) produces an estimate for \\(\\hat{\\beta_1}\\) that is the same as the estimate of \\(\\hat{\\beta_1^*}\\) produced by estimating the regression \\(y\\) on \\(x_1\\), saving the residuals \\(\\hat{r_1}\\), then regressing \\(x_1\\) on \\(x_2\\), computing the residuals, \\(\\hat{r_2}\\), and then regressing \\(\\hat{r_1}\\) on \\(\\hat{r_2}\\).\n\n\\(\\hat{r_1}\\) measures the part of \\(y\\) that is unrelated to \\(x_1\\).\nThe regression \\(x_1=\\beta_0+ \\beta_2 x_2\\) measures the overlapping (correlated) parts of \\(x_1\\) and \\(x_2\\).\n\\(\\hat{r_2}\\) measures the unrelated parts of \\(x_1\\) and \\(x_2\\), the part of \\(x_1\\) unrelated to \\(x_2\\).\n\\(\\hat{r_1}\\) measures the part of \\(x_2\\) that is totally independent of \\(x_1\\)\nthe regression \\(\\hat{r_1}=\\beta_0+ \\beta_1^* \\hat{r_2}\\) estimates \\(\\beta_1^*\\) which measures the effect of the part of \\(x_1\\) that is unrelated to \\(x_2\\).\n\\(\\beta_1^*\\) is the partial effect of \\(x_1\\); we measured that part of \\(x_1\\) using \\(\\hat{r_1}\\).\n\n\n\nRegression Anatomy\nOne final way to think about this is a variant on FWL called ``regression anatomy’’ by Angrist and Pischke in their terrific book Mostly Harmless Econometrics.\n\n\nAnatomy\nIn the bivariate case, the slope on \\(\\beta_1\\) is:\n\\[\\beta_1 = \\frac{cov(y_i, x_i)}{V(x_i)}\\]\nIn the multivariate case, the slope on \\(\\beta_1\\) is:\n\\[\\beta_1 = \\frac{cov(y_i, \\tilde{x_{k,i}})}{V(\\tilde{x_{k,i}}) }\\]\nwhere \\(\\tilde{x_{k,i}}\\) refers to the residuals from the regression of \\(x_{k,i}\\) on \\(\\mathbf{X}\\), where \\(X\\) is all other right-side variables.\n\nThe residual from that regression measures the part of \\(x\\) that is unrelated to \\(X\\).\nThe estimate of \\(\\beta_1\\) then is the correlation of \\(y\\) and the part of \\(x\\) that is unrelated to \\(X\\).\nSince \\(\\tilde{x_{k,i}}\\) is unrelated to \\(X\\), its correlation to \\(y\\) is purged of any part through \\(X\\), and is therefore partial.\n\n\n\nOmitted Variable Bias\nIn the population, the true regression is:\n\\[y = \\widehat{\\beta_0} + \\widehat{\\beta_1}x_1 + \\widehat{\\beta_2}x_2 + \\varepsilon \\]\nIn our sample, the regression we estimate is:\n\\[y = \\widehat{\\beta_0} + \\widehat{\\beta_1}x_1 + \\varepsilon \\]\nSo the model omits a variable. What’s the effect?\n\n\nOmitted Variable Bias\n\nIn the bivariate regression, the estimate is \\(\\widehat{\\beta_1}\\)\nIn the multivariate regression, the estimate is \\(\\widetilde{\\beta_1} = \\widehat{\\beta_1} + \\widehat{\\beta_2}\\widetilde{\\delta_1}\\). That is, the estimate for \\(\\widetilde{\\beta_1}\\) now accounts for the relationship of \\(x_1,x_2\\), measured in \\(\\widetilde{\\delta_1}\\). \\(\\widetilde{\\beta_1}\\) now measures the partial effect of \\(x_1\\) on \\(y\\).\nIf we exclude \\(x_2\\), we misestimate \\(\\widehat{\\beta_1}\\) by \\(\\pm \\widehat{\\beta_2}\\widetilde{\\delta_1}\\)\n\n\n\n\nEvaluating an Estimator\nWhat criteria make for a “good” estimator?\n\nUnbiasedness:\n\n\nIs the expected value of \\(\\hat{\\beta}\\) equal to \\(\\beta\\)?\nHow far away do we expect \\(\\hat{\\beta}\\) to be from \\(\\beta\\)?\n\\(E[\\hat{\\beta} - \\beta]\\)\nThe estimator for which this quantity is smallest is the least biased.\n\nBias will always exist, but we want it to be as small as possible, and random (not systematic).\n\nEfficiency:\n\n\nEfficiency measures how close to the true \\(\\beta\\) we are {}.\nEfficiency describes the average size of bias; the average distance of \\(E[\\hat{\\beta} - \\beta]\\).\nThis is about the size of the variance; large variance estimates will, on average, miss the true \\(\\beta\\) by a lot. Small variance estimators will miss the true \\(\\beta\\) by a little, on average.\n\n\nConsistency:\n\n\nConsistency can be thought of as large-sample-unbiasedness.\n\\(E[\\hat{\\beta} - \\beta] \\rightarrow\\) as \\(N \\rightarrow \\infty\\)\nThis is considerably less important to us than bias and efficiency. In part, this is due to the reality that our (non experimental) data are small samples in many cases. It’s also true OLS has good small sample properties.\nMLE does not have good small sample properties, and relies strongly on consistency.\n\n\n\nAssumptions\nUnder the following four assumptions, the OLS estimator \\(\\hat{\\beta}\\) is an unbiased estimator of \\(\\beta\\):\n\nLinear in parameters.\nRandom Sampling.\nZero Conditional Mean of Disturbances.\nNo Perfect Collinearity.\n\n\n\n\n\n\n\nTheorem :Unbiasedness of OLS:\n\n\n\nUnder these four assumptions, OLS estimators are unbiased estimators of the population parameters:\n\\[\nE[{\\widehat{\\beta_{j}}]= \\beta_{j} ~\\forall ~ j} \\nonumber\n\\]\n\n\n\n\nOLS\nIf the model also meets these two assumptions, then the OLS estimator has the smallest variance of all estimators:\n\nHomoskedastic disturbances; \\(Var(u|x_1,x_2,\\ldots,x_k)=\\sigma^2\\).\nUncorrelated disturbances; \\(cov(u_i,u_j|x_1,x_2,\\ldots,x_k)=0\\).\n\nIf Assumptions 1-6 are all met, then the model is BLUE and thus satisfies the Gauss-Markov Theorem. Additionally, these assumptions provide us the first two moments of the sampling distribution for the \\(\\hat{\\beta}\\)s.\n\n\n\n\n\n\nTheorem: Gauss Markov\n\n\n\nUnder these assumptions, the OLS estimator is unbiased and has the smallest variance among all linear unbiased estimators.\n\n\n\n\nOLS\nHowever, in order to talk precisely about the uncertainty surrounding the point estimates, we need to make one more assumption about the error term:\n\nThe disturbances, \\(u_i\\) are independent of the \\(X\\)s and are normally distributed: \\(u \\sim N(0,\\sigma^{2})\\).\n\n\n\nIf assumptions fail \\(\\ldots\\)\n\nsample is not random - bias.\n\\(E[u | X] \\neq 0\\) - endogeneity; bias and standard errors are too small.\nperfect collinearity - matrix is singular, regression fails.\ncorrelated \\(X\\) variables (imperfect collinearity) - unbiased estimates, inefficient standard errors.\nerrors are not identically distributed (heteroskedastic) - inefficiency.\nerrors are not independently distributed (correlated errors) - inefficiency."
+  },
+  {
+    "objectID": "bivariate24s.html#regression-1",
+    "href": "bivariate24s.html#regression-1",
+    "title": "The Bivariate Model",
+    "section": "Regression",
+    "text": "Regression\nLet \\(y\\) be a linear function of the \\(X\\)s and the unknowns, \\(\\beta\\), so the following produces a straight line:\n\\[y_{i}=\\beta_{0}+\\beta_{1}X_{1} + \\epsilon \\]\nand \\(\\epsilon\\) are the errors or disturbances."
+  },
+  {
+    "objectID": "bivariate24s.html#linear-predictions",
+    "href": "bivariate24s.html#linear-predictions",
+    "title": "The Bivariate Model",
+    "section": "Linear predictions",
+    "text": "Linear predictions\nThe predicted points that form the line are \\(\\widehat{y_{i}}\\)\n\\[\\widehat{y_{i}}=\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{1,i}\\]\n\\(\\widehat{y_{i}}\\) is the sum of the \\(\\beta\\)s multiplied by each value of the appropriate \\(X_i\\), for \\(i=1 \\ldots N\\).\n\\(\\widehat{y_{i}}\\) is referred to as the “linear prediction” or as \\(x\\hat{\\beta}\\)."
+  },
+  {
+    "objectID": "bivariate24s.html#residuals",
+    "href": "bivariate24s.html#residuals",
+    "title": "The Bivariate Model",
+    "section": "Residuals",
+    "text": "Residuals\nThe differences between those predicted points, \\(\\widehat{y_{i}}\\) and the observed values \\(y_i\\) are:\n\\[\n\\begin{align}\n  \\widehat{u} = y_{i}-\\widehat{y_{i}} \\\\\n= y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{1,i}\\\\\n= y_{i}-\\mathbf{x_i\\widehat{\\beta}}  \\nonumber\n\\end{align}\n\\]\nThese are the residuals, \\(\\widehat{u}\\) - the observed measure of the unobserved disturbances, \\(\\epsilon\\)."
+  },
+  {
+    "objectID": "bivariate24s.html#in-matrix-notation",
+    "href": "bivariate24s.html#in-matrix-notation",
+    "title": "The Bivariate Model",
+    "section": "In matrix notation",
+    "text": "In matrix notation\nRestating in matrix notation:\n\\[\n\\begin{align}\ny_{i} = \\mathbf{X_i}  \\beta_{k}  +\\varepsilon_i \\nonumber \\\\\n\\widehat{y_{i}}= \\mathbf{X_i} \\widehat{\\beta_{k}}   \\nonumber \\\\\n\\widehat{u_{i}} = y_i - \\mathbf{X_i} \\beta_k  \\nonumber \\\\\n\\widehat{u_i} = y_i - \\widehat{y_{i}}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#getting-to-ols-i",
+    "href": "bivariate24s.html#getting-to-ols-i",
+    "title": "The Bivariate Model",
+    "section": "Getting to OLS I",
+    "text": "Getting to OLS I\n\\[\ny_{i}=\\beta_{0}+\\beta_{1}X_{1} + u \\nonumber\n\\]\n\\(\\ldots\\) over the sample, \\(N\\), sum of squares of the deviations, \\(\\widehat{S}\\) \\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})^{2} \\nonumber\n\\]\n\\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}^{2}-2y_i \\widehat{\\beta_{0}}- 2y_i\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{0}}^{2}  \\nonumber \\\\\n+2\\widehat{\\beta_{0}}\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{1}^{2}}X_{i}^{2} ) \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-1",
+    "href": "bivariate24s.html#ols-1",
+    "title": "The Bivariate Model",
+    "section": "OLS 1",
+    "text": "OLS 1\nTo minimize \\(S\\) with respect to \\(\\beta_0\\):\n\\[\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{0}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})  \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i} \\nonumber\n\\]\nAnd do the same with respect to \\(\\beta_{1}\\):\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{1}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}) X_{i} \\nonumber \\\\\n=-2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})X_{i} \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i}  X_i\\nonumber\n\\end{align}\n\\]\n\\(\\ldots\\) illustrating explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:\n\\[y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}\\]\n\\[\\mathbf{y} - \\mathbf{X}\\widehat{\\beta}\\]\n\\[\\mathbf{y} - \\mathbf{\\widehat{y}}\\]\n\\[\\mathbf{\\widehat{u}}\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-1-1",
+    "href": "bivariate24s.html#ols-1-1",
+    "title": "The Bivariate Model",
+    "section": "OLS 1",
+    "text": "OLS 1\nSubstituting the unknowns back in, setting equal to zero, and rearranging gives the “normal equations”:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\beta_{0}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber\n\\end{align}\n\\]\nSolving, we get the estimating equations, here for \\(\\widehat{\\beta_0}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\nn \\widehat{\\beta_0} =  \\sum \\limits_{i=1}^{n}y_{i} - \\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\widehat{\\beta_0} =  \\bar{y} - \\widehat{\\beta_{1}}\\bar{X_{i}} \\nonumber\n\\end{align}\n\\]\nAnd here, for \\(\\widehat{\\beta_1}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber \\\\\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\end{align}\n\\]\nNote the parts of \\(\\widehat{\\beta_1}\\):\n\\[\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\]\nThe numerator is the covariance of \\(X\\) and \\(y\\) - the denominator is the variance of \\(X\\). The estimated coefficient \\(\\widehat{\\beta_{1}}\\) is the covariance of (X,y) weighted by the variance in \\(X\\). \\(\\widehat{\\beta_{1}}\\) measures the estimated change in \\(y\\) given a one-unit change in \\(X\\)."
+  },
+  {
+    "objectID": "bivariate24s.html#getting-to-ols-ii",
+    "href": "bivariate24s.html#getting-to-ols-ii",
+    "title": "The Bivariate Model",
+    "section": "Getting to OLS II",
+    "text": "Getting to OLS II\nHere’s another way to achieve the same thing, but for illustration purposes, a second time around might be useful. Suppose in the population, we have the equation\n\\[\ny= \\beta_{0}+\\beta_{1}x_{i} + e_{i} \\nonumber\n\\]\nAssume the mean of \\(e\\) to be zero and that \\(x\\) and \\(e\\) are uncorrelated, so\n\\[E[e]=0 \\nonumber\n\\]\n\\[\nCov[x,e]=0 \\nonumber\n\\]\nThis is equivalent to saying the expected value of the product of \\(x\\) and \\(e\\) is zero:\n\\[E[x \\cdot e]=0 \\nonumber\n\\]\nNow, let’s solve the original population function for \\(e\\):\n\\[\n\\begin{align}\ny=\\beta_0 + \\beta_1 x_i+ e_i \\nonumber \\\\ \\nonumber \\\\\ne_i = y-\\beta_0 - \\beta_1 x_i  \\nonumber\n\\end{align}\n\\]\nand then restate these assumptions in terms of \\(y\\):\n\\[\n\\begin{align}\nE[y-\\beta_0 - \\beta_1 x_i]=0    \\nonumber \\\\  \\nonumber \\\\\nCov[x,(y-\\beta_0 - \\beta_1 x_i)]=0 \\nonumber\n\\end{align}\n\\]\nwhere the first expects the mean of the disturbances to be zero and second expects the covariance of the \\(X\\)s and the disturbances to be zero.\nSince we want estimates of \\(\\beta_0\\) and \\(\\beta_1\\) for a sample (so \\(\\hat{\\beta_0}\\) and \\(\\hat{\\beta_1}\\)), state these expectations with respect to a sample (of size \\(n\\)):\n\\[\n\\begin{align}\n\\frac{\\sum\\limits_{i=1}^{n}(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0   \\nonumber \\\\ \\nonumber \\\\\n\\frac{\\sum\\limits_{i=1}^{n}x(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0 \\nonumber\n\\end{align}\n\\]\nThese first order conditions are equivalent to those in the derivation above where we solved them by taking the partial derivatives of the sum of squares with respect to the unknowns.\nRecalling that the mean of a variable\n\\[\\bar{y}=\\frac{\\sum\\limits_{i=1}^{n}y_i}{n}\\]\nwe can write each of these in terms of the means of \\(x\\) and \\(y\\) - first, here is the mean zero statement (from above):\n\\[\n\\begin{align}\n\\bar{y}-\\hat{\\beta_0} - \\hat{\\beta_1} \\bar{x}=0 \\nonumber \\\\ \\nonumber \\\\\n\\bar{y}=\\hat{\\beta_0} + \\hat{\\beta_1} \\bar{x} \\nonumber\n\\end{align}\n\\]\nand we can rearrange to solve for \\(\\beta_0\\)\n\\[\n\\hat{\\beta_0}= \\bar{y}- \\hat{\\beta_1} \\bar{x} \\nonumber\n\\]\nNow, rewrite the second assumption (\\(E[x \\cdot e]=0\\)) in the same way:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i[y_i-(\\bar{y}-\\hat{\\beta_{1}}\\bar{x})-\\hat{\\beta_{1}}x_{i}] =0  \\nonumber \\\\ \\text{and rearrange,} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber\n\\end{align}\n\\]\nBecause of the properties of the summation operator,\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2  \\nonumber \\\\ \\text{and} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y}) \\nonumber\n\\end{align}\n\\]\nSo, substituting these equations into\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber\n\\end{align}\\]\nand solving for \\(\\hat{\\beta}_1\\) gives:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})= \\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2 \\nonumber \\\\\n\\hat{\\beta_{1}}=\\frac{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2} \\nonumber\n\\end{align}\n\\]\nWhy can we drop \\(n\\) from these calculations? Recall that\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}\\widehat{e_{i}} = 0 \\nonumber \\\\\n\\text{so} \\nonumber \\\\\n\\frac{\\sum \\limits_{i=1}^{n}\\widehat{e_{i}}}{n} = 0 \\nonumber\n\\end{align}\n\\]\nThe same is true for the covariance assumption."
+  },
+  {
+    "objectID": "bivariate24s.html#getting-to-ols-iii",
+    "href": "bivariate24s.html#getting-to-ols-iii",
+    "title": "The Bivariate Model",
+    "section": "Getting to OLS III",
+    "text": "Getting to OLS III\nOne more time, but now in matrix form:\n\\[\ny_{i} = \\mathbf{X_i}  \\widehat{\\beta}  +\\epsilon \\nonumber\n\\]\nSkipping a lot of steps we’ll cover soon, solve for\n\\[ \\widehat{\\beta} = \\mathbf{X'X}^{-1} \\mathbf{X'}y\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#the-components",
+    "href": "bivariate24s.html#the-components",
+    "title": "The Bivariate Model",
+    "section": "The components",
+    "text": "The components\n\\[\n\\left[\n\\begin{matrix}\n  y_1 \\\\\n  y_2\\\\\n  y_3  \\\\\n  \\vdots \\\\\n  y_n    \\nonumber\n\\end{matrix}  \\right]\n= \\left[\n\\begin{matrix}\n  1& X_{1,2} & X_{1,3} & \\cdots & X_{1,k} \\\\\n  1 & X_{2,2} & X_{2,3} &\\cdots & X_{2,k} \\\\\n  1 & X_{3,2} & X_{3,3} &\\cdots & X_{3,k} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  1 & X_{n,2} & X_{n,3} & \\cdots & X_{n,k}  \\nonumber\n\\end{matrix}  \\right]\n\\left[\n\\begin{matrix}\n  \\beta_1 \\\\\n  \\beta_2\\\\\n  \\beta_3  \\\\\n  \\vdots \\\\\n  \\beta_k    \\nonumber\n\\end{matrix}  \\right]\n+\n\\left[\n\\begin{matrix}\n  \\epsilon_1 \\\\\n  \\epsilon_2\\\\\n  \\epsilon_3  \\\\\n  \\vdots \\\\\n  \\epsilon_n    \\nonumber\n\\end{matrix}  \\right]\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#components---covariation-mathbfxx",
+    "href": "bivariate24s.html#components---covariation-mathbfxx",
+    "title": "The Bivariate Model",
+    "section": "Components - Covariation \\(\\mathbf{X'X}\\)",
+    "text": "Components - Covariation \\(\\mathbf{X'X}\\)\n\\[\n\\mathbf{X'X}= \\left[\n\\begin{matrix}\n  N& \\sum X_{2,i} & \\sum X_{3,i} & \\cdots & \\sum X_{k,i} \\\\\n  \\sum X_{2,i}&\\sum X_{2,2}^{2} & \\sum X_{2,i} X_{3,i} &\\cdots & \\sum X_{2,i}X_{k,i} \\\\\n  \\sum X_{3,i} & \\sum X_{3,i}X_{2,i}& \\sum X_{3,i}^{2} &\\cdots & \\sum X_{3,i}X_{k,i} \\\\\n  \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\\n  \\sum X_{k,i} & \\sum X_{k,i}X_{2,i} & \\sum X_{k,i}X_{3,i} & \\cdots & \\sum X_{k,i}^{2}  \\nonumber\n\\end{matrix}  \\right]\n\\]\nIn \\(\\mathbf{X'X}\\), the main diagonal is the sums of squares and the offdiagonals are the cross-products."
+  },
+  {
+    "objectID": "bivariate24s.html#components---covariation-mathbfxy",
+    "href": "bivariate24s.html#components---covariation-mathbfxy",
+    "title": "The Bivariate Model",
+    "section": "Components - Covariation \\(\\mathbf{X'y}\\)",
+    "text": "Components - Covariation \\(\\mathbf{X'y}\\)\n\\[\n\\mathbf{X'y}= \\left[\n\\begin{matrix}\n\\sum Y_{i}\\\\\n\\sum X_{2,i}Y_{i}\\\\\n\\sum X_{3,i}Y_{i}\\\\\n\\vdots \\\\\n\\sum X_{k,i}Y_{i} \\nonumber\n\\end{matrix}  \\right]\n\\]\nWhen we compute \\(\\widehat{\\beta}\\), \\(\\mathbf{X'y}\\) is the covariation of \\(X\\) and \\(Y\\), and we pre-multiply by the inverse of \\(\\mathbf{(X'X)^{-1}}\\) to control for the relationship between \\(X_{1}\\), \\(X_{2}\\), etc."
+  },
+  {
+    "objectID": "bivariate24s.html#ols-matrix-derivation",
+    "href": "bivariate24s.html#ols-matrix-derivation",
+    "title": "The Bivariate Model",
+    "section": "OLS matrix derivation",
+    "text": "OLS matrix derivation\nNow that we’ve seen all the algebra and what the data matrix looks like, let’s revisit the derivation of \\(\\beta\\), beginning with the estimating equation:\n\\[\n\\mathbf{y}={\\mathbf X{\\widehat{\\beta}}}+\\widehat{\\mathbf{\\epsilon}} \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-matrix-derivation-1",
+    "href": "bivariate24s.html#ols-matrix-derivation-1",
+    "title": "The Bivariate Model",
+    "section": "OLS matrix derivation",
+    "text": "OLS matrix derivation\nand solve for \\(\\beta\\) by minimizing the sum of the squared errors:\n\\[\n\\begin{align}\n\\sum\\limits_{i=1}^{n} \\epsilon^2= \\widehat{\\epsilon}'\\widehat{\\epsilon} \\nonumber \\\\  \n= (\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})'(\\mathbf{y}-\\mathbf{X}\\widehat{\\beta})  \\nonumber \\\\   \n=\\mathbf{y'y}-\\mathbf{y}'\\mathbf{X}\\widehat{\\beta}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \n=\\mathbf{y'y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}-\\widehat{\\beta}'\\mathbf{X}'\\mathbf{y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta}  \\nonumber \\\\  \n=\\mathbf{y'y}-2\\widehat{\\beta}'\\mathbf{X'y}+\\widehat{\\beta}'\\mathbf{X'X}\\widehat{\\beta} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#variance-covariance-matrix-of-epsilon",
+    "href": "bivariate24s.html#variance-covariance-matrix-of-epsilon",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance Matrix of \\(\\epsilon\\)",
+    "text": "Variance-Covariance Matrix of \\(\\epsilon\\)\n\\[\n\\begin{align}\nE(\\mathbf{\\epsilon\\epsilon'})= E \\left[\n\\begin{array}{c}\n\\epsilon_{1} \\\\\n\\vdots \\\\\n\\epsilon_{n}\\\\\n\\end{array} \\right]\nE \\left[\n\\begin{array}{cccc}\n\\epsilon_{1} & \\cdots &\\epsilon_{n}\\\\\n\\end{array} \\right] \\\\ ~\\\\\n= E\n\\left[\n\\begin{array}{cccc}\n\\epsilon_{1}^{2} & \\epsilon_{1}\\epsilon_{2} &\\cdots &\\epsilon_{1}\\epsilon_{n}\\\\\n\\epsilon_{2}\\epsilon_{1}& \\epsilon_{2}^{2} &\\cdots &\\epsilon_{2}\\epsilon_{n}\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\n\\epsilon_{n}\\epsilon_{1} &\\epsilon_{n}\\epsilon_{2} &\\cdots & \\epsilon_{n}^{2}\\\\\n\\end{array} \\right]\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#variance-covariance-matrix-of-epsilon-1",
+    "href": "bivariate24s.html#variance-covariance-matrix-of-epsilon-1",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance Matrix of \\(\\epsilon\\)",
+    "text": "Variance-Covariance Matrix of \\(\\epsilon\\)\nBecause we assume constant variance and no serial correlation, we know\n\\[\nE(\\mathbf{\\epsilon\\epsilon'})=\n\\left[\n\\begin{array}{cccc}\n\\sigma^{2} & 0 &\\cdots &0\\\\\n0&\\sigma^{2} &\\cdots &0\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\n0 &0 &\\cdots & \\sigma^{2}\\\\\n\\end{array} \\right]\n= \\sigma^{2}\n\\left[\n\\begin{array}{cccc}\n1 & 0 &\\cdots &0\\\\\n0&1 &\\cdots &0\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\n0 &0 &\\cdots & 1\\\\\n\\end{array} \\right]\n= \\sigma^{2} \\mathbf{I}\n\\]\nThis is the variance-covariance matrix of the disturbances (var-cov(e)); it is symmetric, the main diagonal containing the variances, the off-diagonal containing the covariances."
+  },
+  {
+    "objectID": "bivariate24s.html#variance-covariance-of-widehatbeta",
+    "href": "bivariate24s.html#variance-covariance-of-widehatbeta",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)",
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\nThe variance-covariance of the estimate, \\(\\widehat{\\beta}\\) derives as follows:\n\\[\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'y}\\]\nsubstituting \\(\\mathbf{X\\beta}+\\epsilon\\) for \\(\\mathbf{y}\\), we get\n\\[\n\\begin{align}\n\\widehat{\\mathbf{\\beta}}=\\mathbf{(X'X)^{-1}} \\mathbf{X'(X\\beta + \\epsilon)}  \\nonumber \\\\  \n= \\mathbf{(X'X)^{-1}}\\mathbf{X'X\\beta}+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\  \n=\\beta+\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber \\\\\n\\widehat{\\mathbf{\\beta}}-\\beta=\\mathbf{(X'X)^{-1}}\\mathbf{X'\\epsilon} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#variance-covariance-of-widehatbeta-1",
+    "href": "bivariate24s.html#variance-covariance-of-widehatbeta-1",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)",
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\n\\[\n\\begin{align}\nE[(\\widehat{\\beta}-\\beta)(\\widehat{\\beta}-\\beta)']  \n= E[(\\mathbf{(X'X)^{-1}X'\\epsilon})(\\mathbf{(X'X)^{-1}X'\\epsilon})']  \\nonumber \\\\ \\nonumber \\\\\n= E[\\mathbf{(X'X)^{-1}X'\\epsilon \\epsilon'\\mathbf{X(X'X)^{-1}}}]  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}X'} E(\\epsilon \\epsilon')\\mathbf{X(X'X)^{-1}}  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}X'} \\sigma^{2}\\mathbf{I} \\mathbf{X(X'X)^{-1}}   \\nonumber \\\\ \\nonumber \\\\\n= \\sigma^{2} \\mathbf{(X'X)^{-1}}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#variance-covariance-of-widehatbeta-2",
+    "href": "bivariate24s.html#variance-covariance-of-widehatbeta-2",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)",
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)\n\\[ E[(\\widehat{\\beta}-\\beta)(\\widehat{\\beta}-\\beta)'] = \\] \\(~\\)\n\\[\\left[\n\\begin{array}{cccc}\nvar(\\beta_1) & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k)\\\\\ncov(\\beta_2,\\beta_1)& var(\\beta_2) &\\cdots &cov(\\beta_2,\\beta_k)\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_2,\\beta_k) &\\cdots & var(\\beta_k)\\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "bivariate24s.html#standard-errors-of-beta_k",
+    "href": "bivariate24s.html#standard-errors-of-beta_k",
+    "title": "The Bivariate Model",
+    "section": "Standard Errors of \\(\\beta_k\\)",
+    "text": "Standard Errors of \\(\\beta_k\\)\n\\[\n\\left[\n\\begin{array}{cccc}\n\\sqrt{var(\\beta_1)} & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k)\\\\\ncov(\\beta_2,\\beta_1)& \\sqrt{var(\\beta_2)} &\\cdots &cov(\\beta_2,\\beta_k)\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_2,\\beta_k) &\\cdots & \\sqrt{var(\\beta_k)}\\\\\n\\end{array} \\right]\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#property-1",
+    "href": "bivariate24s.html#property-1",
+    "title": "The Bivariate Model",
+    "section": "Property 1",
+    "text": "Property 1\nIf \\(X' \\widehat{\\epsilon} = 0\\) holds, then the following properties exist:\n\n\n\nProposition\n\n\nEach \\(x\\) variable (each column vector of \\(\\mathbf{X}\\)) is uncorrelated with \\(\\epsilon\\)."
+  },
+  {
+    "objectID": "bivariate24s.html#property-2",
+    "href": "bivariate24s.html#property-2",
+    "title": "The Bivariate Model",
+    "section": "Property 2",
+    "text": "Property 2\nAssuming a constant in the matrix \\(\\mathbf{X}\\),\n\n\n\nProposition\n\n\n\\(\\sum\\limits_{i-1}^{n} \\epsilon_i = 0\\)\nbecause each element of the matrix \\(X' \\widehat{\\epsilon}\\) would be nonzero due to the constant; only by multiplying by \\(\\epsilon_i=0\\) would each element equal zero, and then the sum must be zero."
+  },
+  {
+    "objectID": "bivariate24s.html#property-3",
+    "href": "bivariate24s.html#property-3",
+    "title": "The Bivariate Model",
+    "section": "Property 3",
+    "text": "Property 3\n\n\n\nProposition\n\n\nThe mean of the residuals is zero.\nIf the sum of the residuals is zero, that sum divided by \\(N\\) must also be zero."
+  },
+  {
+    "objectID": "bivariate24s.html#property-4",
+    "href": "bivariate24s.html#property-4",
+    "title": "The Bivariate Model",
+    "section": "Property 4",
+    "text": "Property 4\n\n\n\nProposition\n\n\nThe regression line (in the bivariate case) or the hyperplane (in the multivariate case) passes through the means of the observed variables, \\(\\mathbf{X}\\) and \\(y\\).\n\\[\n\\begin{align}\n\\epsilon = y - X\\widehat{\\beta} \\nonumber \\\\ \\\\\n\\text{mutliplying by} ~  N^{-1} \\nonumber \\\\ \\\\\n\\bar{\\epsilon} = \\bar{y} - \\bar{X} \\widehat{\\beta} = 0  \\nonumber\n\\end{align}\n\\]\n\\(\\bar{y} - \\bar{X} \\widehat{\\beta}=0\\) implies \\(\\bar{y} = \\bar{X} \\widehat{\\beta}\\), and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane \\(\\bar{y} - \\bar{X} \\widehat{\\beta}\\), the mean of the residuals equals zero, implying the regression line or hyperplane passes through it."
+  },
+  {
+    "objectID": "bivariate24.html#derivation-i",
+    "href": "bivariate24.html#derivation-i",
+    "title": "The Bivariate Model",
+    "section": "Derivation I",
+    "text": "Derivation I\n\\[\ny_{i}=\\beta_{0}+\\beta_{1}X_{1} + u \\nonumber\n\\]\n\\(\\ldots\\) over the sample, \\(N\\), sum of squares of the deviations, \\(\\widehat{S}\\) \\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})^{2} \\nonumber\n\\]\n\\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}^{2}-2y_i \\widehat{\\beta_{0}}- 2y_i\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{0}}^{2}  \\nonumber \\\\\n+2\\widehat{\\beta_{0}}\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{1}^{2}}X_{i}^{2} ) \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-i",
+    "href": "bivariate24.html#ols-i",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nMinimize \\(S\\) with respect to \\(\\beta_0\\):\n\\[\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{0}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})  \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i} \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-i-1",
+    "href": "bivariate24.html#ols-i-1",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nAnd do the same with respect to \\(\\beta_{1}\\):\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{1}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}) X_{i} \\nonumber \\\\\n=-2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})X_{i} \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i}  X_i\\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-i-2",
+    "href": "bivariate24.html#ols-i-2",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nThis shows explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:\n\\[y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}\\]\n\\[\\mathbf{y} - \\mathbf{X}\\widehat{\\beta}\\]\n\\[\\mathbf{y} - \\mathbf{\\widehat{y}}\\]\n\\[\\mathbf{\\widehat{u}}\\]"
+  },
+  {
+    "objectID": "bivariate24.html#derivation-ii",
+    "href": "bivariate24.html#derivation-ii",
+    "title": "The Bivariate Model",
+    "section": "Derivation II",
+    "text": "Derivation II\nHere’s another way to achieve the same thing, but for illustration purposes, a second time around might be useful. Suppose in the population, we have the equation\n\\[\ny= \\beta_{0}+\\beta_{1}x_{i} + e_{i} \\nonumber\n\\]\nAssume the mean of \\(e\\) to be zero and that \\(x\\) and \\(e\\) are uncorrelated, so\n\\[E[e]=0 \\nonumber\n\\]\n\\[\nCov[x,e]=0 \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii",
+    "href": "bivariate24.html#ols-ii",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nThis is equivalent to saying the expected value of the product of \\(x\\) and \\(e\\) is zero:\n\\[E[x \\cdot e]=0 \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-1",
+    "href": "bivariate24.html#ols-ii-1",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nNow, let’s solve the original population function for \\(e\\):\n\\[\n\\begin{align}\ny=\\beta_0 + \\beta_1 x_i+ e_i \\nonumber \\\\ \\nonumber \\\\\ne_i = y-\\beta_0 - \\beta_1 x_i  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-2",
+    "href": "bivariate24.html#ols-ii-2",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nand then restate these assumptions in terms of \\(y\\):\n\\[\n\\begin{align}\nE[y-\\beta_0 - \\beta_1 x_i]=0    \\nonumber \\\\  \\nonumber \\\\\nCov[x,(y-\\beta_0 - \\beta_1 x_i)]=0 \\nonumber\n\\end{align}\n\\]\nwhere the first expects the mean of the disturbances to be zero and second expects the covariance of the \\(X\\)s and the disturbances to be zero."
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-3",
+    "href": "bivariate24.html#ols-ii-3",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nSince we want estimates of \\(\\beta_0\\) and \\(\\beta_1\\) for a sample (so \\(\\hat{\\beta_0}\\) and \\(\\hat{\\beta_1}\\)), state these expectations with respect to a sample (of size \\(n\\)):\n\\[\n\\begin{align}\n\\frac{\\sum\\limits_{i=1}^{n}(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0   \\nonumber \\\\ \\nonumber \\\\\n\\frac{\\sum\\limits_{i=1}^{n}x(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0 \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-4",
+    "href": "bivariate24.html#ols-ii-4",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nThese first order conditions are equivalent to those in the derivation above where we solved them by taking the partial derivatives of the sum of squares with respect to the unknowns.\nRecalling the mean of a variable is\n\\[\\bar{y}=\\frac{\\sum\\limits_{i=1}^{n}y_i}{n}\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-5",
+    "href": "bivariate24.html#ols-ii-5",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nwe can write each of these in terms of the means of \\(x\\) and \\(y\\) - first, here is the mean zero statement (from above):\n\\[\n\\begin{align}\n\\bar{y}-\\hat{\\beta_0} - \\hat{\\beta_1} \\bar{x}=0 \\nonumber \\\\ \\nonumber \\\\\n\\bar{y}=\\hat{\\beta_0} + \\hat{\\beta_1} \\bar{x} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-6",
+    "href": "bivariate24.html#ols-ii-6",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nand we can rearrange to solve for \\(\\beta_0\\)\n\\[\n\\hat{\\beta_0}= \\bar{y}- \\hat{\\beta_1} \\bar{x} \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#properties",
+    "href": "bivariate24.html#properties",
+    "title": "The Bivariate Model",
+    "section": "Properties",
+    "text": "Properties\nNote that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step is to make a set of assumptions regarding the error term in order to facilitate statements about \\(\\widehat{\\beta}\\), and inferences about those estimates."
+  },
+  {
+    "objectID": "bivariate24s.html#derivation-i",
+    "href": "bivariate24s.html#derivation-i",
+    "title": "The Bivariate Model",
+    "section": "Derivation I",
+    "text": "Derivation I\n\\[\ny_{i}=\\beta_{0}+\\beta_{1}X_{1} + u \\nonumber\n\\]\n\\(\\ldots\\) over the sample, \\(N\\), sum of squares of the deviations, \\(\\widehat{S}\\) \\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})^{2} \\nonumber\n\\]\n\\[\n\\widehat{S} = \\sum \\limits_{i=1}^{n} (y_{i}^{2}-2y_i \\widehat{\\beta_{0}}- 2y_i\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{0}}^{2}  \\nonumber \\\\\n+2\\widehat{\\beta_{0}}\\widehat{\\beta_{1}}X_{i} + \\widehat{\\beta_{1}^{2}}X_{i}^{2} ) \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-i",
+    "href": "bivariate24s.html#ols-i",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nMinimize \\(S\\) with respect to \\(\\beta_0\\):\n\\[\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{0}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})  \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i} \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-i-1",
+    "href": "bivariate24s.html#ols-i-1",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nAnd do the same with respect to \\(\\beta_{1}\\):\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{S}}}{\\partial{\\widehat{\\beta_{1}}}} = -2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}) X_{i} \\nonumber \\\\\n=-2 \\sum \\limits_{i=1}^{n} (y_{i}-\\widehat{\\beta_{0}}-\\widehat{\\beta_{1}}X_{i})X_{i} \\nonumber \\\\\n= -2 \\sum \\limits_{i=1}^{n}  \\hat{u_i}  X_i\\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-i-2",
+    "href": "bivariate24s.html#ols-i-2",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nThis shows explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:\n\\[y_{i}-\\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}X_{i}\\]\n\\[\\mathbf{y} - \\mathbf{X}\\widehat{\\beta}\\]\n\\[\\mathbf{y} - \\mathbf{\\widehat{y}}\\]\n\\[\\mathbf{\\widehat{u}}\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#derivation-ii",
+    "href": "bivariate24s.html#derivation-ii",
+    "title": "The Bivariate Model",
+    "section": "Derivation II",
+    "text": "Derivation II\nHere’s another way to achieve the same thing, but for illustration purposes, a second time around might be useful. Suppose in the population, we have the equation\n\\[\ny= \\beta_{0}+\\beta_{1}x_{i} + e_{i} \\nonumber\n\\]\nAssume the mean of \\(e\\) to be zero and that \\(x\\) and \\(e\\) are uncorrelated, so\n\\[E[e]=0 \\nonumber\n\\]\n\\[\nCov[x,e]=0 \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii",
+    "href": "bivariate24s.html#ols-ii",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nThis is equivalent to saying the expected value of the product of \\(x\\) and \\(e\\) is zero:\n\\[E[x \\cdot e]=0 \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-1",
+    "href": "bivariate24s.html#ols-ii-1",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nNow, let’s solve the original population function for \\(e\\):\n\\[\n\\begin{align}\ny=\\beta_0 + \\beta_1 x_i+ e_i \\nonumber \\\\ \\nonumber \\\\\ne_i = y-\\beta_0 - \\beta_1 x_i  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-2",
+    "href": "bivariate24s.html#ols-ii-2",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nand then restate these assumptions in terms of \\(y\\):\n\\[\n\\begin{align}\nE[y-\\beta_0 - \\beta_1 x_i]=0    \\nonumber \\\\  \\nonumber \\\\\nCov[x,(y-\\beta_0 - \\beta_1 x_i)]=0 \\nonumber\n\\end{align}\n\\]\nwhere the first expects the mean of the disturbances to be zero and second expects the covariance of the \\(X\\)s and the disturbances to be zero."
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-3",
+    "href": "bivariate24s.html#ols-ii-3",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nSince we want estimates of \\(\\beta_0\\) and \\(\\beta_1\\) for a sample (so \\(\\hat{\\beta_0}\\) and \\(\\hat{\\beta_1}\\)), state these expectations with respect to a sample (of size \\(n\\)):\n\\[\n\\begin{align}\n\\frac{\\sum\\limits_{i=1}^{n}(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0   \\nonumber \\\\ \\nonumber \\\\\n\\frac{\\sum\\limits_{i=1}^{n}x(y-\\hat{\\beta_0} - \\hat{\\beta_1} x_i)}{n}=0 \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-4",
+    "href": "bivariate24s.html#ols-ii-4",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nThese first order conditions are equivalent to those in the derivation above where we solved them by taking the partial derivatives of the sum of squares with respect to the unknowns.\nRecalling the mean of a variable is\n\\[\\bar{y}=\\frac{\\sum\\limits_{i=1}^{n}y_i}{n}\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-5",
+    "href": "bivariate24s.html#ols-ii-5",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nwe can write each of these in terms of the means of \\(x\\) and \\(y\\) - first, here is the mean zero statement (from above):\n\\[\n\\begin{align}\n\\bar{y}-\\hat{\\beta_0} - \\hat{\\beta_1} \\bar{x}=0 \\nonumber \\\\ \\nonumber \\\\\n\\bar{y}=\\hat{\\beta_0} + \\hat{\\beta_1} \\bar{x} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-6",
+    "href": "bivariate24s.html#ols-ii-6",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nand we can rearrange to solve for \\(\\beta_0\\)\n\\[\n\\hat{\\beta_0}= \\bar{y}- \\hat{\\beta_1} \\bar{x} \\nonumber\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#properties",
+    "href": "bivariate24s.html#properties",
+    "title": "The Bivariate Model",
+    "section": "Properties",
+    "text": "Properties\nNote that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step is to make a set of assumptions regarding the error term in order to facilitate statements about \\(\\widehat{\\beta}\\), and inferences about those estimates."
+  },
+  {
+    "objectID": "bivariate24.html#ols-i-3",
+    "href": "bivariate24.html#ols-i-3",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nSubstituting the unknowns back in, setting equal to zero, and rearranging gives the “normal equations”:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\beta_{0}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-i-3",
+    "href": "bivariate24s.html#ols-i-3",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nSubstituting the unknowns back in, setting equal to zero, and rearranging gives the “normal equations”:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\beta_{0}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-i-4",
+    "href": "bivariate24.html#ols-i-4",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nSolving, we get the estimating equations, here for \\(\\widehat{\\beta_0}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\nn \\widehat{\\beta_0} =  \\sum \\limits_{i=1}^{n}y_{i} - \\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\widehat{\\beta_0} =  \\bar{y} - \\widehat{\\beta_{1}}\\bar{X_{i}} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-i-4",
+    "href": "bivariate24s.html#ols-i-4",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nSolving, we get the estimating equations, here for \\(\\widehat{\\beta_0}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}y_{i}= n \\widehat{\\beta_{0}}+\\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\nn \\widehat{\\beta_0} =  \\sum \\limits_{i=1}^{n}y_{i} - \\widehat{\\beta_{1}}\\sum \\limits_{i=1}^{n}X_{i} \\nonumber \\\\\n\\widehat{\\beta_0} =  \\bar{y} - \\widehat{\\beta_{1}}\\bar{X_{i}} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-i-5",
+    "href": "bivariate24.html#ols-i-5",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nAnd here, for \\(\\widehat{\\beta_1}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber \\\\\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-i-5",
+    "href": "bivariate24s.html#ols-i-5",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nAnd here, for \\(\\widehat{\\beta_1}\\):\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}X_{i}y_{i} = \\beta_{0}\\sum \\limits_{i=1}^{n}X_{i}+\\beta_{1}\\sum \\limits_{i=1}^{n}X_{i}^{2}\\nonumber \\\\\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-i-6",
+    "href": "bivariate24.html#ols-i-6",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nNote the parts of \\(\\widehat{\\beta_1}\\):\n\\[\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\]\nThe numerator is the covariance of \\(X\\) and \\(y\\) - the denominator is the variance of \\(X\\). The estimated coefficient \\(\\widehat{\\beta_{1}}\\) is the covariance of (X,y) weighted by the variance in \\(X\\). \\(\\widehat{\\beta_{1}}\\) measures the estimated change in \\(y\\) given a one-unit change in \\(X\\)."
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-7",
+    "href": "bivariate24.html#ols-ii-7",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nNow, rewrite the second assumption (\\(E[x \\cdot e]=0\\)) in the same way:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i[y_i-(\\bar{y}-\\hat{\\beta_{1}}\\bar{x})-\\hat{\\beta_{1}}x_{i}] =0  \\nonumber \\\\ \\text{and rearrange,} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-8",
+    "href": "bivariate24.html#ols-ii-8",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nBecause of the properties of the summation operator,\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2  \\nonumber \\\\ \\text{and} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y}) \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-9",
+    "href": "bivariate24.html#ols-ii-9",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nSo, substituting and solving for \\(\\hat{\\beta}_1\\) gives:\n\n\n\n\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})= \\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2 \\nonumber \\\\\n\\hat{\\beta_{1}}=\\frac{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-ii-10",
+    "href": "bivariate24.html#ols-ii-10",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nWhy can we drop \\(n\\) from these calculations? Recall that\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}\\widehat{e_{i}} = 0 \\nonumber \\\\\n\\text{so} \\nonumber \\\\\n\\frac{\\sum \\limits_{i=1}^{n}\\widehat{e_{i}}}{n} = 0 \\nonumber\n\\end{align}\n\\]\nThe same is true for the covariance assumption."
+  },
+  {
+    "objectID": "bivariate24.html#derivation-iii",
+    "href": "bivariate24.html#derivation-iii",
+    "title": "The Bivariate Model",
+    "section": "Derivation III",
+    "text": "Derivation III\nOne more time, but now in matrix form:\n\\[\ny_{i} = \\mathbf{X_i}  \\widehat{\\beta}  +\\epsilon \\nonumber\n\\]\nSkipping a lot of steps we’ll cover soon, solve for\n\\[ \\widehat{\\beta} = \\mathbf{X'X}^{-1} \\mathbf{X'}y\\]"
+  },
+  {
+    "objectID": "bivariate24.html#ols-matrix-derivation-2",
+    "href": "bivariate24.html#ols-matrix-derivation-2",
+    "title": "The Bivariate Model",
+    "section": "OLS matrix derivation",
+    "text": "OLS matrix derivation\nDifferentiating with respect to \\(\\widehat{\\beta}\\), and setting equal to zero,\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{\\epsilon}'\\widehat{\\epsilon}}}{\\partial{\\widehat{\\beta}}} = -2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X}'\\mathbf{X}\\widehat{\\beta} \\nonumber \\\\  \n-2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X'X}\\widehat{\\beta}=0  \\nonumber \\\\  \n\\mathbf{X'X}\\widehat{\\beta}=\\mathbf{X'y}  \\nonumber \\\\\n(\\mathbf{X'X})^{-1}\\mathbf{X'X}\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}   \\nonumber \\\\  \n\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24.html#variance-covariance-matrix-of-epsilon-2",
+    "href": "bivariate24.html#variance-covariance-matrix-of-epsilon-2",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance Matrix of \\(\\epsilon\\)",
+    "text": "Variance-Covariance Matrix of \\(\\epsilon\\)\nThis matrix is important because it gives us our estimate of \\(\\sigma^2\\). This is important enough to merit its own slide."
+  },
+  {
+    "objectID": "bivariate24s.html#ols-i-6",
+    "href": "bivariate24s.html#ols-i-6",
+    "title": "The Bivariate Model",
+    "section": "OLS I",
+    "text": "OLS I\nNote the parts of \\(\\widehat{\\beta_1}\\):\n\\[\n\\widehat{\\beta_{1}} = \\frac{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(X_{i}-\\bar{X})^2} \\nonumber\n\\]\nThe numerator is the covariance of \\(X\\) and \\(y\\) - the denominator is the variance of \\(X\\). The estimated coefficient \\(\\widehat{\\beta_{1}}\\) is the covariance of (X,y) weighted by the variance in \\(X\\). \\(\\widehat{\\beta_{1}}\\) measures the estimated change in \\(y\\) given a one-unit change in \\(X\\)."
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-7",
+    "href": "bivariate24s.html#ols-ii-7",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nNow, rewrite the second assumption (\\(E[x \\cdot e]=0\\)) in the same way:\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i[y_i-(\\bar{y}-\\hat{\\beta_{1}}\\bar{x})-\\hat{\\beta_{1}}x_{i}] =0  \\nonumber \\\\ \\text{and rearrange,} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-8",
+    "href": "bivariate24s.html#ols-ii-8",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nBecause of the properties of the summation operator,\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2  \\nonumber \\\\ \\text{and} \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) = \\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y}) \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-9",
+    "href": "bivariate24s.html#ols-ii-9",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nSo, substituting and solving for \\(\\hat{\\beta}_1\\) gives:\n\n\n\n\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}x_i(y_i-\\bar{y}) =\\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}x_i(x_i-\\bar{x}) \\nonumber \\\\\n\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})= \\hat{\\beta_{1}}\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2 \\nonumber \\\\\n\\hat{\\beta_{1}}=\\frac{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})(y_i-\\bar{y})}{\\sum \\limits_{i=1}^{n}(x_i-\\bar{x})^2} \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-ii-10",
+    "href": "bivariate24s.html#ols-ii-10",
+    "title": "The Bivariate Model",
+    "section": "OLS II",
+    "text": "OLS II\nWhy can we drop \\(n\\) from these calculations? Recall that\n\\[\n\\begin{align}\n\\sum \\limits_{i=1}^{n}\\widehat{e_{i}} = 0 \\nonumber \\\\\n\\text{so} \\nonumber \\\\\n\\frac{\\sum \\limits_{i=1}^{n}\\widehat{e_{i}}}{n} = 0 \\nonumber\n\\end{align}\n\\]\nThe same is true for the covariance assumption."
+  },
+  {
+    "objectID": "bivariate24s.html#derivation-iii",
+    "href": "bivariate24s.html#derivation-iii",
+    "title": "The Bivariate Model",
+    "section": "Derivation III",
+    "text": "Derivation III\nOne more time, but now in matrix form:\n\\[\ny_{i} = \\mathbf{X_i}  \\widehat{\\beta}  +\\epsilon \\nonumber\n\\]\nSkipping a lot of steps we’ll cover soon, solve for\n\\[ \\widehat{\\beta} = \\mathbf{X'X}^{-1} \\mathbf{X'}y\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#ols-matrix-derivation-2",
+    "href": "bivariate24s.html#ols-matrix-derivation-2",
+    "title": "The Bivariate Model",
+    "section": "OLS matrix derivation",
+    "text": "OLS matrix derivation\nDifferentiating with respect to \\(\\widehat{\\beta}\\), and setting equal to zero,\n\\[\n\\begin{align}\n\\frac{\\partial{\\widehat{\\epsilon}'\\widehat{\\epsilon}}}{\\partial{\\widehat{\\beta}}} = -2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X}'\\mathbf{X}\\widehat{\\beta} \\nonumber \\\\  \n-2\\mathbf{X}'\\mathbf{y}+2\\mathbf{X'X}\\widehat{\\beta}=0  \\nonumber \\\\  \n\\mathbf{X'X}\\widehat{\\beta}=\\mathbf{X'y}  \\nonumber \\\\\n(\\mathbf{X'X})^{-1}\\mathbf{X'X}\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}   \\nonumber \\\\  \n\\widehat{\\beta}=(\\mathbf{X'X})^{-1}\\mathbf{X'y}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "bivariate24s.html#variance-covariance-matrix-of-epsilon-2",
+    "href": "bivariate24s.html#variance-covariance-matrix-of-epsilon-2",
+    "title": "The Bivariate Model",
+    "section": "Variance-Covariance Matrix of \\(\\epsilon\\)",
+    "text": "Variance-Covariance Matrix of \\(\\epsilon\\)\nThis matrix is important because it gives us our estimate of \\(\\sigma^2\\). This is important enough to merit its own slide."
   }
 ]

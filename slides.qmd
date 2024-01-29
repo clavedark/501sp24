@@ -23,6 +23,8 @@ title: "Slides"
 
 [Probability basics](probability24s.qmd)
 
+[Bivariate model](bivariate24s.html)
+
 
 
 :::

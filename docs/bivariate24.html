@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Dave Clark">
-<meta name="dcterms.date" content="2024-01-26">
+<meta name="dcterms.date" content="2024-01-28">
 
 <title>PLSC 501 - Spring 2024 - The Bivariate Model</title>
 <style>
@@ -4626,7 +4626,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">January 26, 2024</p>
+        <p class="date">January 28, 2024</p>
       </div>
     </div>
     
@@ -4649,34 +4649,53 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
   <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals">Residuals</a></li>
   <li><a href="#in-matrix-notation" id="toc-in-matrix-notation" class="nav-link" data-scroll-target="#in-matrix-notation">In matrix notation</a></li>
   </ul></li>
-  <li><a href="#deriving-the-ols-estimator" id="toc-deriving-the-ols-estimator" class="nav-link" data-scroll-target="#deriving-the-ols-estimator">Deriving the OLS estimator</a>
+  <li><a href="#deriving-the-estimator" id="toc-deriving-the-estimator" class="nav-link" data-scroll-target="#deriving-the-estimator">Deriving the estimator</a>
   <ul class="collapse">
-  <li><a href="#getting-to-ols-i" id="toc-getting-to-ols-i" class="nav-link" data-scroll-target="#getting-to-ols-i">Getting to OLS I</a></li>
-  <li><a href="#ols-1" id="toc-ols-1" class="nav-link" data-scroll-target="#ols-1">OLS 1</a></li>
-  <li><a href="#ols-1-1" id="toc-ols-1-1" class="nav-link" data-scroll-target="#ols-1-1">OLS 1</a></li>
-  <li><a href="#getting-to-ols-ii" id="toc-getting-to-ols-ii" class="nav-link" data-scroll-target="#getting-to-ols-ii">Getting to OLS II</a></li>
-  <li><a href="#getting-to-ols-iii" id="toc-getting-to-ols-iii" class="nav-link" data-scroll-target="#getting-to-ols-iii">Getting to OLS III</a></li>
+  <li><a href="#derivation-i" id="toc-derivation-i" class="nav-link" data-scroll-target="#derivation-i">Derivation I</a></li>
+  <li><a href="#ols-i" id="toc-ols-i" class="nav-link" data-scroll-target="#ols-i">OLS I</a></li>
+  <li><a href="#ols-i-1" id="toc-ols-i-1" class="nav-link" data-scroll-target="#ols-i-1">OLS I</a></li>
+  <li><a href="#ols-i-2" id="toc-ols-i-2" class="nav-link" data-scroll-target="#ols-i-2">OLS I</a></li>
+  <li><a href="#ols-i-3" id="toc-ols-i-3" class="nav-link" data-scroll-target="#ols-i-3">OLS I</a></li>
+  <li><a href="#ols-i-4" id="toc-ols-i-4" class="nav-link" data-scroll-target="#ols-i-4">OLS I</a></li>
+  <li><a href="#ols-i-5" id="toc-ols-i-5" class="nav-link" data-scroll-target="#ols-i-5">OLS I</a></li>
+  <li><a href="#ols-i-6" id="toc-ols-i-6" class="nav-link" data-scroll-target="#ols-i-6">OLS I</a></li>
+  <li><a href="#derivation-ii" id="toc-derivation-ii" class="nav-link" data-scroll-target="#derivation-ii">Derivation II</a></li>
+  <li><a href="#ols-ii" id="toc-ols-ii" class="nav-link" data-scroll-target="#ols-ii">OLS II</a></li>
+  <li><a href="#ols-ii-1" id="toc-ols-ii-1" class="nav-link" data-scroll-target="#ols-ii-1">OLS II</a></li>
+  <li><a href="#ols-ii-2" id="toc-ols-ii-2" class="nav-link" data-scroll-target="#ols-ii-2">OLS II</a></li>
+  <li><a href="#ols-ii-3" id="toc-ols-ii-3" class="nav-link" data-scroll-target="#ols-ii-3">OLS II</a></li>
+  <li><a href="#ols-ii-4" id="toc-ols-ii-4" class="nav-link" data-scroll-target="#ols-ii-4">OLS II</a></li>
+  <li><a href="#ols-ii-5" id="toc-ols-ii-5" class="nav-link" data-scroll-target="#ols-ii-5">OLS II</a></li>
+  <li><a href="#ols-ii-6" id="toc-ols-ii-6" class="nav-link" data-scroll-target="#ols-ii-6">OLS II</a></li>
+  <li><a href="#ols-ii-7" id="toc-ols-ii-7" class="nav-link" data-scroll-target="#ols-ii-7">OLS II</a></li>
+  <li><a href="#ols-ii-8" id="toc-ols-ii-8" class="nav-link" data-scroll-target="#ols-ii-8">OLS II</a></li>
+  <li><a href="#ols-ii-9" id="toc-ols-ii-9" class="nav-link" data-scroll-target="#ols-ii-9">OLS II</a></li>
+  <li><a href="#ols-ii-10" id="toc-ols-ii-10" class="nav-link" data-scroll-target="#ols-ii-10">OLS II</a></li>
+  <li><a href="#derivation-iii" id="toc-derivation-iii" class="nav-link" data-scroll-target="#derivation-iii">Derivation III</a></li>
   <li><a href="#the-components" id="toc-the-components" class="nav-link" data-scroll-target="#the-components">The components</a></li>
   <li><a href="#components---covariation-mathbfxx" id="toc-components---covariation-mathbfxx" class="nav-link" data-scroll-target="#components---covariation-mathbfxx">Components - Covariation <span class="math inline">\(\mathbf{X&#39;X}\)</span></a></li>
   <li><a href="#components---covariation-mathbfxy" id="toc-components---covariation-mathbfxy" class="nav-link" data-scroll-target="#components---covariation-mathbfxy">Components - Covariation <span class="math inline">\(\mathbf{X&#39;y}\)</span></a></li>
   <li><a href="#ols-matrix-derivation" id="toc-ols-matrix-derivation" class="nav-link" data-scroll-target="#ols-matrix-derivation">OLS matrix derivation</a></li>
   <li><a href="#ols-matrix-derivation-1" id="toc-ols-matrix-derivation-1" class="nav-link" data-scroll-target="#ols-matrix-derivation-1">OLS matrix derivation</a></li>
+  <li><a href="#ols-matrix-derivation-2" id="toc-ols-matrix-derivation-2" class="nav-link" data-scroll-target="#ols-matrix-derivation-2">OLS matrix derivation</a></li>
   <li><a href="#variance-covariance-matrix-of-epsilon" id="toc-variance-covariance-matrix-of-epsilon" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-epsilon">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></a></li>
   <li><a href="#variance-covariance-matrix-of-epsilon-1" id="toc-variance-covariance-matrix-of-epsilon-1" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-epsilon-1">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></a></li>
+  <li><a href="#variance-covariance-matrix-of-epsilon-2" id="toc-variance-covariance-matrix-of-epsilon-2" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-epsilon-2">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></a></li>
   <li><a href="#variance-covariance-of-widehatbeta" id="toc-variance-covariance-of-widehatbeta" class="nav-link" data-scroll-target="#variance-covariance-of-widehatbeta">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
   <li><a href="#variance-covariance-of-widehatbeta-1" id="toc-variance-covariance-of-widehatbeta-1" class="nav-link" data-scroll-target="#variance-covariance-of-widehatbeta-1">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
   <li><a href="#variance-covariance-of-widehatbeta-2" id="toc-variance-covariance-of-widehatbeta-2" class="nav-link" data-scroll-target="#variance-covariance-of-widehatbeta-2">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
   <li><a href="#standard-errors-of-beta_k" id="toc-standard-errors-of-beta_k" class="nav-link" data-scroll-target="#standard-errors-of-beta_k">Standard Errors of <span class="math inline">\(\beta_k\)</span></a></li>
   </ul></li>
-  <li><a href="#properties-of-ols-estimators" id="toc-properties-of-ols-estimators" class="nav-link" data-scroll-target="#properties-of-ols-estimators">Properties of OLS Estimators</a>
+  <li><a href="#properties-of-ols" id="toc-properties-of-ols" class="nav-link" data-scroll-target="#properties-of-ols">Properties of OLS</a>
   <ul class="collapse">
   <li><a href="#property-1" id="toc-property-1" class="nav-link" data-scroll-target="#property-1">Property 1</a></li>
   <li><a href="#property-2" id="toc-property-2" class="nav-link" data-scroll-target="#property-2">Property 2</a></li>
   <li><a href="#property-3" id="toc-property-3" class="nav-link" data-scroll-target="#property-3">Property 3</a></li>
   <li><a href="#property-4" id="toc-property-4" class="nav-link" data-scroll-target="#property-4">Property 4</a></li>
+  <li><a href="#properties" id="toc-properties" class="nav-link" data-scroll-target="#properties">Properties</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="bivariate24s.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -4739,11 +4758,11 @@ y_{i} = \mathbf{X_i}  \beta_{k}  +\varepsilon_i \nonumber \\
 \]</span></p>
 </section>
 </section>
-<section id="deriving-the-ols-estimator" class="level1">
-<h1>Deriving the OLS estimator</h1>
+<section id="deriving-the-estimator" class="level1">
+<h1>Deriving the estimator</h1>
 <p>There are multiple ways to derive the least squares estimator - here are three.</p>
-<section id="getting-to-ols-i" class="level2">
-<h2 class="anchored" data-anchor-id="getting-to-ols-i">Getting to OLS I</h2>
+<section id="derivation-i" class="level2">
+<h2 class="anchored" data-anchor-id="derivation-i">Derivation I</h2>
 <p><span class="math display">\[
 y_{i}=\beta_{0}+\beta_{1}X_{1} + u \nonumber
 \]</span></p>
@@ -4755,13 +4774,16 @@ y_{i}=\beta_{0}+\beta_{1}X_{1} + u \nonumber
 +2\widehat{\beta_{0}}\widehat{\beta_{1}}X_{i} + \widehat{\beta_{1}^{2}}X_{i}^{2} ) \nonumber
 \]</span></p>
 </section>
-<section id="ols-1" class="level2">
-<h2 class="anchored" data-anchor-id="ols-1">OLS 1</h2>
-<p>To minimize <span class="math inline">\(S\)</span> with respect to <span class="math inline">\(\beta_0\)</span>:</p>
+<section id="ols-i" class="level2">
+<h2 class="anchored" data-anchor-id="ols-i">OLS I</h2>
+<p>Minimize <span class="math inline">\(S\)</span> with respect to <span class="math inline">\(\beta_0\)</span>:</p>
 <p><span class="math display">\[
 \frac{\partial{\widehat{S}}}{\partial{\widehat{\beta_{0}}}} = -2 \sum \limits_{i=1}^{n} (y_{i}-\widehat{\beta_{0}}-\widehat{\beta_{1}}X_{i})  \nonumber \\
 = -2 \sum \limits_{i=1}^{n}  \hat{u_i} \nonumber
 \]</span></p>
+</section>
+<section id="ols-i-1" class="level2">
+<h2 class="anchored" data-anchor-id="ols-i-1">OLS I</h2>
 <p>And do the same with respect to <span class="math inline">\(\beta_{1}\)</span>:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4770,14 +4792,17 @@ y_{i}=\beta_{0}+\beta_{1}X_{1} + u \nonumber
 = -2 \sum \limits_{i=1}^{n}  \hat{u_i}  X_i\nonumber
 \end{align}
 \]</span></p>
-<p><span class="math inline">\(\ldots\)</span> illustrating explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:</p>
+</section>
+<section id="ols-i-2" class="level2">
+<h2 class="anchored" data-anchor-id="ols-i-2">OLS I</h2>
+<p>This shows explicitly that the minimum of the sum of squares is a function of the deviations of predictions from observed:</p>
 <p><span class="math display">\[y_{i}-\widehat{\beta_{0}}+\widehat{\beta_{1}}X_{i}\]</span></p>
 <p><span class="math display">\[\mathbf{y} - \mathbf{X}\widehat{\beta}\]</span></p>
 <p><span class="math display">\[\mathbf{y} - \mathbf{\widehat{y}}\]</span></p>
 <p><span class="math display">\[\mathbf{\widehat{u}}\]</span></p>
 </section>
-<section id="ols-1-1" class="level2">
-<h2 class="anchored" data-anchor-id="ols-1-1">OLS 1</h2>
+<section id="ols-i-3" class="level2">
+<h2 class="anchored" data-anchor-id="ols-i-3">OLS I</h2>
 <p>Substituting the unknowns back in, setting equal to zero, and rearranging gives the “normal equations”:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4785,6 +4810,9 @@ y_{i}=\beta_{0}+\beta_{1}X_{1} + u \nonumber
 \sum \limits_{i=1}^{n}X_{i}y_{i} = \beta_{0}\sum \limits_{i=1}^{n}X_{i}+\beta_{1}\sum \limits_{i=1}^{n}X_{i}^{2}\nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-i-4" class="level2">
+<h2 class="anchored" data-anchor-id="ols-i-4">OLS I</h2>
 <p>Solving, we get the estimating equations, here for <span class="math inline">\(\widehat{\beta_0}\)</span>:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4793,6 +4821,9 @@ n \widehat{\beta_0} =  \sum \limits_{i=1}^{n}y_{i} - \widehat{\beta_{1}}\sum \li
 \widehat{\beta_0} =  \bar{y} - \widehat{\beta_{1}}\bar{X_{i}} \nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-i-5" class="level2">
+<h2 class="anchored" data-anchor-id="ols-i-5">OLS I</h2>
 <p>And here, for <span class="math inline">\(\widehat{\beta_1}\)</span>:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4800,14 +4831,17 @@ n \widehat{\beta_0} =  \sum \limits_{i=1}^{n}y_{i} - \widehat{\beta_{1}}\sum \li
 \widehat{\beta_{1}} = \frac{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})(y_i-\bar{y})}{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})^2} \nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-i-6" class="level2">
+<h2 class="anchored" data-anchor-id="ols-i-6">OLS I</h2>
 <p>Note the parts of <span class="math inline">\(\widehat{\beta_1}\)</span>:</p>
 <p><span class="math display">\[
 \widehat{\beta_{1}} = \frac{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})(y_i-\bar{y})}{\sum \limits_{i=1}^{n}(X_{i}-\bar{X})^2} \nonumber
 \]</span></p>
 <p>The numerator is the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(y\)</span> - the denominator is the variance of <span class="math inline">\(X\)</span>. The estimated coefficient <span class="math inline">\(\widehat{\beta_{1}}\)</span> is the covariance of (X,y) weighted by the variance in <span class="math inline">\(X\)</span>. <span class="math inline">\(\widehat{\beta_{1}}\)</span> measures the estimated change in <span class="math inline">\(y\)</span> given a one-unit change in <span class="math inline">\(X\)</span>.</p>
 </section>
-<section id="getting-to-ols-ii" class="level2">
-<h2 class="anchored" data-anchor-id="getting-to-ols-ii">Getting to OLS II</h2>
+<section id="derivation-ii" class="level2">
+<h2 class="anchored" data-anchor-id="derivation-ii">Derivation II</h2>
 <p>Here’s another way to achieve the same thing, but for illustration purposes, a second time around might be useful. Suppose in the population, we have the equation</p>
 <p><span class="math display">\[
 y= \beta_{0}+\beta_{1}x_{i} + e_{i} \nonumber
@@ -4818,9 +4852,15 @@ y= \beta_{0}+\beta_{1}x_{i} + e_{i} \nonumber
 <p><span class="math display">\[
 Cov[x,e]=0 \nonumber
 \]</span></p>
+</section>
+<section id="ols-ii" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii">OLS II</h2>
 <p>This is equivalent to saying the expected value of the product of <span class="math inline">\(x\)</span> and <span class="math inline">\(e\)</span> is zero:</p>
 <p><span class="math display">\[E[x \cdot e]=0 \nonumber
 \]</span></p>
+</section>
+<section id="ols-ii-1" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-1">OLS II</h2>
 <p>Now, let’s solve the original population function for <span class="math inline">\(e\)</span>:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4828,6 +4868,9 @@ y=\beta_0 + \beta_1 x_i+ e_i \nonumber \\ \nonumber \\
 e_i = y-\beta_0 - \beta_1 x_i  \nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-ii-2" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-2">OLS II</h2>
 <p>and then restate these assumptions in terms of <span class="math inline">\(y\)</span>:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4836,6 +4879,9 @@ Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
 \end{align}
 \]</span></p>
 <p>where the first expects the mean of the disturbances to be zero and second expects the covariance of the <span class="math inline">\(X\)</span>s and the disturbances to be zero.</p>
+</section>
+<section id="ols-ii-3" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-3">OLS II</h2>
 <p>Since we want estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> for a sample (so <span class="math inline">\(\hat{\beta_0}\)</span> and <span class="math inline">\(\hat{\beta_1}\)</span>), state these expectations with respect to a sample (of size <span class="math inline">\(n\)</span>):</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4843,9 +4889,15 @@ Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
 \frac{\sum\limits_{i=1}^{n}x(y-\hat{\beta_0} - \hat{\beta_1} x_i)}{n}=0 \nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-ii-4" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-4">OLS II</h2>
 <p>These first order conditions are equivalent to those in the derivation above where we solved them by taking the partial derivatives of the sum of squares with respect to the unknowns.</p>
-<p>Recalling that the mean of a variable</p>
+<p>Recalling the mean of a variable is</p>
 <p><span class="math display">\[\bar{y}=\frac{\sum\limits_{i=1}^{n}y_i}{n}\]</span></p>
+</section>
+<section id="ols-ii-5" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-5">OLS II</h2>
 <p>we can write each of these in terms of the means of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> - first, here is the mean zero statement (from above):</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4853,10 +4905,16 @@ Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
 \bar{y}=\hat{\beta_0} + \hat{\beta_1} \bar{x} \nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-ii-6" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-6">OLS II</h2>
 <p>and we can rearrange to solve for <span class="math inline">\(\beta_0\)</span></p>
 <p><span class="math display">\[
 \hat{\beta_0}= \bar{y}- \hat{\beta_1} \bar{x} \nonumber
 \]</span></p>
+</section>
+<section id="ols-ii-7" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-7">OLS II</h2>
 <p>Now, rewrite the second assumption (<span class="math inline">\(E[x \cdot e]=0\)</span>) in the same way:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4864,6 +4922,9 @@ Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
 \sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-ii-8" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-8">OLS II</h2>
 <p>Because of the properties of the summation operator,</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4871,12 +4932,14 @@ Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
 \sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) = \sum \limits_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y}) \nonumber
 \end{align}
 \]</span></p>
-<p>So, substituting these equations into</p>
-<p><span class="math display">\[
-\begin{align}
-\sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber
-\end{align}\]</span></p>
-<p>and solving for <span class="math inline">\(\hat{\beta}_1\)</span> gives:</p>
+</section>
+<section id="ols-ii-9" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-9">OLS II</h2>
+<p>So, substituting and solving for <span class="math inline">\(\hat{\beta}_1\)</span> gives:</p>
+<!-- $$ -->
+<!-- \begin{align} -->
+<!-- \sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber -->
+<!-- \end{align}$$ -->
 <p><span class="math display">\[
 \begin{align}
 \sum \limits_{i=1}^{n}x_i(y_i-\bar{y}) =\hat{\beta_{1}}\sum \limits_{i=1}^{n}x_i(x_i-\bar{x}) \nonumber \\
@@ -4884,6 +4947,9 @@ Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
 \hat{\beta_{1}}=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2} \nonumber
 \end{align}
 \]</span></p>
+</section>
+<section id="ols-ii-10" class="level2">
+<h2 class="anchored" data-anchor-id="ols-ii-10">OLS II</h2>
 <p>Why can we drop <span class="math inline">\(n\)</span> from these calculations? Recall that</p>
 <p><span class="math display">\[
 \begin{align}
@@ -4894,8 +4960,8 @@ Cov[x,(y-\beta_0 - \beta_1 x_i)]=0 \nonumber
 \]</span></p>
 <p>The same is true for the covariance assumption.</p>
 </section>
-<section id="getting-to-ols-iii" class="level2">
-<h2 class="anchored" data-anchor-id="getting-to-ols-iii">Getting to OLS III</h2>
+<section id="derivation-iii" class="level2">
+<h2 class="anchored" data-anchor-id="derivation-iii">Derivation III</h2>
 <p>One more time, but now in matrix form:</p>
 <p><span class="math display">\[
 y_{i} = \mathbf{X_i}  \widehat{\beta}  +\epsilon \nonumber
@@ -4975,26 +5041,29 @@ y_{i} = \mathbf{X_i}  \widehat{\beta}  +\epsilon \nonumber
 <p><span class="math display">\[
 \mathbf{y}={\mathbf X{\widehat{\beta}}}+\widehat{\mathbf{\epsilon}} \nonumber
 \]</span></p>
+</section>
+<section id="ols-matrix-derivation-1" class="level2">
+<h2 class="anchored" data-anchor-id="ols-matrix-derivation-1">OLS matrix derivation</h2>
 <p>and solve for <span class="math inline">\(\beta\)</span> by minimizing the sum of the squared errors:</p>
 <p><span class="math display">\[
 \begin{align}
-\sum\limits_{i=1}^{n} \epsilon^2= \widehat{\epsilon}&#39;\widehat{\epsilon} \nonumber \\  \nonumber \\
-= (\mathbf{y}-\mathbf{X}\widehat{\beta})&#39;(\mathbf{y}-\mathbf{X}\widehat{\beta})  \nonumber \\  \nonumber \\
-=\mathbf{y&#39;y}-\mathbf{y}&#39;\mathbf{X}\widehat{\beta}-\widehat{\beta}&#39;\mathbf{X}&#39;\mathbf{y}+\widehat{\beta}&#39;\mathbf{X&#39;X}\widehat{\beta}  \nonumber \\  \nonumber \\
-=\mathbf{y&#39;y}-\widehat{\beta}&#39;\mathbf{X}&#39;\mathbf{y}-\widehat{\beta}&#39;\mathbf{X}&#39;\mathbf{y}+\widehat{\beta}&#39;\mathbf{X&#39;X}\widehat{\beta}  \nonumber \\  \nonumber \\
+\sum\limits_{i=1}^{n} \epsilon^2= \widehat{\epsilon}&#39;\widehat{\epsilon} \nonumber \\  
+= (\mathbf{y}-\mathbf{X}\widehat{\beta})&#39;(\mathbf{y}-\mathbf{X}\widehat{\beta})  \nonumber \\   
+=\mathbf{y&#39;y}-\mathbf{y}&#39;\mathbf{X}\widehat{\beta}-\widehat{\beta}&#39;\mathbf{X}&#39;\mathbf{y}+\widehat{\beta}&#39;\mathbf{X&#39;X}\widehat{\beta}  \nonumber \\  
+=\mathbf{y&#39;y}-\widehat{\beta}&#39;\mathbf{X}&#39;\mathbf{y}-\widehat{\beta}&#39;\mathbf{X}&#39;\mathbf{y}+\widehat{\beta}&#39;\mathbf{X&#39;X}\widehat{\beta}  \nonumber \\  
 =\mathbf{y&#39;y}-2\widehat{\beta}&#39;\mathbf{X&#39;y}+\widehat{\beta}&#39;\mathbf{X&#39;X}\widehat{\beta} \nonumber
 \end{align}
 \]</span></p>
 </section>
-<section id="ols-matrix-derivation-1" class="level2">
-<h2 class="anchored" data-anchor-id="ols-matrix-derivation-1">OLS matrix derivation</h2>
+<section id="ols-matrix-derivation-2" class="level2">
+<h2 class="anchored" data-anchor-id="ols-matrix-derivation-2">OLS matrix derivation</h2>
 <p>Differentiating with respect to <span class="math inline">\(\widehat{\beta}\)</span>, and setting equal to zero,</p>
 <p><span class="math display">\[
 \begin{align}
-\frac{\partial{\widehat{\epsilon}&#39;\widehat{\epsilon}}}{\partial{\widehat{\beta}}} = -2\mathbf{X}&#39;\mathbf{y}+2\mathbf{X}&#39;\mathbf{X}\widehat{\beta} \nonumber \\  \nonumber \\
--2\mathbf{X}&#39;\mathbf{y}+2\mathbf{X&#39;X}\widehat{\beta}=0  \nonumber \\  \nonumber \\
-\mathbf{X&#39;X}\widehat{\beta}=\mathbf{X&#39;y}  \nonumber \\  \nonumber \\
-(\mathbf{X&#39;X})^{-1}\mathbf{X&#39;X}\widehat{\beta}=(\mathbf{X&#39;X})^{-1}\mathbf{X&#39;y}   \nonumber \\  \nonumber \\
+\frac{\partial{\widehat{\epsilon}&#39;\widehat{\epsilon}}}{\partial{\widehat{\beta}}} = -2\mathbf{X}&#39;\mathbf{y}+2\mathbf{X}&#39;\mathbf{X}\widehat{\beta} \nonumber \\  
+-2\mathbf{X}&#39;\mathbf{y}+2\mathbf{X&#39;X}\widehat{\beta}=0  \nonumber \\  
+\mathbf{X&#39;X}\widehat{\beta}=\mathbf{X&#39;y}  \nonumber \\
+(\mathbf{X&#39;X})^{-1}\mathbf{X&#39;X}\widehat{\beta}=(\mathbf{X&#39;X})^{-1}\mathbf{X&#39;y}   \nonumber \\  
 \widehat{\beta}=(\mathbf{X&#39;X})^{-1}\mathbf{X&#39;y}  \nonumber
 \end{align}
 \]</span></p>
@@ -5048,6 +5117,10 @@ E(\mathbf{\epsilon\epsilon&#39;})=
 \]</span></p>
 <p>This is the variance-covariance matrix of the disturbances (var-cov(e)); it is symmetric, the main diagonal containing the variances, the off-diagonal containing the covariances.</p>
 </section>
+<section id="variance-covariance-matrix-of-epsilon-2" class="level2">
+<h2 class="anchored" data-anchor-id="variance-covariance-matrix-of-epsilon-2">Variance-Covariance Matrix of <span class="math inline">\(\epsilon\)</span></h2>
+<p>This matrix is important because it gives us our estimate of <span class="math inline">\(\sigma^2\)</span>. This is important enough to merit its own slide.</p>
+</section>
 <section id="variance-covariance-of-widehatbeta" class="level2">
 <h2 class="anchored" data-anchor-id="variance-covariance-of-widehatbeta">Variance-Covariance of <span class="math inline">\(\widehat{\beta}\)</span></h2>
 <p>The variance-covariance of the estimate, <span class="math inline">\(\widehat{\beta}\)</span> derives as follows:</p>
@@ -5055,9 +5128,9 @@ E(\mathbf{\epsilon\epsilon&#39;})=
 <p>substituting <span class="math inline">\(\mathbf{X\beta}+\epsilon\)</span> for <span class="math inline">\(\mathbf{y}\)</span>, we get</p>
 <p><span class="math display">\[
 \begin{align}
-\widehat{\mathbf{\beta}}=\mathbf{(X&#39;X)^{-1}} \mathbf{X&#39;(X\beta + \epsilon)}  \nonumber \\ \nonumber \\
-= \mathbf{(X&#39;X)^{-1}}\mathbf{X&#39;X\beta}+\mathbf{(X&#39;X)^{-1}}\mathbf{X&#39;\epsilon} \nonumber \\\nonumber \\
-=\beta+\mathbf{(X&#39;X)^{-1}}\mathbf{X&#39;\epsilon} \nonumber \\ \nonumber \\
+\widehat{\mathbf{\beta}}=\mathbf{(X&#39;X)^{-1}} \mathbf{X&#39;(X\beta + \epsilon)}  \nonumber \\  
+= \mathbf{(X&#39;X)^{-1}}\mathbf{X&#39;X\beta}+\mathbf{(X&#39;X)^{-1}}\mathbf{X&#39;\epsilon} \nonumber \\  
+=\beta+\mathbf{(X&#39;X)^{-1}}\mathbf{X&#39;\epsilon} \nonumber \\
 \widehat{\mathbf{\beta}}-\beta=\mathbf{(X&#39;X)^{-1}}\mathbf{X&#39;\epsilon} \nonumber
 \end{align}
 \]</span></p>
@@ -5099,8 +5172,8 @@ cov(\beta_k,\beta_1) &amp;cov(\beta_2,\beta_k) &amp;\cdots &amp; \sqrt{var(\beta
 \]</span></p>
 </section>
 </section>
-<section id="properties-of-ols-estimators" class="level1">
-<h1>Properties of OLS Estimators</h1>
+<section id="properties-of-ols" class="level1">
+<h1>Properties of OLS</h1>
 <p>Return to the normal equation:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -5130,10 +5203,10 @@ Proposition
 <section id="property-2" class="level2">
 <h2 class="anchored" data-anchor-id="property-2">Property 2</h2>
 <p>Assuming a constant in the matrix <span class="math inline">\(\mathbf{X}\)</span>,</p>
-<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Proposition
@@ -5185,7 +5258,10 @@ Proposition
 <p><span class="math inline">\(\bar{y} - \bar{X} \widehat{\beta}=0\)</span> implies <span class="math inline">\(\bar{y} = \bar{X} \widehat{\beta}\)</span>, and therefore implies the intersection of the means with the regression line. Moreover, at the point or plane <span class="math inline">\(\bar{y} - \bar{X} \widehat{\beta}\)</span>, the mean of the residuals equals zero, implying the regression line or hyperplane passes through it.</p>
 </div>
 </div>
-<p>Note that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step, for next week, is to make a set of assumptions regarding the error term in order to facilitate statements about <span class="math inline">\(\widehat{\beta}\)</span>, and inferences about those estimates.</p>
+</section>
+<section id="properties" class="level2">
+<h2 class="anchored" data-anchor-id="properties">Properties</h2>
+<p>Note that these properties are true because we are minimizing the sum of the squared residuals. They do not have particular meaning otherwise regarding the errors, whether we meet assumptions of the model, etc. The next step is to make a set of assumptions regarding the error term in order to facilitate statements about <span class="math inline">\(\widehat{\beta}\)</span>, and inferences about those estimates.</p>
 
 
 </section>
