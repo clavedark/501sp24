@@ -8,8 +8,8 @@ title-block-banner: TRUE
 bibliography: refs501.bib
 format: 
    html: default
-   #  revealjs:
-   #    output-file: tdata.html
+   revealjs:
+     output-file: multivariate24s.html
 editor: source
 embed-resources: true
 cache: true

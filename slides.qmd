@@ -3,7 +3,8 @@ title: "Slides"
 ---
 
 ::: panel-tabset
-## Web page format
+## Web  format
+
 [Course overview](overview24.qmd)
 
 [Matrix algebra basics](matrix24.qmd)

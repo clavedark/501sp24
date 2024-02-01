@@ -1,0 +1,330 @@
+---
+title: "exercise #1 answers"
+author: "Dave Clark"
+format: 
+   html: default
+# tinytable
+---
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE, message=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(ggplot2)
+library(patchwork)
+library(tinytable)
+library(modelsummary)
+library(tidyverse)
+
+```
+
+## Q1
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+xb <- runif(1000, min=-4, max=4)
+logitcdf <- plogis(xb)
+normalcdf <- pnorm(xb)
+logitpdf <- dlogis(xb)
+normalpdf <- dnorm(xb)
+
+df <- data.frame(xb, logitcdf, normalcdf, logitpdf, normalpdf)
+
+#cdf  
+cdf <- ggplot(data=df, aes(x=xb, y=logitcdf)) +
+  geom_line() +
+  geom_line(aes(y=normalcdf),  linetype="dotted"  ) +
+  annotate("text", x = 2, y = .3, label = "Normal") +
+  annotate("text", x = -3, y = .15, label = "Logistic") +
+  labs(y="Pr(Y=1)",  x="x") +
+  ggtitle("Normal and Logistic CDFs")
+
+pdf <- ggplot(data=df, aes(x=xb, y=logitpdf)) +
+  geom_line() +
+  geom_line(aes(y=normalpdf), linetype="dotted" ) +
+  annotate("text", x = 0, y = .3, label = "Normal") +
+  annotate("text", x = -3, y = .1, label = "Logistic") +
+  labs(y="Pr(Y=1)", x="x") +
+  ggtitle("Normal and Logistic PDFs")
+
+
+pdf-cdf
+
+```
+
+## Q2
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+xb <- runif(1000, min=-4, max=4)
+pdf1 <- dnorm(xb, mean=0, sd=1)
+pdf2 <- dnorm(xb, mean=0, sd=sqrt(.5))
+pdf3 <- dnorm(xb, mean=-1, sd=sqrt(1.5))
+pdf4 <- dnorm(xb)
+
+df <- data.frame(xb, pdf1, pdf2, pdf3, pdf4)
+
+
+
+ggplot(data=df, aes(x=xb, y=pdf1)) +
+  geom_line() +
+  geom_line(aes(y=pdf2), linetype="dotted") +
+  geom_line(aes(y=pdf3), linetype="longdash" ) +
+  annotate("text", x = 2.5, y = .1, label = "Normal (0,1)") +
+  annotate("text", x = 1.5, y = .4, label = "Normal (0, .5)") +
+  annotate("text", x = -3.3, y = .2, label = "Normal (-1, 1.5)") +
+  labs(y="Pr(Y=1)", x="x") +
+  ggtitle("Normal PDFs") 
+
+```
+
+# Q3
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+data <- c(-1.21,	0 ,	-.31,
+-.216,	0	,.92,
+-2.74,	1	,-1.19, 
+.429, 1	 , 2.40 ,
+-.40,	1 ,  	.62 ,
+-1.42,	0	,-.54,
+-1.14,	0	,-2.35,
+-.74,	0	,-.137)
+
+dm <- matrix(data, nrow=8, ncol=3, byrow=TRUE)
+colnames(dm) <- c('x2','x1','y')
+
+df <- as.data.frame(dm)
+
+m1 <- lm(data=df, y ~ 1)
+modelsummary(m1)
+```
+
+### Bivariate model
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+### one var only 
+m1 <- lm(data=df, y ~ x2)
+modelsummary(m1, stars=TRUE)
+
+```
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+fit1 <- predict(m1, interval="confidence", se.fit=TRUE)
+predictions <- cbind(df, fit1)
+predictions$res <- predictions$y-predictions$fit.fit
+
+ggplot(predictions, aes(x = x2, y = fit.fit)) +
+  geom_line() +
+  geom_point(aes(x=x2, y=y))+
+  labs(x="x2", y="predicted y")
+
+```
+
+### Residuals
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+#predictions$res <- predictions$y - predictions$fit.fit
+
+ggplot(predictions, aes(x = x2, y = fit.fit)) +
+  geom_line() +
+  geom_point(aes(x=x2, y=y)) +
+  geom_segment(aes(x=x2, y=y, xend=x2, yend=fit.fit), linetype=2)+
+  labs(x="x2", y="predicted y")
+
+```
+
+### Multivariate model
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+m2 <- lm(data=df, y ~ x1 + x2)
+modelsummary(m2, stars=TRUE)
+
+```
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+dfavg <- df 
+
+for (i in 0:1){
+  dfavg$x1 = i
+  fit <- data.frame(predict(m2, interval="confidence", se.fit=TRUE, newdata=dfavg))
+  dfavg <- cbind(dfavg, fit$fit.fit)
+  names(dfavg)[ncol(dfavg)] <- paste0("yhat", i)
+}
+
+ggplot() +
+  geom_line(data=dfavg, aes(x = x2, y = yhat1)) +
+  geom_line(data=dfavg, aes(x=x2, y=yhat0))+
+  annotate("text", x = -.5, y = 1.5, label = "x1=1") +
+  annotate("text", x = -1, y = -1, label = "x1=0") +
+  labs(x="x2", y="predicted y")
+
+```
+
+# Taylor & Mick
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+beats <- read.csv("beats.csv")
+
+#summarize  
+bsum <- subset(beats, select = c(artist_name, album_release_year, danceability, energy, loudness, 
+                                 valence, time_signature, duration_ms, album_name, key_name,
+                                 mode_name, key_mode))
+
+datasummary(All(bsum) ~ Mean + SD + Median + Min + Max,
+            data = bsum)
+```
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+# gen avg danceability by year for plot 
+bsum <- beats %>% group_by(album_release_year) %>% mutate(avg= mean(danceability))
+
+t <-ggplot(data=bsum%>%filter(artist_name=="Taylor Swift"), aes(x=album_release_year, y=avg)) +
+  geom_linerange(aes(x=album_release_year, ymin=0, ymax=avg),
+  color="gray", size=1.5) +
+  labs(x="Album Release Year", y="Average Danceability",title="Taylor Swift")
+  
+r <- ggplot(data=bsum%>%filter(artist_name=="The Rolling Stones"), aes(x=album_release_year, y=avg)) +
+  geom_linerange(aes(x=album_release_year, ymin=0, ymax=avg),
+                 color="dark gray", size=1.5) +
+  labs(x="Album Release Year", y="Average Danceability", title="The Rolling Stones")
+
+t|r  
+
+```
+
+## Dance model
+
+Simple regression - is one artist's music more danceable than the other - dummy variable for the Rolling Stones.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+d <- summary(lm(data=bsum, danceability ~ as.factor(artist_name)))
+modelsummary(d, stars=TRUE)
+
+```
+
+The Stones are statistically less danceable than Taylor Swift is.
+
+### Danceability over time
+
+Does danceability change over time? Let's use dummmies for years to relax linearity.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+# modeling danceability over time for each artist
+
+#taylor swift
+tsreg <- summary(lm(data=bsum%>%filter(artist_name=="Taylor Swift"), danceability ~ as.factor(album_release_year)))
+modelsummary(tsreg, stars=TRUE)
+
+```
+
+Compared to her first release, it appears TS has gotten more danceable since 2012, though her music varies considerably.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+#stones
+rsreg <- summary(lm(data=bsum%>%filter(artist_name=="The Rolling Stones"), danceability ~ as.factor(album_release_year)))
+modelsummary(rsreg, stars=TRUE)
+
+```
+
+The Stones have generally been as danceable or less so since their first album.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+#plot avg dancability 
+
+ggplot() +
+  geom_density(data=bsum%>%filter(artist_name=="Taylor Swift"), aes(x=danceability))+
+  geom_density(data=bsum%>%filter(artist_name=="The Rolling Stones"), aes(x=danceability), linetype="dotted") +
+  annotate("text", x=.18, y=2, label="Stones")+
+  annotate("text", x=.45, y=3.5, label="Taylor") +
+  labs(x="Danceability" , y="Density")
+
+
+
+
+
+```
+
+### Artists over time
+
+Borrowing Mary L's idea:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+#plot  dancability over time
+
+ggplot() +
+  geom_smooth(data=bsum%>%filter(artist_name=="Taylor Swift"), aes(y=danceability, x=album_release_year)) +
+  geom_smooth(data=bsum%>%filter(artist_name=="The Rolling Stones"), aes(y=danceability, x=album_release_year)) +
+  annotate("text", x=1980, y=.6, label="Stones")+
+  annotate("text", x=2017, y=.55, label="Taylor") +
+  labs(x="Years" , y="Danceability")
+
+
+
+
+
+```

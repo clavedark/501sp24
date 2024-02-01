@@ -1,0 +1,14 @@
+---
+title: "Code"
+---
+
+
+- [exercise #1 answers](ex1answers2024.qmd)
+
+- [exercise #2 answers](ex2answers2024.qmd)
+
+- [basic linear model](ex1answers2024.qmd)
+
+
+
+

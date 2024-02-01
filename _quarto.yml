@@ -11,6 +11,7 @@ website:
       - about.qmd
       - slides.qmd
       - syllabus24.qmd
+      - code.qmd 	
 
   # google-analytics: "G-LTETWM0ZFY"
   
