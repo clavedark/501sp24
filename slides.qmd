@@ -3,7 +3,7 @@ title: "Slides"
 ---
 
 ::: panel-tabset
-## Web  format
+## Web format
 
 [Course overview](overview24.qmd)
 
@@ -15,6 +15,7 @@ title: "Slides"
 
 [Bivariate model](bivariate24.qmd)
 
+[Multivariate model](multivariate24.qmd)
 
 ## Slide format
 
@@ -26,8 +27,5 @@ title: "Slides"
 
 [Bivariate model](bivariate24s.html)
 
-
-
+<!-- [Multivariate model](multivariate24s.html) -->
 :::
-
-

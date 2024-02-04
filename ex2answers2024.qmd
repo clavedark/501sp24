@@ -1,0 +1,202 @@
+---
+title: "exercise #2 answers"
+author: "Dave Clark"
+format: 
+   html: default
+
+---
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE, message=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(patchwork)
+library(tinytable)
+library(modelsummary)
+library(tidyverse)
+
+```
+
+# Q1
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+data <- c(-1.21,	0,	-.31,
+-.216,	0	,.92,
+-2.74,	1	,-1.19, 
+.429,	1	,2.40 ,
+-.40,	1, 	.62 ,
+-1.42,	0	,-.54,
+-1.14,	0	,-2.35,
+-.74,	0	,-.137)
+
+df <- matrix(data, nrow=8, ncol=3, byrow=TRUE)
+colnames(df) <- c('x2','x1','y')
+df <- as.data.frame(df)
+
+y <- df$y 
+cons <- rep(1, length(y)) # add a constant to the X matrix
+X <- cbind(cons, df$x1, df$x2)
+colnames(X) <- c('cons','x1', 'x2') 
+
+```
+
+
+## Q1a
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+b <- solve(t(X)%*%X) %*% t(X)%*%y
+bmat <- as.data.frame(t(b))
+m1 <- lm(data=df, y ~ x1 + x2) 
+blm <- as.data.frame(t(coef(m1)))
+blm <- blm %>% mutate(cons=`(Intercept)`) %>% subset(select=c(cons, x1, x2))
+B <- rbind(blm, bmat)
+B <- as.data.frame(t(B))
+B <- rename(B, c(`LM ests` = V1, `Matrix ests` = V2))
+
+tt(B,theme = "striped")
+
+```
+
+
+## Q1b
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+#residuals
+e <- y-X%*%b
+e
+
+#estimate of sigma squared 
+sigma2 <- (t(e)%*%e) * 1/(8-3)  #dividing by N-k
+sigma2 
+
+#variance-covariance matrix of B
+vcb <- drop(sigma2) * solve(t(X)%*%X)  
+vcb
+
+#compare to lm var-cov matrix
+
+lmvcov <- as.data.frame(vcov(m1))
+mvcov <- as.data.frame(vcb)
+
+tt(lmvcov,theme = "striped")
+tt(mvcov,theme = "striped")
+
+
+```
+
+## Q1c
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+
+# now, get the vc of b : var(p) = XVX'
+# X nxk; V kxk; X' kxn
+
+V <- vcb 
+
+vcp = X%*%V%*%t(X) #vcov of xb (yhats)
+
+varp<- diag(vcp, names = TRUE) #main diagonal is variances of xbs 
+
+# compute predictions for x1=0, x1=1
+Xp <- as.data.frame(X) #data frame to change values of x1
+Xp$x1 = 0
+  xb0 <- as.matrix(Xp)%*%b #compute xb (yhats); use Xp as matrix
+Xp$x1 = 1
+  xb1 <- as.matrix(Xp)%*%b #compute xb (yhats); use Xp as matrix
+pred <- data.frame(cbind(X, xb0, xb1)) 
+
+ggplot() +
+  geom_line(data=pred, aes(x = x2, y = xb0)) +
+  geom_line(data=pred, aes(x=x2, y=xb1))+
+  annotate("text", x = -.5, y = 1.5, label = "x1=1") +
+  annotate("text", x = -1, y = -1, label = "x1=0") +
+  labs(x="x2", y="predicted y")
+```
+
+# Q2
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+cell <- read.csv("/users/dave/documents/teaching/501/2024/exercises/ex2/cellphones.csv")
+library(labelled)
+# rescale a couple of variables
+
+cell <- cell %>% mutate(pop = population/1000000) #in millions
+cell <- cell %>% mutate(miles = total_miles_driven/1000) #miles in billions
+
+cell <- cell %>%
+  set_variable_labels(
+    numberofdeaths = "Traffic Deaths",
+    cell_ban = "Handheld Cell Ban",
+    text_ban = "Texting Ban",
+    miles = "Total Miles Driven in State (billions)",
+    pop = "State population (millions)",
+    cell_subscription = "Number of cell subscriptions (1000s)"
+  )
+
+cell <- cell %>% mutate(south=(ifelse(state_numeric==1|state_numeric==4|state_numeric==10|state_numeric==11|state_numeric==19|state_numeric==25|state_numeric==34|state_numeric==41|state_numeric==43|state_numeric==44|state_numeric==47,1, 0)))
+
+
+datasummary((`Traffic Deaths`=numberofdeaths) + (`Handheld Cell Ban`=cell_ban) +(`Texting Ban`=text_ban)+(`Total Miles Driven in State (billions)`= miles) +(`State Population (millions)`= pop) + (`Number of cell subscriptions (1000s)` = cell_subscription) ~ mean + median + min+ max + sd, data=cell,theme = "striped")
+
+```
+
+## model
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+m2 <- lm(data=cell, numberofdeaths ~ text_ban+ miles + pop)
+modelsummary(m2, stars=TRUE, coef_rename = TRUE)
+
+dfavg <- cell 
+
+predictions<- data.frame(upper=numeric(0),lower=numeric(0),xb=numeric(0), miles=numeric(0), ban=numeric(0))
+c<-1
+for (i in seq(0,1,1)) { 
+  for (j in seq(1,320,1)) {
+  dfavg$text_ban = i
+  dfavg$miles = j+5
+  all <- data.frame(predict(m2, se.fit=TRUE, newdata=dfavg))
+  upper = median(all$fit, na.rm=TRUE)+1.96*(median(all$se.fit, na.rm=TRUE))
+  lower = median(all$fit, na.rm=TRUE)-1.96*(median(all$se.fit, na.rm=TRUE))
+  xb = median(all$fit, na.rm=TRUE)
+  predictions[c,] <-data.frame(upper,lower,xb,j, i)
+  c=c+1
+  }
+}
+  
+  ggplot()+
+  geom_line(data= predictions%>%filter(ban==0), aes(x=miles, y=xb))+
+  geom_line(data= predictions%>%filter(ban==1), aes(x=miles, y=xb)) +
+  labs ( colour = NULL, x = "Miles Driven (Billions)", y =  "Expected Traffic Fatalities" ) +
+  annotate("text", x = 200, y = 2500, label = "Text Ban", size=3.5, colour="gray30")+
+  annotate("text", x = 80, y = 2000, label = "No Text Ban", size=3.5, colour="gray30")+
+    labs(x="Miles Driven (Billions)", y="Expected Traffic Fatalities")
+
+  
+```
+

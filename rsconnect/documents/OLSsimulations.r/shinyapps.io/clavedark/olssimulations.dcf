@@ -1,0 +1,10 @@
+name: olssimulations
+title:
+username: clavedark
+account: clavedark
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11126410
+bundleId: 8217482
+url: https://clavedark.shinyapps.io/olssimulations/
+version: 1

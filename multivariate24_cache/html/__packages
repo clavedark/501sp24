@@ -15,3 +15,5 @@ mvtnorm
 modelsummary
 GGally
 stargazer
+shiny
+faux
