@@ -7,7 +7,7 @@ title: "Code"
 
 - [exercise #2 answers](ex2answers2024.qmd)
 
-- [basic linear model](ex1answers2024.qmd)
+<!-- - [basic linear model](ex1answers2024.qmd) -->
 
 
 

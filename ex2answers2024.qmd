@@ -200,3 +200,40 @@ for (i in seq(0,1,1)) {
   
 ```
 
+## model (south)
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+m3 <- lm(data=cell, numberofdeaths ~ text_ban+ miles + pop + south)
+modelsummary(m3, stars=TRUE, coef_rename = TRUE)
+
+dfavg <- cell 
+
+predictions<- data.frame(upper=numeric(0),lower=numeric(0),xb=numeric(0), miles=numeric(0), south=numeric(0))
+c<-1
+for (i in seq(0,1,1)) { 
+  for (j in seq(1,320,1)) {
+  dfavg$south = i
+  dfavg$miles = j+5
+  all <- data.frame(predict(m3, se.fit=TRUE, newdata=dfavg))
+  upper = median(all$fit, na.rm=TRUE)+1.96*(median(all$se.fit, na.rm=TRUE))
+  lower = median(all$fit, na.rm=TRUE)-1.96*(median(all$se.fit, na.rm=TRUE))
+  xb = median(all$fit, na.rm=TRUE)
+  predictions[c,] <-data.frame(upper,lower,xb,j, i)
+  c=c+1
+  }
+}
+  
+  ggplot()+
+  geom_line(data= predictions%>%filter(south==0), aes(x=miles, y=xb))+
+  geom_line(data= predictions%>%filter(south==1), aes(x=miles, y=xb)) +
+  labs ( colour = NULL, x = "Miles Driven (Billions)", y =  "Expected Traffic Fatalities" ) +
+  annotate("text", x = 250, y = 2500, label = "Non-south", size=3.5, colour="gray30")+
+  annotate("text", x = 80, y = 2000, label = "South", size=3.5, colour="gray30")+
+    labs(x="Miles Driven (Billions)", y="Expected Traffic Fatalities")
+
+  
+```
