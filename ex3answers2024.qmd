@@ -27,8 +27,7 @@ library(faux)
 
 ```
 
-# Q1 - sample size simulation 
-
+# Q1 - sample size simulation
 
 ```{r}
 #| echo: true
@@ -73,9 +72,7 @@ p2
 
 ```
 
-
-
-# Q2 - correlation simulation 
+# Q2 - correlation simulation
 
 ## rho(x,e) ----
 
