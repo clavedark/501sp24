@@ -3,7 +3,6 @@ title: "exercise #2 answers"
 author: "Dave Clark"
 format: 
    html: default
-
 ---
 
 ```{r setup, include=FALSE ,echo=FALSE, warning=FALSE, message=FALSE}
@@ -45,7 +44,6 @@ colnames(X) <- c('cons','x1', 'x2')
 
 ```
 
-
 ## Q1a
 
 ```{r}
@@ -67,7 +65,6 @@ tt(B,theme = "striped")
 
 ```
 
-
 ## Q1b
 
 ```{r}
@@ -80,6 +77,7 @@ e <- y-X%*%b
 e
 
 #estimate of sigma squared 
+sse<-(t(e)%*%e)
 sigma2 <- (t(e)%*%e) * 1/(8-3)  #dividing by N-k
 sigma2 
 
