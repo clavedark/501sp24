@@ -1,0 +1,367 @@
+---
+title: "Prediction Methods"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: multivariate24s.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE, message=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(ggplot2)
+library(patchwork)
+library(tinytable)
+library(modelsummary)
+library(tidyverse)
+library(mvtnorm)
+
+```
+
+# Major League Baseball Attendance
+
+We'll use a dataset of Major League Baseball attendance to illustrate different methods of generating predictions from multivariate models. 
+
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+  
+mlb <- read.csv("/users/dave/documents/teaching/501/2023/slides/L3_multivariate/code/mlbattendance/MLBattend.csv")	
+
+# rescale home attendance
+mlb$Home_attend <- mlb$Home_attend/1000
+
+datasummary(All(mlb) ~ mean+ median+ sd+min+max,  data=mlb, style="grid", title = "MLB attendance data")
+
+```
+
+
+## Bivariate model, predictions
+
+Here's a simple model predicting season attendance at MLB games, regressing home attendance on runs scored, then generating "in-sample" predictions by computing:
+
+$$\widehat{y} = \widehat{\beta}_0 + \widehat{\beta}_1 x_i$$
+
+where $x_i$ is the number of runs scored for each row/observation in the estimation data. 
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+m1 <- lm(data=mlb, Home_attend ~  Runs_scored)
+modelsummary(m1)
+
+p1 <- data.frame(predict(m1), mlb$Runs_scored)
+
+ggplot(p1, aes(x=mlb.Runs_scored, y=predict.m1.)) + 
+  geom_line() +
+  xlab("Runs Scored") +
+  ylab("Predicted Attendance (in thousands)")   
+```
+
+
+## Multivariate model, predictions
+
+Here's a model of attendance at MLB games, regressing home attendance on runs scored, runs allowed, season (year), and games behind, then generating "in-sample" predictions.
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+m3 <- lm(data=mlb, Home_attend ~  Runs_scored + Runs_allowed+ Season +Games_behind)
+modelsummary(m3)
+
+p3 <- data.frame(predict(m3), mlb$Runs_scored)
+ggplot(p3, aes(x=mlb.Runs_scored, y=predict.m3.)) + 
+  geom_line() +
+  xlab("Runs Scored") +
+  ylab("Predicted Attendance (in thousands)")   
+
+```
+
+
+As you can see, the predictions are pretty ugly because all four $x$ variables are varying by observation, so we're getting predictions based on each individual observation's characteristics - interesting if we care about the 1977 Red Sox, but not something we can draw generalities from. What's missing here? 
+
+::: {.callout-note icon="false"}
+### Control  
+
+Hold all variables constant at means, medians, or modes, *except the one of interest*, so we can focus on how changes in the $x$ of interest affect $\widehat{y}$.
+
+:::
+
+# Prediction Methods for Multivariate Models
+
+There are lots of ways to generate predictions - this covers three common and flexible types. In general, these are "out of sample" methods - they are often not relying on the estimation data, but on new data intended to represent key features of the estimation data. They all produce predictions for the number of "interesting values" on your $x$ variable of interest. So they generally do *not* produce $N$ predictions. 
+
+::: {.callout-note icon="false"}
+### Prediction methods
+
+These three approaches are all very flexible/adaptable, and are what we commonly use in linear (OLS) and non-linear (MLE) models. So you'll see these methods quite a bit in the coming two semesters.
+
+::: 
+
+## At-means predictions (adjusted effects)
+
+*At-means* predictions (also called "adjusted effects") set all variables except the $x$ of interest at a sensible value - usually the mean, median, or mode depending on the level of measurment. Holding those constant, but varying just the $x$ of interest produces predictions of $y$ that are neater and easier to discuss than the in-sample ones above. 
+
+
+### Summarize the estimation data
+
+Let's find the means etc. of the variables in the model. It's important only to consider the cases that are in the *estimation* data, that is, actually used in the model. Write code to identify cases in the model, then use the means, etc. of these for the predictions: 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+mlb$used <- TRUE
+mlb$used[na.action(m3)] <- FALSE
+estdata <- mlb %>%  filter(used=="TRUE")
+
+datasummary(Home_attend+Runs_scored +Runs_allowed + Season + Games_behind ~ mean+ median+ sd+min+max,  data=mlb, style="grid", title = "MLB estimation data")
+
+```
+
+In this case, it turns out we use all the cases in the data - it's important to check this any time you're making model predictions.
+
+
+### Generate at-mean predictions
+
+Create a new data frame with as many observations as there are interesting values of the $x$ variable of interest. Then, set all variables except the $x$ of interest at their means, medians, or modes. Using the standard errors of the predictions, generate the boundaries of the confidence intervals by *end point transformation*. 
+
+$$ \widehat{y} \pm 1.96 \times se(\widehat{y}) $$
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+oosdata <- data.frame(Intercept=1, Runs_allowed=694 , Season=1985 , Games_behind=14 , Runs_scored= c(seq(330,1000,10)))
+
+mlb.predict <- data.frame(oosdata, predict(m3, interval="confidence", se.fit=TRUE, level=.05, newdata=oosdata))
+
+# confidence bounds by end point transformation
+mlb.predict <- mlb.predict %>% mutate(ub=fit.fit+1.96*se.fit) %>% mutate(lb=fit.fit-1.96*se.fit)
+
+atmean <- ggplot(mlb.predict, aes(x=Runs_scored, y=fit.fit)) + 
+  geom_line() + 
+  geom_ribbon(aes(ymin=lb, ymax=ub), alpha=.2) + 
+  xlab("Runs Scored") + 
+  ylab("Expected Attendance (in thousands)") + 
+  theme_minimal() +
+  ggtitle("At-mean effects")
+
+atmean
+
+```
+
+### Aside on standard errors of $\widehat{y}$
+
+The standard errors of $\widehat{y}$ are calculated using the $x$ values, and the variance-covariance matrix of the coefficients. These are usually calculated as follows: 
+
+$$ X ~VX' $$
+
+multiplying the $X$ matrix (remembering this could be the out of sample $X$ matrix), the variance-covariance matrix of $\widehat{\beta}$, and the transpose of the $X$ matrix. The square root of the main diagonal gives the standard errors of $\widehat{y}$.
+
+::: {.callout-note icon="false"}
+### Uncertainty about $\widehat{y}$
+The intuition is that we're using our uncertainty about the coefficients to generate measures of uncertainty about the predictions.
+
+:::
+
+## Average effects, end point boundaries
+
+*Average effects* are where we're computing $N$ predictions for every interesting value of $x$, then taking the *average* of those predictions for each value of $x$. This is a counterfactual approach - we're using the actual data, changing only the variable of interest, *as if* all observations took on the same value of that variable.
+
+For instance, in our MLB attendance model, we change the value of "Runs Scored" to the minimum value, 329, for every observation, keeping all the other variables as they are in the real estimation data. Compute the predictions for all the observations at $x = 329$, then take the average of those predictions - now iterate to 330, 331, etc. 
+
+::: {.callout-note icon="false"}
+### Counterfactuals
+
+We are treating the estimation data *as if* every team scored 329 runs - this is the counterfactual - then computing the average attendance for that counterfactual, and doing this for all counterfactuals (values of $x$).
+:::
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+# preserve the original values of Runs Scored
+mlb <- mlb%>%
+mutate(original_runs_scored = Runs_scored)
+
+xb = 0
+se = 0
+rs = 0
+
+for(i in seq(330,1000,1)){  #iterating by 1 to max number of obs we're taking medians for
+  mlb$Runs_scored <- i
+  mlb.predict <- data.frame(predict(m3, interval="confidence", se.fit=TRUE, level=.05, newdata=mlb))
+  xb[i-329] <- median(mlb.predict$fit.fit) #index using i but minus constant to start at row 1
+  se[i-329] <- median(mlb.predict$se.fit)
+  rs[i-329] <- i
+}
+
+avg.pred <- data.frame(xb, se, rs)
+
+# upper and lower bounds by end point transformation
+
+avg.pred <- avg.pred %>% mutate(ub=xb+1.96*se) %>% mutate(lb=xb-1.96*se)
+
+# reset the estimation data to the actual values of Runs Scored
+mlb <- mlb%>%
+  mutate(Runs_scored=original_runs_scored )
+
+#plot
+average <- ggplot(avg.pred, aes(x=rs, y=xb)) + 
+  geom_line() + 
+  geom_ribbon(aes(ymin=lb, ymax=ub), alpha=.2) + 
+  xlab("Runs Scored") + 
+  ylab("Expected Attendance (in thousands)") +
+  ggtitle("Average Effects") +
+  theme_minimal()
+
+average
+```
+
+### Comparing at-mean and average effects
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+atmean + average
+
+```
+
+<!-- ## Average effects, percentile boundaries -->
+
+<!-- In the last example, we computed confidence interval boundaries by end point transformation. Here, we'll compute the same average effects as above, but using percentiles of the distribution of predictions as upper and lower bounds.  -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| code-fold: true -->
+<!-- #| code-summary: "code" -->
+
+<!-- # preserve the original values of Runs Scored -->
+<!-- mlb <- mlb%>% -->
+<!--   mutate(original_runs_scored = Runs_scored) -->
+
+<!-- xb = 0 -->
+<!-- rs = 0 -->
+<!-- qtilepreds <-  data.frame ( lb0 = numeric(0),med0= numeric(0), -->
+<!--               ub0= numeric(0), rs = numeric(0)) -->
+
+<!-- for(i in seq(330,1100,1)){  #iterating by 1 to max number of obs we're taking medians for -->
+<!--   mlb$Runs_scored <- i -->
+<!--   mlb.predict <- data.frame(predict(m3, interval="confidence", se.fit=TRUE, level=.05, newdata=mlb)) -->
+<!--   xb <-  quantile(mlb.predict$fit.fit, probs=c(.025,.5,.975)) -->
+<!--   XB <- data.frame(t(xb)) -->
+<!--   qtilepreds[(i-329):(i-329),1:4] <- data.frame(XB, i)   -->
+<!-- } -->
+
+<!-- # reset the estimation data to the actual values of Runs Scored -->
+<!-- mlb <- mlb%>% -->
+<!--   mutate(Runs_scored=original_runs_scored ) -->
+
+<!-- #plot -->
+
+<!-- avgqtile <- ggplot(qtilepreds, aes(x=rs, y=med0)) +  -->
+<!--   geom_line() +  -->
+<!--   geom_ribbon(aes(ymin=lb0, ymax=ub0), alpha=.2) +  -->
+<!--   xlab("Runs Scored") +  -->
+<!--   ylab("Expected Attendance (in thousands)") + -->
+<!--   ggtitle("Average Effects, Percentile Bounds") -->
+
+<!-- avgqtile -->
+
+<!-- ``` -->
+
+
+<!-- ### Comparing average effects with different CI methods -->
+
+<!-- ```{r} -->
+<!-- #compare -->
+<!-- avgqtile + average -->
+
+<!-- ``` -->
+
+## Simulated effects
+
+The last method we'll consider is *simulated effects*. This is a way to generate predictions that are based on the distribution of the coefficients. The $\widehat{\beta}$s are estimates of the mean of a normal distribution, and the var-cov matrix of the coefficients is an estimate of the variance of that distribution. We can assume the distribution of $\beta$ is Normal because of the Central Limit Theorem.
+
+Here's the process. Treat our $\widehat{\beta}$s as the mean of a normal distribution, and the var-cov matrix of the coefficients as the variance. Generate a large number of draws from that distribution, say 10,000. This will give us the simulated distribution of $\widehat{\beta}$. We'll have 10,000 estimates of $\widehat{\beta}$.
+
+Using these, we can now produce 10,000 predictions for each interesting value of $x$. We can then summarize the distribution of those predictions, using the median as our point estimate, and the percentiles (2.5, 97.5) as our confidence boundaries.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+B <- data.frame(rmvnorm(n=10000, mean=coef(m3), vcov(m3))) #simulated distribution of the estimates using the var-cov matrix of B as the variance, and the estimates of B as the mean.
+
+colnames(B) <-c('b0', 'b1', 'b2', 'b3', 'b4')
+
+sim.preds <- data.frame ( lb = numeric(0),med= numeric(0),
+                            ub= numeric(0), r = numeric(0))
+
+for(i in seq(330,1000,1)){
+  xbR  <- quantile(B$b0 + B$b1*i + B$b2*694 + B$b3*1985 +B$b4*14, probs=c(.025,.5,.975))
+  xbR<- data.frame(t(xbR))
+  sim.preds[(i-329):(i-329),1:4] <- data.frame(xbR, i)
+}
+
+#plot
+sim <- ggplot(sim.preds, aes(x=r, y=med)) + 
+  geom_line() + 
+  geom_ribbon(aes(ymin=lb, ymax=ub), alpha=.2) + 
+  xlab("Runs Scored") + 
+  ylab("Expected Attendance (in thousands)") +
+  ggtitle("Simulated Effects") +
+  theme_minimal()
+
+sim
+```
+
+
+### Comparing methods
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+(atmean + average + sim)
+
+```
+
+# Summary
+
+These look quite similar, so what's the point of these different approaches? Different data, models, and questions will sometimes point you toward a particular method. For instance, fixed effects models will likely push you to average effects. We'll encounter a variety of circumstances that will make one or another of these methods more or less appropriate both in this class and in the non linear models class. 
+

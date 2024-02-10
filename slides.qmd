@@ -17,6 +17,9 @@ title: "Slides"
 
 [Multivariate model](multivariate24.qmd)
 
+[Prediction methods](prediction24s.qmd)
+
+
 ## Slide format
 
 [Course overview](overview24s.qmd)
@@ -25,7 +28,8 @@ title: "Slides"
 
 [Probability basics](probability24s.qmd)
 
-[Bivariate model](bivariate24s.html)
+[Bivariate model](bivariate24s.qmd)
+
 
 <!-- [Multivariate model](multivariate24s.html) -->
 :::

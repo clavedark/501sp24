@@ -1,0 +1,223 @@
+---
+title: "Normality"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: multivariate24s.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+
+<!-- #  Thinking about data -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+
+
+
+```
+
+
+
+
+
+## Implementing the model
+
+Let's put the pieces of the OLS model together.
+
+ 
+  - the data matrix consists of a vector, $y$, and a  matrix $\mathbf{X}$ including a constant. 
+  
+  - $\widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}$ :: the covariance of $\mathbf{X}$ and $y$ weighted by the covariance of $\mathbf{X}$.
+  
+  - $\widehat{\sigma^2} = (\epsilon' \epsilon) * 1/(N - k - 1)$
+  
+  - the variance-covariance matrix of $\widehat{\beta}$ is $\widehat{\sigma^2} \mathbf{(X'X)^{-1}}$
+  
+  - the square root of the main diagonal gives the standard errors of $\widehat{\beta}$.
+ 
+
+
+## Implementing the model
+
+In a little more detail, note we're making use of every part of the regression here: 
+
+ 
+  -  Estimate  $\widehat{\beta}=(\mathbf{X'X})^{-1}\mathbf{X'y}$. 
+  
+  - Compute $u = y - \mathbf{X \widehat{\beta}}$
+  
+  - Compute the sum of squared residuals, $(u' u)$.
+  
+  - Use that to compute the error variance, $\widehat{\sigma^2} = (u'u) * 1/(N - k - 1)$
+  
+  - To measure uncertainty around $\mathbf{\widehat{\beta}}$, divide the error variance by the covariance of $\mathbf{X}$.
+  
+  - That's the variance-covariance matrix of $\widehat{\beta} = \widehat{\sigma^2} \mathbf{(X'X)^{-1}}$
+  the square root of the main diagonal gives the standard errors of $\widehat{\beta}$.
+ 
+
+
+## Quantities
+
+We end up with a number of interesting and useful quantities: 
+
+ 
+  -  $\widehat{y} = \mathbf{X} \widehat{\beta}$ :: linear predictions
+  
+  - $u = y-  \widehat{y}$ :: these are the residuals.
+  
+  - $TSS = \sum\limits_{i=1}^{N} (y-\bar{y})^2$ :: Total Sum of Squares - the variation in $y$.
+  
+  - $MSS  = \sum\limits_{i=1}^{N} (\widehat{y} -\bar{y})^2$ :: Model or Explained Sum of Squares   - variation in $\widehat{y}$
+  
+  - $SSE = \sum\limits_{i=1}^{N} (y-\widehat{y} )^2$ :: Residual Sum of Squares - $e'e$ - variation in $e$.
+  $ TSS = SSE + MSS$
+ 
+
+
+
+
+
+
+
+## Uncertainty about $\mathbf{\widehat{\beta}}$}
+
+Why are we uncertain about the estimates? 
+ 
+  -  $\widehat{\beta}$ represents our sample-based estimates of the population parameters, assuming the sample is random, representative, etc. 
+  
+  -  If we imagine our one sample to be one of many possible samples, then $\widehat{\beta}$ is one estimate of many possible estimates from those hypothetical samples.
+  
+  -  If we have many samples, each with a mean, we **know** those means have a normal distribution. So $\widehat{\beta}$ is drawn from a normal distribution. 
+ 
+
+
+## Distribution of $\hat{\beta}$
+
+The $\widehat{\beta}$s are normally distributed:
+
+$$ \widehat{\beta} \sim \mathcal{N}(\beta, var({\beta})) $$
+
+
+The estimates are normally distributed, and the $\widehat{\beta}$s we estimate are drawn from that distribution, conditional on the sample of data, $N$. The sample itself is one of a (theoretically) infinite number of samples.
+
+Think of it this way - the forces in $\epsilon$ shaped which of these samples of $\widehat{\beta}$ we happened to draw. If we'd gotten a different sample, our estimates of $\widehat{\beta}$ would have been different. So which distribution we're drawing from changes as we change model specification even in the same data sample. 
+ 
+If we estimated regressions in all those possible samples, the estimates would comprise the entire distribution of $\widehat{\beta}$. The mean would be $\beta$; the variances would be $var({\beta})$.
+
+If the $\widehat{\beta}$s are normally distributed with mean $\beta$ and we have an estimate of the variance, we can evaluate in probability terms how ``close'' $\widehat{\beta}$ is to $\beta$; after all, we know the properties of the normal distribution. That's inference. 
+
+How do we have such confidence $\widehat{\beta}$ is normally distributed?
+
+We can mainly rely on the normality of $\widehat{\beta}$ because of the central limit theorem. 
+
+It's also true that the variance in $\widehat{\beta}$ arises from our particular sample (note the variance of the assumed distribution of $\widehat{\beta}$ is estimated). So large samples will be associated with smaller variances. Another reason we can rely on normality is that, in large samples, $\mathbf{X' \widehat{\beta}}$ is normal, and in the OLS model, $y$ is normal - therefore $\widehat{y}$ is normal, and so is $y -\widehat{y} = \epsilon$.}
+
+
+
+
+
+## Central Limit Theorem
+
+Suppose $n$ random variables - call them $X_1, X_2 \ldots X_n$. These variables are not identically distributed; some are discrete, some continuous. Each variable, $X_i$ has mean $\bar{X_k}$.
+
+$$ \sum\limits_{n \rightarrow \infty} \frac{(\bar{X_i})}{n}  \sim N (\mu, \sigma^2) $$
+
+As $n$ approaches infinity, the distribution of means, $\bar{X_i}$ is distributed Normal, with mean $\widetilde{X_i}$. We could accomplish the same thing by repeated sampling of a single variable. 
+
+
+
+
+
+
+
+## Question
+
+Suppose we estimated a regression, but then wanted to simulate the distribution of $\hat{\beta}$s. How would we do it?  \\ ~\\ 
+
+Once we generated that distribution, how would we characterize $\hat{\beta}, \hat{\sigma^2}$?
+
+
+
+
+## Simulating the distribution of $\widehat{\beta}$
+ 
+  - suppose, from our regression, we have one estimate of each $\widehat{\beta}$, one estimate of the variance of each. 
+  
+  - we know these are draws from a normal distribution.
+  
+  - suppose we assume they are drawn from a normal distribution with mean $\widehat{\beta}$, and variance $\widehat{\sigma^2}$.
+  
+  - we could make a large number of draws from that distribution, say 10,000. What would this look like? Why? 
+  
+  - if we did this, we'd have the simulated distribution of $\widehat{\beta}$. How would we summarize that distribution? 
+ 
+
+
+## Measuring Uncertainty
+
+ 
+  -We can think of $\widehat{\sigma^2}$ as the average (squared) error per observation. 
+  
+  - The var-cov $\widehat{\beta}$  matrix weights the average squared error by the covariance of $\mathbf{X}$.
+  
+  - The main diagonal of the var-cov $\widehat{\beta}$ is the variance of $\widehat{\beta}$; the square root is the standard deviation of $\widehat{\beta}$.
+  
+  - If $\widehat{\beta}$ is the estimate of the mean of all normally distributed $\beta$s, its standard deviation is the average distance of estimates like this one from the population parameter. 
+  
+  - If it's large, the average $\widehat{\beta}$ is far from the population parameter.
+  
+  - If it's small, the average $\widehat{\beta}$ is close to the population parameter.
+ 
+
+## Simulating Uncertainty
+
+If we simulate the distribution of $\widehat{\beta}$ based on the estimated coefficients and var-cov matrix, we can rely on the moments of that distribution:
+ 
+  -  the median would be our point estimate of $\widehat{\beta}$.
+  
+  -  the percentiles (2.5, 97.5) would be our confidence boundaries. 
+ 
+
+Notice the generality here - we could simulate $\widehat{\beta}$, multiply by interesting values of $\mathbf{X}$ to generate predictions, and rely on those moments of the simulated distribution. 
+
+
