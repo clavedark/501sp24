@@ -17,7 +17,7 @@ title: "Slides"
 
 [Multivariate model](multivariate24.qmd)
 
-[Prediction methods](prediction24s.qmd)
+[Prediction methods](predictionmethods24.qmd)
 
 
 ## Slide format
