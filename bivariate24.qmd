@@ -613,7 +613,7 @@ $$
 \sqrt{var(\beta_1)} & cov(\beta_1,\beta_2) &\cdots &cov(\beta_1,\beta_k)\\
 cov(\beta_2,\beta_1)& \sqrt{var(\beta_2)} &\cdots &cov(\beta_2,\beta_k)\\
 \vdots&\vdots&\ddots& \vdots\\
-cov(\beta_k,\beta_1) &cov(\beta_2,\beta_k) &\cdots & \sqrt{var(\beta_k)}\\
+cov(\beta_k,\beta_1) &cov(\beta_k,\beta_2) &\cdots & \sqrt{var(\beta_k)}\\
 \end{array} \right] 
 $$
 

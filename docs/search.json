@@ -690,7 +690,7 @@
     "href": "slides.html",
     "title": "Slides",
     "section": "",
-    "text": "Web formatSlide format\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\nMultivariate model\nPrediction methods\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nBivariate model"
+    "text": "Web formatSlide format\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\nMultivariate model\nPrediction methods\nNormality\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nBivariate model"
   },
   {
     "objectID": "about.html",
@@ -2363,7 +2363,7 @@
     "href": "bivariate24.html#standard-errors-of-beta_k",
     "title": "The Bivariate Model",
     "section": "Standard Errors of \\(\\beta_k\\)",
-    "text": "Standard Errors of \\(\\beta_k\\)\n\\[\n\\left[\n\\begin{array}{cccc}\n\\sqrt{var(\\beta_1)} & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k)\\\\\ncov(\\beta_2,\\beta_1)& \\sqrt{var(\\beta_2)} &\\cdots &cov(\\beta_2,\\beta_k)\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_2,\\beta_k) &\\cdots & \\sqrt{var(\\beta_k)}\\\\\n\\end{array} \\right]\n\\]"
+    "text": "Standard Errors of \\(\\beta_k\\)\n\\[\n\\left[\n\\begin{array}{cccc}\n\\sqrt{var(\\beta_1)} & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k)\\\\\ncov(\\beta_2,\\beta_1)& \\sqrt{var(\\beta_2)} &\\cdots &cov(\\beta_2,\\beta_k)\\\\\n\\vdots&\\vdots&\\ddots& \\vdots\\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_k,\\beta_2) &\\cdots & \\sqrt{var(\\beta_k)}\\\\\n\\end{array} \\right]\n\\]"
   },
   {
     "objectID": "bivariate24.html#property-1",
@@ -3272,8 +3272,8 @@
     "objectID": "normality24.html#uncertainty-about-mathbfwidehatbeta",
     "href": "normality24.html#uncertainty-about-mathbfwidehatbeta",
     "title": "Normality",
-    "section": "Uncertainty about \\(\\mathbf{\\widehat{\\beta}}\\)}",
-    "text": "Uncertainty about \\(\\mathbf{\\widehat{\\beta}}\\)}\nWhy are we uncertain about the estimates?\n\n\\(\\widehat{\\beta}\\) represents our sample-based estimates of the population parameters, assuming the sample is random, representative, etc.\nIf we imagine our one sample to be one of many possible samples, then \\(\\widehat{\\beta}\\) is one estimate of many possible estimates from those hypothetical samples.\nIf we have many samples, each with a mean, we know those means have a normal distribution. So \\(\\widehat{\\beta}\\) is drawn from a normal distribution."
+    "section": "Uncertainty about \\(\\mathbf{\\widehat{\\beta}}\\)",
+    "text": "Uncertainty about \\(\\mathbf{\\widehat{\\beta}}\\)\nWhy are we uncertain about the estimates?\n\n\\(\\widehat{\\beta}\\) represents our sample-based estimates of the population parameters, assuming the sample is random, representative, etc.\nIf we imagine our one sample to be one of many possible samples, then \\(\\widehat{\\beta}\\) is one estimate of many possible estimates from those hypothetical samples.\nIf we have many samples, each with a mean, we know those means have a normal distribution. So \\(\\widehat{\\beta}\\) is drawn from a normal distribution."
   },
   {
     "objectID": "normality24.html#distribution-of-hatbeta",

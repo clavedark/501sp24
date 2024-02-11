@@ -119,7 +119,7 @@ We end up with a number of interesting and useful quantities:
 
 
 
-## Uncertainty about $\mathbf{\widehat{\beta}}$}
+## Uncertainty about $\mathbf{\widehat{\beta}}$
 
 Why are we uncertain about the estimates? 
  

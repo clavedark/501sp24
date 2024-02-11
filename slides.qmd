@@ -19,6 +19,8 @@ title: "Slides"
 
 [Prediction methods](predictionmethods24.qmd)
 
+[Normality](normality24.qmd)
+
 
 ## Slide format
 
