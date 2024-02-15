@@ -26,11 +26,11 @@ library(pander)
 ::: {layout-ncol="2"}
 ### Instructor
 
--   {{< fa user >}}   [{{< var instructor.name >}}](%7B%7B%3C%20var%20instructor.url%20%3E%7D%7D)
+-   {{< fa user >}}   [{{< var instructor.name >}}]({{< var instructor.url >}})
 -   {{< fa university >}}   {{< var instructor.office >}}
 -   {{< fa envelope >}}   <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
--   {{< fa brands github >}}   [{{< var instructor.gitname >}}](%7B%7B%3C%20var%20instructor.github%20%3E%7D%7D)
-- office hours: M 1:30-3:30pm
+-   {{< fa brands github >}}   [{{< var instructor.gitname >}}]({{< var instructor.github >}})
+-   office hours: M 1:30-3:30pm
 
 ### Course details
 
@@ -43,7 +43,7 @@ library(pander)
 ::: {layout-ncol="2"}
 ### TA
 
--   {{< fa user >}}   [{{< var instructor.TA >}}](%7B%7B%3C%20var%20instructor.taurl%20%3E%7D%7D)
+-   {{< fa user >}}   [{{< var instructor.TA >}}]({{< var instructor.taurl >}})
 -   {{< fa envelope >}}   <a href="mailto:{{< var instructor.taemail >}}">{{< var instructor.taemail >}}</a>
 
 ### Lab

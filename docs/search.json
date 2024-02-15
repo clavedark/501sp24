@@ -690,7 +690,7 @@
     "href": "slides.html",
     "title": "Slides",
     "section": "",
-    "text": "Web formatSlide format\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\nMultivariate model\nPrediction methods\nNormality\n\n\nCourse overview\nMatrix algebra basics\nProbability basics\nBivariate model"
+    "text": "Course overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\nMultivariate model\nPrediction methods\nNormality"
   },
   {
     "objectID": "about.html",
@@ -3140,7 +3140,7 @@
     "href": "code.html",
     "title": "Code",
     "section": "",
-    "text": "exercise #1 answers\nexercise #2 answers\nexercise #3 answers\nsimulation shiny app\nsimulation code"
+    "text": "exercise #1 answers\nexercise #2 answers\nexercise #3 answers\nsimulation shiny app\nsimulation code\ncentral limit theorem shiny app"
   },
   {
     "objectID": "ex1answers2024.html",
@@ -3379,5 +3379,12 @@
     "title": "Prediction Methods",
     "section": "",
     "text": "Here’s a model of attendance at MLB games, regressing home attendance on runs scored, runs allowed, season (year), and games behind, then generating “in-sample” predictions.\n\n\ncode\nm3 &lt;- lm(data=mlb, Home_attend ~  Runs_scored + Runs_allowed+ Season +Games_behind)\nmodelsummary(m3)\n\n\n\n\n\n\n (1)\n\n\n\n\n(Intercept)\n−70849.854\n\n\n\n(4473.400)\n\n\nRuns_scored\n3.123\n\n\n\n(0.338)\n\n\nRuns_allowed\n−1.887\n\n\n\n(0.357)\n\n\nSeason\n36.215\n\n\n\n(2.284)\n\n\nGames_behind\n−8.273\n\n\n\n(2.755)\n\n\nNum.Obs.\n838\n\n\nR2\n0.471\n\n\nR2 Adj.\n0.469\n\n\nAIC\n12963.1\n\n\nBIC\n12991.5\n\n\nLog.Lik.\n−6475.561\n\n\nF\n185.758\n\n\nRMSE\n549.20\n\n\n\n\n\n\n\ncode\np3 &lt;- data.frame(predict(m3), mlb$Runs_scored)\nggplot(p3, aes(x=mlb.Runs_scored, y=predict.m3.)) + \n  geom_line() +\n  xlab(\"Runs Scored\") +\n  ylab(\"Predicted Attendance (in thousands)\")   \n\n\n\n\n\nAs you can see, the predictions are pretty ugly because all four \\(x\\) variables are varying by observation, so we’re getting predictions based on each individual observation’s characteristics - interesting if we care about the 1977 Red Sox, but not something we can draw generalities from. What’s missing here?\n\n\n\n\n\n\nControl\n\n\n\nHold all variables constant at means, medians, or modes, except the one of interest, so we can focus on how changes in the \\(x\\) of interest affect \\(\\widehat{y}\\)."
+  },
+  {
+    "objectID": "slides.html#web-format",
+    "href": "slides.html#web-format",
+    "title": "Slides",
+    "section": "",
+    "text": "Course overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\nMultivariate model\nPrediction methods\nNormality\n\n\n\n\n\n\n–&gt;"
   }
 ]

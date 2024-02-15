@@ -2,8 +2,7 @@
 title: "Slides"
 ---
 
-::: panel-tabset
-## Web format
+
 
 [Course overview](overview24.qmd)
 
@@ -20,18 +19,3 @@ title: "Slides"
 [Prediction methods](predictionmethods24.qmd)
 
 [Normality](normality24.qmd)
-
-
-## Slide format
-
-[Course overview](overview24s.qmd)
-
-[Matrix algebra basics](matrix24s.qmd)
-
-[Probability basics](probability24s.qmd)
-
-[Bivariate model](bivariate24s.qmd)
-
-
-<!-- [Multivariate model](multivariate24s.html) -->
-:::
