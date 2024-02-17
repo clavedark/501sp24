@@ -8,8 +8,10 @@ title: "Code"
 
 -   [exercise #3 answers](ex3answers2024.qmd)
 
+-   [exercise #4 answers](ex4answers2024.qmd)
+
 -   [simulation shiny app](https://clavedark.shinyapps.io/olssimulations/)
 
 -   [simulation code](simulation_code2024.R)
 
--   [central limit theorem shiny app ](https://clavedark.shinyapps.io/centrallimittheorem/)
+-   [central limit theorem shiny app](https://clavedark.shinyapps.io/centrallimittheorem/)

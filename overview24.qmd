@@ -6,7 +6,7 @@ date: today
 date-format: long
 title-block-banner: TRUE
 format: html
-editor: visual
+editor: source
 embed-resources: true
 #execute:
  # freeze: true  # never re-render during project render

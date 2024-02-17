@@ -1,0 +1,276 @@
+---
+title: "exercise #4 answers"
+author: "Dave Clark"
+format: 
+   html: default
+# tinytable
+---
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE, message=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(ggplot2)
+library(patchwork)
+library(tinytable)
+library(modelsummary)
+library(tidyverse)
+library(faux)
+library(mvtnorm)
+library(labelled)
+library(stargazer)
+
+```
+
+## Q1 - MLE 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+nsim <- function(i){
+  set.seed(12345)
+  X <- rnorm_multi(i, 3, 
+                   mu=c(0, 0, 0), 
+                   sd=1,
+                   r = c(0.0, 0.0, 0.0),
+                   varnames=c("x1", "x2", "e")) %>%
+    mutate(y = .5 + 1*x1 + 2*x2 + e) %>%
+    mutate(pry=plogis(y)) %>%
+    mutate(ybin=ifelse(pry>.5,1,0)) %>%
+    mutate(yb = rbinom(i,1,pry))
+  
+  mod <- (glm(yb ~ x1 + x2, data=X , family=binomial(link="logit")))
+  # print(summary(mod))
+  coef <- numeric(0)
+  coef<-coef(summary(mod))[1:3,1]
+  se <- numeric(0)
+  se <-coef(summary(mod))[1:3,2]
+  n <- numeric(0)
+  n <- i
+  var = c("x0","x1","x2")
+  out <- data.frame(var, coef, se, n)
+}
+
+i <- seq(10,1000,1) #vector of i for "nsim" function
+dfout <- map(i,nsim) |> list_rbind()
+mleout <- dfout %>% filter(n< 300)
+#plot
+
+b <- ggplot(dfout%>% filter(n>20), aes(x=n, y=coef, color=var)) +
+  geom_line() +
+  labs(x="Sample Size", y="Estimated Coefficient")+
+  theme ( legend.position = "bottom",
+          legend.key = element_blank() )
+
+
+se <- ggplot(dfout%>% filter(n>20), aes(x=n, y=se, color=var)) +
+  geom_line() +
+  labs(x="Sample Size", y="Estimated Standard Error")+
+  theme ( legend.position = "bottom",
+          legend.key = element_blank() )
+
+b+se
+
+```
+
+## Q1 OLS 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+nsim <- function(i){
+  set.seed(12345)
+  X <- rnorm_multi(i, 3, 
+                   mu=c(0, 0, 0), 
+                   sd=1,
+                   r = c(0.0, 0.0, 0.0),
+                   varnames=c("x1", "x2", "e")) %>%
+    mutate(y = .5 + 1*x1 + 2*x2 + e)
+  
+  mod <- (lm(y ~ x1 + x2, data=X))
+  # print(summary(mod))
+  coef <- numeric(0)
+  coef<-coef(summary(mod))[1:3,1]
+  se <- numeric(0)
+  se <-coef(summary(mod))[1:3,2]
+  n <- numeric(0)
+  n <- i
+  var = c("x0","x1","x2")
+  out <- data.frame(var, coef, se, n)
+}
+
+i <- seq(10,1000,1) #vector of i for "nsim" function
+dfout <- map(i,nsim) |> list_rbind()
+olsout <- dfout %>% filter(n< 300)
+#plot
+
+b <- ggplot(dfout, aes(x=n, y=coef, color=var)) +
+  geom_line() +
+  labs(x="Sample Size", y="Estimated Coefficient")+
+  theme ( legend.position = "bottom",
+          legend.key = element_blank() )
+
+
+se <- ggplot(dfout, aes(x=n, y=se, color=var)) +
+  geom_line() +
+  labs(x="Sample Size", y="Estimated Standard Error")+
+  theme ( legend.position = "bottom",
+          legend.key = element_blank() )
+
+b+se
+
+```
+
+MLE's small sample properties are far more variable than OLS small sample properties. In samples smaller than 300, MLE estimates varied from -19 to 990; OLS estimates varied from .30 to 2.37. 
+
+
+## Q2 - Ill-Treatment and Torture data
+
+```{r, results='asis'}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+
+itt <- read.csv("/Users/dave/Documents/teaching/501/2023/exercises/ex4/ITT/data/ITT.csv")
+
+itt$p1 <- itt$polity2+11
+itt$p2 <- itt$p1^2
+itt$p3 <- itt$p1^3
+
+
+itt <- 
+  itt%>% 
+  group_by(ccode) %>%
+  mutate( lagprotest= lag(protest), lagRA=lag(RstrctAccess), n=1)
+
+
+itt <- itt %>%
+  set_variable_labels(
+    lagRA = "Restricted Access, t-1",
+    civilwar = "Civil War",
+    lagprotest = "Protests, t-1",
+    p1 = "Polity",
+    p2 = "Polity^2",
+    p3 = "Polity^3", 
+    wdi_gdpc = "GDP per Capita (WDI)",
+    wdi_pop = "Population (WDI)"
+  )
+
+m1 <- lm(scarring ~ lagRA + civilwar + lagprotest + p1+p2+p3 +p1 +I(wdi_gdpc/1000) + I(wdi_pop/100000), data=itt)
+m2 <- lm(scarring ~ lagRA + civilwar + lagprotest + p1 +I(wdi_gdpc/1000) + I(wdi_pop/100000), data=itt)
+
+# modelsummary(m1, coef_rename = TRUE, stars = TRUE, gof_map = c("adj.r.squared", "nobs", "F", "rmse" ), gof_digits = 2)
+
+
+stargazer(m1,m2, type="html",  single.row=TRUE, header=FALSE, digits=3,  omit.stat=c("LL","ser"),  star.cutoffs=c(0.05,0.01,0.001),  column.labels=c("Model 1", "Model 2"),  dep.var.caption="Dependent Variable: Scarring Torture", dep.var.labels.include=FALSE,  covariate.labels=c("Restricted Access, t-1", "Civil War", "Protests, t-1", "Polity", "<p>Polity<sup>2</sup></p>", "<p>Polity<sup>3</sup></p>", "GDP per capita", "Population"),  notes=c("Standard errors in parentheses", "Significance levels:  *** p<0.001, ** p<0.01, * p<0.05"), notes.append = FALSE,  align=TRUE,  font.size="small")
+
+
+
+
+```
+
+
+## Q2 - simulated effects
+
+Simulate the distribution of $\hat{\beta}$'s and plot the expected scarring torture reports for different levels of protests against the government.
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+
+#simulate b's 
+m1 <- lm(scarring ~ lagRA + civilwar + lagprotest + p1+p2+p3 +wdi_gdpc + wdi_pop, data=itt)
+
+sigma <- vcov(m1)
+B <- data.frame(rmvnorm(n=1000, mean=coef(m1), vcov(m1)))
+                
+colnames(B) <-c('b0', 'b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8')
+
+predictions <- data.frame ( lb0 = numeric(0),med0= numeric(0),ub0= numeric(0),lb1= numeric(0),med1= numeric(0),ub1= numeric(0), protest = numeric(0))
+
+for (p in seq(1,40,1)) {
+  
+  xbRA0  <- quantile(B$b0 + B$b1*0 + B$b2*0 + B$b3*p +B$b4*13+ B$b5*169+B$b6*2197+B$b7*8333+B$b8*.00005, probs=c(.025,.5,.975))
+  xbRA1 <- quantile(B$b0 + B$b1*1 + B$b2*0 + B$b3*p +B$b4*13+ B$b5*169+B$b6*2197+B$b7*8333+B$b8*.00005, probs=c(.025,.5,.975))
+  xbRA0<- data.frame(t(xbRA0))
+  xbRA1<- data.frame(t(xbRA1))
+  predictions[p:p,] <- data.frame(xbRA0, xbRA1, p)
+}
+
+ggplot()+
+  geom_ribbon(data=predictions, aes(x=protest, ymin=lb0, ymax=ub0),fill = "grey70", alpha = .4, ) +
+  geom_ribbon(data=predictions, aes(x=protest, ymin=lb1, ymax=ub1), fill= "grey60",  alpha = .4, ) +
+  geom_line(data= predictions, aes(x=protest, y=med0))+
+  geom_line(data= predictions, aes(x=protest, y=med1))+
+  labs ( colour = NULL, x = "Protests Against Government", y =  "Expected Scarring Torture Reports" ) +
+  annotate("text", x = 8, y = 22, label = "Restricted Access", size=3.5, colour="gray30")+
+  annotate("text", x = 8, y = 11, label = "Unrestricted Access", size=3.5, colour="gray30")
+
+
+```
+
+# Q2 - average effects
+
+Generate average effects over protests. 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
+# average predictions, end point boundaries
+
+# estimation sample
+itt$used <- TRUE
+itt$used[na.action(m1)] <- FALSE
+ittesample <- itt %>%  filter(used=="TRUE")
+
+# loop over number of protests
+pred_data <-ittesample
+protests <-0
+medxbr0 <-0
+ubxbr0 <-0
+lbxbr0 <-0
+medxbr1 <-0
+ubxbr1 <-0
+lbxbr1 <-0
+pred_data$lagRA <- 0
+for(p in seq(1,40,1)) {
+  pred_data$lagprotest <- p 
+  protests[p] <- p 
+  allpreds <- data.frame(predict(m1, interval="confidence", se.fit=TRUE, newdata = pred_data))  
+  medxbr0[p] <- median(allpreds$fit.fit, na.rm=TRUE)
+  ubxbr0[p] <- median(allpreds$fit.fit, na.rm=TRUE)+1.96*(median(allpreds$se.fit, na.rm=TRUE))
+  lbxbr0[p] <- median(allpreds$fit.fit, na.rm=TRUE)-1.96*(median(allpreds$se.fit, na.rm=TRUE))
+}
+pred_data$lagRA <- 1
+for(p in seq(1,40,1))  {
+  pred_data$lagprotest <- p
+  allpreds <- data.frame(predict(m1, interval="confidence", se.fit=TRUE, newdata = pred_data))  
+  medxbr1[p] <- median(allpreds$fit.fit, na.rm=TRUE)
+  ubxbr1[p] <- median(allpreds$fit.fit, na.rm=TRUE)+1.96*(median(allpreds$se.fit, na.rm=TRUE))
+  lbxbr1[p] <- median(allpreds$fit.fit, na.rm=TRUE)-1.96*(median(allpreds$se.fit, na.rm=TRUE))
+}
+
+df <- data.frame(medxbr0, ubxbr0,lbxbr0,medxbr1, ubxbr1, lbxbr1, protests)
+
+
+#plotting
+
+ggplot() +
+  geom_ribbon(data=df, aes(x=protests, ymin=lbxbr0, ymax=ubxbr0),fill = "grey70", alpha = .4, ) +
+  geom_ribbon(data=df, aes(x=protests, ymin=lbxbr1, ymax=ubxbr1), fill= "grey60",  alpha = .4, ) +
+  geom_line(data= df, aes(x=protests, y=medxbr0))+
+  geom_line(data= df, aes(x=protests, y=medxbr1))+
+  labs ( colour = NULL, x = "Protests Against Government", y =  "Expected Scarring Torture Reports" ) +
+  annotate("text", x = 8, y = 22, label = "Restricted Access", size=3.5, colour="gray30")+
+  annotate("text", x = 8, y = 11, label = "Unrestricted Access", size=3.5, colour="gray30")
+
+```
