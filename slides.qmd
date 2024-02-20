@@ -2,8 +2,6 @@
 title: "Slides"
 ---
 
-
-
 [Course overview](overview24.qmd)
 
 [Matrix algebra basics](matrix24.qmd)
@@ -19,3 +17,5 @@ title: "Slides"
 [Prediction methods](predictionmethods24.qmd)
 
 [Normality](normality24.qmd)
+
+[Inference](inference24.qmd)
