@@ -1,0 +1,586 @@
+---
+title: "Inference"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: multivariate24s.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+
+
+
+```
+
+
+
+
+#  Uncertainty about $\widehat{\beta}$
+ 
+We've dug pretty extensively into how we produce OLS estimates of $\widehat{\beta}$. Now we turn to the question of uncertainty about those estimates. After all, the data are a sample; the variables are perhaps imperfect measures; the variables may contain errors; we have ideas about the data generating process, but we don't know the true model, so the model is certainly misspecified. 
+
+We need ways to express our uncertainty about the estimates of $\beta$, and about our confidence in the claims we make from the model. 
+
+If we simply assume $\widehat{\beta} = \beta$, then we are assuming:
+ 
+  - all the regression assumptions are met;
+  - the sample is exactly equivalent to or representative of the population; 
+  - the model is specified correctly, and there are no sources of measurement error. 
+ 
+The probability these are all true is slim, but we are uncertain about the extent to which we do or do not meet these requirements. We need some statistical tools for quantifying our uncertainty about $\widehat{\beta}$.   
+ 
+
+# Measuring Uncertainty
+
+::: {.callout-note icon="false"}
+###  Normality of $\epsilon$
+
+To talk precisely about uncertainty, assume the following: 
+
+The disturbances, $\epsilon_i$ are independent of the $X$s and are normally distributed: $\epsilon \sim N(0,\sigma^{2})$.
+
+:::
+
+Two parts to this. 
+
+1. The residuals and $X$ variables are uncorrelated. Recall our simulations of what happens if we violate this assumption. The $\widehat{\beta}$s are biased, and the standard errors are inefficient. 
+
+2. The residuals are normally distributed. This is not a critical assumption, but it is a convenient one. It allows us to make inferences about the $\widehat{\beta}$s.
+
+
+::: {.callout-note icon="false"}
+
+### Normality of $\widehat{\beta}$
+
+Normality of $\epsilon$ implies that $\widehat{y}$ is normal, conditional on the $X$ variables.  The OLS assumptions collectively produce the following theorem:  ~ 
+
+
+Under the OLS assumptions, $\widehat{\beta} \sim N(\beta,var(\widehat{\beta}))$
+
+This helps form the foundation for inference. 
+
+:::
+
+
+# Normality of $\widehat{\beta}$
+
+Normality of $\beta$ is facilitated by the Central Limit Theorem. $\widehat{\beta}$ is our estimate of the mean of the distribution of $\beta$; it's one draw of theoretically infinite draws from that distribution. Assuming a large number of draws, the Central Limit Theorem tells us that the distribution of $\widehat{\beta}$ is normal.
+  
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: "code"
+
+knitr::include_app(url = "https://clavedark.shinyapps.io/normalitysim24/", height = "1000px")
+
+```
+
+## Framework for Inference
+ 
+  -  establish a null hypothesis, e.g. $\beta_1=0$.
+  -  estimate $\widehat{\beta_1}$
+  -  estimate the error variance $\widehat{\sigma^2}$.
+  -  determine the distribution of  $\widehat{\beta_k}$.
+  -  compute a test statistic for  $\widehat{\beta_1}$.
+  -  compare that test statistic to critical values on the distribution of  $\widehat{\beta_k}$.
+  -  determine the probability of observing the test statistic value, given the distribution of  $\widehat{\beta_k}$
+ 
+
+## Measuring Uncertainty
+
+  - Standard errors are basic measures of uncertainty. 
+  - The standard errors of the estimates of $\widehat{\beta_k}$ are the standard deviations of the sampling distribution of the estimator.
+  - Standard errors are analogous to standard deviations surrounding the estimates. 
+ 
+ 
+## Variance of the estimates 
+
+In the bivariate model, the variances of $\widehat{\beta_{0}}$ and $\widehat{\beta_{1}}$ are:
+
+$$\text{var}(\widehat{\beta_{0}}) = \frac{\sum\limits_{i=1}^{n}x_{i}^{2}}{n \sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}} \sigma^{2}$$
+and
+
+$$\text{var}(\widehat{\beta_{1}}) = \frac{\sigma^{2}}{\sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}} $$
+
+
+
+The covariance of the the two estimates is
+
+$$\text{cov}(\widehat{\beta_{0}},\widehat{\beta_{1}}) = \frac{-\bar{x}}{ \sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}} \sigma^{2}$$
+
+Compute $\widehat{\sigma}^2$ by 
+
+$$\widehat{\sigma}^2 = \frac{\sum\widehat{u}^2}{n-k-1} $$
+
+
+and the standard errors of $\widehat{\beta_{0}}$ and $\widehat{\beta_{1}}$ are the square roots of the first two expressions. 
+
+Recalling that $\mathbf{\widehat{u'u}}$ = SSE = $\sum_{i=1}^{N}\widehat{u^2}$,
+
+$$\widehat{\sigma}^2 = \mathbf{\widehat{u}'\widehat{u}}  \frac{1}{(n-k-1)}$$
+
+
+### Repetition: Variance-Covariance of $\epsilon$
+
+Because we assume constant variance and no serial correlation, we know
+
+$$ E(\mathbf{\epsilon\epsilon'})=
+\left[
+\begin{array}{cccc}
+\sigma^{2} & 0 &\cdots &0 \\
+0&\sigma^{2} &\cdots &0 \\
+\vdots&\vdots&\ddots& \vdots \\
+0 &0 &\cdots & \sigma^{2} \\
+\end{array} \right]
+= \sigma^{2}
+\left[
+\begin{array}{cccc}
+1 & 0 &\cdots &0 \\
+0&1 &\cdots &0 \\
+\vdots&\vdots&\ddots& \vdots \\
+0 &0 &\cdots & 1 \\
+\end{array} \right]
+= \sigma^{2} \mathbf{I} $$
+
+This is the variance-covariance matrix of the disturbances ($var-cov(e)$); it is symmetric, the main diagonal containing the variances of $\epsilon_i$. Assuming $Var(u|X)= \sigma^2$, the average of the main diagonal is $\widehat{\sigma^2}$; the average of a constant is the constant. 
+
+
+## Repetition: Variance-Covariance of $\widehat{\beta}$
+
+$$
+\begin{align}
+E[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)']  
+= E[(\mathbf{(X'X)^{-1}X'\epsilon})(\mathbf{(X'X)^{-1}X'\epsilon})']  \nonumber \\ \nonumber \\
+= E[\mathbf{(X'X)^{-1}X'\epsilon \epsilon'\mathbf{X(X'X)^{-1}}}]  \nonumber \\ \nonumber \\
+= \mathbf{(X'X)^{-1}X'} E(\epsilon \epsilon')\mathbf{X(X'X)^{-1}}  \nonumber \\ \nonumber \\
+= \mathbf{(X'X)^{-1}X'} \sigma^{2}\mathbf{I} \mathbf{X(X'X)^{-1}}   \nonumber \\ \nonumber \\
+= \sigma^{2} \mathbf{(X'X)^{-1}}  \nonumber 
+\end{align}
+$$
+
+
+## Variance-Covariance of $\widehat{\beta}$} 
+
+$$ E[(\widehat{\beta}-\beta)(\widehat{\beta}-\beta)'] =$$  
+
+$$\left[
+\begin{array}{cccc}
+var(\beta_1) & cov(\beta_1,\beta_2) &\cdots &cov(\beta_1,\beta_k) \\
+cov(\beta_2,\beta_1)& var(\beta_2) &\cdots &cov(\beta_2,\beta_k) \\
+\vdots&\vdots&\ddots& \vdots \\
+cov(\beta_k,\beta_1) &cov(\beta_2,\beta_k) &\cdots & var(\beta_k) \\
+\end{array} \right] $$
+
+
+## Standard Errors of $\beta_k$ \ldots  
+
+$$\left[
+\begin{array}{cccc}
+\sqrt{var(\beta_1)} & cov(\beta_1,\beta_2) &\cdots &cov(\beta_1,\beta_k) \\
+cov(\beta_2,\beta_1)& \sqrt{var(\beta_2)} &\cdots &cov(\beta_2,\beta_k) \\
+\vdots&\vdots&\ddots& \vdots \\
+cov(\beta_k,\beta_1) &cov(\beta_2,\beta_k) &\cdots & \sqrt{var(\beta_k)} \\
+\end{array} \right] $$
+
+
+
+
+
+## Assume 
+
+$$ \widehat{u} \sim \mathcal{N}(0, \sigma^2 \mathbf{I}) $$
+
+If we meet the GM assumptions, then:
+
+$$ \widehat{\beta} \sim \mathcal{N}(\beta, \widehat{var(\beta)}) $$
+
+
+$$\widehat{var(\beta)} = \widehat{\sigma^{2}} \mathbf{(X'X)^{-1}} $$
+
+
+The estimated error variance will be smaller relative to large variation in the $X$ variables, so as variation in $X$ grows, the uncertainty surrounding $\mathbf{\widehat{\beta_k}}$ will get smaller. 
+
+
+
+## Think about the OLS simulations
+
+The estimated error variance will be smaller relative to large variation in the $X$ variables, so as variation in $X$ grows, the uncertainty surrounding $\mathbf{\widehat{\beta_k}}$ will get smaller. 
+
+ 
+  what does this suggest about sample size? 
+  what does this suggest about correlation among $x$ variables? 
+  
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: "code"
+
+knitr::include_app(url = "https://clavedark.shinyapps.io/olssimulations/", height = "1000px")
+
+
+
+```
+
+
+
+## Characteristics of $\text{var}(\widehat{\beta_{j}})$
+
+
+::: {.callout-note icon="false"}
+### Standard Errors vary with $\sigma^{2}$
+
+The variance of $\widehat{\beta_{j}}$ varies directly with $\sigma^{2}$, so as the error variance increases, so does the variance surrounding $\widehat{\beta_{j}}$ - this makes sense if we think about what the variance of the error term suggests.  Large $\sigma^{2}$ suggests our model is not predicting $Y$ very effectively - if the model itself is imprecise, then its component parts (the $\widehat{\beta_{j}}$s) will also be imprecise.  So as $\sigma^{2}$ increases, so does $\text{var}(\widehat{\beta_{j}})$.
+:::
+
+::: {.callout-note icon="false"}
+### Standard Errors vary with variation in $\mathbf{X}$
+
+The variance of $\widehat{\beta_{j}}$ varies indirectly with $\sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}$, so as the sum of squares of $x$ increases, $\text{var}(\widehat{\beta_{j}})$ decreases.  This too makes sense because it means the more variability in $x$ or the more information our $x$ variables contain, the better our estimates of $\widehat{\beta_{j}}$ are.  Thus, more variability in the $x$s reduces $\text{var}(\widehat{\beta_{j}})$.
+:::
+
+::: {.callout-note icon="false"}
+### Standard Errors vary with sample size
+
+Sample size varies inversely with $\text{var}(\widehat{\beta_{j}})$ - larger samples (probably with greater variation in the $x$s and thus larger $\sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}$) will produce more precise estimates of $\widehat{\beta_{j}}$ and smaller $\text{var}(\widehat{\beta_{j}})$.
+:::
+
+
+
+## Inferences about $\widehat{\beta}$
+
+The standard error of $\widehat{\beta_k}$ is the square root of the $k^{th}$ diagonal element of the variance-covariance matrix of $\widehat{\beta}$  ~  
+
+In scalar terms, 
+
+$$s.e.(\widehat{\beta_{1}}) =\sqrt{\frac{\widehat{\sigma^{2}}}{\sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}}} \nonumber   \nonumber  
+= \frac{\widehat{\sigma}}{\sqrt{\sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}}} $$
+
+ 
+and the critical value is given by 
+
+$$z=\frac{\widehat{\beta_{j}}-\beta_{j}}{\frac{\widehat{\sigma}}{\sqrt{\sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}}}}$$ 
+
+$$t= \frac{\widehat{\beta_{j}}-\beta_{j}\sqrt{\sum\limits_{i=1}^{n} (x_{i}-\bar{x})^{2}}}{\widehat{\sigma}} $$
+
+This is not Normal, even though the numerator is - the denominator is composed of the squared residuals, each of which is a $\chi^{2}$ variable. A standard normal variable divided by a  $\chi^{2}$ distributed variable is distributed  $t$ with $n-k-1$ degrees of freedom.  
+
+
+# Confidence Intervals
+
+The estimates of $\widehat{\beta_{j}}$ are drawn from a normal distribution, and we know the distribution of the variance, and we know how those distributions are related.  For the $t$ distribution, we know that 95\% of the probability mass falls within 2 standard deviations of the mean, so if we construct a 95\% confidence interval, we can say that 95\% of the time the true value of $\beta$ will fall within the interval.  Put another way, the interval contains a range of probable values for the true value of $\beta$.  
+
+
+ 
+Because we know (from above) that 
+
+$$t= \frac{\widehat{\beta_{j}}-\beta_{j}}{s.e. \widehat{\beta_{j}}}$$
+
+we can easily compute a confidence interval surrounding $\widehat{\beta_{j}}$ by
+
+$$CI_{c} = \widehat{\beta_{j}} \pm c \cdot {s.e. \widehat{\beta_{j}}}$$
+
+where $c$ represents the size of the confidence interval, so if $c$ is the 97.5th percentile in the $t$ distribution with $6$ degrees of freedom, then the value of $c$ is 2.447 (see the t-table in the back of the text). Thus, we compute the confidence interval by:
+
+$$CI_{97.5} = \widehat{\beta_{j}} +  2.447 \cdot {s.e. \widehat{\beta_{j}}}, \widehat{\beta_{j}} -  2.447 \cdot {s.e. \widehat{\beta_{j}}}$$
+
+
+# Point Estimates
+
+Using confidence intervals, we state the probability the true coefficient lies between the upper and lower bounds of the interval.  Point estimate tests allow us to test specific hypotheses about the value of $\widehat{\beta_{j}}$.  Let's go back to the computation of a $t$ statistic:
+
+
+$$t= \frac{\widehat{\beta_{j}}-\beta_{j}}{s.e. \widehat{\beta_{j}}}$$
+
+You'll notice in the numerator we're subtracting the true coefficient from our estimate. Of course, we don't know the true values of $\beta$, so we choose a value to which we want to compare our estimate.  Then we're generating the probability of drawing a sample with $\widehat{\beta_{j}}$ given the value we choose.  
+
+
+# Hypotheses
+
+Normally, we set up our hypothesis tests such that the value of $\beta$ we select is zero. Thus, we state null and alternative hypotheses:
+
+$$H_0:\beta_j=0$$ 
+$$H_1:\beta_j\ne 0 $$
+
+
+Then, we choose significance levels, find the critical value associated with that significance level, and compare $t_{\widehat{\beta_j}}=\widehat{\beta_j}/se(\widehat{\beta_j})$ to the critical
+value.  Finally, we either reject or fail to reject $H_0$.  Note that we could choose other values to which we could compare the probability of $\widehat{\beta_{j}}$, though selecting those values can be tricky.
+
+
+
+## Hypotheses
+
+ 
+  - The relationship we expect between $x$ and $y$ is the alternative hypothesis. 
+  
+  - $H_a$ is the alternative to the null - the null includes everything that's not the alternative; mathematically, it always includes zero. 
+  
+  - Non-directional alternative hypotheses simply expect $\widehat{\beta}$ will not be zero. These are not very specific, less desirable. 
+  
+  - Directional hypotheses expect a direction, e.g., $\widehat{\beta}$ will be positive; the null in this case is $\widehat{\beta} \leq 0$. This is more specific, more desirable.
+
+ 
+::: {.callout-note icon="false"}
+### Directional Hypotheses
+ Statistical software doesn't know your data or argument}
+
+R/Stata does not know your hypotheses, whether directional or not; it does not know if your data are panel, time series, or cross sectional. 
+
+ 
+  - R/Stata report 2-tailed p-values.
+  
+  - If you have a directional hypothesis, you need the 1-tailed p-value.
+  
+  - Divide the 2-tailed value by 2 - in a 2-tailed test, it's divided between the two tails. You want just one tail, so dividing the 2-tailed probability by 2 gives you the 1-tailed probability.
+
+:::
+  
+  
+  
+  - If you expect $\widehat{\beta} > 0$, and your estimated $\widehat{\beta} = -1.2$ with a p-value of .001, you cannot reject the null. While $\widehat{\beta}$ is statistically different from zero, it's not in the direction of your hypothesis, so the result is not meaningful, does not support the alternative. 
+ 
+
+
+
+## Don't Expect the Null Hypothesis
+
+![](nullinquisition.png)
+
+
+
+
+## Don't Expect the Null
+
+The classical hypothesis test is always constructed such that the null includes zero. It is not possible to expect as the alternative hypothesis, that $\widehat{\beta} = 0$. We should **never** see the alternative hypothesis::
+
+
+**X will have no relationship to y: $H_A: \beta_1=0$**
+
+
+In the classical test, the null includes a specific point (usually zero), though it can contain that point and a range of other values, e.g.: 
+
+$$H_0: \beta_1 \leq 0$$
+
+Here, the null that $\beta_1$ is less than or equal to zero includes zero, but also includes all negative values. The alternative is that $\beta_1$ is greater than zero, so the alternative is a *range of values*, not a specific point.
+
+If we flip this around to say "I expect $\beta_1$ to be zero", then we are expecting the null hypothesis. Note that the *alternative hypothesis* is now a specific point, and the null is a range of values without any specific point expectation. 
+
+It's important to note that the null may be around a point *other than zero*. We might expect the coefficient to be different from 5, so the null is $H_0: \beta_1=5$. Or, we might expect the coefficient to be greater than 5, so the null is $H_0: \beta_1 \leq 5$. 
+
+The point is we cannot expect in the alternative that $\beta_1$ is zero where the null is that it is anything except zero unless we build a new type of test. See Jeff Gill's 1999 PRQ paper on this. 
+
+
+## Don't Expect the Null Hypothesis
+![](nulldrake.png)
+
+
+
+
+# Joint Hypothesis Tests
+
+Normally we test hypotheses about specific  parameters, but there are cases where we are interested in a hypothesis like this:
+
+$$H_0:\beta_1=\beta_2=0$$
+$$H_1:\beta_1\ne \beta_2\ne 0$$
+
+To test something like this (and really, tests like this are something we should be extremely interested in), we use the F-statistic.  
+
+The joint hypothesis above has two restrictions - we expect two parameters to be zero in the null.  We can have as many as $k-1$ exclusions or restrictions in the model, and we typically call the exclusions or restrictions $q$. 
+
+
+## Intuition
+
+Decompose the variation in the data and model this way:
+
+$$TSS= MSS+RSS$$
+
+Suppose a regression like this:
+
+$$y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_4 +\beta_5 x_5 + u_i $$
+
+Our usual, single coefficient hypothesis test, say on $\beta_3$ is 
+
+$$H_0: \beta_3=0$$
+
+which is equivalent to 
+
+$$y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + {\mathbf{0}} x_3 + \beta_4 x_4 +\beta_5 x_5 + u_i $$
+call this the **unrestricted model**: 
+
+$$y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_4 +\beta_5 x_5 + u_i $$
+
+$$RSS_U = \sum_{i=1}^N \widehat{u_U}^2$$
+
+and refer to this as the **restricted model**:
+
+$$y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + {\mathbf{0}} x_3 + \beta_4 x_4 +\beta_5 x_5 + u_i $$
+
+$$RSS_R = \sum_{i=1}^N \widehat{u_R}^2$$
+
+
+Are these quantities different from one another?
+
+$$RSS_U \neq RSS_R$$ 
+
+If 
+
+$$RSS_U = RSS_R = 0$$
+
+then the two models are indistinguishable, and $\beta_3$ is not different from zero. Alternatively, if 
+
+$$RSS_U \neq RSS_R \neq 0$$
+
+we can reject the null that the models are the same, and the specific null that $\beta_3=0$. By the way, this single coefficient F-test is inferentially equivalent to the t-test; in fact, $F_{\beta_{k}}= t^2_{\beta_{k}}$.
+
+
+## Extension
+
+Extend this to the following hypothesis test:
+
+$$y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_4 +\beta_5 x_5 + u_i $$
+
+$$H_0: \beta_3=\beta_4=\beta_5=0$$
+
+or that the effects of $x_3, x_4, x_5$ are individually and jointly zero.
+
+**Unrestricted:**
+
+$$y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_4 +\beta_5 x_5 + u_i $$
+
+**Restricted:**
+
+$$y_i = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + {\mathbf{0}} x_3 + {\mathbf{0}} x_4 +{\mathbf{0}} x_5 + u_i $$
+
+
+## F-test
+
+How do we test $RSS_U = RSS_R = 0$?  
+
+$$F=\frac{(RSS_R-RSS_{U})/q}{RSS_{U}/(n-k-1)} $$
+
+where $q$ is the number of restrictions.  
+
+The numerator is the difference in fit between the two models (weighted or "normed" by the different number of parameters, the restrictions), and the denominator is a baseline of how well the full model fits. So this is a ratio of improvement to the fit of the full model. Both are distributed $\chi^2$; their ratio is distributed $F$.
+
+
+## Alternatively
+
+We could equivalently state this as:
+
+$$F=\frac{(\sum\widehat{u}^{2}_{R}-\sum\widehat{u}^{2}_{U})/q}{\sum\widehat{u}^{2}_{U}/(n-k-1)} $$
+
+Notice that the denominator is also $\widehat{\sigma^2}$.  The resulting statistic is distributed $F\sim F_{q,n-k-1}$.   
+
+
+or we can write the same thing in terms of the $R^2$ estimates of the two models:
+
+$$F=\frac{(R^2_{U}-R^2_{R})/q}{(1-R^2_{U})/(n-k-1)} $$
+
+
+
+## In practice \ldots
+
+For a joint hypothesis test, we estimate two **nested** models which we label the **restricted** and **unrestricted** models.  
+
+
+::: {.callout-note icon="false"}
+
+Two models are nested iff they contain precisely the same observations, and the variables in one model are a strict subset of the variables in the other.
+
+:::
+
+
+The unrestricted model has all $k$ variables; the restricted model has $k-q$ variables, excluding the variables whose joint effect we want to test.
+
+Estimate the models, and examine how much the RSS increases when we exclude the $q$ variables from the model - of course, the RSS will always increase when we drop variables, but the question is how much will it increase. The F-test measures the increase in RSS in the restricted model relative to that of the unrestricted model. 
+
+
+
+## A common example
+
+Every OLS model reports a "model F-test" - this compares the model you estimated with all your $x$ variables (this is the unrestricted model) to the null model - no variables, just a constant.  The null hypothesis is 
+
+$$H_0: \beta_1=\beta_2 \ldots = \beta_k = 0$$
+
+It's a test of your model against the model with only a constant - it's comparing the value of your model against the model where our best guess at what explains $y$ is $\beta_0 = \bar{y}$. 
+
+
+
+
+ 
+## Tests like this are important and powerful:
+ 
+Our enterprise is really about comparative model testing. Hypothesis tests on individual coefficients do not allow us to compare models. Our theories imply different explanations for phenomena, and thus different empirical models. To treat the theories comparatively, we must test our models comparatively as well. So tests such as the joint hypothesis test are critically important to that endeavor. 
+
+
+This test is a distributional test; that is, its product is a point or range on a known probability distribution. Thus, we can be quite exactly about the probability with which we either do or do not reject the joint null hypothesis. 
+
+This is not the case of another popular measure of model fit, the $R^2$, which has no sampling distribution. The $R^2$ cannot tell us anything probabilistic about the model or more specifically, about the hypothesis that a variable or variables do or do not significantly affect the fit of the model. 
+ 
+
+
+
+# Inference on Predictions
+
+We worry a great deal about our uncertainty surrounding $\widehat{\beta}$. Until relatively recently, few concerned themselves with uncertainty surrounding $\widehat{y}$ even though $\widehat{y}= x\widehat{\beta}$ - you'll note of course $\widehat{y}$ is a function of the $\widehat{\beta}$s. 
+
+
+Just as we estimate the variance for each $\widehat{\beta}$, we can estimate the variance for each $\widehat{y}$. 
+
+
+The variance of $\widehat{\beta}$ is the $k^{th}$ diagonal element of the matrix $\sigma^2 (X'X)^{-1}$. The error variance, $\sigma^2$ is the sum of squared residuals spread over the degrees of freedom. $(X'X)^{-1}$ is the variance-covariance of $X$ - the ratio spreads the error variance over the variation in the $X$s. 
+
+
+The variance of $\widehat{y}$ is $X\widehat{V}X'$, where $\widehat{V}=\sigma^2 (X'X)^{-1}$.  This is an NxN matrix measuring the variances and covariances of the $\widehat{y}$s. The square root of the $N^{th}$ diagonal is the standard error of the $N^{th}$ $\widehat{y}$. 
+
+We can use the  standard error of $\widehat{y}_i$ to generate a confidence interval around $\widehat{y}_i$ in the usual way:
+
+$$CI_{\widehat{y_i}} = \widehat{y}_i \pm c \cdot {s.e. \widehat{y_i}} $$
+
+usually \ldots
+
+$$CI_{\widehat{y_i}} = \widehat{y}_i \pm 1.96 \cdot {s.e. \widehat{y_i}} $$
+
+
+
+
+

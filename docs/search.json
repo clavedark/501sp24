@@ -3421,5 +3421,194 @@
     "title": "exercise #4 answers",
     "section": "Q2 - simulated effects",
     "text": "Q2 - simulated effects\nSimulate the distribution of \\(\\hat{\\beta}\\)’s and plot the expected scarring torture reports for different levels of protests against the government.\n\n\ncode\n#simulate b's \nm1 &lt;- lm(scarring ~ lagRA + civilwar + lagprotest + p1+p2+p3 +wdi_gdpc + wdi_pop, data=itt)\n\nsigma &lt;- vcov(m1)\nB &lt;- data.frame(rmvnorm(n=1000, mean=coef(m1), vcov(m1)))\n                \ncolnames(B) &lt;-c('b0', 'b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8')\n\npredictions &lt;- data.frame ( lb0 = numeric(0),med0= numeric(0),ub0= numeric(0),lb1= numeric(0),med1= numeric(0),ub1= numeric(0), protest = numeric(0))\n\nfor (p in seq(1,40,1)) {\n  \n  xbRA0  &lt;- quantile(B$b0 + B$b1*0 + B$b2*0 + B$b3*p +B$b4*13+ B$b5*169+B$b6*2197+B$b7*8333+B$b8*.00005, probs=c(.025,.5,.975))\n  xbRA1 &lt;- quantile(B$b0 + B$b1*1 + B$b2*0 + B$b3*p +B$b4*13+ B$b5*169+B$b6*2197+B$b7*8333+B$b8*.00005, probs=c(.025,.5,.975))\n  xbRA0&lt;- data.frame(t(xbRA0))\n  xbRA1&lt;- data.frame(t(xbRA1))\n  predictions[p:p,] &lt;- data.frame(xbRA0, xbRA1, p)\n}\n\nggplot()+\n  geom_ribbon(data=predictions, aes(x=protest, ymin=lb0, ymax=ub0),fill = \"grey70\", alpha = .4, ) +\n  geom_ribbon(data=predictions, aes(x=protest, ymin=lb1, ymax=ub1), fill= \"grey60\",  alpha = .4, ) +\n  geom_line(data= predictions, aes(x=protest, y=med0))+\n  geom_line(data= predictions, aes(x=protest, y=med1))+\n  labs ( colour = NULL, x = \"Protests Against Government\", y =  \"Expected Scarring Torture Reports\" ) +\n  annotate(\"text\", x = 8, y = 22, label = \"Restricted Access\", size=3.5, colour=\"gray30\")+\n  annotate(\"text\", x = 8, y = 11, label = \"Unrestricted Access\", size=3.5, colour=\"gray30\")"
+  },
+  {
+    "objectID": "inference24.html",
+    "href": "inference24.html",
+    "title": "Inference",
+    "section": "",
+    "text": "We’ve dug pretty extensively into how we produce OLS estimates of \\(\\widehat{\\beta}\\). Now we turn to the question of uncertainty about those estimates. After all, the data are a sample; the variables are perhaps imperfect measures; the variables may contain errors; we have ideas about the data generating process, but we don’t know the true model, so the model is certainly misspecified.\nWe need ways to express our uncertainty about the estimates of \\(\\beta\\), and about our confidence in the claims we make from the model.\nIf we simply assume \\(\\widehat{\\beta} = \\beta\\), then we are assuming:\n\nall the regression assumptions are met;\nthe sample is exactly equivalent to or representative of the population;\nthe model is specified correctly, and there are no sources of measurement error.\n\nThe probability these are all true is slim, but we are uncertain about the extent to which we do or do not meet these requirements. We need some statistical tools for quantifying our uncertainty about \\(\\widehat{\\beta}\\)."
+  },
+  {
+    "objectID": "inference24.html#framework-for-inference",
+    "href": "inference24.html#framework-for-inference",
+    "title": "Inference",
+    "section": "Framework for Inference",
+    "text": "Framework for Inference\n\nestablish a null hypothesis, e.g. \\(\\beta_1=0\\).\nestimate \\(\\widehat{\\beta_1}\\)\nestimate the error variance \\(\\widehat{\\sigma^2}\\).\ndetermine the distribution of \\(\\widehat{\\beta_k}\\).\ncompute a test statistic for \\(\\widehat{\\beta_1}\\).\ncompare that test statistic to critical values on the distribution of \\(\\widehat{\\beta_k}\\).\ndetermine the probability of observing the test statistic value, given the distribution of \\(\\widehat{\\beta_k}\\)"
+  },
+  {
+    "objectID": "inference24.html#measuring-uncertainty",
+    "href": "inference24.html#measuring-uncertainty",
+    "title": "Inference",
+    "section": "Measuring Uncertainty",
+    "text": "Measuring Uncertainty\n\nStandard errors are basic measures of uncertainty.\nThe standard errors of the estimates of \\(\\widehat{\\beta_k}\\) are the standard deviations of the sampling distribution of the estimator.\nStandard errors are analogous to standard deviations surrounding the estimates."
+  },
+  {
+    "objectID": "inference24.html#variance-of-the-estimates",
+    "href": "inference24.html#variance-of-the-estimates",
+    "title": "Inference",
+    "section": "Variance of the estimates",
+    "text": "Variance of the estimates\nIn the bivariate model, the variances of \\(\\widehat{\\beta_{0}}\\) and \\(\\widehat{\\beta_{1}}\\) are:\n\\[\\text{var}(\\widehat{\\beta_{0}}) = \\frac{\\sum\\limits_{i=1}^{n}x_{i}^{2}}{n \\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}} \\sigma^{2}\\] and\n\\[\\text{var}(\\widehat{\\beta_{1}}) = \\frac{\\sigma^{2}}{\\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}} \\]\nThe covariance of the the two estimates is\n\\[\\text{cov}(\\widehat{\\beta_{0}},\\widehat{\\beta_{1}}) = \\frac{-\\bar{x}}{ \\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}} \\sigma^{2}\\]\nCompute \\(\\widehat{\\sigma}^2\\) by\n\\[\\widehat{\\sigma}^2 = \\frac{\\sum\\widehat{u}^2}{n-k-1} \\]\nand the standard errors of \\(\\widehat{\\beta_{0}}\\) and \\(\\widehat{\\beta_{1}}\\) are the square roots of the first two expressions.\nRecalling that \\(\\mathbf{\\widehat{u'u}}\\) = SSE = \\(\\sum_{i=1}^{N}\\widehat{u^2}\\),\n\\[\\widehat{\\sigma}^2 = \\mathbf{\\widehat{u}'\\widehat{u}}  \\frac{1}{(n-k-1)}\\]\n\nRepetition: Variance-Covariance of \\(\\epsilon\\)\nBecause we assume constant variance and no serial correlation, we know\n\\[ E(\\mathbf{\\epsilon\\epsilon'})=\n\\left[\n\\begin{array}{cccc}\n\\sigma^{2} & 0 &\\cdots &0 \\\\\n0&\\sigma^{2} &\\cdots &0 \\\\\n\\vdots&\\vdots&\\ddots& \\vdots \\\\\n0 &0 &\\cdots & \\sigma^{2} \\\\\n\\end{array} \\right]\n= \\sigma^{2}\n\\left[\n\\begin{array}{cccc}\n1 & 0 &\\cdots &0 \\\\\n0&1 &\\cdots &0 \\\\\n\\vdots&\\vdots&\\ddots& \\vdots \\\\\n0 &0 &\\cdots & 1 \\\\\n\\end{array} \\right]\n= \\sigma^{2} \\mathbf{I} \\]\nThis is the variance-covariance matrix of the disturbances (\\(var-cov(e)\\)); it is symmetric, the main diagonal containing the variances of \\(\\epsilon_i\\). Assuming \\(Var(u|X)= \\sigma^2\\), the average of the main diagonal is \\(\\widehat{\\sigma^2}\\); the average of a constant is the constant."
+  },
+  {
+    "objectID": "inference24.html#repetition-variance-covariance-of-widehatbeta",
+    "href": "inference24.html#repetition-variance-covariance-of-widehatbeta",
+    "title": "Inference",
+    "section": "Repetition: Variance-Covariance of \\(\\widehat{\\beta}\\)",
+    "text": "Repetition: Variance-Covariance of \\(\\widehat{\\beta}\\)\n\\[\n\\begin{align}\nE[(\\widehat{\\beta}-\\beta)(\\widehat{\\beta}-\\beta)']  \n= E[(\\mathbf{(X'X)^{-1}X'\\epsilon})(\\mathbf{(X'X)^{-1}X'\\epsilon})']  \\nonumber \\\\ \\nonumber \\\\\n= E[\\mathbf{(X'X)^{-1}X'\\epsilon \\epsilon'\\mathbf{X(X'X)^{-1}}}]  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}X'} E(\\epsilon \\epsilon')\\mathbf{X(X'X)^{-1}}  \\nonumber \\\\ \\nonumber \\\\\n= \\mathbf{(X'X)^{-1}X'} \\sigma^{2}\\mathbf{I} \\mathbf{X(X'X)^{-1}}   \\nonumber \\\\ \\nonumber \\\\\n= \\sigma^{2} \\mathbf{(X'X)^{-1}}  \\nonumber\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "inference24.html#variance-covariance-of-widehatbeta",
+    "href": "inference24.html#variance-covariance-of-widehatbeta",
+    "title": "Inference",
+    "section": "Variance-Covariance of \\(\\widehat{\\beta}\\)}",
+    "text": "Variance-Covariance of \\(\\widehat{\\beta}\\)}\n\\[ E[(\\widehat{\\beta}-\\beta)(\\widehat{\\beta}-\\beta)'] =\\]\n\\[\\left[\n\\begin{array}{cccc}\nvar(\\beta_1) & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k) \\\\\ncov(\\beta_2,\\beta_1)& var(\\beta_2) &\\cdots &cov(\\beta_2,\\beta_k) \\\\\n\\vdots&\\vdots&\\ddots& \\vdots \\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_2,\\beta_k) &\\cdots & var(\\beta_k) \\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "inference24.html#standard-errors-of-beta_k",
+    "href": "inference24.html#standard-errors-of-beta_k",
+    "title": "Inference",
+    "section": "Standard Errors of \\(\\beta_k\\) ",
+    "text": "Standard Errors of \\(\\beta_k\\) \n\\[\\left[\n\\begin{array}{cccc}\n\\sqrt{var(\\beta_1)} & cov(\\beta_1,\\beta_2) &\\cdots &cov(\\beta_1,\\beta_k) \\\\\ncov(\\beta_2,\\beta_1)& \\sqrt{var(\\beta_2)} &\\cdots &cov(\\beta_2,\\beta_k) \\\\\n\\vdots&\\vdots&\\ddots& \\vdots \\\\\ncov(\\beta_k,\\beta_1) &cov(\\beta_2,\\beta_k) &\\cdots & \\sqrt{var(\\beta_k)} \\\\\n\\end{array} \\right] \\]"
+  },
+  {
+    "objectID": "inference24.html#assume",
+    "href": "inference24.html#assume",
+    "title": "Inference",
+    "section": "Assume",
+    "text": "Assume\n\\[ \\widehat{u} \\sim \\mathcal{N}(0, \\sigma^2 \\mathbf{I}) \\]\nIf we meet the GM assumptions, then:\n\\[ \\widehat{\\beta} \\sim \\mathcal{N}(\\beta, \\widehat{var(\\beta)}) \\]\n\\[\\widehat{var(\\beta)} = \\widehat{\\sigma^{2}} \\mathbf{(X'X)^{-1}} \\]\nThe estimated error variance will be smaller relative to large variation in the \\(X\\) variables, so as variation in \\(X\\) grows, the uncertainty surrounding \\(\\mathbf{\\widehat{\\beta_k}}\\) will get smaller."
+  },
+  {
+    "objectID": "inference24.html#think-about-the-ols-simulations",
+    "href": "inference24.html#think-about-the-ols-simulations",
+    "title": "Inference",
+    "section": "Think about the OLS simulations",
+    "text": "Think about the OLS simulations\nThe estimated error variance will be smaller relative to large variation in the \\(X\\) variables, so as variation in \\(X\\) grows, the uncertainty surrounding \\(\\mathbf{\\widehat{\\beta_k}}\\) will get smaller.\nwhat does this suggest about sample size? what does this suggest about correlation among \\(x\\) variables?"
+  },
+  {
+    "objectID": "inference24.html#characteristics-of-textvarwidehatbeta_j",
+    "href": "inference24.html#characteristics-of-textvarwidehatbeta_j",
+    "title": "Inference",
+    "section": "Characteristics of \\(\\text{var}(\\widehat{\\beta_{j}})\\)",
+    "text": "Characteristics of \\(\\text{var}(\\widehat{\\beta_{j}})\\)\n\n\n\n\n\n\nStandard Errors vary with \\(\\sigma^{2}\\)\n\n\n\nThe variance of \\(\\widehat{\\beta_{j}}\\) varies directly with \\(\\sigma^{2}\\), so as the error variance increases, so does the variance surrounding \\(\\widehat{\\beta_{j}}\\) - this makes sense if we think about what the variance of the error term suggests. Large \\(\\sigma^{2}\\) suggests our model is not predicting \\(Y\\) very effectively - if the model itself is imprecise, then its component parts (the \\(\\widehat{\\beta_{j}}\\)s) will also be imprecise. So as \\(\\sigma^{2}\\) increases, so does \\(\\text{var}(\\widehat{\\beta_{j}})\\).\n\n\n\n\n\n\n\n\nStandard Errors vary with variation in \\(\\mathbf{X}\\)\n\n\n\nThe variance of \\(\\widehat{\\beta_{j}}\\) varies indirectly with \\(\\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}\\), so as the sum of squares of \\(x\\) increases, \\(\\text{var}(\\widehat{\\beta_{j}})\\) decreases. This too makes sense because it means the more variability in \\(x\\) or the more information our \\(x\\) variables contain, the better our estimates of \\(\\widehat{\\beta_{j}}\\) are. Thus, more variability in the \\(x\\)s reduces \\(\\text{var}(\\widehat{\\beta_{j}})\\).\n\n\n\n\n\n\n\n\nStandard Errors vary with sample size\n\n\n\nSample size varies inversely with \\(\\text{var}(\\widehat{\\beta_{j}})\\) - larger samples (probably with greater variation in the \\(x\\)s and thus larger \\(\\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}\\)) will produce more precise estimates of \\(\\widehat{\\beta_{j}}\\) and smaller \\(\\text{var}(\\widehat{\\beta_{j}})\\)."
+  },
+  {
+    "objectID": "inference24.html#inferences-about-widehatbeta",
+    "href": "inference24.html#inferences-about-widehatbeta",
+    "title": "Inference",
+    "section": "Inferences about \\(\\widehat{\\beta}\\)",
+    "text": "Inferences about \\(\\widehat{\\beta}\\)\nThe standard error of \\(\\widehat{\\beta_k}\\) is the square root of the \\(k^{th}\\) diagonal element of the variance-covariance matrix of \\(\\widehat{\\beta}\\) ~\nIn scalar terms,\n\\[s.e.(\\widehat{\\beta_{1}}) =\\sqrt{\\frac{\\widehat{\\sigma^{2}}}{\\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}}} \\nonumber   \\nonumber  \n= \\frac{\\widehat{\\sigma}}{\\sqrt{\\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}}} \\]\nand the critical value is given by\n\\[z=\\frac{\\widehat{\\beta_{j}}-\\beta_{j}}{\\frac{\\widehat{\\sigma}}{\\sqrt{\\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}}}}\\]\n\\[t= \\frac{\\widehat{\\beta_{j}}-\\beta_{j}\\sqrt{\\sum\\limits_{i=1}^{n} (x_{i}-\\bar{x})^{2}}}{\\widehat{\\sigma}} \\]\nThis is not Normal, even though the numerator is - the denominator is composed of the squared residuals, each of which is a \\(\\chi^{2}\\) variable. A standard normal variable divided by a \\(\\chi^{2}\\) distributed variable is distributed \\(t\\) with \\(n-k-1\\) degrees of freedom."
+  },
+  {
+    "objectID": "inference24.html#confidence-intervals",
+    "href": "inference24.html#confidence-intervals",
+    "title": "Inference",
+    "section": "",
+    "text": "The estimates of \\(\\widehat{\\beta_{j}}\\) are drawn from a normal distribution, and we know the distribution of the variance, and we know how those distributions are related. For the \\(t\\) distribution, we know that 95% of the probability mass falls within 2 standard deviations of the mean, so if we construct a 95% confidence interval, we can say that 95% of the time the true value of \\(\\beta\\) will fall within the interval. Put another way, the interval contains a range of probable values for the true value of \\(\\beta\\).\nBecause we know (from above) that\n\\[t= \\frac{\\widehat{\\beta_{j}}-\\beta_{j}}{s.e. \\widehat{\\beta_{j}}}\\]\nwe can easily compute a confidence interval surrounding \\(\\widehat{\\beta_{j}}\\) by\n\\[CI_{c} = \\widehat{\\beta_{j}} \\pm c \\cdot {s.e. \\widehat{\\beta_{j}}}\\]\nwhere \\(c\\) represents the size of the confidence interval, so if \\(c\\) is the 97.5th percentile in the \\(t\\) distribution with \\(6\\) degrees of freedom, then the value of \\(c\\) is 2.447 (see the t-table in the back of the text). Thus, we compute the confidence interval by:\n\\[CI_{97.5} = \\widehat{\\beta_{j}} +  2.447 \\cdot {s.e. \\widehat{\\beta_{j}}}, \\widehat{\\beta_{j}} -  2.447 \\cdot {s.e. \\widehat{\\beta_{j}}}\\]"
+  },
+  {
+    "objectID": "inference24.html#point-estimates",
+    "href": "inference24.html#point-estimates",
+    "title": "Inference",
+    "section": "",
+    "text": "Using confidence intervals, we state the probability the true coefficient lies between the upper and lower bounds of the interval. Point estimate tests allow us to test specific hypotheses about the value of \\(\\widehat{\\beta_{j}}\\). Let’s go back to the computation of a \\(t\\) statistic:\n\\[t= \\frac{\\widehat{\\beta_{j}}-\\beta_{j}}{s.e. \\widehat{\\beta_{j}}}\\]\nYou’ll notice in the numerator we’re subtracting the true coefficient from our estimate. Of course, we don’t know the true values of \\(\\beta\\), so we choose a value to which we want to compare our estimate. Then we’re generating the probability of drawing a sample with \\(\\widehat{\\beta_{j}}\\) given the value we choose."
+  },
+  {
+    "objectID": "inference24.html#hypotheses",
+    "href": "inference24.html#hypotheses",
+    "title": "Inference",
+    "section": "",
+    "text": "Normally, we set up our hypothesis tests such that the value of \\(\\beta\\) we select is zero. Thus, we state null and alternative hypotheses:\n\\[H_0:\\beta_j=0 \\nonumber  \\\\\nH_1:\\beta_j\\ne 0 \\]\nThen, we choose significance levels, find the critical value associated with that significance level, and compare \\(t_{\\widehat{\\beta_j}}=\\widehat{\\beta_j}/se(\\widehat{\\beta_j})\\) to the critical value. Finally, we either reject or fail to reject \\(H_0\\). Note that we could choose other values to which we could compare the probability of \\(\\widehat{\\beta_{j}}\\), though selecting those values can be tricky."
+  },
+  {
+    "objectID": "inference24.html#hypotheses-1",
+    "href": "inference24.html#hypotheses-1",
+    "title": "Inference",
+    "section": "Hypotheses",
+    "text": "Hypotheses\n\nThe relationship we expect between \\(x\\) and \\(y\\) is the alternative hypothesis.\n\\(H_a\\) is the alternative to the null - the null includes everything that’s not the alternative; mathematically, it always includes zero.\nNon-directional alternative hypotheses simply expect \\(\\widehat{\\beta}\\) will not be zero. These are not very specific, less desirable.\nDirectional hypotheses expect a direction, e.g., \\(\\widehat{\\beta}\\) will be positive; the null in this case is \\(\\widehat{\\beta} \\leq 0\\). This is more specific, more desirable.\n\n\n\n\n\n\n\nDirectional Hypotheses\n\n\n\nStatistical software doesn’t know your data or argument}\nR/Stata does not know your hypotheses, whether directional or not; it does not know if your data are panel, time series, or cross sectional.\n\nR/Stata report 2-tailed p-values.\nIf you have a directional hypothesis, you need the 1-tailed p-value.\nDivide the 2-tailed value by 2 - in a 2-tailed test, it’s divided between the two tails. You want just one tail, so dividing the 2-tailed probability by 2 gives you the 1-tailed probability.\n\n\n\n\nIf you expect \\(\\widehat{\\beta} &gt; 0\\), and your estimated \\(\\widehat{\\beta} = -1.2\\) with a p-value of .001, you cannot reject the null. While \\(\\widehat{\\beta}\\) is statistically different from zero, it’s not in the direction of your hypothesis, so the result is not meaningful, does not support the alternative."
+  },
+  {
+    "objectID": "inference24.html#dont-expect-the-null",
+    "href": "inference24.html#dont-expect-the-null",
+    "title": "Inference",
+    "section": "Don’t Expect the Null",
+    "text": "Don’t Expect the Null\nThe classical hypothesis test is always constructed such that the null includes zero. It is not possible to expect as the alternative hypothesis, that \\(\\widehat{\\beta} = 0\\). We should never see the alternative hypothesis::\nX will have no relationship to y: \\(H_A: \\beta_1=0\\)\nIn the classical test, the null includes a specific point (usually zero), though it can contain that point and a range of other values, e.g.:\n\\[H_0: \\beta_1 \\leq 0\\]\nHere, the null that \\(\\beta_1\\) is less than or equal to zero includes zero, but also includes all negative values. The alternative is that \\(\\beta_1\\) is greater than zero, so the alternative is a range of values, not a specific point.\nIf we flip this around to say “I expect \\(\\beta_1\\) to be zero”, then we are expecting the null hypothesis. Note that the alternative hypothesis is now a specific point, and the null is a range of values without any specific point expectation.\nIt’s important to note that the null may be around a point other than zero. We might expect the coefficient to be different from 5, so the null is \\(H_0: \\beta_1=5\\). Or, we might expect the coefficient to be greater than 5, so the null is \\(H_0: \\beta_1 \\leq 5\\).\nThe point is we cannot expect in the alternative that \\(\\beta_1\\) is zero where the null is that it is anything except zero unless we build a new type of test. See Jeff Gill’s 1999 PRQ paper on this."
+  },
+  {
+    "objectID": "inference24.html#joint-hypothesis-tests",
+    "href": "inference24.html#joint-hypothesis-tests",
+    "title": "Inference",
+    "section": "",
+    "text": "Normally we test hypotheses about specific parameters, but there are cases where we are interested in a hypothesis like this:\n\\[H_0:\\beta_1=\\beta_2=0 \\nonumber  \\\\\nH_1:\\beta_1\\ne \\beta_2\\ne 0\\]\nTo test something like this (and really, tests like this are something we should be extremely interested in), we use the F-statistic.\nThe joint hypothesis above has two restrictions - we expect two parameters to be zero in the null. We can have as many as \\(k-1\\) exclusions or restrictions in the model, and we typically call the exclusions or restrictions \\(q\\)."
+  },
+  {
+    "objectID": "inference24.html#intuition",
+    "href": "inference24.html#intuition",
+    "title": "Inference",
+    "section": "Intuition",
+    "text": "Intuition\nDecompose the variation in the data and model this way:\n\\[TSS= MSS+RSS\\]\nSuppose a regression like this:\n\\[y_i = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\beta_3 x_3 + \\beta_4 x_4 +\\beta_5 x_5 + u_i \\]\nOur usual, single coefficient hypothesis test, say on \\(\\beta_3\\) is\n\\[H_0: \\beta_3=0\\]\nwhich is equivalent to\n\\[y_i = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + {\\mathbf{0}} x_3 + \\beta_4 x_4 +\\beta_5 x_5 + u_i \\] call this the unrestricted model:\n\\[y_i = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\beta_3 x_3 + \\beta_4 x_4 +\\beta_5 x_5 + u_i \\]\n\\[RSS_U = \\sum_{i=1}^N \\widehat{u_U}^2\\]\nand refer to this as the {};\n\\[y_i = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + {\\mathbf{0}} x_3 + \\beta_4 x_4 +\\beta_5 x_5 + u_i \\]\n\\[RSS_R = \\sum_{i=1}^N \\widehat{u_R}^2\\]\nAre these quantities different from one another?\n\\[RSS_U \\neq RSS_R\\]\nIf\n\\[RSS_U = RSS_R = 0\\]\nthen the two models are indistinguishable, and \\(\\beta_3\\) is not different from zero. Alternatively, if\n\\[RSS_U \\neq RSS_R \\neq 0\\]\nwe can reject the null that the models are the same, and the specific null that \\(\\beta_3=0\\). By the way, this single coefficient F-test is inferentially equivalent to the t-test; in fact, \\(F_{\\beta_{k}}= t^2_{\\beta_{k}}\\)."
+  },
+  {
+    "objectID": "inference24.html#extension",
+    "href": "inference24.html#extension",
+    "title": "Inference",
+    "section": "Extension",
+    "text": "Extension\nExtend this to the following hypothesis test:\n\\[y_i = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\beta_3 x_3 + \\beta_4 x_4 +\\beta_5 x_5 + u_i \\]\n\\[H_0: \\beta_3=\\beta_4=\\beta_5=0\\]\nor that the effects of \\(x_3, x_4, x_5\\) are individually and jointly zero.\nUnrestricted:\n\\[y_i = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\beta_3 x_3 + \\beta_4 x_4 +\\beta_5 x_5 + u_i \\]\nRestricted:\n\\[y_i = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + {\\mathbf{0}} x_3 + {\\mathbf{0}} x_4 +{\\mathbf{0}} x_5 + u_i \\]"
+  },
+  {
+    "objectID": "inference24.html#f-test",
+    "href": "inference24.html#f-test",
+    "title": "Inference",
+    "section": "F-test",
+    "text": "F-test\nHow do we test \\(RSS_U = RSS_R = 0\\)?\n\\[F=\\frac{(RSS_R-RSS_{U})/q}{RSS_{U}/(n-k-1)} \\]\nwhere \\(q\\) is the number of restrictions.\nThe numerator is the difference in fit between the two models (weighted or ``normed’’ by the different number of parameters, the restrictions), and the denominator is a baseline of how well the full model fits. So this is a ratio of improvement to the fit of the full model. Both are distributed \\(\\chi^2\\); their ratio is distributed \\(F\\)."
+  },
+  {
+    "objectID": "inference24.html#alternatively",
+    "href": "inference24.html#alternatively",
+    "title": "Inference",
+    "section": "Alternatively",
+    "text": "Alternatively\nWe could equivalently state this as:\n\\[F=\\frac{(\\sum\\widehat{u}^{2}_{R}-\\sum\\widehat{u}^{2}_{U})/q}{\\sum\\widehat{u}^{2}_{U}/(n-k-1)} \\]\nNotice that the denominator is also \\(\\widehat{\\sigma^2}\\). The resulting statistic is distributed \\(F\\sim F_{q,n-k-1}\\).\nor we can write the same thing in terms of the \\(R^2\\) estimates of the two models:\n\\[F=\\frac{(R^2_{U}-R^2_{R})/q}{(1-R^2_{U})/(n-k-1)} \\]"
+  },
+  {
+    "objectID": "inference24.html#in-practice",
+    "href": "inference24.html#in-practice",
+    "title": "Inference",
+    "section": "In practice ",
+    "text": "In practice \nFor a joint hypothesis test, we estimate two nested models which we label the restricted and unrestricted models.\n\n\n\n\n\n\nNote\n\n\n\nTwo models are nested iff they contain precisely the same observations, and the variables in one model are a strict subset of the variables in the other.\n\n\nThe unrestricted model has all \\(k\\) variables; the restricted model has \\(k-q\\) variables, excluding the variables whose joint effect we want to test.\nEstimate the models, and examine how much the RSS increases when we exclude the \\(q\\) variables from the model - of course, the RSS will always increase when we drop variables, but the question is how much will it increase. The F-test measures the increase in RSS in the restricted model relative to that of the unrestricted model."
+  },
+  {
+    "objectID": "inference24.html#a-common-example",
+    "href": "inference24.html#a-common-example",
+    "title": "Inference",
+    "section": "A common example",
+    "text": "A common example\nEvery OLS model reports a “model F-test” - this compares the model you estimated with all your \\(x\\) variables (this is the unrestricted model) to the null model - no variables, just a constant. The null hypothesis is\n\\[H_0: \\beta_1=\\beta_2 \\ldots = \\beta_k = 0\\]\nIt’s a test of your model against the model with only a constant - it’s comparing the value of your model against the model where our best guess at what explains \\(y\\) is \\(\\beta_0 = \\bar{y}\\)."
+  },
+  {
+    "objectID": "inference24.html#tests-like-this-are-important-and-powerful",
+    "href": "inference24.html#tests-like-this-are-important-and-powerful",
+    "title": "Inference",
+    "section": "Tests like this are important and powerful:",
+    "text": "Tests like this are important and powerful:\nOur enterprise is really about comparative model testing. Hypothesis tests on individual coefficients do not allow us to compare models. Our theories imply different explanations for phenomena, and thus different empirical models. To treat the theories comparatively, we must test our models comparatively as well. So tests such as the joint hypothesis test are critically important to that endeavor.\nThis test is a distributional test; that is, its product is a point or range on a known probability distribution. Thus, we can be quite exactly about the probability with which we either do or do not reject the joint null hypothesis.\nThis is not the case of another popular measure of model fit, the \\(R^2\\), which has no sampling distribution. The \\(R^2\\) cannot tell us anything probabilistic about the model or more specifically, about the hypothesis that a variable or variables do or do not significantly affect the fit of the model."
+  },
+  {
+    "objectID": "inference24.html#dont-expect-the-null-hypothesis",
+    "href": "inference24.html#dont-expect-the-null-hypothesis",
+    "title": "Inference",
+    "section": "Don’t Expect the Null Hypothesis",
+    "text": "Don’t Expect the Null Hypothesis"
+  },
+  {
+    "objectID": "inference24.html#dont-expect-the-null-hypothesis-1",
+    "href": "inference24.html#dont-expect-the-null-hypothesis-1",
+    "title": "Inference",
+    "section": "Don’t Expect the Null Hypothesis",
+    "text": "Don’t Expect the Null Hypothesis"
+  },
+  {
+    "objectID": "inference24.html#measuring-uncertainty-1",
+    "href": "inference24.html#measuring-uncertainty-1",
+    "title": "Inference",
+    "section": "Measuring Uncertainty",
+    "text": "Measuring Uncertainty\n\nStandard errors are basic measures of uncertainty.\nThe standard errors of the estimates of \\(\\widehat{\\beta_k}\\) are the standard deviations of the sampling distribution of the estimator.\nStandard errors are analogous to standard deviations surrounding the estimates."
   }
 ]

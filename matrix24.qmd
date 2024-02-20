@@ -10,6 +10,7 @@ title-block-banner: true
 embed-resources: true
  # for pdf version,quarto render myslides.qmd --to pdf
 ---
+
 ```{r setup, include=FALSE ,echo=FALSE}
 options(htmltools.dir.version = FALSE)
 
