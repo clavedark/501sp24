@@ -404,9 +404,9 @@ Here, the null that $\beta_1$ is less than or equal to zero includes zero, but a
 
 If we flip this around to say "I expect $\beta_1$ to be zero", then we are expecting the null hypothesis. Note that the *alternative hypothesis* is now a specific point, and the null is a range of values without any specific point expectation. 
 
-It's important to note that the null may be around a point *other than zero*. We might expect the coefficient to be different from 5, so the null is $H_0: \beta_1=5$. Or, we might expect the coefficient to be greater than 5, so the null is $H_0: \beta_1 \leq 5$. 
+It's important to note that the null may be around a point *other than zero*. We might expect the coefficient to be different from 5, so the null is $H_0: \beta_1=5$. Or, we might expect the coefficient to be less than or equal to 5, so the null is $H_0: \beta_1 \leq 5$. 
 
-The point is we cannot expect in the alternative that $\beta_1$ is zero where the null is that it is anything except zero unless we build a new type of test. See Jeff Gill's 1999 PRQ paper on this. 
+The point is we cannot expect in the alternative that $\beta_1$ is zero where the null is that it is anything except zero unless we build a new type of test. See @gillprq99 for an excellent discussion of this.
 
 
 ## Don't Expect the Null Hypothesis

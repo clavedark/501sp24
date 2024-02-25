@@ -19,3 +19,5 @@ title: "Slides"
 [Normality](normality24.qmd)
 
 [Inference](inference24.qmd)
+
+[Model specification](specification24.qmd)
