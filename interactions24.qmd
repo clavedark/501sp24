@@ -1,0 +1,591 @@
+---
+title: "Differential Intercepts and Interactions"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   revealjs:
+     output-file: interactions24s.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- leverage https://www.statology.org/leverage-in-r/ -->
+<!-- influence https://rpubs.com/DragonflyStats/Cooks-Distance -->
+<!-- discrepancy https://www.statology.org/studentized-residuals-in-r/ -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+library(MASS)
+library(ggrepel)
+library(ggpmisc)
+library(sjPlot)
+
+
+```
+
+
+
+# Differential Intercepts
+
+
+Goals
+
+The models we've considered so far have generally assumed \alert{structural stability} - that the intercepts and slopes are shared by all groups in the data. 
+
+We'll consider two possibilities:
+
+
+ - groups in the data have different intercepts - test this with group indicator variables (dummies).
+ 
+ - groups in the data have different slopes with respect to the same variables - test this using multiplicative interactions
+
+
+
+
+## Indicator Variables 
+
+Suppose the following regression:
+
+
+$$Y=\beta_0+\beta_1(D)+\varepsilon $$
+
+where $D$ is a dummy variable, and $y$ is a continuous variable. 
+
+
+
+
+## Indicator Variables 
+
+Now, consider the conditional expected values of $Y$:
+
+$$E[Y|D_1=0]= \beta_0 = \bar{Y} |D=0 \nonumber  $$
+
+$$E[Y|D_1=1]= \beta_0 + \beta_1 = \bar{Y}|D=1  $$ 
+ 
+ 
+So these are just the conditional means of $Y$; the conditions are given by the values of $D$ and represent the subsamples for $D=0$ and $D=1$.
+
+
+## Differential Intercept
+
+The dummy variable estimate represents the *differential intercept*, or the difference in the mean of $Y|D=0$ and the mean of $Y|D=1$. The estimate $\beta_1$ is the difference in height on the $y$ axis between the two groups in $D$. The actual intercepts are:
+
+$$Y|D=0 = \beta_0$$
+
+$$Y|D=1 = \beta_0+\beta_1$$
+```{r, warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+## differential intercepts ----
+set.seed(12345)
+data <- tibble(
+X <- rnorm_multi(1000, 3, 
+                     mu=c(0, 5, 0), 
+                     sd=c(1, 5, .5),
+                     r = c(0,0, 0.0),
+                     varnames=c("x1", "x2", "e"))
+  ) %>%
+    mutate(x2= ifelse(x2>median(x2),1,0)) %>%
+    mutate(y = 1 + 1*x1 + 2*x2 + e)
+    m1 <- (lm(y ~ x1 + as.factor(x2), data=data))
+  
+### intercept differences only  ----
+  
+data1 <- data %>% mutate(x1=0)  
+predint <- data.frame(data, predict(m1, interval="confidence", se.fit=TRUE, newdata = data1))
+predint <- predint %>% mutate(ub=fit.fit +1.96*se.fit, lb=fit.fit -1.96*se.fit) #absurd CI for illustration 
+
+ggplot(data=predint, aes(x=x2, y=fit.fit)) +
+  geom_point(size = 1) +
+  geom_pointrange(aes(ymin=lb, ymax=ub)) +
+  scale_x_continuous(breaks = c(0,1)) +
+  labs ( colour = NULL, x = "x2", y =  "Predicted xb" ) +
+  theme_minimal()+
+  ggtitle("Differential Intercepts")  +
+  annotate("text", x = .1, y = 1.5, label = "B0" , size=3.5, colour="gray30") +
+  annotate("text", x = .9, y = 3.3, label = "B0 + B1", size=3.5, colour="gray30") 
+
+```
+
+## Differential Intercept
+
+Note this logic extends to multiple indicator variables where $\beta_0$ measures the intercept for the excluded category (all indicators set to zero), and $\beta_0+\beta_1$ measures the intercept for any other category where its indicator is set to one, all others to zero. 
+
+
+
+## Multiple Indicator Variables
+
+Thinking of the Ill-Treatment models we've been working with: 
+
+
+$$ Y=\beta_0+\beta_1(D_{1})+\beta_{2}(D_{2}) + \ldots + \varepsilon $$
+
+
+where $D_{1}=1$ indicates a civil war, and $D_{2}=1$ indicates the government restricts IGO access: 
+
+
+  - $E[Y]$ for a non civil war, no restriction country is $\beta_{0}$.
+ 
+  - $E[Y]$ for a civil war state with no restrictions is  $\beta_{0}+\beta_{1}$ 
+ 
+  - $E[Y]$ for a non civil war state with restricted access is $\beta_{0}+\beta_{2}$  
+ 
+  - $E[Y]$ for a civil war state that restricts access is  $\beta_{0}+\beta_{1}+\beta_{2}$
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+itt <- read.csv("/Users/dave/Documents/teaching/501/2023/exercises/ex4/ITT/data/ITT.csv")
+
+itt <- 
+  itt%>% 
+  group_by(ccode) %>%
+  mutate( lagprotest= lag(protest), lagRA=lag(RstrctAccess), n=1) %>%
+  mutate(interact= civilwar*lagRA)
+
+
+m3 <- lm(scarring ~ lagRA + civilwar  + lagprotest + polity2 +wdi_gdpc+wdi_pop, data=itt)
+# summary(m1)
+# average predictions, end point boundaries
+# estimation sample
+itt$used <- TRUE
+itt$used[na.action(m3)] <- FALSE
+ittesample <- itt %>%  filter(used=="TRUE")
+
+#across 4 combos of RA and CW
+
+predictions <- data.frame(case=seq(1,4,1), xb=0, se=0, ub=0, lb=0, model=0 )
+
+avg <- ittesample %>% mutate(civilwar=0, lagRA=0 )
+all0 <- data.frame(predict(m3, interval="confidence", se.fit=TRUE, newdata = avg))
+predictions[1:1,2:3]<- data.frame(xb=median(all0$fit.fit, na.rm = TRUE), seall0=median(all0$se.fit,na.rm = TRUE))
+
+avg <- ittesample %>% mutate(civilwar=1, lagRA=0 )
+cw <- data.frame(predict(m3, interval="confidence", se.fit=TRUE, newdata = avg))
+predictions[2:2,2:3]<- data.frame(xb=median(cw$fit.fit, na.rm = TRUE), seall0=median(cw$se.fit,na.rm = TRUE))
+
+avg <- ittesample %>% mutate(civilwar=0, lagRA=1 )
+ra <- data.frame(predict(m3, interval="confidence", se.fit=TRUE, newdata = avg))
+predictions[3:3,2:3]<- data.frame(xb=median(ra$fit.fit, na.rm = TRUE), seall0=median(ra$se.fit,na.rm = TRUE))
+
+avg <- ittesample %>% mutate(civilwar=1, lagRA=1 )
+all1 <- data.frame(predict(m3, interval="confidence", se.fit=TRUE, newdata = avg))
+predictions[4:4,2:3]<- data.frame(xb=median(all1$fit.fit, na.rm = TRUE), seall0=median(all1$se.fit,na.rm = TRUE))
+
+predictions <- predictions %>% mutate(ub=xb +1.96*se , lb =xb -1.96*se)
+
+
+#plot
+ggplot(data=predictions, aes(x=case, y=xb)) +
+  geom_pointrange(data=predictions, aes(ymin=lb, ymax=ub)) +
+  labs ( colour = NULL, x = "", y =  "Expected Scarring Torture Reports" ) +
+  guides(x="none")+
+  annotate("text", x = 1.6, y = 5, label = "No restriction, no civil war", size=3.5, colour="gray30")+
+  annotate("text", x = 2, y = 9.5, label = "No restriction, civil war", size=3.5, colour="gray30")+
+  annotate("text", x = 3, y = 13, label = "Restriction, no civil war", size=3.5, colour="gray30")+
+  annotate("text", x = 3.2, y = 22, label = "Restriction and civil war", size=3.5, colour="gray30")+
+  theme_minimal()
+
+
+```
+
+
+## Fixed Effects
+
+Let's take this notion of differential intercepts one final step. Suppose we estimate a model of Ill-Treatment and include a dummy variable for each country (minus one for the excluded category). 
+
+```{r, results='asis'}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+# fixed effects ----
+itt$c <- as.factor(itt$ctryname)
+itt <- itt %>% filter(!is.na(c))
+# set ref category to US
+# itt <- within(itt, cname <- relevel(cname, ref = "United States of America"))
+
+# be sure NA and "" are not categories in factor var cname
+m4 <- lm(scarring ~ c, data=itt%>%filter(c!=""))
+#modelsummary(m4)
+
+library(stargazer)
+stargazer(m4, type="html",  single.row=TRUE, header=FALSE, digits=3,  omit.stat=c("LL","ser"),  star.cutoffs=c(0.05,0.01,0.001),  column.labels=c("Fixed Effects"),  dep.var.caption="Dependent Variable: Scarring Torture", dep.var.labels.include=FALSE, notes=c("Standard errors in parentheses", "Significance levels:  *** p<0.001, ** p<0.01, * p<0.05"), notes.append = FALSE,  align=TRUE,  font.size="small")
+
+
+```
+
+## Fixed Effects Plot 
+
+Here's a plot of the fixed effect coefficients - each is a differential intercept, measuring the difference from the reference category. 
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+# reference category is AFG by default 
+# coefficients as data frame for plotting
+coefs<- data.frame(coef(summary(m4)))
+coefs$country <- rownames(coefs)
+coefs$country <- substr(coefs$country, 2, nchar(coefs$country))
+coefs$country[coefs$country=="Intercept)"] <- "Intercept"
+coefs$sig <-ifelse(coefs$`Pr...t..`<.05, 1,0)
+
+
+## plot fixed effects ----
+
+p <- ggplot(coefs, aes(x = Estimate, y = country, color = factor(sig), label = country)) +
+  geom_point(size = 1) +
+  geom_errorbarh(aes(xmin = Estimate - 1.96 * Std..Error, xmax = Estimate + 1.96 * Std..Error)) +
+  geom_text_repel(data=coefs%>%filter(sig==1),  size=2.5, force=5) + 
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())+
+  labs ( colour = NULL, y = "", x =  "Expected Scarring Torture Reports" ) +
+  ggtitle("Fixed Effects", subtitle = "Country Coefficients")
+
+p + scale_color_manual(values = c("red", "black")) +
+  guides(color="none")
+  
+
+```
+
+The result is that each coefficient is an intercept for a particular country.  Each measures the difference in that country's intercept (or mean of $y$) from the excluded category, in this case, Afghanistan. Black bars are different from the excluded categorya at the .05 level. 
+
+Each country coefficient plus the intercept is that country's mean of $y$, scarring torture . Looking, for instance at the US, the coefficient is about 19, so the US mean scarring torture reports is 19 plus the intercept (5.5), so about 24.5 (the actual mean for US scarring torture reports is 24.45).
+
+
+
+## Intercept Shifts with Continuous Variables
+
+Suppose we have a regression with a dummy variable and a continuous variable: 
+
+$$y = \beta_0 + \beta_1 d_1 + \beta_2 x_2 $$
+The expected value of $y$ for each group is:
+
+$$E[y | d_1= 0] = \beta_0 +  \beta_2 x_2 $$
+
+$$E[y | d_1= 0] = \beta_0 + \beta_1 +  \beta_2 x_2 $$
+
+Note the shift in intercept. 
+
+```{r, warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+ggplot(data=filter(data, x2==0), aes(x=x1, y=y)) +
+  geom_smooth(method="lm", se=FALSE, color="black") +
+  geom_smooth(data=filter(data, x2==1), aes(x=x1, y=y), method="lm", se=FALSE, color="black") +
+  labs ( colour = NULL, x = "x1", y =  "Predicted xb" ) +
+  theme_minimal()+
+  annotate("text", x = 0, y = 0, label = "x2=0", size=3.5, colour="gray30")+
+  annotate("text", x = 0, y = 4, label = "x2=1", size=3.5, colour="gray30")+
+  ggtitle("Differential Intercepts, Continuous x1")
+
+```
+
+
+The difference is only in intercept on $d$, $\beta_{1}$ - the slope estimate for $x_2$ is the same no matter the value of $d_{1}$. 
+
+Put differently, these two groups given by the dummy variable share the same slope, but have different y-intercepts.
+
+::: {.callout-note title="Structural Stability"}
+
+In this regression, the slope on $x_2$ is the same for all groups measured by indicator variables. 
+
+$$y=\beta_0 + \beta_1 d_1 +\beta_2x_1+ \varepsilon $$
+
+
+Assuming a common slope is known as the structural stability assumption.
+
+:::
+
+## Dummy Variables
+
+  - Dummy variables are useful for measuring differences between groups. 
+ 
+  - Dummy coefficients specifically measure the differences in *levels* (intercepts) between groups. 
+ 
+  - Dummies may capture differences between known, discrete groups, e.g. genders, parties, races, etc.
+ 
+  - Dummies might capture unknown differences between units, say between states or countries - this is the foundation of fixed effects.
+
+
+# Questioning Structural Stability
+
+We may well have reason to doubt structural stability. In other words, we might think the slope on $x$ for one group is increasing fast, while it increases more slowly for the other group.
+
+So we have this regression:
+
+$$y = \beta_0 + \beta_1 d_1 + \beta_2 x_2 $$
+
+But we think 
+
+$$y = \beta_0 + \beta_1 d_1 + .5 x_2 ~~ \text{if d=0}$$
+
+and 
+
+$$y = \beta_0 + \beta_1 d_1 + 1.7 x_2~~ \text{if d=1} $$
+
+For instance, we might suppose that the effect of protests on scarring torture is different in states that restrict IGO access than in states that do not. States that do not restrict access may engage in more torture as protests increase, but more slowly than states that do restrict access so do not have to hide their activities. So restricting access may moderate the effect of protests on torture, whereas not restricting access to IGOs may accelerate that effect. 
+
+## Structural Stability
+
+If this is the case, then the *marginal effect* of $x_2$ is not $\beta_2$; instead, it is .5 for one group, and 1.7 for the other. 
+
+Recall, the *marginal effect of $x_2$* in the model where we assume structural stability:
+
+$$y = \beta_0 + \beta_1 d_1 + \beta_2 x_2 $$
+
+is $\beta_2$.
+
+## Illustration
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+data <- data %>% mutate(interaction=x1*x2) %>%
+  mutate(yi = 1 + 1*x1 + 2*x2 + 1.5*interaction + e)
+m1 <- (lm(y ~ x1 + x2, data=data))
+m2 <- (lm(yi ~ x1 + x2 + x1:x2, data=data))
+#summary(m2)  
+
+#using sjPlot
+p1 <- plot_model(m1, type="eff", terms=c("x1", "x2"), show.values = TRUE, show.p = TRUE, title="Differential Intercept") +
+  labs ( colour = NULL, x = "x1", y =  "Predicted xb" ) +
+  guides(colour="none") +
+  annotate("text", x = 0, y = -1, label = "x2=0", size=2.5, colour="gray30")+
+  annotate("text", x = 0, y = 5, label = "x2=1", size=2.5, colour="gray30")+ theme_minimal()
+  
+p2 <-  plot_model(m2, type="eff", terms=c("x1", "x2"), show.values = TRUE, show.p = TRUE, title="Interaction, x1*x2") +
+  labs ( colour = NULL, x = "x1", y =  "Predicted xb" ) +
+  guides(colour="none") +
+  annotate("text", x = 0, y = -2, label = "x2=0", size=2.5, colour="gray30")+
+  annotate("text", x = 0, y = 5, label = "x2=1", size=2.5, colour="gray30")+
+  theme_minimal()
+
+p1/p2
+
+
+
+```
+
+In the first panel, we see the differential intercepts - the slope on $x_1$ is the same for both groups, but the intercepts are different. This is structural stability. The bottom panel relaxes the structural stability assumption, allowing the slope on $x_1$ to differ between the two groups. 
+
+## Structural Stability 
+
+We relax the structural stability assumption by modeling a *multiplicative interaction*: 
+
+$$y = \beta_0 + \beta_1 d_1 + \beta_2 x_2 + \beta_3 (d_1x_2)$$
+
+literally multiplying $d_1$ and $x_2$ together, and including that new variable in the model. $\beta_3$ measures the difference in slope between the two groups in $d_1$. 
+
+
+
+# Multiplicative Interactions
+
+@brambor2006understanding provide a great discussion of interactions. Some of these same authors have a new book on the topic. 
+
+A regression with the multiplicative interaction of two variables, $x_1$ and $x_2$:
+
+  - includes $x_1$ and $x_2$; these are called **constituent terms** of the interaction. Always include the constituents. 
+  
+  - includes a new variable $x_1 * x_2$; this is the **interaction term**. 
+ 
+  - includes whatever other variables per usual.
+  
+  - interpretation is always conditional, so we cannot interpret the effects of the constituents or interaction term without reference to the other.
+
+
+
+## Multiplicative Interactions 
+
+Supposing the following model: 
+
+$$y = \beta_0 + \beta_1 d_1 + \beta_2 x_2 + \beta_3 (d_1x_2)$$
+
+The expected value of $y$ for the case where $d_1=0$ is: 
+
+$$E[y|x, d_1=0] = \beta_0 + \beta_2 x_2$$
+
+Where $d_1=1$, the expected value of $y$ is:
+
+$$E[y|x; x|d_1=1] = \beta_0+\beta_1d_1 + \beta_2 x_2  +\beta_3 x_2d_1 $$
+
+
+Here, the expected value of $y$ depends on the intercept given by $\beta_0$ and $\beta_1$, *and on  slopes determined by $x_2$, but those slopes differ depending on the value of $d_1$*.
+
+::: {.callout-note  title="Marginal Effects"}
+
+An important insight: the interaction coefficient, $\beta_3$, measures the difference in slopes between the groups represented by $d=0$ and $d=1$. 
+
+:::
+
+
+## What does a hypothesis look like?
+
+Hypothesis: An increase in $x_2$ will produce a larger or faster increase in $y$ if $d_1$ is present than when it is absent. 
+
+ 
+$$Y = \beta_0+\beta_1 d_1+ \beta_2 x_2  +\beta_3 x_2d_1 +\varepsilon $$
+
+
+
+### Hypothesis on Scarring Torture 
+
+Giving this some substance, again thinking of the ITT data, we might hypothesize that:
+
+
+Increases in protests will produce larger or faster increases in scarring torture in states that restrict IGO access than in states that do not.
+
+
+# Quantities of Interest
+
+  - We've just seen the linear predictions - just as usual, this is a principle quantity of interest.
+ 
+  - We might also consider the *marginal effects* of changes in one variable on the expected value of $y$.
+  
+  - The marginal effect is simply the change in $y$ given a change in $x$.
+
+
+In the non-interactive model, the marginal effect of $x_1$ is: 
+
+$$\frac{\partial{y}}{\partial{x_{1}}}= \beta_{1}$$
+
+
+## Marginal Effects 
+
+In the interactive model, the marginal effect of $d_1$ is:
+
+$$\frac{\partial{y}}{\partial{d_1}}= \beta_1+\beta_3*x_2 $$
+
+Note this depends on the values of $x_2$, allowing for the possibility the effect of $x_2$ accelerates or slows. 
+
+
+
+The marginal effect of $x_1$ is: 
+
+$$\frac{\partial{y}}{\partial{x_2}}= \beta_2+\beta_3*d_1 $$
+
+It should make sense that if $d_1=0$, the effect is just $\beta_2$. If $d_1=1$, we adjust the slope by $\beta_3$, thereby allowing the slopes to be different for the two groups in $d_1$, thereby relaxing structural stability. 
+
+
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+avg <- data %>% mutate(x2=0, interaction=0)
+int0 <- data.frame(x1=avg$x1, predict(m2, interval="confidence", se.fit=TRUE, newdata = avg))
+avg <- data %>% mutate(x2=1, interaction=x1) 
+int1 <- data.frame(x1=avg$x1, predict(m2, interval="confidence", se.fit=TRUE, newdata = avg))
+
+allpred <- data.frame(x1=int0$x1, fit0=int0$fit.fit, fit1=int1$fit.fit, me=int1$fit.fit-int0$fit.fit)
+
+ggplot() +
+  geom_line(data=allpred, aes(x=x1, y=fit0), linetype="dashed") +
+  geom_line(data=allpred, aes(x=x1, y=fit1), linetype="dashed") +
+  geom_line(data=allpred, aes(x=x1, y=me), color="blue") +
+  labs ( colour = NULL, x = "x1", y =  "Predicted xb" ) +
+  annotate("text", x = 0, y = -2, label = "x2=0", size=2.5, colour="gray30")+
+  annotate("text", x = 0, y = 5, label = "x2=1", size=2.5, colour="gray30")+
+  annotate("text", x = 2.5, y = 6, label = "marginal \n\n effect", size=2.5, colour="gray30")+
+  theme_minimal()
+```
+
+In this case, the marginal effect of $x_2$ is the difference between the two lines. The dashed lines are the predicted values of $y$ for $x_1$ given $x_2=0$ and $x_2=1$. The solid line is the difference between the two, the marginal effect of $x_2$ across the values of $x_1$
+ 
+## Conditionality
+
+All effects in this model are now conditional - we can no longer talk about independent or direct effects of either $D_1$ or $x_1$ in this model. The marginal effects should also give us some hints about hypothesis testing:
+
+$$ \frac{\partial{y}}{\partial{d_1}}= \beta_1+\beta_3*x_2 $$
+
+Note the question is not whether $\beta_1$ or $\beta_3$ is different from zero. Instead, the question is whether $\beta_{1}+\beta_{3}$ is different from zero. This is a lot like asking whether $\beta_{1}+\beta_{3} = \beta_1$. If so, structural stability holds; if not, it fails. 
+
+## Inference
+
+Think about the hypothesis that the slope for $D_1=0$ is different from the slope for $D_1=1$ - in the marginal effect, the slope for $D_1=0$ is $\beta_1$; for $D_1=1$ is $\beta_{1}+\beta_{3}$. 
+
+Whether the interaction coefficient, $\beta_{3}$ is different from zero does not matter. What matters is whether the combination of $\beta_{1}+\beta_{3}$ is different from zero.
+
+To evaluate the hypothesis $\beta_{1}+\beta_{3} \neq 0$, we need a standard error for this quantity.
+
+
+
+## Inference on Marginal Effects
+
+We can't just add the two standard errors together, but constructing one from the variance-covariance matrix of $\beta$ is easy:
+
+$$ se(\beta_{1}+ \beta_{3})= \sqrt{var(\beta_{1})+ X_{2}^{2}var(\beta_{3})+2X_{2}cov(\beta_{1},\beta_{3})} $$
+
+Note these vary across $x$ because, just as the marginal effect is not constant across $x$, neither is the standard error of the marginal effect.
+
+
+
+
+
+
+
+## Measurement matters
+
+![](pm-map.jpeg)
+
+---
+## References
+
+::: {#refs}
+:::
+

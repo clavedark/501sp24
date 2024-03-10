@@ -21,3 +21,5 @@ title: "Slides"
 [Inference](inference24.qmd)
 
 [Model specification](specification24.qmd)
+
+[Dummy variables and interactions](interactions24.qmd)

@@ -23,7 +23,7 @@ library(stargazer)
 
 ```
 
-## Q1 - MLE 
+## Q1 - MLE
 
 ```{r}
 #| echo: true
@@ -76,7 +76,7 @@ b+se
 
 ```
 
-## Q1 OLS 
+## Q1 OLS
 
 ```{r}
 #| echo: true
@@ -126,8 +126,7 @@ b+se
 
 ```
 
-MLE's small sample properties are far more variable than OLS small sample properties. In samples smaller than 300, MLE estimates varied from -19 to 990; OLS estimates varied from .30 to 2.37. 
-
+MLE's small sample properties are far more variable than OLS small sample properties. In samples smaller than 300, MLE estimates varied from -19 to 990; OLS estimates varied from .30 to 2.37.
 
 ## Q2 - Ill-Treatment and Torture data
 
@@ -175,11 +174,9 @@ stargazer(m1,m2, type="html",  single.row=TRUE, header=FALSE, digits=3,  omit.st
 
 ```
 
-
 ## Q2 - simulated effects
 
 Simulate the distribution of $\hat{\beta}$'s and plot the expected scarring torture reports for different levels of protests against the government.
-
 
 ```{r}
 #| echo: true
@@ -219,7 +216,7 @@ ggplot()+
 
 # Q2 - average effects
 
-Generate average effects over protests. 
+Generate average effects over protests.
 
 ```{r}
 #| echo: true
