@@ -2,7 +2,7 @@
 title: "Model Specification and Fit"
 author: "Dave Clark"
 institute: "Binghamton University"
-date: today
+date: 2/25/2024
 date-format: long
 title-block-banner: TRUE
 bibliography: refs501.bib
@@ -13,17 +13,21 @@ format:
 editor: source
 embed-resources: true
 cache: true
-
 ---
 
 <!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+
 <!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
 
 <!-- leverage https://www.statology.org/leverage-in-r/ -->
+
 <!-- influence https://rpubs.com/DragonflyStats/Cooks-Distance -->
+
 <!-- discrepancy https://www.statology.org/studentized-residuals-in-r/ -->
 
 <!-- tables, smaller font and striping -->
+
+```{=html}
 <style>
 table, th, td {
     font-size: 18px;
@@ -32,7 +36,7 @@ tr:nth-child(odd) {
   background-color: # f2f2f2;
 }
 </style>
-
+```
 <!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
 
 ```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
@@ -60,76 +64,57 @@ library(ggpmisc)
 
 ```
 
-
-
 # Model Specification
-
-
-
-
 
 ## Model Fit
 
 We're trying to explain variation. What does this look like?
 
-  - best guess at variation in $y$ would be its mean (constant-only model). 
- with variables, variation is composed of two parts: $y = \mu + \epsilon$. The first is $x\beta$, our systematic component; the second is the random component. $x$ shapes the systematic part of $y$. 
+-   best guess at variation in $y$ would be its mean (constant-only model). with variables, variation is composed of two parts: $y = \mu + \epsilon$. The first is $x\beta$, our systematic component; the second is the random component. $x$ shapes the systematic part of $y$.
 
-  - total variation in $y$ is the sum of the variance of these components: $\text{var}(y) = \text{var}(x)\beta + \text{var}(e)$
- 
-  - the squared variation in $y$ due to $x$ is the MSS.
-  
-  - the squared variation in $e$ is the RSS.
- 
-  - their sum is the TSS.
+-   total variation in $y$ is the sum of the variance of these components: $\text{var}(y) = \text{var}(x)\beta + \text{var}(e)$
 
+-   the squared variation in $y$ due to $x$ is the MSS.
 
----
- 
+-   the squared variation in $e$ is the RSS.
+
+-   their sum is the TSS.
+
+------------------------------------------------------------------------
+
 <!-- ## Model fit -->
 
 Recall
 
+$TSS = \sum\limits_{i=1}^{N} (y-\bar{y})^2$ :: Total Sum of Squares - the variation in $y$.
 
- $TSS = \sum\limits_{i=1}^{N} (y-\bar{y})^2$ :: Total Sum of Squares - the variation in $y$.
- 
- $MSS  = \sum\limits_{i=1}^{N} (\widehat{y} -\bar{y})^2$ :: Model or Explained Sum of Squares   - variation in $\widehat{y}$.
- 
- $SSE = \sum\limits_{i=1}^{N} (y-\widehat{y} )^2$ :: Residual Sum of Squares - $e'e$ - variation in $e$.
+$MSS = \sum\limits_{i=1}^{N} (\widehat{y} -\bar{y})^2$ :: Model or Explained Sum of Squares - variation in $\widehat{y}$.
 
+$SSE = \sum\limits_{i=1}^{N} (y-\widehat{y} )^2$ :: Residual Sum of Squares - $e'e$ - variation in $e$.
 
-
-
-## Model Fit -- $R^2$ 
-
+## Model Fit -- $R^2$
 
 $$TSS= MSS+RSS$$
 
 and
 
-$$R^2 = \frac{MSS}{TSS}$$ 
-or 
+$$R^2 = \frac{MSS}{TSS}$$ or
 
-$$R^2 = 1- \frac{RSS}{TSS}$$ 
+$$R^2 = 1- \frac{RSS}{TSS}$$
 
-
-
-
-
-## Fit -- $R^2_{adj}$ 
+## Fit -- $R^2_{adj}$
 
 $R^2$ increases as $k$ increases. The adjusted $R^2$ penalizes for additional regressors (though still increases with $k$):
 
 $$R^2_{adj} = 1 - \frac{(1-R^2)(N-1)}{(N-k-1)} $$
 
-in the numerator, adjusting for $N$ minus one for the constant, and in the denominator for $N-k-1$. 
+in the numerator, adjusting for $N$ minus one for the constant, and in the denominator for $N-k-1$.
 
- 
 <!-- ## Fit -- $R^2_{adj}$  -->
 
-$R^2$ describes the density of the cloud of points around the regression line. Data where $y$ has greater variability or where $e$ has greater variability will produce regressions with lower $R^2$ values. 
+$R^2$ describes the density of the cloud of points around the regression line. Data where $y$ has greater variability or where $e$ has greater variability will produce regressions with lower $R^2$ values.
 
-```{r, warning=FALSE, message=FALSE} 
+```{r, warning=FALSE, message=FALSE}
 #| echo: true
 #| code-fold: true
 #| code-summary: "code"
@@ -160,24 +145,17 @@ loose + tight
 
 ```
 
-
-
-
-
 <!-- ## Fit -- $R^2_{adj}$  -->
 
-Because $R^2$ describes the density of the cloud of points around the regression line, in an odd way, it rewards less variant $y$ variables.  $R^2$ does the following:
+Because $R^2$ describes the density of the cloud of points around the regression line, in an odd way, it rewards less variant $y$ variables. $R^2$ does the following:
 
+-   it tells us how much of the variation in $y$ is explained by the systematic component, but only for the sample.
 
- - it tells us how much of the variation in $y$ is explained by the systematic component, but only for the sample.
- 
- - it permits nested model  comparison.
- 
- - because $R^2$ does not have a sampling distribution, we cannot generally say an $R^2$ value is large or small - relative to what? If, say, it were distributed normally, we could make claims about the probability of observing a given $R^2$ value. 
+-   it permits nested model comparison.
 
- - it is possible to construct such a sampling distribution, but it seems noone ever does, so the value of the $R^2$ is not that great. 
+-   because $R^2$ does not have a sampling distribution, we cannot generally say an $R^2$ value is large or small - relative to what? If, say, it were distributed normally, we could make claims about the probability of observing a given $R^2$ value.
 
- 
+-   it is possible to construct such a sampling distribution, but it seems noone ever does, so the value of the $R^2$ is not that great.
 
 ## Fit -- RMSE
 
@@ -185,109 +163,128 @@ Root Mean Squared Error (standard error of the estimate):
 
 $$RMSE = \sqrt{\frac{RSS}{(N-k)}}$$
 
-Is the average (squared) error. It's useful because it's in the same units as $y$, so interpretable as the average (squared) distance of an observation from the regression line. 
-
-
-
-
+Is the average (squared) error. It's useful because it's in the same units as $y$, so interpretable as the average (squared) distance of an observation from the regression line.
 
 ## Fit -- F-test
 
 In the linear model, the F-test is probably the most useful tool for comparing (nested) models. Reviewing, models are nested iff:
 
-
- their samples are identical.
- the variables in one are a strict subset of those in the other.
-
+their samples are identical. the variables in one are a strict subset of those in the other.
 
 The nested models are the Restricted and Unrestricted.
 
----
+------------------------------------------------------------------------
 
 <!-- ## Fit -- F-test -->
 
-How do we test $RSS_U = RSS_R = 0$? 
+How do we test $RSS_U = RSS_R = 0$?
 
+$$F=\frac{(RSS_R-RSS_{U})/q}{RSS_{U}/(n-k-1)}$$
 
-$$F=\frac{(RSS_R-RSS_{U})/q}{RSS_{U}/(n-k-1)}$$ 
-
-where $q$ is the number of restrictions.  
+where $q$ is the number of restrictions.
 
 The numerator is the difference in fit between the two models (weighted or "normed" by the different number of parameters, the restrictions), and the denominator is a baseline of how well the full model fits. So this is a ratio of improvement to the fit of the full model. Both are distributed $\chi^2$; their ratio is distributed $F$.
 
+### Example
 
-<!-- ## Overview -->
+```{r, warning=FALSE, message=FALSE, results='asis'}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
 
-<!-- In the early 1990s, there was a significant (and very boring) debate over these measures of model fit. The useful parts focused on what we, as a discipline, are trying to accomplish in modeling. There was no real resolution. \\~\\  -->
+itt <- read.csv("/Users/dave/Documents/teaching/501/2023/exercises/ex4/ITT/data/ITT.csv")
 
-<!-- That same period was the early part of both a technological and methods revolution. Computing power democratized and increased exponentially. This enabled what some have called the MLE revolution. Whatever the case, debates over OLS fit diminished in relevance and frequency.  -->
-
-
-
-
-
-
-## Outliers 
-
-How much do individual observations shape the regression estimates? This discussion draws an excellent monograph by @foxregression1991. 
-
-  - leverage - how much an observation affects the slope of the regression line - it might have great leverage, but be on the line, so not discrepant.
- 
-  - discrepancy - how unusual an observation is.
- 
-  - influence - how much an unusual observation affects the slope of the regression line. How much a discrepant observation exerts leverage.
+itt$p1 <- itt$polity2+11
+itt$p2 <- itt$p1^2
+itt$p3 <- itt$p1^3
 
 
+itt <- 
+  itt%>% 
+  group_by(ccode) %>%
+  mutate( lagprotest= lag(protest), lagRA=lag(RstrctAccess), n=1)
 
----
+
+m1 <- lm(scarring ~ lagRA + civilwar + lagprotest + p1+p2+p3 +wdi_gdpc, data=itt)
+#summary(m1)
+# estimation sample to ensure restricted model2 is nested in unrestricted model 1
+itt$used <- TRUE
+itt$used[na.action(m1)] <- FALSE
+ittm1sample <- itt %>%  filter(used=="TRUE")
+m2 <- lm(scarring ~ lagRA + civilwar + lagprotest + p1+wdi_gdpc, data=itt)
+#summary(m2)
+
+
+stargazer(m1,m2, type="html",  single.row=TRUE, header=FALSE, digits=3,  omit.stat=c("LL","ser"),  star.cutoffs=c(0.05,0.01,0.001),  column.labels=c("Model 1", "Model 2"),  dep.var.caption="Dependent Variable: Scarring Torture", dep.var.labels.include=FALSE,  covariate.labels=c("Restricted Access, t-1", "Civil War", "Protests, t-1", "Polity", "<p>Polity<sup>2</sup></p>", "<p>Polity<sup>3</sup></p>", "GDP per capita", "Population"),  notes=c("Standard errors in parentheses", "Significance levels:  *** p<0.001, ** p<0.01, * p<0.05"), notes.append = FALSE,  align=TRUE,  font.size="small")
+
+```
+
+
+```{r, warning=FALSE, message=FALSE, results='asis'}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+ftest <- anova(m1,m2)
+
+kable(ftest, digits=3)
+#stargazer(ftest$Res.Df, ftest$RSS, ftest$F, ftest$`Pr(>F)`, type="html")
+#,  single.row=TRUE, header=FALSE, digits=3, align=TRUE,  font.size="small")
+
+```
+
+
+## Outliers
+
+How much do individual observations shape the regression estimates? This discussion draws an excellent monograph by @foxregression1991.
+
+-   leverage - how much an observation affects the slope of the regression line - it might have great leverage, but be on the line, so not discrepant.
+
+-   discrepancy - how unusual an observation is.
+
+-   influence - how much an unusual observation affects the slope of the regression line. How much a discrepant observation exerts leverage.
+
+------------------------------------------------------------------------
 
 ### Leverage - $h$
 
-$h$ is an element of the $hat$ matrix: 
+$h$ is an element of the $hat$ matrix:
 
-$$ y = X \beta $$
-$$= X(X'X)^{-1} X'y $$
-$$=Hy $$
-where 
-$$H = X(X'X)^{-1} X' $$
+$$ y = X \beta $$ $$= X(X'X)^{-1} X'y $$ $$=Hy $$ where $$H = X(X'X)^{-1} X' $$
 
-The matrix $H$ is a square $n,n$ matrix; the main diagonal indicates the extent to which any observation has leverage on the regression line by virtue of being large relative to the other $X$s. 
+The matrix $H$ is a square $n,n$ matrix; the main diagonal indicates the extent to which any observation has leverage on the regression line by virtue of being large relative to the other $X$s.
 
+Observations where $h> 2(k/N)$ are often thought of as outliers with the potential to influence the regression estimates.
 
-Observations where $h> 2(k/N)$ are often thought of as outliers with the potential to influence the regression estimates. 
- 
----
+------------------------------------------------------------------------
 
-### Discrepancy - Residuals 
+### Discrepancy - Residuals
 
-A common indicator of discrepancy is to standardize residuals to see which fall outside of standard confidence bounds. This is problematic (for reasons set aside), so the replacement is *Studentized* residuals. About 95% of these residuals should fall between -2/+2, and those that do not may be discrepant or unusual, and worth scrutiny. 
+A common indicator of discrepancy is to standardize residuals to see which fall outside of standard confidence bounds. This is problematic (for reasons set aside), so the replacement is *Studentized* residuals. About 95% of these residuals should fall between -2/+2, and those that do not may be discrepant or unusual, and worth scrutiny.
 
----
+------------------------------------------------------------------------
 
 ### Influence
 
-There are a number of measures of influence including DFBETA, DFFITS, and Cook's Distance. In general, measures of influence evaluate the estimates progressively excluding each observation; observations that substantialliy change the estimates are more influential. 
+There are a number of measures of influence including DFBETA, DFFITS, and Cook's Distance. In general, measures of influence evaluate the estimates progressively excluding each observation; observations that substantialliy change the estimates are more influential.
 
----
+------------------------------------------------------------------------
 
 ### Cook's D
 
-Cook's D combines measures of discrepancy and leverage to indicate how **influential** an observation is: 
+Cook's D combines measures of discrepancy and leverage to indicate how **influential** an observation is:
 
 $$ \frac{s(e^2)}{k} \cdot \frac{h_i}{1-h_i}$$
 
-where the first term is standardized residuals indicating discrepancy, and the second is $h$, measuring leverage. If both are high, then influence is high; otherwise, influence is low. 
+where the first term is standardized residuals indicating discrepancy, and the second is $h$, measuring leverage. If both are high, then influence is high; otherwise, influence is low.
 
-
-
----
+------------------------------------------------------------------------
 
 ### Visualizing Outliers
 
 Fox suggests plotting $h$ against Studentized Residuals - those high on both may be influential outliers. Let's look at potential outliers from a model using the ITT data.
 
-
----
+------------------------------------------------------------------------
 
 ### Outliers - Ill-treatment and Torture Data
 
@@ -328,67 +325,57 @@ theme_minimal()
 
 ```
 
-Looking at the upper-middle of the plot, Turkey, Sudan, Russia, and Indonesia seem especially influential. On the x-axis, the UK, France, and Qatar have high leverage, so inordinately affect the regression line. On the y-axis, Turkey (several years), Italy, Mexico, and Indonesia are discrepant or unusual. 
+Looking at the upper-middle of the plot, Turkey, Sudan, Russia, and Indonesia seem especially influential. On the x-axis, the UK, France, and Qatar have high leverage, so inordinately affect the regression line. On the y-axis, Turkey (several years), Italy, Mexico, and Indonesia are discrepant or unusual.
 
----
+------------------------------------------------------------------------
 
 ### Thinking about outliers
 
-  - Why are observations outliers?
+-   Why are observations outliers?
 
-  - What should we do with them? 
+-   What should we do with them?
 
---- 
+------------------------------------------------------------------------
 
-### Modeling outliers 
+### Modeling outliers
 
-  - what do the outliers have in common?
- 
-  - what would predict them? Is there a missing variable that would "soak up" the unexplained variance of those observations?
-  
-  - the model does not explain outliers well - what can we learn from the model's "success" in explaining other cases? 
+-   what do the outliers have in common?
 
+-   what would predict them? Is there a missing variable that would "soak up" the unexplained variance of those observations?
+
+-   the model does not explain outliers well - what can we learn from the model's "success" in explaining other cases?
 
 ## Functional Form
 
 Two most common nonlinear functions applied to variables in political science are:
 
-  - natural log
-  
-  - polynomial
+-   natural log
 
-
-
+-   polynomial
 
 ### Natural Logs
 
-Permit nonlinear but monotonic[^*] changes in $y$ over changes in $x$. Model interpretations using natural logs of variables (from @wooldridge2013 p. 44)
+Permit nonlinear but monotonic[^1] changes in $y$ over changes in $x$. Model interpretations using natural logs of variables (from @wooldridge2013 p. 44)
+
+[^1]: A function is monotonic if it is either entirely non-increasing or non-decreasing. A horizontal line only passes through a monotonic function once. A function if non-monotonic if a horizontal line passes through it more than once.
 
 ![](wooldridge_ln.jpg)
-
-
-[^*]: A function is monotonic if it is either entirely non-increasing or non-decreasing. A horizontal line only passes through a monotonic function once. A function if non-monotonic if a horizontal line passes through it more than once.
-
-
 
 ### Polynomials
 
 $$y= \beta_0 + \beta_1 x_1 + \beta_2 x_1^2 + \beta_3 x_1^3$$
 
+-   Permits nonmonotonic changes in $y$ given changes in $x$
 
-  - Permits nonmonotonic changes in $y$ given changes in $x$
-  
-  - Raises the question of whether $x$ exerts these higher order effects (joint hypothesis tests)
- 
-  - The marginal effect of a change in $x$ now involves two estimates; $\beta_1+2\beta_2x$
- 
-  - The inflection point (minimum or maximum) is $\frac{\beta_1}{|2\beta_2|}$
+-   Raises the question of whether $x$ exerts these higher order effects (joint hypothesis tests)
 
+-   The marginal effect of a change in $x$ now involves two estimates; $\beta_1+2\beta_2x$
 
-### Example 
+-   The inflection point (minimum or maximum) is $\frac{\beta_1}{|2\beta_2|}$
 
-Using data we've seen before, let's look at the effect of GDP per capita on infant mortality rate. We'll look at the effect of GDP per capita on infant mortality rate using a linear model, a log-linear model, and a polynomial model, compared below. 
+### Example
 
+Using data we've seen before, let's look at the effect of GDP per capita on infant mortality rate. We'll look at the effect of GDP per capita on infant mortality rate using a linear model, a log-linear model, and a polynomial model, compared below.
 
 ```{r, warning=FALSE, message=FALSE}
 #| echo: true
@@ -415,54 +402,45 @@ You can see the linear model is a poor fit. The other two are better fits to the
 
 ## Scaling Variables
 
-  - adding a constant, $k$ to either $X$ or $Y$ will shift the location of the regression line, but will not change its shape/slope.
-  - adding a constant to $Y$ shifts the intercept by $k$; $\widehat{\beta_0}+k$ - the standard error is unchanged.
-  - adding a constant to $X$ shifts the intercept by $\widehat{\beta_0}-k\widehat{\beta_1}$ - the standard error will change too.
-  - multiplying either $X$ or $Y$ by some constant will distort the axis and affect the coefficient estimate accordingly.
-  - multiplying $X$ by $k$ changes the slope to $\widehat{\beta_1}/k$; intercept is unchanged.
-  - multiplying $Y$ by $k$ shifts the intercept to $\widehat{\beta_0}k$, and the slope to $\widehat{\beta_1}k$
+-   adding a constant, $k$ to either $X$ or $Y$ will shift the location of the regression line, but will not change its shape/slope.
+-   adding a constant to $Y$ shifts the intercept by $k$; $\widehat{\beta_0}+k$ - the standard error is unchanged.
+-   adding a constant to $X$ shifts the intercept by $\widehat{\beta_0}-k\widehat{\beta_1}$ - the standard error will change too.
+-   multiplying either $X$ or $Y$ by some constant will distort the axis and affect the coefficient estimate accordingly.
+-   multiplying $X$ by $k$ changes the slope to $\widehat{\beta_1}/k$; intercept is unchanged.
+-   multiplying $Y$ by $k$ shifts the intercept to $\widehat{\beta_0}k$, and the slope to $\widehat{\beta_1}k$
 
+## Collinearity
 
- 
+We know perfect collinearity is not much of a problem since we can't estimate $\widehat{\beta}$ at all in its presence - the matrix $(X'X)^{-1}$ is singular and thus can't be inverted.
 
-## Collinearity 
+What about correlation among $X$ variables short of perfect collinearity?
 
-We know perfect collinearity is not much of a problem since we can't estimate $\widehat{\beta}$ at all in its presence - the matrix $(X'X)^{-1}$ is singular and thus can't be inverted. 
+### Correlation among $X$s
 
-What about correlation among $X$ variables short of perfect collinearity? 
+Recall what the OLS simulations show:
 
+-   the estimates are unbiased.
+-   the standard errors are inflated because of our uncertainty.
+-   we're asking the model to estimate 2 unknowns from very little independent information about each.
+-   the estimates are less precise than they otherwise would be.
+-   the model is still BLUE.
 
+### Collinearity is a data problem
 
-### Correlation among $X$s 
+-   if the model is correctly specified, don't remove one of the correlated variables - if you do, you've created omitted variable bias, and now the model is no longer BLUE. Theory is the key here - it's the only way to arbitrate what should or shouldn't be in the model.
 
-Recall what the OLS simulations show: 
+-   collect more data or better data.
 
-  - the estimates are unbiased.
-  - the standard errors are inflated because of our uncertainty.
-  - we're asking the model to estimate 2 unknowns from very little independent information about each. 
-  - the estimates are less precise than they otherwise would be. 
-  - the model is still BLUE.
-  
+-   transform the collinear variables:
 
-
-
-### Collinearity is a data problem 
-
-  - if the model is correctly specified, don't remove one of the correlated variables - if you do, you've created omitted variable bias, and now the model is no longer BLUE. Theory is the key here - it's the only way to arbitrate what should or shouldn't be in the model. 
-  - collect more data or better data.
-  - transform the collinear variables:
- 
-    - difference variables (but with consequences)
-    - combine variables as an index or using a measurement model like factor analysis or IRT (but with consequences)
-
-
+    -   difference variables (but with consequences)
+    -   combine variables as an index or using a measurement model like factor analysis or IRT (but with consequences)
 
 ## Missing Data
 
 **Data is never missing randomly.**
 
 The process generating missing data is systematic.
- 
 
 ### Missing data signifies sample problems
 
@@ -472,34 +450,25 @@ $$Pr(Missing_i) = F(Z_i \widehat{\gamma} + \varepsilon_i)$$
 
 Some variables $Z$ have $\widehat{\gamma}$ effects on the probability any particular case has missing data - those effects map onto the probability space via some cumulative distribution function $F$.
 
-
 ### Dealing with Missingness
 
-This is not generally a model we'd run, but it's a useful thought exercise. When data are missing, social scientists often turn to imputation methods. 
+This is not generally a model we'd run, but it's a useful thought exercise. When data are missing, social scientists often turn to imputation methods.
 
+-   single imputation - replace missing value with the (panel) mean/median/mode of the variable; replace with a randomly chosen value of $x$; replace it with an estimate of $x$ from a model predicting $x$.
 
-  - single imputation - replace missing value with the (panel) mean/median/mode of the variable; replace with a randomly chosen value of $x$; replace it with an estimate of $x$ from a model predicting $x$. 
- 
-  - multiple imputation - a form of simulation. Draw from a distribution of the missing data, to generate multiple data sets. Estimate the model in each data set, and use the distribution of estimates and uncertainty to generate estimates. 
-
-
+-   multiple imputation - a form of simulation. Draw from a distribution of the missing data, to generate multiple data sets. Estimate the model in each data set, and use the distribution of estimates and uncertainty to generate estimates.
 
 ### Missingness
 
 All this said, it's *always* important to rely on theory to understand both why observations might be missing, and how those missing observations might influence estimates. The best solution is often to collect better data.
 
-
-
-
-
-
 ## A comment on dissertations
 
 ![](dissertationfish.png)
 
----
+------------------------------------------------------------------------
+
 ## References
 
 ::: {#refs}
 :::
-
