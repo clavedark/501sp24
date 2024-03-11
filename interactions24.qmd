@@ -8,8 +8,8 @@ title-block-banner: TRUE
 bibliography: refs501.bib
 format: 
    html: default
-   revealjs:
-     output-file: interactions24s.html
+   # revealjs:
+   #   output-file: interactions24s.html
 editor: source
 embed-resources: true
 cache: true
@@ -295,7 +295,7 @@ p + scale_color_manual(values = c("red", "black")) +
 
 ```
 
-The result is that each coefficient is an intercept for a particular country.  Each measures the difference in that country's intercept (or mean of $y$) from the excluded category, in this case, Afghanistan. Black bars are different from the excluded categorya at the .05 level. 
+The result is that each coefficient is an intercept for a particular country.  Each measures the difference in that country's intercept (or mean of $y$) from the excluded category, in this case, Afghanistan. Black bars are different from the excluded category at the .05 level. 
 
 Each country coefficient plus the intercept is that country's mean of $y$, scarring torture . Looking, for instance at the US, the coefficient is about 19, so the US mean scarring torture reports is 19 plus the intercept (5.5), so about 24.5 (the actual mean for US scarring torture reports is 24.45).
 
