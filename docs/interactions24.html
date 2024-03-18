@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Dave Clark">
-<meta name="dcterms.date" content="2024-03-11">
+<meta name="dcterms.date" content="2024-03-16">
 
 <title>PLSC 501 - Spring 2024 - Differential Intercepts and Interactions</title>
 <style>
@@ -4683,7 +4683,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 11, 2024</p>
+        <p class="date">March 16, 2024</p>
       </div>
     </div>
     
@@ -4701,6 +4701,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
   <ul>
   <li><a href="#differential-intercepts" id="toc-differential-intercepts" class="nav-link active" data-scroll-target="#differential-intercepts">Differential Intercepts</a>
   <ul class="collapse">
+  <li><a href="#goals" id="toc-goals" class="nav-link" data-scroll-target="#goals">Goals</a></li>
   <li><a href="#indicator-variables" id="toc-indicator-variables" class="nav-link" data-scroll-target="#indicator-variables">Indicator Variables</a></li>
   <li><a href="#indicator-variables-1" id="toc-indicator-variables-1" class="nav-link" data-scroll-target="#indicator-variables-1">Indicator Variables</a></li>
   <li><a href="#differential-intercept" id="toc-differential-intercept" class="nav-link" data-scroll-target="#differential-intercept">Differential Intercept</a></li>
@@ -4758,13 +4759,15 @@ background-color: # f2f2f2;
 <!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
 <section id="differential-intercepts" class="level1">
 <h1>Differential Intercepts</h1>
-<p>Goals</p>
-<p>The models we’ve considered so far have generally assumed - that the intercepts and slopes are shared by all groups in the data.</p>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<p>The models we’ve considered so far have generally assumed <em>structural stability</em> - that the intercepts and slopes are shared by all groups in the data.</p>
 <p>We’ll consider two possibilities:</p>
 <ul>
 <li><p>groups in the data have different intercepts - test this with group indicator variables (dummies).</p></li>
 <li><p>groups in the data have different slopes with respect to the same variables - test this using multiplicative interactions</p></li>
 </ul>
+</section>
 <section id="indicator-variables" class="level2">
 <h2 class="anchored" data-anchor-id="indicator-variables">Indicator Variables</h2>
 <p>Suppose the following regression:</p>

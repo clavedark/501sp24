@@ -1,0 +1,737 @@
+---
+title: "Binary $y$ variables"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: interactions24s.html
+editor: source
+embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+library(MASS)
+library(ggrepel)
+library(ggpmisc)
+library(sjPlot)
+
+
+```
+
+
+
+# Binary $y$ variables
+
+## Goals
+
+  - What happens if $y$ is binary? 
+  - Does OLS work? This model is known as the **linear probability model**.
+  - What are the problems?
+  - Logit, Probit  as  solutions.
+
+
+
+## Linear Probability Model
+
+The LPM is the OLS model estimated with a binary dependent variable.
+
+
+ This is generally frowned upon. 
+
+
+## Linear model
+
+The model we've worked with so far is
+
+$$y_i=F(\beta_0 +  \beta_1 X_1 + \beta_2 X_2 \ldots + \beta_k X_k + \epsilon_i) $$
+
+where $F$ is a linear function, so
+
+
+$$\hat{y_i}=\hat{\beta_0} +  \hat{\beta_1} X_1 + \hat{\beta_2} X_2 \ldots + \hat{\beta_k} X_k \nonumber\\ \nonumber\\
+=x\hat{\beta} $$
+
+$F$ is linear, so the model is linear in parameters. $x\hat{\beta}$ is the linear prediction and is the \alert{quantity of interest}, the conditional expected value of $y$.
+
+
+
+Now, consider a situation where $y$ is binary, such that,
+
+ $$  y = \left\{ \begin{array}{ll}
+         1 \\
+         0  
+         \end{array}
+     \right. $$
+
+and 
+
+  $$ y^* = \left\{ \begin{array}{ll}
+          \pi_{i}\\
+          1-\pi_{i}
+         \end{array}
+     \right. $$
+     
+
+where $y_i^*$ is what we *wish* we could measure (say, the probability $y_i=1$), though we can only measure $y_i$. Now, $y^*$ is going to be our principle quantity of interest.
+ 
+
+Suppose the regression model
+
+$$y_i =F(\beta_0 +  \beta_1 X_1 + \beta_2 X_2 \ldots + \beta_k X_k + \epsilon_i) $$
+
+where  $F$ is a nonlinear function relating the linear prediction, $x\beta$ to $y_i^*$. 
+
+
+$$\widehat{y^*} = F(x\widehat{\beta})=F(\hat{\beta_0} +  \hat{\beta_1} X_1 + \hat{\beta_2} X_2 \ldots + \hat{\beta_k} X_k ) $$
+
+
+$F$ is a nonlinear function, so the model is *nonlinear in parameters*. $x\hat{\beta}$ is the linear prediction, but it is *not* the quantity of interest. Instead, the quantity of interest is $F(x\hat{\beta})$ which is equal to $y_i^*$.
+
+
+::: {.callout-note title="Important Concept"}
+
+The difference between this model and the OLS linear model is simply that we must transform the linear prediction, $x\hat{\beta}$, by $F$ in order to produce predictions. Put differently, we want to \alert{map our linear prediction, $x\beta$ onto $y^*$.} 
+
+:::
+
+# Why leave the robust OLS model?
+
+Why not use the linear model when $y$ is binary?
+
+  - because we fail to satisfy the OLS assumptions.
+  - because the residuals are not Normal. 
+  - because $y$ is not Normal. 
+  - because $y$ is limited.
+
+ 
+**Limited $y$ variables** are $y$s where our measurement is limited by the realities of the world. Such variables are rarely normal, often not continuous, and often observable indicators of unobservable things - this is all true of binary variables. 
+
+ 
+
+## Limited Dependent Variables
+
+Why would we measure $y_i$ rather than $y_i^*$?
+
+Limited dependent variables are usually limited in the sense that we cannot observe the range of the variable or the characteristic of the variable we want to observe. We are limited to observing $y_i$, and so must estimate $y_i^*$. 
+
+
+## Examples of Limited DVs
+
+  - binary variables: 0=peace, 1=war; 0=vote, 1=don't vote.
+ 
+  - unordered or nominal categorical variables: type of car you prefer: Honda, Toyota, Ford, Buick; policy choices; consumer choices.
+  
+  - ordered variables that take on few values: some survey responses.
+ 
+  -discrete count variables; number of episodes of scarring torture in a country-year, 0, 1, 2, 3,  \ldots, $\infty$
+ 
+  - time to failure; how long a civil war lasts; how long a patient survives disease; how long a leader survives in office.
+
+
+## Binary dependent variables 
+
+  Generally, we conceive of a binary variable as being the observable manifestation of some underlying, latent, unobserved continuous variable. 
+  
+  If we could adequately observe (and measure) the underlying continuous variable, we'd use some form of OLS regression to analyze that variable.  
+ 
+
+# Why not use OLS?
+
+$$ \mathbf{y}=\mathbf{X \beta} + \mathbf{u} $$
+
+where we are principally interested in the conditional expectation of $y$, $E(y_{i}|\mathbf{x_{i}})$ where we want to interpret that expectation as a conditional probability, $Pr(y=1|\mathbf{x_{i}})$; we focus on the probability the outcome occurs (i.e., $y$ is equal to one). 
+
+## Linear Probability Model
+
+The linear probability model (LPM) is the OLS linear regression with a binary dependent variable. 
+
+
+The main justification for the LPM is OLS is unbiased (by Gauss Markov). But $\ldots$
+
+  - predictions are nonsensical (linear, unbounded, measures of $\hat{y}$ rather than $y^*$).
+ 
+  - disturbances are non-normal, and heteroskedastic.
+
+  - relation or mapping of $x\beta$ and $y$ are the wrong functional form (linear). 
+
+## Running example - Democratic Peace data
+
+
+As a running example, I'll use the Democratic Peace data to estimate logit and probit models. These come from @onealrussett97's well-known study in *ISQ*. The units are dyad-years; the $y$ variable is the presence or absence of a mililtarized dispute, and the $x$ variables include a measure of democracy (the lowest of the two Polity scores in the dyad), and a set of controls. 
+
+
+### Predictions out of bounds
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+dp <- read_dta("/Users/dave/Documents/teaching/501/2023/slides/L7_limiteddv/code/dp.dta")
+
+m1 <-glm(dispute ~ border+deml+caprat+ally, family=binomial(link="logit"), data=dp )
+logitpreds <- predict(m1, type="response")
+
+mols <-lm(dispute ~ border+deml+caprat+ally, data=dp )
+olspreds <- predict(mols)
+
+df <- data.frame(logitpreds, olspreds, dispute=as.factor(dp$dispute))
+
+ggplot(df, aes(x=logitpreds, y=olspreds, color=dispute)) + 
+  geom_point()+
+  labs(title="Predictions from Logit and OLS", x="Logit Predictions", y="OLS Predictions")+
+  geom_hline(yintercept=0)+
+  theme_minimal() +
+  annotate("text", x=.05, y=-.05, label="2,147 Predictions out of bounds", color="red")
+
+```
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+ggplot(df, aes(x=olspreds)) + 
+  geom_density(alpha=.5)+
+  labs(title="Density of OLS Predictions", x="Predictions", y="Density")+
+  theme_minimal()+
+geom_vline(xintercept=0, linetype="dashed")
+
+
+
+```
+
+### Heteroskedastic Residuals
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+df <- data.frame(df, mols$residuals)
+ 
+ggplot(df, aes(x=mols.residuals, color=dispute)) + 
+  geom_density()+
+  labs(title="Density of OLS Residuals", x="Residuals", y="Density")+
+  theme_minimal()+
+  geom_vline(xintercept=0, linetype="dashed")
+
+
+
+
+
+```
+
+## When is the LPM Reasonable?
+
+![](zorntweet.png)
+
+
+## On Linearity
+
+In the linear model,  $\hat{y_i}=x_i\beta$. This makes sense because $y = y^*$. Put differently, $y$ is continuous, unbounded, (assumed) normal, and is an "unlimited" measure of the concept we intend to measure.
+
+
+In binary models, $y \neq y^*$, because our observation of $y$ is *limited* such that we can only observe its presence or absence. We have two different realizations of the same variable: $y$ is the limited but observed variable; $y^*$ is the unlimited variable we want to measure, but cannot because it is unobservable.
+
+The goal of these models is to use $y$ in the regression in order to get *estimates* of $y^*$.  Those estimates of $y^*$ are our principle quantity of interest in the binary variable model.
+
+## Linking $x\widehat{\beta}$ and $y^*$
+
+We can produce the linear prediction, $x\widehat{\beta}$, but we need to transform it to produce estimates of $y^*$. To do so, we use a **link function** to map $x_i\beta$ onto the probability space, $y^*$.  This means $\widehat{y_i} \neq x\widehat{\beta}$. Instead, 
+
+$$y^* = F(x_i\beta)$$
+
+Where $F$ is a continuous, sigmoid probability CDF. This is how we get estimates of our quantity of interest, $y^*$. 
+
+## Non linear change in Pr(y=1) across values of $x$
+
+ In the LPM, the relationship between $Pr(y=1)$ and $X$ is linear, so the rate of change toward $Pr(y=1)$ is constant across all values of $X$.  
+ 
+ This means that the rate of change approaching one (or approaching zero) is exactly the same as the rate of change anywhere else in the distribution.  
+ 
+ For example, this means that the change from .99 to 1.00 is just as likely as the change from .50 to .51; is this sensible for a bounded latent variable (probability)?
+
+
+## Linear and Sigmoid Functions at Limits
+ 
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+z <- seq(-5,5,.1)
+l <- seq(0,1,.01)
+s1 <- 1/(1+exp(-z))
+s2 <- pnorm(z)
+
+ggplot() + 
+  geom_line(aes(x=z, y=l), color="black")+
+  geom_line(aes(x=z, y=s1), color="red")+
+  geom_line(aes(x=z, y=s2), color="green")+
+  labs(title="Linear and Sigmoid Functions", x="z", y="F(z)")+
+  theme_minimal()+
+  annotate("text", x=0, y=.75, label="Normal", color="green")+
+  annotate("text", x=-3, y=.1, label="Logistic", color="red")
+
+```
+
+
+## Non constant change in Pr(y=1) across values of $z$
+
+Animating the change in $Pr(y=1)$ across values of $z$ for the linear and sigmoid functions.
+
+```{r, warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+#| 
+library(gganimate)
+
+z <- seq(-5,5,.1)
+l <- seq(0,1,.01)
+s1 <- 1/(1+exp(-z))
+s2 <- pnorm(z)
+
+df <- data.frame(z=z, l=l, s1=s1, s2=s2)
+
+ggplot(df, aes(x=z, y=l)) + 
+  geom_line(aes(x=z, y=l), color="black")+
+  geom_line(aes(x=z, y=s1), color="red")+
+  geom_line(aes(x=z, y=s2), color="green")+
+  labs(title="Rates of change", x="z", y="F(z)")+
+  theme_minimal()+
+  transition_reveal(z)
+
+```
+
+
+# A nonlinear model for binary data
+
+So $y$ is binary, and we've established the linear model is not appropriate. The observed variable, $y$, we might characterize as binomial (hence the binomial parameter, $\pi$).
+
+$$ y_i = \left\{ \begin{array}{ll}
+         1, & \mbox{} \pi_{i}\\
+         0, & \mbox{} 1-\pi_{i}
+         \end{array}
+     \right.$$
+
+And we want to relate some variables, $X$, to that parameter, $\pi$ - remember, this is our QI ($y^*$) - through a link function, $F$.
+
+$$ \pi_i = F(x_i\widehat{\beta}) $$
+$$1- \pi_i=1-F(x_i\widehat{\beta})$$
+
+%$$ \pi_i = \frac{1}{1+exp(-x\beta)}$$
+
+
+
+## Binomial Likelihood Function
+
+Write the binomial in terms of data (so observations, $i$ on $y$):
+
+$$ Pr(y=1| \pi) = \pi_i^{y_i} (1-\pi_i)^{1-y_i} $$ 
+
+**Parameterizing** - writing in terms of variables and effects, $x_i\widehat{\beta}$: 
+
+
+$$ Pr(y=1| F(x\widehat{\beta})) = F(x_i\widehat{\beta})^{y_i} (1-F(x_i\widehat{\beta}))^{1-y_i} $$ 
+
+
+## Binomial Likelihood Function
+
+We want to know the probability of observing all the data - so a joint probability: 
+
+$$\mathcal{L} (\pi |\ y) = \prod \limits_{i=1}^{n} \left[ \pi_i^{y_i} (1-\pi_i)^{1-y_i}\right]$$ \pause
+
+
+in terms of $x_i\widehat{\beta}$: 
+
+$$\mathcal{L} (\pi |\ y) = \prod \limits_{i=1}^{n} \left[ F(x_i\widehat{\beta}) ^{y_i} (1-F(x_i\widehat{\beta}))^{1-y_i}\right]$$ 
+
+
+## Binomial LLF
+
+But adding is easier than multiplying, so take the natural log of the whole thing: 
+
+$$\ln \mathcal{L} (\pi| \ y) = \sum \limits_{i=1}^{n}  \left[ y_i \ln ( \pi_i) +  (1-y_i) \ln(1-\pi_i)\right]$$ \pause
+
+in terms of $x_i\widehat{\beta}$
+
+$$\ln \mathcal{L} (\pi| \ y) = \sum \limits_{i=1}^{n}  \left[ y_i \ln (F(x_i\widehat{\beta})) +  (1-y_i) \ln(1-F(x_i\widehat{\beta}))\right]$$
+
+
+
+## Binomial Log-Likelihood 
+
+This is the binomial log-likelihood function - we estimate it by maximum likelihood - just another technology (alongside OLS, Bayesian modeling, and others), for estimating unknowns. 
+
+ 
+$$\ln \mathcal{L} (\pi| \ y) = \sum \limits_{i=1}^{n}  \left[ y_i \ln (F(x_i\widehat{\beta})) +  (1-y_i) \ln(1-F(x_i\widehat{\beta}))\right]$$
+ 
+But we need to fill in $F$, the link function.
+
+
+## Link Functions
+
+We parameterized $\pi_i$:
+
+$$\pi_i= F(x \beta)$$
+
+and now need to choose an appropriate link function such that:
+
+ $\pi_i$ is bounded [0,1].
+ $x_i \widehat{\beta}$ can range $-\infty, +\infty$ and map onto that [0,1] interval.
+
+
+A relatively large number of sigmoid shaped probability functions  will satisfy these needs. 
+
+
+## Link Functions
+
+Remember, the link function maps or transforms the linear prediction on the sigmoid probability space, and obeys the bounds of 0,1.
+
+The two main link functions you'll ever see or use are the **standard normal (probit)**
+
+$$Pr(y_i=1 | X) = \Phi(x_i\widehat{\beta}) $$
+
+and the **logistic (logit)** CDFs.
+
+$$Pr(y_i=1 | X) = \frac{1}{1+exp^{-(x_i\widehat{\beta})}} $$
+
+## Probit and Logit LLFs
+
+Probit - link between $x\hat{\beta}$ and $Pr(y=1)$ is standard normal CDF:
+
+$$\ln \mathcal{L} (Y|\beta) = \sum_{i=1}^{N} y_i \ln \Phi(\mathbf{x_i \beta})+ (1-y_i) \ln[1-\Phi(\mathbf{x_i \beta})] $$
+
+Logit looks like this:
+
+$$\ln \mathcal{L} (Y|\beta) = \sum_{i=1}^{N} \left\{ y_i \ln \left(\frac{1}{1+e^{-\mathbf{x_i \beta}}}\right)+ (1-y_i) \ln \left[1-\left(\frac{1}{1+e^{-\mathbf{x_i \beta}}}\right)\right] \right\}$$
+
+
+## Which link function? 
+
+ So, between the logit and probit models, which do we choose?  
+ 
+ Unless we have theoretical expectations that inform us about the data in the tails of the distribution (we don't), then it makes no difference which estimation procedure you select.  Choose what you find most comfortable, most readily interpretable.
+
+
+## Example - Modeling the Democratic Peace
+
+Here's a model of the democratic peace. 
+
+```{r, results='asis', warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+dp <- read_dta("/Users/dave/Documents/teaching/501/2023/slides/L7_limiteddv/code/dp.dta")
+
+m1 <-glm(dispute ~ border+deml+caprat+ally, family=binomial(link="logit"), data=dp )
+m2 <-glm(dispute ~ border+deml+caprat+ally, family=binomial(link="probit"), data=dp )
+
+# column.labels=c("Model 1", "Model 2"),
+stargazer(m1,m2, type="html",  single.row=TRUE, header=FALSE, digits=3,   star.cutoffs=c(0.05,0.01,0.001),  dep.var.caption="Militarized Dispute", dep.var.labels.include=FALSE,  covariate.labels=c("Shared Border", "Low Polity Score", "Capabilities Ratio", "Allies"),  notes=c("Standard errors in parentheses", "Significance levels:  *** p<0.001, ** p<0.01, * p<0.05"), notes.append = FALSE,  align=TRUE,  font.size="small")
+
+
+```
+ 
+Notice there are no substantive differences between the logit and probit. As in the linear model, we can make statements about direction and significance looking at the model estimates. We can't say much about magnitude because the coefficients are not transformed by $F$ - this is where we turn to quantities of interest.
+
+
+# Quantities of Interest
+
+In the linear model, the main quantity of interest is $x_i\hat{\beta}$. Here, we need $x_i\hat{\beta}$, but then need to transform by the link function, $F$:
+
+
+  - $F(x_i\hat{\beta})$
+ 
+  - Measures of uncertainty about $F(x_i\hat{\beta})$
+
+## Confidence Intervals
+
+End point transformation is straightforward as in the linear model:
+
+  - estimate the model.
+  - generate the linear prediction, $x\hat{\beta}$.
+  - generate the standard error of the prediction
+  - generate linear predictions of the upper bound ($x\hat{\beta}+c*se_p$) and lower bound ($x\hat{\beta}-c*se_p$), where $c$ is the critical value , $\sim N(0,1)$.
+  - generate the predictions at upper, lower, and central points by $F(x\hat{\beta}\pm c*se_p)$ and $F(x\hat{\beta})$
+  - plot the upper and lower quantities of interest, perhaps around the central point. 
+
+## Predictions
+
+We do this exactly as in the linear model, with the one modification that we map the linear prediction, $x_i\hat{\beta}$ onto the probability space by the link function. Here, for instance, is the at-means approach:
+
+  - estimate the model
+  - generate the linear prediction, $x\beta$, using the at-means data, varying the $x$ of interest, and model estimates, $\widehat{\beta}$.
+  - generate the standard errors of the linear predictions the usual way.
+  - generate upper and lower bounds of the *linear prediction*.
+  - map those linear predictions and the boundaries  onto $y^*$, the latent probability space: $F(x \widehat{\beta})$ 
+  - plot the predictions and measures of uncertainty against the variable of interest.
+
+## Transformation by $F$ 
+
+So you've got the three quantities we've been working with all semester: 
+
+
+  - $x\widehat{\beta}$
+  - $x\widehat{\beta} + 1.96*se$
+  - $x\widehat{\beta} - 1.96*se$
+
+All transform the linear prediction and standard error of the linear prediction. 
+For the logit, transform as 
+
+$$Pr(y=1) =  \frac{1}{1+exp(-x\beta)} $$
+$$ ub = \frac{1}{1+exp(-(x\beta + 1.96*se))} $$
+$$ lb = \frac{1}{1+exp(-(x\beta - 1.96*se))} $$
+
+
+For the probit, transform as 
+
+$$Pr(y=1) =  \Phi(x\beta) $$
+$$ ub = \Phi(x\beta + 1.96*se) $$
+$$ lb = \Phi(x\beta - 1.96*se) $$
+
+
+
+
+Any of the prediction methods we've learned are the same here - just remember to transform the quantities by $F$.
+
+## At-mean predictions (logit)
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+#summary(m1)
+#confint(m1)
+
+#new data frame for MEM prediction
+mem <- data.frame(deml= c(seq(-10,10,1)), 
+                  border=0, caprat=median(dp$caprat), ally=0)
+
+# type="link" produces the linear predictions; transform by hand below w/EPT
+mem  <-data.frame(mem, predict(m1, type="link", newdata=mem, se=TRUE))
+
+mem <- cbind(mem,lb=plogis(mem$fit-1.96*mem$se.fit),
+             ub=plogis(mem$fit+1.96*mem$se.fit), 
+             p=plogis(mem$fit))
+
+ggplot(mem, aes(x=deml, y=p)) +
+  geom_line() +
+  geom_ribbon(data=mem, aes(x=deml, ymin=lb, ymax=ub),fill = "grey70", alpha = .4, ) +
+  labs(x="Polity Score", y="Pr(Dispute) (95% confidence interval)")
+
+
+```
+
+
+
+## Average effects (logit)
+
+Average effects are often a better choice because they represent the data more completely than central tendency can (in the at-mean effects). Here are average effects (using the logit estimates) across the range of polity, and for pairs of states that share borders and those that do not.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+#avg effects
+
+#identify the estimation sample
+dp$used <- TRUE
+dp$used[na.action(m1)] <- FALSE
+dpesample <- dp %>%  filter(used=="TRUE")
+
+polity <- 0
+medxbd0 <- 0
+ubxbd0 <- 0
+lbxbd0 <- 0
+# medse <- 0
+# medxbd1 <- 0
+# ubxbd1 <- 0
+# lbxbd1 <- 0
+
+for(i in seq(1,21,1)){
+  dpesample$border<- 0
+  dpesample$deml <- i-11
+  polity[i] <- i-11
+  allpreds <- data.frame(predict(m1, type= "response", se.fit=TRUE, newdata = dpesample))  
+  medxbd0[i] <- median(allpreds$fit, na.rm=TRUE)
+  ubxbd0[i] <- median(allpreds$fit, na.rm=TRUE)+1.96*(median(allpreds$se.fit, na.rm=TRUE))
+  lbxbd0[i] <- median(allpreds$fit, na.rm=TRUE)-1.96*(median(allpreds$se.fit, na.rm=TRUE))
+}
+  
+noborder <- data.frame(polity, medxbd0, ubxbd0, lbxbd0)
+  
+for(i in seq(1,21,1)){
+  dpesample$border<- 1
+  dpesample$deml <- i-11
+  polity[i] <- i-11
+  allpreds <- data.frame(predict(m1, type= "response", se.fit=TRUE, newdata = dpesample))  
+  medxbd0[i] <- median(allpreds$fit, na.rm=TRUE)
+  ubxbd0[i] <- median(allpreds$fit, na.rm=TRUE)+1.96*(median(allpreds$se.fit, na.rm=TRUE))
+  lbxbd0[i] <- median(allpreds$fit, na.rm=TRUE)-1.96*(median(allpreds$se.fit, na.rm=TRUE))
+}
+  
+border <- data.frame(polity, medxbd0, ubxbd0, lbxbd0)
+  
+ggplot() +
+  geom_ribbon(data=noborder, aes(x=polity, ymin=lbxbd0, ymax=ubxbd0),fill = "grey70", alpha = .4, ) +
+  geom_line(data=noborder, aes(x=polity, y=medxbd0))+
+  geom_ribbon(data=border, aes(x=polity, ymin=lbxbd0, ymax=ubxbd0),fill = "grey70", alpha = .4, ) +
+  geom_line(data=border, aes(x=polity, y=medxbd0))+
+  labs ( colour = NULL, x = "Polity Score", y =  "Pr(Dispute)" )+
+  theme_minimal()+
+  ggtitle("Average Effects")
+
+
+```
+
+## Simulation 
+
+Simulation is an especially good approach for nonlinear models: 
+
+  - estimate the model.
+  - $m$ times (say, 1000 times), simulate the distribution of $\widehat{\beta}$.
+  - generate the $m$ linear predictions, $x\widehat{\beta}$.
+  - transform by the appropriate link function (logistic, standard normal CDF).
+  - identify the 2.5, 50, and 97.5 percentiles.
+  - plot against $x$. 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+#draws from multivariate normal using logit model estimates
+simL <- data.frame(MASS::mvrnorm(1000, coef(m1), vcov(m1)))
+#draws from multivariate normal using probit model estimates
+simP <- data.frame(MASS::mvrnorm(1000, coef(m2), vcov(m2)))
+
+#Logit predictions
+logitprobs <- data.frame(dem= numeric(0) , lb=numeric(0), med= numeric(0), ub=numeric(0))
+for (i in seq(1,21,1)) {
+simpreds <- quantile(simL$X.Intercept.+ simL$border*0+simL$deml*(i-11)+simL$caprat*median(dp$caprat)+simL$ally*0, probs=c(.025, .5, .975))
+logitprobs[i,] <- data.frame(dem=i, lb=plogis(simpreds[1]), med=plogis(simpreds[2]), ub=plogis(simpreds[3]))
+}
+
+#Probit predictions
+probitprobs <- data.frame(dem= numeric(0) , lb=numeric(0), med= numeric(0), ub=numeric(0))
+for (i in seq(1,21,1)) {
+simpreds <- quantile(simP$X.Intercept.+ simP$border*0+simP$deml*(i-11)+simP$caprat*median(dp$caprat)+simP$ally*0, probs=c(.025, .5, .975))
+probitprobs[i,] <- data.frame(dem=i, lb=pnorm(simpreds[1]), med=pnorm(simpreds[2]), ub=pnorm(simpreds[3]))
+}
+
+logit <- ggplot() +
+  geom_ribbon(data=logitprobs, aes(x=dem, ymin=lb, ymax=ub),fill = "grey70", alpha = .4, ) +
+  geom_line(data=logitprobs, aes(x=dem, y=med))+
+  labs ( colour = NULL, x = "Polity Score", y =  "Pr(Dispute)" )+
+  theme_minimal()+
+  ggtitle("Logit Predictions")
+
+probit <- ggplot() +
+  geom_ribbon(data=probitprobs, aes(x=dem, ymin=lb, ymax=ub),fill = "grey70", alpha = .4, ) +
+  geom_line(data=probitprobs, aes(x=dem, y=med))+
+  labs ( colour = NULL, x = "Polity Score", y =  "Pr(Dispute)" )+
+  theme_minimal()+
+  ggtitle("Probit Predictions")
+
+logit+probit
+  
+
+
+```
+
+## Simulating combinations of binary variables
+
+Let's look at the differences among the four combinations of the binary variables, border and ally. 
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+## simulating for binary combinations ----
+
+m1 <-glm(dispute ~ border+deml+caprat+ally, family=binomial(link="logit"), data=dp )
+
+#draws from multivariate normal using logit model estimates
+simL <- data.frame(MASS::mvrnorm(1000, coef(m1), vcov(m1)))
+
+
+logitprobs <- data.frame(b0a0= numeric(0) , b1a0=numeric(0), b0a1= numeric(0), b1a1=numeric(0))
+
+  b0a0 <- plogis(simL$X.Intercept.+ simL$border*0+simL$deml*-7+simL$caprat*median(dp$caprat)+simL$ally*0)
+b1a0 <- plogis(simL$X.Intercept.+ simL$border*1+simL$deml*-7+simL$caprat*median(dp$caprat)+simL$ally*0)
+b0a1 <- plogis(simL$X.Intercept.+ simL$border*0+simL$deml*-7+simL$caprat*median(dp$caprat)+simL$ally*1)
+b1a1 <- plogis(simL$X.Intercept.+ simL$border*1+simL$deml*-7+simL$caprat*median(dp$caprat)+simL$ally*1)
+
+logitprobs <- data.frame(b0a0, b1a0, b0a1, b1a1)
+
+ggplot() +
+  geom_density(data=logitprobs, aes(x=b0a0), fill="grey70", alpha = .4, ) +
+  geom_density(data=logitprobs, aes(x=b1a0), fill="grey70", alpha = .4, ) +
+  geom_density(data=logitprobs, aes(x=b0a1), fill="grey70", alpha = .4, ) +
+  geom_density(data=logitprobs, aes(x=b1a1), fill="grey70", alpha = .4, ) +
+  labs ( colour = NULL, x = "Pr(Dispute)", y =  "Density" ) +
+  theme_minimal()+
+  annotate("text", x = .07, y = 150, label = "No border, not allies", color = "black") +
+  annotate("text", x = .13, y = 70, label = "Border, not allies", color = "black") +
+  annotate("text", x = .04, y = 200, label = "No border, allies", color = "black") +
+  annotate("text", x = .09, y = 50, label = "Border, allies", color = "black") +
+  ggtitle("Logit Predictions")
+
+```
+ 
+

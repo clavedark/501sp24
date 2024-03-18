@@ -23,3 +23,5 @@ title: "Slides"
 [Model specification](specification24.qmd)
 
 [Dummy variables and interactions](interactions24.qmd)
+
+[Limited dependent variables](limited24.qmd)

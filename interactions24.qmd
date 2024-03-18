@@ -62,9 +62,9 @@ library(sjPlot)
 # Differential Intercepts
 
 
-Goals
+## Goals
 
-The models we've considered so far have generally assumed \alert{structural stability} - that the intercepts and slopes are shared by all groups in the data. 
+The models we've considered so far have generally assumed *structural stability* - that the intercepts and slopes are shared by all groups in the data. 
 
 We'll consider two possibilities:
 
