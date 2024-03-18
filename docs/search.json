@@ -4624,7 +4624,7 @@
     "href": "limiteddv24.html#link-functions-1",
     "title": "Binary \\(y\\) variables",
     "section": "Link Functions",
-    "text": "Link Functions\nRemember, the link function maps or transforms the linear prediction on the sigmoid probability space, and obeys the bounds of 0,1.\nThe two main link functions you’ll ever see or use are the standard normal (probit)\n\\[Pr(y_i=1 | X) = \\Phi(x_i\\widehat{\\beta}) \\]\nand the **logistic (logit)*} ** CDFs. \\~ \\\n\\[Pr(y_i=1 | X) = \\frac{1}{1+exp^{-(x_i\\widehat{\\beta})}} \\]"
+    "text": "Link Functions\nRemember, the link function maps or transforms the linear prediction on the sigmoid probability space, and obeys the bounds of 0,1.\nThe two main link functions you’ll ever see or use are the standard normal (probit)\n\\[Pr(y_i=1 | X) = \\Phi(x_i\\widehat{\\beta}) \\]\nand the logistic (logit) CDFs.\n\\[Pr(y_i=1 | X) = \\frac{1}{1+exp^{-(x_i\\widehat{\\beta})}} \\]"
   },
   {
     "objectID": "limiteddv24.html#transformation-by-f",
