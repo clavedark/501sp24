@@ -499,6 +499,80 @@ In the non-interactive model, the marginal effect of $x_1$ is:
 $$\frac{\partial{y}}{\partial{x_{1}}}= \beta_{1}$$
 
 
+## Expected values
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+#  continuous/binary interaction ----
+# now, interact protests and restricted access
+itt <- read.csv("/Users/dave/Documents/teaching/501/2023/exercises/ex4/ITT/data/ITT.csv")
+
+itt$p1 <- itt$polity2+11
+itt$p2 <- itt$p1^2
+itt$p3 <- itt$p1^3
+
+itt <- 
+  itt%>% 
+  group_by(ccode) %>%
+  mutate( lagprotest= lag(protest), lagRA=lag(RstrctAccess), n=1) %>%
+  mutate(interact= civilwar*lagRA)
+m4 <- lm(scarring ~  lagprotest + as.factor(lagRA) + lagprotest:lagRA +civilwar  + p1+p2+p3 +wdi_gdpc+wdi_pop, data=itt)
+#summary(m4)
+
+# average predictions, end point boundaries
+
+# estimation sample
+itt$used <- TRUE
+itt$used[na.action(m4)] <- FALSE
+ittesample <- itt %>%  filter(used=="TRUE")
+
+
+# loop over number of protests
+pred_data <-ittesample
+protests <-0
+medxbr0 <-0
+ubxbr0 <-0
+lbxbr0 <-0
+medxbr1 <-0
+ubxbr1 <-0
+lbxbr1 <-0
+pred_data$lagRA <- 0
+for(p in seq(1,40,1)) {
+  pred_data$lagprotest <- p 
+  protests[p] <- p 
+  allpreds <- data.frame(predict(m4, interval="confidence", se.fit=TRUE, newdata = pred_data))  
+  medxbr0[p] <- median(allpreds$fit.fit, na.rm=TRUE)
+  ubxbr0[p] <- median(allpreds$fit.fit, na.rm=TRUE)+1.96*(median(allpreds$se.fit, na.rm=TRUE))
+  lbxbr0[p] <- median(allpreds$fit.fit, na.rm=TRUE)-1.96*(median(allpreds$se.fit, na.rm=TRUE))
+}
+pred_data$lagRA <- 1
+for(p in seq(1,40,1))  {
+  pred_data$lagprotest <- p
+  allpreds <- data.frame(predict(m4, interval="confidence", se.fit=TRUE, newdata = pred_data))  
+  medxbr1[p] <- median(allpreds$fit.fit, na.rm=TRUE)
+  ubxbr1[p] <- median(allpreds$fit.fit, na.rm=TRUE)+1.96*(median(allpreds$se.fit, na.rm=TRUE))
+  lbxbr1[p] <- median(allpreds$fit.fit, na.rm=TRUE)-1.96*(median(allpreds$se.fit, na.rm=TRUE))
+}
+
+df <- data.frame(medxbr0, ubxbr0,lbxbr0,medxbr1, ubxbr1, lbxbr1, protests)
+
+
+#plotting
+
+ggplot() +
+  geom_ribbon(data=df, aes(x=protests, ymin=lbxbr0, ymax=ubxbr0),fill = "grey70", alpha = .4, ) +
+  geom_ribbon(data=df, aes(x=protests, ymin=lbxbr1, ymax=ubxbr1), fill= "grey60",  alpha = .4, ) +
+  geom_line(data= df, aes(x=protests, y=medxbr0))+
+  geom_line(data= df, aes(x=protests, y=medxbr1))+
+  labs ( colour = NULL, x = "Protests Against Government", y =  "Expected Scarring Torture Reports" ) +
+  annotate("text", x = 8, y = 30, label = "Restricted Access", size=3.5, colour="gray30")+
+  annotate("text", x = 8, y = 11, label = "Unrestricted Access", size=3.5, colour="gray30")
+
+```
+
 ## Marginal Effects 
 
 In the interactive model, the marginal effect of $d_1$ is:
@@ -543,6 +617,25 @@ ggplot() +
 
 In this case, the marginal effect of $x_2$ is the difference between the two lines. The dashed lines are the predicted values of $y$ for $x_1$ given $x_2=0$ and $x_2=1$. The solid line is the difference between the two, the marginal effect of $x_2$ across the values of $x_1$
  
+ 
+## Marginal Effects
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+df <- df %>% mutate(protest=seq(1,40,1),
+  MEprotest=m4$coefficients[2]+m4$coefficients[10]*protest, se = sqrt(vcov(m4)[2,2]+vcov(m4)[10,10]*protest^2+2*vcov(m4)[10,2]*protest), ub=MEprotest+1.96*se, lb=MEprotest-1.96*se)
+
+ggplot() +
+  geom_line(data=df, aes(x=protest, y=MEprotest) ) +
+  geom_ribbon(data=df, aes(x=protest, ymin=lb, ymax=ub),fill = "grey70", alpha = .4, ) +
+  labs( x = "Protests", y =  "Marginal Effect of Access Restriction on Scarring Torture")
+
+```
+
 ## Conditionality
 
 All effects in this model are now conditional - we can no longer talk about independent or direct effects of either $D_1$ or $x_1$ in this model. The marginal effects should also give us some hints about hypothesis testing:
