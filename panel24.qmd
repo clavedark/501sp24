@@ -1,0 +1,698 @@
+---
+title: "Panel Data"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: interactions24s.html
+editor: source
+#embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+library(MASS)
+library(ggrepel)
+library(ggpmisc)
+library(sjPlot)
+library(plm)
+
+
+```
+
+
+
+# Panel Data
+
+So far, we've paid little attention to the structure of the data we analyze. It's often the case our data have two dimensions:
+
+
+  - space
+  - time
+
+
+Data that vary on both dimensions are known variously as panel, pooled, or cross-sectional time-series data. Panel or pooled data combine cross sections observed over time such that we observe each cross-section, each time period.
+
+The two dimensional structure of panel data creates issues and opportunities we'll explore here.
+
+
+## Varying on Space and Time
+
+Models using pooled or panel data must conform to the same i.i.d. assumptions as cross sectional or time series data, but now in two dimensions. So we might have serial correlation in each of $j$ cross sections. Moreover, the cross sections may vary in unknown ways.
+
+In this lecture, I want to introduce the structure of panel data, point to the problems that arise in it, and focus on some solutions. 
+
+
+## Unobserved Heterogeneity
+
+The most common feature of pooled data is that there are unobserved effects across both space (across cross-section) and time (within cross-section), and their exclusion damages the estimates. The most common solutions to these problems are fixed and random effects. Let's begin by thinking about the data.
+
+## Panels
+
+Panel or pooled data have repeated observations on the same set of cross-sectional units, so the data for a each cross-section $i$ over $t$ would look like this:
+
+
+$$
+\mathbf{y_i}=
+\left[  \begin{matrix}
+y_{i1}\\
+\vdots\\
+y_{iT}  \nonumber
+\end{matrix}  \right]
+\mathbf{X_i}=
+\left[  \begin{matrix}
+X_{i1}^1 & X_{i1}^2 &\cdots &X_{i1}^k\\
+X_{i2}^1& X_{i2}^2 &\cdots &X_{i2}^k\\
+&&\vdots\\
+X_{iT}^1 &X_{iT}^2 &\cdots & X_{iT}^k \nonumber
+\end{matrix}  \right]
+\mathbf{\epsilon_i}=
+\left[ \begin{matrix}
+\epsilon_{i1}\\
+\vdots\\
+\epsilon_{iT}  \nonumber
+\end{matrix}  \right]
+$$
+
+where the subscripts $i,T$ indicate the $i^{th}$ individual (cross-section) at time $T=t$, and the superscript indicates the $k^{th}$ regressor in the matrix.  
+
+
+Panel data is stacked by cross-sectional unit and then by time, so
+
+$$
+\mathbf{y}=
+\left[  \begin{matrix}
+y_{11}\\
+\vdots\\
+y_{1T} \\
+y_{21}\\
+\vdots\\
+y_{2T} \\
+\vdots\\
+y_{n1}\\
+\vdots\\
+y_{nT}\nonumber
+\end{matrix}  \right]
+\mathbf{X}=
+\left[  \begin{matrix}
+X_{11}^1 & X_{11}^2 &\cdots &X_{11}^k\\
+X_{12}^1& X_{12}^2 &\cdots &X_{12}^k\\
+&&\vdots\\
+X_{1T}^1 &X_{1T}^2 &\cdots & X_{1T}^k \\
+X_{21}^1 & X_{21}^2 &\cdots &X_{21}^k\\
+X_{22}^1& X_{22}^2 &\cdots &X_{22}^k\\
+&&\vdots\\
+X_{2T}^1 &X_{2T}^2 &\cdots & X_{2T}^k \\
+\vdots&\vdots&\vdots\\
+X_{n1}^1 & X_{n1}^2 &\cdots &X_{n1}^k\\
+X_{n2}^1& X_{n2}^2 &\cdots &X_{n2}^k\\
+&&\vdots\\
+X_{nT}^1 &X_{nT}^2 &\cdots & X_{nT}^k \nonumber
+\end{matrix}  \right]
+\mathbf{\epsilon_i}=
+\left[ \begin{matrix}
+\epsilon_{11}\\
+\vdots\\
+\epsilon_{1T} \\
+\epsilon_{21}\\
+\vdots\\
+\epsilon_{2T} \\
+\vdots\\
+\epsilon_{n1}\\
+\vdots\\
+\epsilon_{nT}\nonumber
+\end{matrix}  \right]
+$$
+
+## Real data
+
+Here is an example of panel data, the US states over the years 1975-1993. The data contain measures of various crime rates, unemployment, per capita income, and other characteristics of the US states. 
+
+
+```{r, results='asis', warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+states <- read_dta("/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta")
+
+est <- states %>% dplyr::select(statename, year, murder, unemp, prcapinc, south, hsdip)  %>%
+  rename('murder rate' = murder,
+         'unemployment rate' = unemp,
+         'p/c income' = prcapinc,
+         'hs diploma %' = hsdip) %>%
+  slice(10:25) 
+  knitr::kable(est) 
+
+```
+
+
+
+# Challenges to modeling in panel data
+
+As usual, the model will produce a vector of coefficients, $\beta_{(1,k)}$. We could simply stack these data as illustrated above and estimate an OLS model, effectively ignoring the panel nature of the data. If we do so, we are assuming the model conforms to the GM assumptions, and specifically that the errors are identically and independently distributed across panels,
+
+$$
+\epsilon_{it} \sim iid(0, \sigma^2) \nonumber
+$$
+
+This means that for any cross-section, the errors are not correlated, and that the errors are constant both across time (within individual) and across individuals.
+ 
+If this were true, it would not really matter how we stacked the data, because none of the observations would be related to one another. 
+
+With panel data, it's difficult to believe the errors are i.i.d. in the pooled OLS model.
+ 
+
+## Two dimensions
+
+Panel data have space (cross-section or unit) and time dimensions. Differences among cross-sections produce "between" variation, while differences over time create "within" variation. 
+
+Imagine that the cross-sectional or between variation has a different relationship to $y$ than does the time-wise or within variation. The panel heterogeneity in this case is both two-dimensional and complex. 
+
+Here are data on the US states over the years 1975-1993 - let's look at the murder rate per 100,000 as it relates to assaults per 100,000 population. First, let's just look at the pooled model, ignoring the panel structure; that is, we're just using OLS on the panel data.
+
+
+```{r, warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+states <- read_dta("/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta")
+
+# pooled model 
+
+ggplot(data=states, aes(x=assault, y=murder)) +
+  geom_point()+
+   guides(color = FALSE, label = FALSE) + 
+  # scale_color_manual(values = c('black','blue','red','purple')) + 
+  geom_smooth(method = 'lm', aes(color = NULL, label = NULL), se = FALSE) +
+  labs(x="Assaults per 100,000", y="Murders per 100,000")+
+  ggtitle("Pooled model")
+
+
+```
+
+
+Now, let's define the two parts of the variation in panel data: 
+  
+  - *between* - refers to variation between units, but removing any timewise (within unit) differences; we might do this by taking the means of variables for each state. In the example below, you can see that between US states, the relationship between assault and murder is positive.
+  
+  - *within* - refers to the variation over time within each unit, removing any differences among units; we can remove the between variation by taking means of variables over time. Below, you can see that within states (so over time), the relationship between assault and murder is negative.
+  
+The two panels below, again using murder and assault rates, break the within and between dimensions apart. The left panel is the *between* variation removing all the within variation; it's the relationship of the unit means - i.e., the state mean of murder regressed on the state mean of assault (as if these were cross-sectional data). The right panel is the *within* variation, removing the between variation,  the relationship of the year-means of murder and assault ignoring the cross-sectional differences.
+
+
+```{r, warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+# between removing all within variation 
+xstates <- states %>% group_by(statename) %>% summarise(bmurder=mean(murder, na.rm=TRUE), bassault=mean(assault, na.rm=TRUE))
+
+b <- ggplot(data=xstates, aes(x=bassault, y=bmurder)) +
+  geom_point()+
+  # guides(color = FALSE) + 
+  # scale_color_manual(values = c('black','blue','red','purple')) + 
+  geom_smooth(method = 'lm', aes(color = NULL, label = NULL), se = FALSE)+    
+  geom_text_repel(aes(label=statename),size=2.5, force=5) +
+  labs(x="Assaults per 100,000", y="Murders per 100,000")+
+  ggtitle("Between model")
+
+# within removing all between
+tstates <- states %>% group_by(year) %>% summarise(wmurder=mean(murder, na.rm=TRUE), wassault=mean(assault, na.rm=TRUE))
+
+w <- ggplot(data=tstates, aes(x=wassault, y=wmurder)) +
+  geom_point()+
+  # guides(color = FALSE) + 
+  # scale_color_manual(values = c('black','blue','red','purple')) + 
+  geom_smooth(method = 'lm', aes(color = NULL, label = NULL), se = FALSE)+    
+  geom_text_repel(aes(label=year),size=2.5, force=5) +
+  labs(x="Assaults per 100,000", y="Murders per 100,000")+
+  ggtitle("Within model")
+
+
+b + w  
+
+```
+
+The *between* relationship is positive; the *within* relationship is negative, illustrating the importance of thinking about the dimensionality of panel data. The unobserved heterogeneity in these two dimensions can produce some interesting possibilities. 
+
+
+## The pooled model
+
+Simulating data, here again is the pooled model, ignoring unit or timewise heterogeneity, so assuming all share the same intercept and slope.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+set.seed(8675309)
+X <- data.frame(matrix(NA, nrow = 5, ncol = 0))
+X <- X %>% mutate(ind = row_number()*10)
+expand_r <- function(df, ...) {
+  as.data.frame(lapply(df, rep, ...))
+}
+X <- expand_r(X, times = 4)
+X <- data.frame(ind= sort(X$ind)) 
+
+X <- X %>% mutate(x= row_number(), e=rnorm(nrow(X)))
+
+X <- X %>% mutate(y = ind + x  + e)
+pool <- lm(y ~ x , data = X) 
+#summary(pool)
+intercepts <- lm(y ~ x + as.factor(ind), data = X) 
+#summary(intercepts)
+
+poolfit <- predict(pool, X)
+predictions <- data.frame(X, poolfit, predict(intercepts, interval = "confidence"))
+
+#shared intercept
+ggplot(predictions, aes(x = x, y = poolfit)) +
+  geom_line(color="blue") + theme_minimal() + labs(title = "Pooled Data", subtitle = "All cross-sections share the same intercept", x="x", y="y") 
+
+
+```
+
+
+## Unit specific intercepts
+
+Now, relax the assumption the intercepts are the same; this is like the within model insofar as it removes the between variation.
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+#different intercepts 
+ggplot(predictions, aes(x = x, y = poolfit)) +
+  geom_line(color="blue") + geom_point(aes(x=x, y=fit, group=ind)) + theme_minimal() + labs(title = "Pooled Data", subtitle = "Different intercepts", x="x", y="y")
+
+``` 
+
+
+
+## Unit specific intercepts, wrong slope (Simpson's paradox)
+
+Here, by removing the between variation (via unit intercepts), we've changed the slope of the relationship. This is a form of Simpson's paradox, where the relationship within each unit is different from the pooled relationship.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+X <- X %>% mutate(ind=ind*-1, y = ind + x  + e)
+pool <- lm(y ~ x , data = X)
+#summary(pool)
+intercepts <- lm(y ~ x + as.factor(ind), data = X)
+#summary(intercepts)
+
+poolfit <- predict(pool, X)
+predictions <- data.frame(X, poolfit, predict(intercepts, interval = "confidence"))
+
+#different intercepts, wrong slope
+ggplot(predictions, aes(x = x, y = poolfit)) +
+  geom_line(color="blue") + geom_point(aes(x=x, y=fit, group=ind)) + theme_minimal() + labs(title = "Simpson's Paradox", subtitle = "Different intercepts, wrong slope", x="x", y="y")
+
+```
+
+
+## Unit specific slopes and intercepts
+
+Taking this one more step, removing the between variation may reveal different unit slopes and intercepts.
+
+```{r, warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+X <- X %>% mutate(ix = ind*x, y = 1+ 13*ind + 2*x + 1.5*ix  + e)
+slopes <- lm(y ~ x + ix + as.factor(ind) , data = X) 
+#summary(slopes)
+newpool <- lm(y ~ x , data = X)
+newpoolfit <- predict(newpool, X)
+predictions <- data.frame(X, newpoolfit, predict(slopes, interval = "confidence"))
+
+ggplot(predictions, aes(x = x, y = newpoolfit)) +
+  geom_line(color="blue") + geom_point(aes(x=x, y=fit, group=ind)) + theme_minimal() + labs(title = "Unit Specific Slopes and Intercepts", subtitle = "Different intercepts, different slopes", x="x", y="y")
+
+
+```
+
+
+<!-- ## Dummy Variables Interactions -->
+
+<!-- If this makes you think of our work on dummy variables and interactions, you're doing well (if not, please review).  -->
+
+
+<!--   - dummy variables allow groups to have different intercepts. -->
+
+<!--   - interactions allow  groups to have different slopes. -->
+
+
+<!-- Extend this logic to every panel; so each unit can have a different intercept, different slope, or both.  -->
+
+
+# Modeling in Panel data - fixed and random effects
+
+  - fixed and random effects models both seek to account for heterogeneity in the panel data, specifically for $i$ or $t$ heterogeneity. 
+ 
+  - both techniques contribute to model fit  when we have essentially exhausted the theoretically derived sources of $y$ we can include in the model.  
+  
+  - while these techniques can improve the specification of the model with respect to cross-sectional heterogeneity, they do not directly address either the heteroskedastic or autocorrelation problems, particularly the latter. 
+ 
+  - while both of these issues can (and often do) arise from model misspecification, including these cross-sectional effects does not necessarily solve either problem.
+
+
+
+## Unit Heterogeneity in Panel Data
+
+Suppose the basic regression model,
+
+
+$$y_{it}= \widehat{\beta_0} + \widehat{\beta_1} + u_{it}$$
+
+
+Suppose the residual, $u$ is comprised of two components,
+
+$$u_{it} = \mu_{i} + \epsilon_{it}$$
+
+$\epsilon$ is the random disturbance, and say it meets the Gauss-Markov assumptions; it is also uncorrelated with the $X$ variables and with the unit errors, $\mu_i$. 
+
+The unit errors, $\mu_i$, are the individual effects resulting from what we fail to account for in the model for each individual, $i$. This part of the disturbance varies between units or individuals but not within unit (so not over time - note the subscript). 
+
+**If $\mu_i$ is correlated with the $X$ variables, $\widehat{\beta}$ will be biased - this is the fixed effects model. **
+
+::: {.callout-note title="Fixed effects addresses omitted variable bias "}
+ 
+If $\mu_i$ is correlated with the $X$ variables, we have the fixed effects model. The problem we're addressing is omitted variable bias. The unobserved heterogeneity among panels appears in the error term, $\mu_i$. This suggests the problem is really about measurement and model specification - if we can measure the unit heterogeneity and include it in the model, we purge it from the error term. 
+
+:::
+
+
+This is the motivation for the fixed effects model - this is the "within model" illustrated above where we remove (or control for) the between variation. 
+
+## Fixed effects (within model)
+
+There are two general ways to estimate fixed effects models:
+
+  - LSDV (Least Squares with Dummy Variables)
+  - De-meaning the data
+  
+### LSDV
+
+If the unit specific error, $\mu_i$, is correlated with the $X$ variables, a simple way to purge that unit heterogeneity from the error term is to estimate unit specific intercepts to measure the (unmodeled) differences among units. Do this by including a dummy variable for each unit - this is called the "least squares with dummy variables" (LSDV) model. It's easy to implement and has the virtue of providing measures of cross sectional differences (in the unit intercepts), though it can be inefficient to estimate so many additional parameters.
+
+Using the state data on murder rates, here are coefficients from the LSDV model regressing murder rate on state unemployment, per capita income, and dummy variables for each state (excluding the intercept so we get the whole set of state intercepts):
+
+```{r, eval=TRUE}
+lsdv <- lm(murder ~ unemp + prcapinc +  factor(statename) -1 , data=states)
+
+```
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+#fixed effects, state data
+
+lsdv <- lm(murder ~ unemp + prcapinc +  factor(statename) -1 , data=states)
+pool <- lm(murder ~ unemp +prcapinc , data=states)
+
+# coefficients as data frame for plotting
+coefs<- data.frame(coef(summary(lsdv)))
+coefs$state <- rownames(coefs)
+coefs$state[coefs$state=="unemp"] <- ".................Unemployment"
+coefs$state[coefs$state=="prcapinc"] <- ".................Per capita income"
+coefs$state <- substr(coefs$state, 18, nchar(coefs$state))
+coefs$model <- "lsdv"
+#coefs$sig <-ifelse(coefs$`Pr...t..`<.05, 1,0)
+
+#pooled coefficients 
+pcoefs<- data.frame(coef(summary(pool)))
+pcoefs$state <- rownames(pcoefs)
+pcoefs$state[pcoefs$state=="unemp"] <- "Unemployment"
+pcoefs$state[pcoefs$state=="prcapinc"] <- "Per capita income"
+pcoefs$state[pcoefs$state=="(Intercept)"] <- "Intercept"
+pcoefs$model <- "pool"
+
+
+coefs <- rbind(coefs, pcoefs)
+coefs <- coefs %>% mutate(var= ifelse((state=="Unemployment"|state=="Per capita income"|state=="Intercept"),1, 0))
+
+## plot fixed effects ----
+
+p <- ggplot(coefs, aes(x = Estimate, y = state, label = state, color=factor(model))) +
+  geom_point(size = 1) +
+  geom_errorbarh(aes(xmin = Estimate - 1.96 * Std..Error, xmax = Estimate + 1.96 * Std..Error)) +
+  geom_text_repel(data=coefs,  size=2.5, force=5) + 
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())+
+  labs ( colour = NULL, y = "", x =  "Coefficients (Murder Rate)" ) +
+  ggtitle("Fixed Effect Estimates", subtitle = "State Intercepts") 
+
+p + scale_color_manual(values = c("red", "black")) +
+  guides(color="none")
+  
+
+
+```
+
+LSDV is inefficient, requiring that we estimate a lot of additional parameters, potentially inducing collinearity.
+
+### De-meaning
+
+An equivalent method is to de-mean the data, removing the unit means from each unit. This is the approach most software packages take to fixed effects estimation.
+
+$$y_{i}= \mathbf{X_{i}}\mathbf{\beta}+ \mathbf{Z_i}\delta+ \epsilon_{i} $$
+
+When we transform every variable in the regression by subtracting the unit-mean from each observation, you'll notice since $\mathbf{Z_i}$ is constant within individual, the mean of $\mathbf{Z_i}$ is equal to $\mathbf{Z_i}$, so these variables drop out of the regression. 
+
+$$y_{i}= \mathbf{X_{i}}\mathbf{\beta}+ \mathbf{Z_i}\delta+ \epsilon_{i}$$ 
+$$\bar{y_{i}}= \bar{\mathbf{X_{i}}}\mathbf{\beta}+ \bar{\mathbf{Z_i}\delta}+ \bar{\epsilon_{i}} $$
+
+$$y_{i}-\bar{y_{i}}= (\mathbf{X_{i}}-\bar{\mathbf{X_{i}}})\mathbf{\beta}+ (\mathbf{Z_i}-\bar{\mathbf{Z_i}})\delta+ ( \epsilon_{i} -\bar{\epsilon_{i}})$$
+
+$$  \dot{y} = \Delta   \dot{\mathbf{X}}\beta +   \Delta  \dot{\epsilon} $$
+
+In this regression, $\mathbf{X_{it}}$ are the independent variables that vary across individuals and across time, and $\mathbf{Z_i}$ are independent variables that only vary across individuals, not across time. Looking at the US state data again:
+
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+#| 
+est <- states %>% dplyr::select(statename, year, murder, unemp, prcapinc, south, hsdip)  %>%
+  rename('murder rate' = murder,
+         'unemployment rate' = unemp,
+         'p/c income' = prcapinc,
+         'hs diploma %' = hsdip) %>%
+  slice(255:275) 
+  knitr::kable(est) 
+
+
+```
+
+Notice some variables vary over unit and time, and others only over unit; the latter drop out since they are constant within unit.
+
+### De-meaning
+
+Recall in the simple linear model we have already shown that demeaning $x$ (model 2), demeaning $x$ and $y$ (model 3), both produce the same estimate for $\beta_x$ as the original model (model 1).
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+m1 <- lm(y ~ x, data = X)
+X <- X %>% mutate(ydemean = y - mean(y), xdemean = x - mean(x))
+m2 <- lm(y ~ xdemean, data = X)
+m3 <- lm(ydemean ~ xdemean, data = X)
+modelsummary(list(m1, m2, m3))
+
+```
+
+
+
+### De-meaning - US state data
+
+In panel data, suppose we transform all the variables in the model by the **panel** means - that is, we subtract the panel mean of each variable from each observation in the panel. This is called **de-meaning** the data. Below, we do this for all the variables in the state data model, and estimate by OLS. The table below compares: 
+
+  - the LSDV model, which includes dummy variables for each state. 
+  - the de-meaned model (computed by hand); subtract the unit (state) means from each observation.
+  - the de-meaned model (within model) estimated by the `plm` package in R.
+
+You'll see the estimates are the same across the three models.
+
+```{r, warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+
+states <- read_dta("/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta")
+
+est <- states %>% dplyr::select(id, year, murder, unemp, prcapinc, south, hsdip) 
+
+est <- est %>% group_by(id) %>% mutate(dmurder = murder-mean(murder, na.rm=TRUE), dunemp=unemp-mean(unemp, na.rm=TRUE), dprcapinc=prcapinc-mean(prcapinc, na.rm=TRUE), dhsdip=hsdip-mean(hsdip, na.rm=TRUE), dsouth = south-mean(south, na.rm=TRUE))
+
+#lsdv <- lm(murder ~ unemp + prcapinc +  factor(id) -1 , data=est)
+de <- lm(dmurder ~ dunemp + dprcapinc , data= est)
+
+# index=c(i,t)
+plmI <- plm::plm(murder ~ unemp + prcapinc, model="within" ,index=c("id", "year"), data=states)
+
+models<-list(
+  "LSDV" = lsdv,
+  "De-meaned (by hand)" = de,
+  "De-meaned (plm)" = plmI
+)
+
+modelsummary(models, coef_omit = 3:52, gof_map = NA, fmt=4,
+             notes = list('(State intercepts omitted.)'))
+
+
+```
+
+
+::: {.callout-note title="Your data is a mystery to your software "}
+ 
+Remember, estimation software knows **nothing** about your data. R does not know if your data are cross-sectional, time-series, panel, etc. The analyst has to identify the data structure in order to address any of these issues.
+
+For example - the excellent `plm` library **assumes** the first two columns of your data are unit and time, respectively. If they're not, R has no way of knowing. It's essential to tell R what the panel structure is - in `plm` by writing *index=c("unit", "time")*. 
+ 
+:::
+ 
+ 
+ 
+### What fixed effects do
+
+Fixed effects (whether by LSDV or demeaning) remove the unit specific effects from the error term, so that the error term is uncorrelated with the $X$ variables. $\mu_i$ is now modeled, so no longer in the error; the error now only contains $\epsilon_{i,t}. Fixed effects remove the between unit variation, leaving only the within unit variation.
+
+
+### LSDV and de-meaning are equivalent methods. 
+
+
+  - LSDV uses lots of degrees of freedom, will sometimes produce perfect collinearity among unit intercepts. However, LSDV gives estimates of every unit intercept. 
+  
+  - De-meaning (the method used in R's plm, feols, and others; Stata's "xt" suite) is efficient, doesn't estimate the intercepts. 
+  
+  - Another equivalent method is the  absorbing regression where the variables are de-meaned as above, then the overall mean of each variable is added back. The unit effects are said to be absorbed. 
+
+
+## Random Effects
+
+Recall we partitioned the residual in the panel data model into two parts: 
+
+
+$$u_{it} = \mu_{i} + \epsilon_{it}$$
+
+and we motivated the fixed effects model by saying $\mu_i$ is correlated with the $X$ variables, so amounting to an ommited variable problem. If $\mu_i$ is correlated with the $X$ variables, estimates of $\widehat{\beta}$ will be biased.
+
+The random effects model assumes $\mu_i$ is uncorrelated with the $X$ variables, so is itself a random variable in the error term - in this case, the $\widehat{\beta}s$ are not biased, but the standard errors are inefficient. Unlike fixed effects, random effects do not model $\mu_i$, but account for it in computing the standard errors, thereby addressing the inefficiency. 
+
+## Which should I use? 
+
+Some authors (e.g. @bailey2016stats) pretty strongly prefer fixed effects, in part because it's difficult to conceive of when/why $\mu_i$ would be uncorrelated with the $X$ variables, and in part because fixed effects help address endogenity issues - i.e., the case where $cov(X, \mu_i) \neq 0$. 
+
+@wooldridge2013 suggests that the random effects model can be useful where some (large) proportion of the $x$ variables are constant within unit, but vary across units - that is, they're time-invariant. These, of course, are the variables that will drop out of the fixed effects model. 
+
+### Hausman test
+
+The Hausman test is a test the equivalence of the fixed and random effects coefficient vectors. If the two are the same (we fail to reject the null), we prefer random effects; if we do reject the null (the coefficient vectors are different), we prefer fixed effects. 
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+# fixed vs random effects
+
+FE <- plm::plm(murder ~ unemp + prcapinc, model="within" ,index=c("id", "year"), data=states)
+RE <- plm::plm(murder ~ unemp + prcapinc, model="random" ,index=c("id", "year"), data=states)
+
+phtest(FE,RE)
+
+```
+
+In this case, we'd prefer the fixed effects model. Rejecting the null suggests the random effect assumption (that the error and $X$ are uncorrelated) is false. Failure to reject the null could indicate (per @wooldridge2013) there's not enough information in the data to produce precise estimates - note this is not much of an endorsement of random effects so much as a question about how much we're asking of the data.
+
+In the end, @wooldridge2013 writes, "FE is almost always much more convincing that RE for policy analysis using aggregated data." That said, we should be careful to evaluate whether the model sufficiently captures "between" effects without FE to make FE/RE unnecessary. This is also straightforward to do via F-test between the FE and pooled models. 
+
+## Cautionary Note
+
+People love fixed effects. Too much. Like anything else, these should be used in an informed and cautious way, not merely included in every panel regression. Issues to consider are:
+
+
+  - Can I measure unit/time differences better than with dummy variables?
+ 
+  - Do I have other variables in the model that only vary by $i$ or by $t$? Collinearity? 
+ 
+  - In logit etc. models with panels, any panel where $y$ is all zero will drop out of the regression. @green2001pool argue for (almost always) using fixed effects in conflict studies (panel data, binary $y$ variable). Their advice is suspect at least because the models non-randomly lose all pairs of states that never fight. 
+
+
+
+
+## Fixed Effects and Endogeneity
+
+If $cov(X, \epsilon) \neq 0$, we have an endogeneity problem. Endogeneity arises for different reasons - for our purposes here, the main thing is that the correlation of $X$ and $\epsilon$ indicates endogeneity, and we already know some of the consequences.  
+
+Fixed effects are appropriate for the case where we think the individual errors are correlated with the $X$ variables; modeling those individual errors, $\mu_i$ in any of the ways described above removes those effects from the error term, thus returning us to the blissful case where $cov(X, \epsilon)=0$. 
+
+In other words, fixed effects can serve as a (partial) solution to endogeneity. 
+
+
+## References
+
+::: {#refs}
+:::
+
+
+
+
+
+

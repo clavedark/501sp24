@@ -1,0 +1,137 @@
+---
+title: CV
+format:
+  quarto-cv-pdf: default
+author: David H. Clark
+date: last-modified
+phone: 607-777-4934
+address: "Binghamton University · Department of Political Science · Binghamton, NY 13902-6000"
+email: dclark@binghamton.edu
+fontsize: 11pt
+#fontfamily: ebgaramond-maths # default font LaTeX package https://tug.org/FontCatalogue/about.html
+#mainfont: Ubuntu # if you want to use a different locally installed font
+#CJKmainfont: Noto Sans CJK JP # locally installed Asian character font, must use with xelatex
+github: clavedark # github account
+#orcid: 0000-0002-1825-0097 # orcid identifier
+#osf: ymqui # osf five character id
+#twitter: twitter # twitter handle
+web: http://clavedark.github.io
+fontawesome: yes
+nocite: '@*'
+bibliography: 
+  peer: dc_bib.bib
+  other: other_bib.bib
+validate-yaml: false
+csl: apa-cv.csl
+---
+
+# Employment
+
+*Binghamton University*
+
+ Associate Dean for Undergraduate Studies, Harpur College of Arts and Sciences, June 2020 -- present
+ 
+ Chair, Department of Political Science, 2006 -- 2009; 2010 -- 2013; 2016 -- 2019.
+ 
+ Professor of Political Science, September 2016 -- present.
+ 
+ Director of Graduate Studies, June 2004 -- August 2006, Binghamton University.
+ 
+ Associate Professor of Political Science, Sept. 2004 --  Aug. 2016, Binghamton University.
+ 
+ Assistant Professor of Political Science, Sept. 2000 -- Aug. 2004, Binghamton University.
+
+*Cornell University*
+
+Visiting Scholar, Cornell University Department of Government, 2009 -- 2010.
+
+*University of Iowa*
+
+Visiting Assistant Professor of Political Science, 1999 -- 2000
+
+
+# Education
+
+
+
+Ph.D., 1999, Political Science \hfill Florida State University (1994--99)
+
+M.S., 1996, Political Science  \hfill Florida State University
+
+B.A., 1990, Political Science  \hfill The University of the South, Sewanee, TN
+
+# Journal Articles
+
+::: {#refs-peer}
+:::
+
+
+# Data Sets
+
+*Mass Mobilization Data Project* (sponsored by the Political Instability Task Force, CIA): data on protests against governments, global coverage, 1990-2019.
+
+  - Mass Mobilization Project Website - \url{http://www.binghamton.edu/massmobilization}
+  - Mass Mobilization Dataverse - \url{https://dataverse.harvard.edu/dataverse/MMdata}
+
+*Institutions and Elections Project* (sponsored by the Political Instability Task Force, CIA): data on political institutions, practices, and election events, global coverage, 1972-2005.
+
+IAEP Website - \url{https://www.binghamton.edu/political-science/institutions-and-elections-project.html}
+
+# Grants & Contracts
+
+  - Political Instability Task Force (Leidos/CIA), "Mass Mobilization Project" $58,000 2017-2020. 
+
+  - Political Instability Task Force (Leidos/CIA), "Mass Mobilization Project" $183,000 2014-2016. 
+
+  - Political Instability Task Force (Leidos/CIA), "Mass Mobilization Project" $37,000 Winter 2014. 
+
+  - National Science Foundation (Social and Behavioral Dimensions of National Security, Conflict, and Cooperation) "Collaborative Research: Experimental Analysis of Alternative Models of Conflict Bargaining." with Charles Holt (UVA), Timothy Nordstrom (Ole Miss), William Reed (Maryland), and Katri Sieberg (Tampere University, Finland);  $487,779, August 2009 - August 2012. [BCS #0904946]
+
+  - National Science Foundation Doctoral Dissertation Research in Political Science: "Know Then Thyself, Domestic Delegation, Information, Leadership Uncertainty and Decisions during Crisis Bargaining." (advisor for Aparna Kher) \$10,524, September 2009 - August 2010.  [SES #0921149]
+
+  - Political Instability Task Force (Science Applications International Corporation), "Institutions and Elections Project" with Pat Regan \$165,000 September 2006-August 2007
+
+  - Political Instability Task Force (Science Applications International Corporation), "Institutions and Elections Project" with Pat Regan \$133,775 January-August 2006
+
+# Edited Volumes
+
+*Emerging Methodology in the Quantitative Study of Conflict*,
+Special Issue of the \textit{Journal of Conflict Resolution}, 47(1),
+February 2003; coeditor with Patrick Regan.
+
+# Media
+
+*The Washington Post* "Biden and other Democrats forced to adapt to pro-Palestinian protests" March 18, 2024. \url{https://www.washingtonpost.com/politics/2024/03/18/biden-democrats-protesters-gaza/}
+
+*Newsweek* "The Cost-of-Living Crisis Reaches Breaking Point" April 5, 2023. \url{https://www.newsweek.com/global-cost-living-crisis-reaches-breaking-point-1792554}
+
+*The World* (PRX, NPR) ``The profile of worldwide protests.'' July 18, 2022. \url{https://theworld.org/media/2022-07-18/profile-worldwide-protests}
+
+*ARD Radio, Germany* ``Studie über Massenmobilisierung: Protest wird professioneller.'' January 21, 2022. \url{https://www.tagesschau.de/ausland/amerika/studie-massenproteste-101.html}
+
+*BBC News* ``¿'En qué se parecen (y en qué no) las protestas de Colombia a las que ocurrieron en Chile?'' May 10, 2021. \url{https://www.bbc.com/mundo/noticias-america-latina-57024834}
+
+*National Geographic* ``This expert has tracked 30 years of global protests. Here’s what he’s learned.'' January 11, 2021. \url{https://www.nationalgeographic.com/history/article/this-expert-has-tracked-30-years-of-global-protests-heres-what-hes-learned}
+
+
+# Technical Reports & Presentations
+
+"Democratic Fragility, Democratic Resistance." August 2023. PITF meeting, McLean, VA.
+
+"Instability and Mass Mobilization in 2021." January 2021, Binghamton University. Report for the Political Instability Task Force.
+
+"Protest and Repression in the COVID-19 Era." May 2020, Binghamton University. Report for the Political Instability Task Force.
+
+"Protest Dynamics in 2020." January 2020, Binghamton University. Report for the Political Instability Task Force.
+
+
+
+
+<!-- # Technical Reports -->
+
+<!-- ::: {#refs-other} -->
+<!-- ::: -->
+
+# References
+
+Available upon request.

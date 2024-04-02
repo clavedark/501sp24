@@ -25,3 +25,5 @@ title: "Slides"
 [Dummy variables and interactions](interactions24.qmd)
 
 [Limited dependent variables](limiteddv24.qmd)
+
+[Panel data](panel24.qmd)

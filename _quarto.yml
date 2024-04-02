@@ -17,7 +17,7 @@ website:
   
 format:
   html:
-    theme: cerullian
+    theme: default
     css: styles.css
     toc: true
 

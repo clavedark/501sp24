@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.551">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dave Clark">
+<meta name="dcterms.date" content="2024-04-02">
+
+<title>PLSC 501 - Spring 2024 - Panel Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">PLSC 501 - Spring 2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./slides.html"> 
+<span class="menu-text">Slides</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./syllabus24.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./code.html"> 
+<span class="menu-text">Code</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Panel Data</h1>
+                      </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author">Dave Clark </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              Binghamton University
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 2, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#panel-data" id="toc-panel-data" class="nav-link active" data-scroll-target="#panel-data">Panel Data</a>
+  <ul class="collapse">
+  <li><a href="#varying-on-space-and-time" id="toc-varying-on-space-and-time" class="nav-link" data-scroll-target="#varying-on-space-and-time">Varying on Space and Time</a></li>
+  <li><a href="#unobserved-heterogeneity" id="toc-unobserved-heterogeneity" class="nav-link" data-scroll-target="#unobserved-heterogeneity">Unobserved Heterogeneity</a></li>
+  <li><a href="#panels" id="toc-panels" class="nav-link" data-scroll-target="#panels">Panels</a></li>
+  <li><a href="#real-data" id="toc-real-data" class="nav-link" data-scroll-target="#real-data">Real data</a></li>
+  </ul></li>
+  <li><a href="#challenges-to-modeling-in-panel-data" id="toc-challenges-to-modeling-in-panel-data" class="nav-link" data-scroll-target="#challenges-to-modeling-in-panel-data">Challenges to modeling in panel data</a>
+  <ul class="collapse">
+  <li><a href="#two-dimensions" id="toc-two-dimensions" class="nav-link" data-scroll-target="#two-dimensions">Two dimensions</a></li>
+  <li><a href="#the-pooled-model" id="toc-the-pooled-model" class="nav-link" data-scroll-target="#the-pooled-model">The pooled model</a></li>
+  <li><a href="#unit-specific-intercepts" id="toc-unit-specific-intercepts" class="nav-link" data-scroll-target="#unit-specific-intercepts">Unit specific intercepts</a></li>
+  <li><a href="#unit-specific-intercepts-wrong-slope-simpsons-paradox" id="toc-unit-specific-intercepts-wrong-slope-simpsons-paradox" class="nav-link" data-scroll-target="#unit-specific-intercepts-wrong-slope-simpsons-paradox">Unit specific intercepts, wrong slope (Simpson’s paradox)</a></li>
+  <li><a href="#unit-specific-slopes-and-intercepts" id="toc-unit-specific-slopes-and-intercepts" class="nav-link" data-scroll-target="#unit-specific-slopes-and-intercepts">Unit specific slopes and intercepts</a></li>
+  </ul></li>
+  <li><a href="#modeling-in-panel-data---fixed-and-random-effects" id="toc-modeling-in-panel-data---fixed-and-random-effects" class="nav-link" data-scroll-target="#modeling-in-panel-data---fixed-and-random-effects">Modeling in Panel data - fixed and random effects</a>
+  <ul class="collapse">
+  <li><a href="#unit-heterogeneity-in-panel-data" id="toc-unit-heterogeneity-in-panel-data" class="nav-link" data-scroll-target="#unit-heterogeneity-in-panel-data">Unit Heterogeneity in Panel Data</a></li>
+  <li><a href="#fixed-effects-within-model" id="toc-fixed-effects-within-model" class="nav-link" data-scroll-target="#fixed-effects-within-model">Fixed effects (within model)</a>
+  <ul class="collapse">
+  <li><a href="#lsdv" id="toc-lsdv" class="nav-link" data-scroll-target="#lsdv">LSDV</a></li>
+  <li><a href="#de-meaning" id="toc-de-meaning" class="nav-link" data-scroll-target="#de-meaning">De-meaning</a></li>
+  <li><a href="#de-meaning-1" id="toc-de-meaning-1" class="nav-link" data-scroll-target="#de-meaning-1">De-meaning</a></li>
+  <li><a href="#de-meaning---us-state-data" id="toc-de-meaning---us-state-data" class="nav-link" data-scroll-target="#de-meaning---us-state-data">De-meaning - US state data</a></li>
+  <li><a href="#what-fixed-effects-do" id="toc-what-fixed-effects-do" class="nav-link" data-scroll-target="#what-fixed-effects-do">What fixed effects do</a></li>
+  <li><a href="#lsdv-and-de-meaning-are-equivalent-methods." id="toc-lsdv-and-de-meaning-are-equivalent-methods." class="nav-link" data-scroll-target="#lsdv-and-de-meaning-are-equivalent-methods.">LSDV and de-meaning are equivalent methods.</a></li>
+  </ul></li>
+  <li><a href="#random-effects" id="toc-random-effects" class="nav-link" data-scroll-target="#random-effects">Random Effects</a></li>
+  <li><a href="#which-should-i-use" id="toc-which-should-i-use" class="nav-link" data-scroll-target="#which-should-i-use">Which should I use?</a>
+  <ul class="collapse">
+  <li><a href="#hausman-test" id="toc-hausman-test" class="nav-link" data-scroll-target="#hausman-test">Hausman test</a></li>
+  </ul></li>
+  <li><a href="#cautionary-note" id="toc-cautionary-note" class="nav-link" data-scroll-target="#cautionary-note">Cautionary Note</a></li>
+  <li><a href="#fixed-effects-and-endogeneity" id="toc-fixed-effects-and-endogeneity" class="nav-link" data-scroll-target="#fixed-effects-and-endogeneity">Fixed Effects and Endogeneity</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+<section id="panel-data" class="level1">
+<h1>Panel Data</h1>
+<p>So far, we’ve paid little attention to the structure of the data we analyze. It’s often the case our data have two dimensions:</p>
+<ul>
+<li>space</li>
+<li>time</li>
+</ul>
+<p>Data that vary on both dimensions are known variously as panel, pooled, or cross-sectional time-series data. Panel or pooled data combine cross sections observed over time such that we observe each cross-section, each time period.</p>
+<p>The two dimensional structure of panel data creates issues and opportunities we’ll explore here.</p>
+<section id="varying-on-space-and-time" class="level2">
+<h2 class="anchored" data-anchor-id="varying-on-space-and-time">Varying on Space and Time</h2>
+<p>Models using pooled or panel data must conform to the same i.i.d. assumptions as cross sectional or time series data, but now in two dimensions. So we might have serial correlation in each of <span class="math inline">\(j\)</span> cross sections. Moreover, the cross sections may vary in unknown ways.</p>
+<p>In this lecture, I want to introduce the structure of panel data, point to the problems that arise in it, and focus on some solutions.</p>
+</section>
+<section id="unobserved-heterogeneity" class="level2">
+<h2 class="anchored" data-anchor-id="unobserved-heterogeneity">Unobserved Heterogeneity</h2>
+<p>The most common feature of pooled data is that there are unobserved effects across both space (across cross-section) and time (within cross-section), and their exclusion damages the estimates. The most common solutions to these problems are fixed and random effects. Let’s begin by thinking about the data.</p>
+</section>
+<section id="panels" class="level2">
+<h2 class="anchored" data-anchor-id="panels">Panels</h2>
+<p>Panel or pooled data have repeated observations on the same set of cross-sectional units, so the data for a each cross-section <span class="math inline">\(i\)</span> over <span class="math inline">\(t\)</span> would look like this:</p>
+<p><span class="math display">\[
+\mathbf{y_i}=
+\left[  \begin{matrix}
+y_{i1}\\
+\vdots\\
+y_{iT}  \nonumber
+\end{matrix}  \right]
+\mathbf{X_i}=
+\left[  \begin{matrix}
+X_{i1}^1 &amp; X_{i1}^2 &amp;\cdots &amp;X_{i1}^k\\
+X_{i2}^1&amp; X_{i2}^2 &amp;\cdots &amp;X_{i2}^k\\
+&amp;&amp;\vdots\\
+X_{iT}^1 &amp;X_{iT}^2 &amp;\cdots &amp; X_{iT}^k \nonumber
+\end{matrix}  \right]
+\mathbf{\epsilon_i}=
+\left[ \begin{matrix}
+\epsilon_{i1}\\
+\vdots\\
+\epsilon_{iT}  \nonumber
+\end{matrix}  \right]
+\]</span></p>
+<p>where the subscripts <span class="math inline">\(i,T\)</span> indicate the <span class="math inline">\(i^{th}\)</span> individual (cross-section) at time <span class="math inline">\(T=t\)</span>, and the superscript indicates the <span class="math inline">\(k^{th}\)</span> regressor in the matrix.</p>
+<p>Panel data is stacked by cross-sectional unit and then by time, so</p>
+<p><span class="math display">\[
+\mathbf{y}=
+\left[  \begin{matrix}
+y_{11}\\
+\vdots\\
+y_{1T} \\
+y_{21}\\
+\vdots\\
+y_{2T} \\
+\vdots\\
+y_{n1}\\
+\vdots\\
+y_{nT}\nonumber
+\end{matrix}  \right]
+\mathbf{X}=
+\left[  \begin{matrix}
+X_{11}^1 &amp; X_{11}^2 &amp;\cdots &amp;X_{11}^k\\
+X_{12}^1&amp; X_{12}^2 &amp;\cdots &amp;X_{12}^k\\
+&amp;&amp;\vdots\\
+X_{1T}^1 &amp;X_{1T}^2 &amp;\cdots &amp; X_{1T}^k \\
+X_{21}^1 &amp; X_{21}^2 &amp;\cdots &amp;X_{21}^k\\
+X_{22}^1&amp; X_{22}^2 &amp;\cdots &amp;X_{22}^k\\
+&amp;&amp;\vdots\\
+X_{2T}^1 &amp;X_{2T}^2 &amp;\cdots &amp; X_{2T}^k \\
+\vdots&amp;\vdots&amp;\vdots\\
+X_{n1}^1 &amp; X_{n1}^2 &amp;\cdots &amp;X_{n1}^k\\
+X_{n2}^1&amp; X_{n2}^2 &amp;\cdots &amp;X_{n2}^k\\
+&amp;&amp;\vdots\\
+X_{nT}^1 &amp;X_{nT}^2 &amp;\cdots &amp; X_{nT}^k \nonumber
+\end{matrix}  \right]
+\mathbf{\epsilon_i}=
+\left[ \begin{matrix}
+\epsilon_{11}\\
+\vdots\\
+\epsilon_{1T} \\
+\epsilon_{21}\\
+\vdots\\
+\epsilon_{2T} \\
+\vdots\\
+\epsilon_{n1}\\
+\vdots\\
+\epsilon_{nT}\nonumber
+\end{matrix}  \right]
+\]</span></p>
+</section>
+<section id="real-data" class="level2">
+<h2 class="anchored" data-anchor-id="real-data">Real data</h2>
+<p>Here is an example of panel data, the US states over the years 1975-1993. The data contain measures of various crime rates, unemployment, per capita income, and other characteristics of the US states.</p>
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(statename, year, murder, unemp, prcapinc, south, hsdip)  <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">'murder rate'</span> <span class="ot">=</span> murder,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">'unemployment rate'</span> <span class="ot">=</span> unemp,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">'p/c income'</span> <span class="ot">=</span> prcapinc,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">'hs diploma %'</span> <span class="ot">=</span> hsdip) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">25</span>) </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(est) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 6%">
+<col style="width: 16%">
+<col style="width: 24%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">statename</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">murder rate</th>
+<th style="text-align: right;">unemployment rate</th>
+<th style="text-align: right;">p/c income</th>
+<th style="text-align: right;">south</th>
+<th style="text-align: right;">hs diploma %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">9.4</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">10130.540</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">9.8</td>
+<td style="text-align: right;">8.9</td>
+<td style="text-align: right;">10505.100</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">10.1</td>
+<td style="text-align: right;">9.8</td>
+<td style="text-align: right;">11405.080</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">9.3</td>
+<td style="text-align: right;">7.8</td>
+<td style="text-align: right;">12100.640</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">9.9</td>
+<td style="text-align: right;">7.2</td>
+<td style="text-align: right;">12983.180</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">10.2</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">14252.850</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">11.6</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">14867.610</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">11.5</td>
+<td style="text-align: right;">7.2</td>
+<td style="text-align: right;">15667.160</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">11.0</td>
+<td style="text-align: right;">7.3</td>
+<td style="text-align: right;">16610.750</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">11.6</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">17211.670</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">12.2</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">9813.514</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">86.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: right;">11.3</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">10665.820</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">86.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">10.8</td>
+<td style="text-align: right;">9.4</td>
+<td style="text-align: right;">9674.242</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">86.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">12.9</td>
+<td style="text-align: right;">11.2</td>
+<td style="text-align: right;">10947.630</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">86.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">13.3</td>
+<td style="text-align: right;">9.2</td>
+<td style="text-align: right;">11422.890</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">86.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">9.7</td>
+<td style="text-align: right;">9.5</td>
+<td style="text-align: right;">12565.000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">86.6</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="challenges-to-modeling-in-panel-data" class="level1">
+<h1>Challenges to modeling in panel data</h1>
+<p>As usual, the model will produce a vector of coefficients, <span class="math inline">\(\beta_{(1,k)}\)</span>. We could simply stack these data as illustrated above and estimate an OLS model, effectively ignoring the panel nature of the data. If we do so, we are assuming the model conforms to the GM assumptions, and specifically that the errors are identically and independently distributed across panels,</p>
+<p><span class="math display">\[
+\epsilon_{it} \sim iid(0, \sigma^2) \nonumber
+\]</span></p>
+<p>This means that for any cross-section, the errors are not correlated, and that the errors are constant both across time (within individual) and across individuals.</p>
+<p>If this were true, it would not really matter how we stacked the data, because none of the observations would be related to one another.</p>
+<p>With panel data, it’s difficult to believe the errors are i.i.d. in the pooled OLS model.</p>
+<section id="two-dimensions" class="level2">
+<h2 class="anchored" data-anchor-id="two-dimensions">Two dimensions</h2>
+<p>Panel data have space (cross-section or unit) and time dimensions. Differences among cross-sections produce “between” variation, while differences over time create “within” variation.</p>
+<p>Imagine that the cross-sectional or between variation has a different relationship to <span class="math inline">\(y\)</span> than does the time-wise or within variation. The panel heterogeneity in this case is both two-dimensional and complex.</p>
+<p>Here are data on the US states over the years 1975-1993 - let’s look at the murder rate per 100,000 as it relates to assaults per 100,000 population. First, let’s just look at the pooled model, ignoring the panel structure; that is, we’re just using OLS on the panel data.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pooled model </span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>states, <span class="fu">aes</span>(<span class="at">x=</span>assault, <span class="at">y=</span>murder)) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">guides</span>(<span class="at">color =</span> <span class="cn">FALSE</span>, <span class="at">label =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_color_manual(values = c('black','blue','red','purple')) + </span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">label =</span> <span class="cn">NULL</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Assaults per 100,000"</span>, <span class="at">y=</span><span class="st">"Murders per 100,000"</span>)<span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Pooled model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="panel24_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now, let’s define the two parts of the variation in panel data:</p>
+<ul>
+<li><p><em>between</em> - refers to variation between units, but removing any timewise (within unit) differences; we might do this by taking the means of variables for each state. In the example below, you can see that between US states, the relationship between assault and murder is positive.</p></li>
+<li><p><em>within</em> - refers to the variation over time within each unit, removing any differences among units; we can remove the between variation by taking means of variables over time. Below, you can see that within states (so over time), the relationship between assault and murder is negative.</p></li>
+</ul>
+<p>The two panels below, again using murder and assault rates, break the within and between dimensions apart. The left panel is the <em>between</em> variation removing all the within variation; it’s the relationship of the unit means - i.e., the state mean of murder regressed on the state mean of assault (as if these were cross-sectional data). The right panel is the <em>within</em> variation, removing the between variation, the relationship of the year-means of murder and assault ignoring the cross-sectional differences.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># between removing all within variation </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>xstates <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(statename) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">bmurder=</span><span class="fu">mean</span>(murder, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">bassault=</span><span class="fu">mean</span>(assault, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>xstates, <span class="fu">aes</span>(<span class="at">x=</span>bassault, <span class="at">y=</span>bmurder)) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># guides(color = FALSE) + </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_color_manual(values = c('black','blue','red','purple')) + </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">label =</span> <span class="cn">NULL</span>), <span class="at">se =</span> <span class="cn">FALSE</span>)<span class="sc">+</span>    </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span>statename),<span class="at">size=</span><span class="fl">2.5</span>, <span class="at">force=</span><span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Assaults per 100,000"</span>, <span class="at">y=</span><span class="st">"Murders per 100,000"</span>)<span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Between model"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># within removing all between</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>tstates <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">wmurder=</span><span class="fu">mean</span>(murder, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">wassault=</span><span class="fu">mean</span>(assault, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>tstates, <span class="fu">aes</span>(<span class="at">x=</span>wassault, <span class="at">y=</span>wmurder)) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># guides(color = FALSE) + </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_color_manual(values = c('black','blue','red','purple')) + </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">label =</span> <span class="cn">NULL</span>), <span class="at">se =</span> <span class="cn">FALSE</span>)<span class="sc">+</span>    </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span>year),<span class="at">size=</span><span class="fl">2.5</span>, <span class="at">force=</span><span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Assaults per 100,000"</span>, <span class="at">y=</span><span class="st">"Murders per 100,000"</span>)<span class="sc">+</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Within model"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>b <span class="sc">+</span> w  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="panel24_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The <em>between</em> relationship is positive; the <em>within</em> relationship is negative, illustrating the importance of thinking about the dimensionality of panel data. The unobserved heterogeneity in these two dimensions can produce some interesting possibilities.</p>
+</section>
+<section id="the-pooled-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-pooled-model">The pooled model</h2>
+<p>Simulating data, here again is the pooled model, ignoring unit or timewise heterogeneity, so assuming all share the same intercept and slope.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">5</span>, <span class="at">ncol =</span> <span class="dv">0</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> X <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ind =</span> <span class="fu">row_number</span>()<span class="sc">*</span><span class="dv">10</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>expand_r <span class="ot">&lt;-</span> <span class="cf">function</span>(df, ...) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(<span class="fu">lapply</span>(df, rep, ...))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">expand_r</span>(X, <span class="at">times =</span> <span class="dv">4</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ind=</span> <span class="fu">sort</span>(X<span class="sc">$</span>ind)) </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> X <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">x=</span> <span class="fu">row_number</span>(), <span class="at">e=</span><span class="fu">rnorm</span>(<span class="fu">nrow</span>(X)))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> X <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">y =</span> ind <span class="sc">+</span> x  <span class="sc">+</span> e)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>pool <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x , <span class="at">data =</span> X) </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(pool)</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>intercepts <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">as.factor</span>(ind), <span class="at">data =</span> X) </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(intercepts)</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>poolfit <span class="ot">&lt;-</span> <span class="fu">predict</span>(pool, X)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X, poolfit, <span class="fu">predict</span>(intercepts, <span class="at">interval =</span> <span class="st">"confidence"</span>))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#shared intercept</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predictions, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> poolfit)) <span class="sc">+</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">"blue"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Pooled Data"</span>, <span class="at">subtitle =</span> <span class="st">"All cross-sections share the same intercept"</span>, <span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="panel24_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="unit-specific-intercepts" class="level2">
+<h2 class="anchored" data-anchor-id="unit-specific-intercepts">Unit specific intercepts</h2>
+<p>Now, relax the assumption the intercepts are the same; this is like the within model insofar as it removes the between variation.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#different intercepts </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predictions, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> poolfit)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">"blue"</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>fit, <span class="at">group=</span>ind)) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Pooled Data"</span>, <span class="at">subtitle =</span> <span class="st">"Different intercepts"</span>, <span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="panel24_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="unit-specific-intercepts-wrong-slope-simpsons-paradox" class="level2">
+<h2 class="anchored" data-anchor-id="unit-specific-intercepts-wrong-slope-simpsons-paradox">Unit specific intercepts, wrong slope (Simpson’s paradox)</h2>
+<p>Here, by removing the between variation (via unit intercepts), we’ve changed the slope of the relationship. This is a form of Simpson’s paradox, where the relationship within each unit is different from the pooled relationship.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> X <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ind=</span>ind<span class="sc">*-</span><span class="dv">1</span>, <span class="at">y =</span> ind <span class="sc">+</span> x  <span class="sc">+</span> e)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pool <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x , <span class="at">data =</span> X)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(pool)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>intercepts <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">as.factor</span>(ind), <span class="at">data =</span> X)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(intercepts)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>poolfit <span class="ot">&lt;-</span> <span class="fu">predict</span>(pool, X)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X, poolfit, <span class="fu">predict</span>(intercepts, <span class="at">interval =</span> <span class="st">"confidence"</span>))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#different intercepts, wrong slope</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predictions, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> poolfit)) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">"blue"</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>fit, <span class="at">group=</span>ind)) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Simpson's Paradox"</span>, <span class="at">subtitle =</span> <span class="st">"Different intercepts, wrong slope"</span>, <span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="panel24_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="unit-specific-slopes-and-intercepts" class="level2">
+<h2 class="anchored" data-anchor-id="unit-specific-slopes-and-intercepts">Unit specific slopes and intercepts</h2>
+<p>Taking this one more step, removing the between variation may reveal different unit slopes and intercepts.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> X <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ix =</span> ind<span class="sc">*</span>x, <span class="at">y =</span> <span class="dv">1</span><span class="sc">+</span> <span class="dv">13</span><span class="sc">*</span>ind <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fl">1.5</span><span class="sc">*</span>ix  <span class="sc">+</span> e)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> ix <span class="sc">+</span> <span class="fu">as.factor</span>(ind) , <span class="at">data =</span> X) </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(slopes)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>newpool <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x , <span class="at">data =</span> X)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>newpoolfit <span class="ot">&lt;-</span> <span class="fu">predict</span>(newpool, X)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X, newpoolfit, <span class="fu">predict</span>(slopes, <span class="at">interval =</span> <span class="st">"confidence"</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predictions, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> newpoolfit)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">"blue"</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>fit, <span class="at">group=</span>ind)) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unit Specific Slopes and Intercepts"</span>, <span class="at">subtitle =</span> <span class="st">"Different intercepts, different slopes"</span>, <span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="panel24_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Dummy Variables Interactions -->
+<!-- If this makes you think of our work on dummy variables and interactions, you're doing well (if not, please review).  -->
+<!--   - dummy variables allow groups to have different intercepts. -->
+<!--   - interactions allow  groups to have different slopes. -->
+<!-- Extend this logic to every panel; so each unit can have a different intercept, different slope, or both.  -->
+</section>
+</section>
+<section id="modeling-in-panel-data---fixed-and-random-effects" class="level1">
+<h1>Modeling in Panel data - fixed and random effects</h1>
+<ul>
+<li><p>fixed and random effects models both seek to account for heterogeneity in the panel data, specifically for <span class="math inline">\(i\)</span> or <span class="math inline">\(t\)</span> heterogeneity.</p></li>
+<li><p>both techniques contribute to model fit when we have essentially exhausted the theoretically derived sources of <span class="math inline">\(y\)</span> we can include in the model.</p></li>
+<li><p>while these techniques can improve the specification of the model with respect to cross-sectional heterogeneity, they do not directly address either the heteroskedastic or autocorrelation problems, particularly the latter.</p></li>
+<li><p>while both of these issues can (and often do) arise from model misspecification, including these cross-sectional effects does not necessarily solve either problem.</p></li>
+</ul>
+<section id="unit-heterogeneity-in-panel-data" class="level2">
+<h2 class="anchored" data-anchor-id="unit-heterogeneity-in-panel-data">Unit Heterogeneity in Panel Data</h2>
+<p>Suppose the basic regression model,</p>
+<p><span class="math display">\[y_{it}= \widehat{\beta_0} + \widehat{\beta_1} + u_{it}\]</span></p>
+<p>Suppose the residual, <span class="math inline">\(u\)</span> is comprised of two components,</p>
+<p><span class="math display">\[u_{it} = \mu_{i} + \epsilon_{it}\]</span></p>
+<p><span class="math inline">\(\epsilon\)</span> is the random disturbance, and say it meets the Gauss-Markov assumptions; it is also uncorrelated with the <span class="math inline">\(X\)</span> variables and with the unit errors, <span class="math inline">\(\mu_i\)</span>.</p>
+<p>The unit errors, <span class="math inline">\(\mu_i\)</span>, are the individual effects resulting from what we fail to account for in the model for each individual, <span class="math inline">\(i\)</span>. This part of the disturbance varies between units or individuals but not within unit (so not over time - note the subscript).</p>
+<p><strong>If <span class="math inline">\(\mu_i\)</span> is correlated with the <span class="math inline">\(X\)</span> variables, <span class="math inline">\(\widehat{\beta}\)</span> will be biased - this is the fixed effects model. </strong></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Fixed effects addresses omitted variable bias ">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Fixed effects addresses omitted variable bias
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(\mu_i\)</span> is correlated with the <span class="math inline">\(X\)</span> variables, we have the fixed effects model. The problem we’re addressing is omitted variable bias. The unobserved heterogeneity among panels appears in the error term, <span class="math inline">\(\mu_i\)</span>. This suggests the problem is really about measurement and model specification - if we can measure the unit heterogeneity and include it in the model, we purge it from the error term.</p>
+</div>
+</div>
+<p>This is the motivation for the fixed effects model - this is the “within model” illustrated above where we remove (or control for) the between variation.</p>
+</section>
+<section id="fixed-effects-within-model" class="level2">
+<h2 class="anchored" data-anchor-id="fixed-effects-within-model">Fixed effects (within model)</h2>
+<p>There are two general ways to estimate fixed effects models:</p>
+<ul>
+<li>LSDV (Least Squares with Dummy Variables)</li>
+<li>De-meaning the data</li>
+</ul>
+<section id="lsdv" class="level3">
+<h3 class="anchored" data-anchor-id="lsdv">LSDV</h3>
+<p>If the unit specific error, <span class="math inline">\(\mu_i\)</span>, is correlated with the <span class="math inline">\(X\)</span> variables, a simple way to purge that unit heterogeneity from the error term is to estimate unit specific intercepts to measure the (unmodeled) differences among units. Do this by including a dummy variable for each unit - this is called the “least squares with dummy variables” (LSDV) model. It’s easy to implement and has the virtue of providing measures of cross sectional differences (in the unit intercepts), though it can be inefficient to estimate so many additional parameters.</p>
+<p>Using the state data on murder rates, here are coefficients from the LSDV model regressing murder rate on state unemployment, per capita income, and dummy variables for each state (excluding the intercept so we get the whole set of state intercepts):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lsdv <span class="ot">&lt;-</span> <span class="fu">lm</span>(murder <span class="sc">~</span> unemp <span class="sc">+</span> prcapinc <span class="sc">+</span>  <span class="fu">factor</span>(statename) <span class="sc">-</span><span class="dv">1</span> , <span class="at">data=</span>states)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fixed effects, state data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lsdv <span class="ot">&lt;-</span> <span class="fu">lm</span>(murder <span class="sc">~</span> unemp <span class="sc">+</span> prcapinc <span class="sc">+</span>  <span class="fu">factor</span>(statename) <span class="sc">-</span><span class="dv">1</span> , <span class="at">data=</span>states)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>pool <span class="ot">&lt;-</span> <span class="fu">lm</span>(murder <span class="sc">~</span> unemp <span class="sc">+</span>prcapinc , <span class="at">data=</span>states)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients as data frame for plotting</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>coefs<span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(lsdv)))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>coefs<span class="sc">$</span>state <span class="ot">&lt;-</span> <span class="fu">rownames</span>(coefs)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>coefs<span class="sc">$</span>state[coefs<span class="sc">$</span>state<span class="sc">==</span><span class="st">"unemp"</span>] <span class="ot">&lt;-</span> <span class="st">".................Unemployment"</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>coefs<span class="sc">$</span>state[coefs<span class="sc">$</span>state<span class="sc">==</span><span class="st">"prcapinc"</span>] <span class="ot">&lt;-</span> <span class="st">".................Per capita income"</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>coefs<span class="sc">$</span>state <span class="ot">&lt;-</span> <span class="fu">substr</span>(coefs<span class="sc">$</span>state, <span class="dv">18</span>, <span class="fu">nchar</span>(coefs<span class="sc">$</span>state))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>coefs<span class="sc">$</span>model <span class="ot">&lt;-</span> <span class="st">"lsdv"</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#coefs$sig &lt;-ifelse(coefs$`Pr...t..`&lt;.05, 1,0)</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#pooled coefficients </span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>pcoefs<span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(pool)))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>pcoefs<span class="sc">$</span>state <span class="ot">&lt;-</span> <span class="fu">rownames</span>(pcoefs)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>pcoefs<span class="sc">$</span>state[pcoefs<span class="sc">$</span>state<span class="sc">==</span><span class="st">"unemp"</span>] <span class="ot">&lt;-</span> <span class="st">"Unemployment"</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>pcoefs<span class="sc">$</span>state[pcoefs<span class="sc">$</span>state<span class="sc">==</span><span class="st">"prcapinc"</span>] <span class="ot">&lt;-</span> <span class="st">"Per capita income"</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>pcoefs<span class="sc">$</span>state[pcoefs<span class="sc">$</span>state<span class="sc">==</span><span class="st">"(Intercept)"</span>] <span class="ot">&lt;-</span> <span class="st">"Intercept"</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>pcoefs<span class="sc">$</span>model <span class="ot">&lt;-</span> <span class="st">"pool"</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>coefs <span class="ot">&lt;-</span> <span class="fu">rbind</span>(coefs, pcoefs)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>coefs <span class="ot">&lt;-</span> coefs <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">var=</span> <span class="fu">ifelse</span>((state<span class="sc">==</span><span class="st">"Unemployment"</span><span class="sc">|</span>state<span class="sc">==</span><span class="st">"Per capita income"</span><span class="sc">|</span>state<span class="sc">==</span><span class="st">"Intercept"</span>),<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="do">## plot fixed effects ----</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(coefs, <span class="fu">aes</span>(<span class="at">x =</span> Estimate, <span class="at">y =</span> state, <span class="at">label =</span> state, <span class="at">color=</span><span class="fu">factor</span>(model))) <span class="sc">+</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbarh</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> Estimate <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> Std..Error, <span class="at">xmax =</span> Estimate <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> Std..Error)) <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data=</span>coefs,  <span class="at">size=</span><span class="fl">2.5</span>, <span class="at">force=</span><span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span> ( <span class="at">colour =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">""</span>, <span class="at">x =</span>  <span class="st">"Coefficients (Murder Rate)"</span> ) <span class="sc">+</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Fixed Effect Estimates"</span>, <span class="at">subtitle =</span> <span class="st">"State Intercepts"</span>) </span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"black"</span>)) <span class="sc">+</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="panel24_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>LSDV is inefficient, requiring that we estimate a lot of additional parameters, potentially inducing collinearity.</p>
+</section>
+<section id="de-meaning" class="level3">
+<h3 class="anchored" data-anchor-id="de-meaning">De-meaning</h3>
+<p>An equivalent method is to de-mean the data, removing the unit means from each unit. This is the approach most software packages take to fixed effects estimation.</p>
+<p><span class="math display">\[y_{i}= \mathbf{X_{i}}\mathbf{\beta}+ \mathbf{Z_i}\delta+ \epsilon_{i} \]</span></p>
+<p>When we transform every variable in the regression by subtracting the unit-mean from each observation, you’ll notice since <span class="math inline">\(\mathbf{Z_i}\)</span> is constant within individual, the mean of <span class="math inline">\(\mathbf{Z_i}\)</span> is equal to <span class="math inline">\(\mathbf{Z_i}\)</span>, so these variables drop out of the regression.</p>
+<p><span class="math display">\[y_{i}= \mathbf{X_{i}}\mathbf{\beta}+ \mathbf{Z_i}\delta+ \epsilon_{i}\]</span> <span class="math display">\[\bar{y_{i}}= \bar{\mathbf{X_{i}}}\mathbf{\beta}+ \bar{\mathbf{Z_i}\delta}+ \bar{\epsilon_{i}} \]</span></p>
+<p><span class="math display">\[y_{i}-\bar{y_{i}}= (\mathbf{X_{i}}-\bar{\mathbf{X_{i}}})\mathbf{\beta}+ (\mathbf{Z_i}-\bar{\mathbf{Z_i}})\delta+ ( \epsilon_{i} -\bar{\epsilon_{i}})\]</span></p>
+<p><span class="math display">\[  \dot{y} = \Delta   \dot{\mathbf{X}}\beta +   \Delta  \dot{\epsilon} \]</span></p>
+<p>In this regression, <span class="math inline">\(\mathbf{X_{it}}\)</span> are the independent variables that vary across individuals and across time, and <span class="math inline">\(\mathbf{Z_i}\)</span> are independent variables that only vary across individuals, not across time. Looking at the US state data again:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(statename, year, murder, unemp, prcapinc, south, hsdip)  <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">'murder rate'</span> <span class="ot">=</span> murder,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">'unemployment rate'</span> <span class="ot">=</span> unemp,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">'p/c income'</span> <span class="ot">=</span> prcapinc,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">'hs diploma %'</span> <span class="ot">=</span> hsdip) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">255</span><span class="sc">:</span><span class="dv">275</span>) </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(est) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 6%">
+<col style="width: 16%">
+<col style="width: 24%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">statename</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">murder rate</th>
+<th style="text-align: right;">unemployment rate</th>
+<th style="text-align: right;">p/c income</th>
+<th style="text-align: right;">south</th>
+<th style="text-align: right;">hs diploma %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">6.5</td>
+<td style="text-align: right;">11.9</td>
+<td style="text-align: right;">9947.301</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">5.2</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">9943.196</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">5.5</td>
+<td style="text-align: right;">8.6</td>
+<td style="text-align: right;">11823.890</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">5.8</td>
+<td style="text-align: right;">7.9</td>
+<td style="text-align: right;">12408.550</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">13158.820</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">5.6</td>
+<td style="text-align: right;">6.4</td>
+<td style="text-align: right;">13964.920</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">6.4</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">15066.420</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">6.3</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">16598.301</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">6.2</td>
+<td style="text-align: right;">5.3</td>
+<td style="text-align: right;">16827.561</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">5.9</td>
+<td style="text-align: right;">17281.820</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">6.5</td>
+<td style="text-align: right;">18478.590</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indiana</td>
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">5.3</td>
+<td style="text-align: right;">19222.221</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">75.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">5978.479</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1976</td>
+<td style="text-align: right;">2.3</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">6135.675</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">2.3</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">7025.738</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">7713.258</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">2.2</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">8821.049</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">2.2</td>
+<td style="text-align: right;">5.7</td>
+<td style="text-align: right;">9521.620</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">6.9</td>
+<td style="text-align: right;">10592.870</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">2.3</td>
+<td style="text-align: right;">8.5</td>
+<td style="text-align: right;">10899.480</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">2.3</td>
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">10738.530</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">80.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Notice some variables vary over unit and time, and others only over unit; the latter drop out since they are constant within unit.</p>
+</section>
+<section id="de-meaning-1" class="level3">
+<h3 class="anchored" data-anchor-id="de-meaning-1">De-meaning</h3>
+<p>Recall in the simple linear model we have already shown that demeaning <span class="math inline">\(x\)</span> (model 2), demeaning <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> (model 3), both produce the same estimate for <span class="math inline">\(\beta_x\)</span> as the original model (model 1).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> X)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> X <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ydemean =</span> y <span class="sc">-</span> <span class="fu">mean</span>(y), <span class="at">xdemean =</span> x <span class="sc">-</span> <span class="fu">mean</span>(x))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> xdemean, <span class="at">data =</span> X)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(ydemean <span class="sc">~</span> xdemean, <span class="at">data =</span> X)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(m1, m2, m3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+ 
+
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tinytable_08gpukg40cinmpvalump</title>
+    <style>
+.table td.tinytable_css_5f7tkeoe3dgar39ht1b5, .table th.tinytable_css_5f7tkeoe3dgar39ht1b5 {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_1j78tv4uboks0ql6os6m, .table th.tinytable_css_1j78tv4uboks0ql6os6m {    text-align: left; }
+.table td.tinytable_css_er13jvi57exsflbbqefu, .table th.tinytable_css_er13jvi57exsflbbqefu {    text-align: center; }
+.table td.tinytable_css_srd8d95g8g2d7ttlyd6k, .table th.tinytable_css_srd8d95g8g2d7ttlyd6k {    text-align: center; }
+.table td.tinytable_css_lwcmzaca1w3vqjhsak2e, .table th.tinytable_css_lwcmzaca1w3vqjhsak2e {    text-align: center; }
+.table td.tinytable_css_o87ugrcs9680n1y6xet8, .table th.tinytable_css_o87ugrcs9680n1y6xet8 {    border-bottom: solid 0.05em black; }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+  
+
+  
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_08gpukg40cinmpvalump" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+                <th scope="col">(2)</th>
+                <th scope="col">(3)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>217.973 </td>
+                  <td>-960.351</td>
+                  <td>0.000   </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(63.753)</td>
+                  <td>(30.688)</td>
+                  <td>(30.688)</td>
+                </tr>
+                <tr>
+                  <td>x          </td>
+                  <td>-112.221</td>
+                  <td>        </td>
+                  <td>        </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(5.322) </td>
+                  <td>        </td>
+                  <td>        </td>
+                </tr>
+                <tr>
+                  <td>xdemean    </td>
+                  <td>        </td>
+                  <td>-112.221</td>
+                  <td>-112.221</td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>        </td>
+                  <td>(5.322) </td>
+                  <td>(5.322) </td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>20      </td>
+                  <td>20      </td>
+                  <td>20      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.961   </td>
+                  <td>0.961   </td>
+                  <td>0.961   </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.959   </td>
+                  <td>0.959   </td>
+                  <td>0.959   </td>
+                </tr>
+                <tr>
+                  <td>AIC        </td>
+                  <td>257.5   </td>
+                  <td>257.5   </td>
+                  <td>257.5   </td>
+                </tr>
+                <tr>
+                  <td>BIC        </td>
+                  <td>260.5   </td>
+                  <td>260.5   </td>
+                  <td>260.5   </td>
+                </tr>
+                <tr>
+                  <td>Log.Lik.   </td>
+                  <td>-125.760</td>
+                  <td>-125.760</td>
+                  <td>-125.760</td>
+                </tr>
+                <tr>
+                  <td>F          </td>
+                  <td>444.633 </td>
+                  <td>444.633 </td>
+                  <td>444.633 </td>
+                </tr>
+                <tr>
+                  <td>RMSE       </td>
+                  <td>130.20  </td>
+                  <td>130.20  </td>
+                  <td>130.20  </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function styleCell_tinytable_fbh516q5a8df3i5y0xq3(i, j, css_id) {
+        var table = document.getElementById("tinytable_08gpukg40cinmpvalump");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_08gpukg40cinmpvalump');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_fbh516q5a8df3i5y0xq3(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_08gpukg40cinmpvalump");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 0, 'tinytable_css_5f7tkeoe3dgar39ht1b5') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 1, 'tinytable_css_5f7tkeoe3dgar39ht1b5') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 2, 'tinytable_css_5f7tkeoe3dgar39ht1b5') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 3, 'tinytable_css_5f7tkeoe3dgar39ht1b5') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(1, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(2, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(3, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(4, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(5, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(7, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(8, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(9, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(10, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(11, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(12, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(13, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(14, 0, 'tinytable_css_1j78tv4uboks0ql6os6m') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(1, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(2, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(3, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(4, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(5, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(7, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(8, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(9, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(10, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(11, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(12, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(13, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(14, 1, 'tinytable_css_er13jvi57exsflbbqefu') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(1, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(2, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(3, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(4, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(5, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(7, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(8, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(9, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(10, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(11, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(12, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(13, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(14, 2, 'tinytable_css_srd8d95g8g2d7ttlyd6k') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(0, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(1, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(2, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(3, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(4, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(5, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(7, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(8, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(9, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(10, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(11, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(12, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(13, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(14, 3, 'tinytable_css_lwcmzaca1w3vqjhsak2e') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 0, 'tinytable_css_o87ugrcs9680n1y6xet8') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 1, 'tinytable_css_o87ugrcs9680n1y6xet8') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 2, 'tinytable_css_o87ugrcs9680n1y6xet8') })
+window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i5y0xq3(6, 3, 'tinytable_css_o87ugrcs9680n1y6xet8') })
+    </script>
+
+  
+
+
+</div>
+</div>
+</section>
+<section id="de-meaning---us-state-data" class="level3">
+<h3 class="anchored" data-anchor-id="de-meaning---us-state-data">De-meaning - US state data</h3>
+<p>In panel data, suppose we transform all the variables in the model by the <strong>panel</strong> means - that is, we subtract the panel mean of each variable from each observation in the panel. This is called <strong>de-meaning</strong> the data. Below, we do this for all the variables in the state data model, and estimate by OLS. The table below compares:</p>
+<ul>
+<li>the LSDV model, which includes dummy variables for each state.</li>
+<li>the de-meaned model (computed by hand); subtract the unit (state) means from each observation.</li>
+<li>the de-meaned model (within model) estimated by the <code>plm</code> package in R.</li>
+</ul>
+<p>You’ll see the estimates are the same across the three models.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(id, year, murder, unemp, prcapinc, south, hsdip) </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> est <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">dmurder =</span> murder<span class="sc">-</span><span class="fu">mean</span>(murder, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">dunemp=</span>unemp<span class="sc">-</span><span class="fu">mean</span>(unemp, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">dprcapinc=</span>prcapinc<span class="sc">-</span><span class="fu">mean</span>(prcapinc, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">dhsdip=</span>hsdip<span class="sc">-</span><span class="fu">mean</span>(hsdip, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">dsouth =</span> south<span class="sc">-</span><span class="fu">mean</span>(south, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#lsdv &lt;- lm(murder ~ unemp + prcapinc +  factor(id) -1 , data=est)</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>de <span class="ot">&lt;-</span> <span class="fu">lm</span>(dmurder <span class="sc">~</span> dunemp <span class="sc">+</span> dprcapinc , <span class="at">data=</span> est)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># index=c(i,t)</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plmI <span class="ot">&lt;-</span> plm<span class="sc">::</span><span class="fu">plm</span>(murder <span class="sc">~</span> unemp <span class="sc">+</span> prcapinc, <span class="at">model=</span><span class="st">"within"</span> ,<span class="at">index=</span><span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"year"</span>), <span class="at">data=</span>states)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>models<span class="ot">&lt;-</span><span class="fu">list</span>(</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"LSDV"</span> <span class="ot">=</span> lsdv,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De-meaned (by hand)"</span> <span class="ot">=</span> de,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De-meaned (plm)"</span> <span class="ot">=</span> plmI</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(models, <span class="at">coef_omit =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">52</span>, <span class="at">gof_map =</span> <span class="cn">NA</span>, <span class="at">fmt=</span><span class="dv">4</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">notes =</span> <span class="fu">list</span>(<span class="st">'(State intercepts omitted.)'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+ 
+
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tinytable_w8td0zxe75hhagi0jp3w</title>
+    <style>
+.table td.tinytable_css_i5ag57pyk437v4evgtmc, .table th.tinytable_css_i5ag57pyk437v4evgtmc {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_zvyapa6xnsgxshr5abuc, .table th.tinytable_css_zvyapa6xnsgxshr5abuc {    text-align: left; }
+.table td.tinytable_css_5vqs1lr7g88o5fhqgrh3, .table th.tinytable_css_5vqs1lr7g88o5fhqgrh3 {    text-align: center; }
+.table td.tinytable_css_fnjux1z807ipqjuzu3ue, .table th.tinytable_css_fnjux1z807ipqjuzu3ue {    text-align: center; }
+.table td.tinytable_css_cgtnm7fgydhj40g8m1n2, .table th.tinytable_css_cgtnm7fgydhj40g8m1n2 {    text-align: center; }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+  
+
+  
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_w8td0zxe75hhagi0jp3w" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">LSDV</th>
+                <th scope="col">De-meaned (by hand)</th>
+                <th scope="col">De-meaned (plm)</th>
+              </tr>
+        </thead>
+        <tfoot><tr><td colspan="4">(State intercepts omitted.)</td></tr></tfoot>
+        <tbody>
+                <tr>
+                  <td>unemp      </td>
+                  <td>-0.1422 </td>
+                  <td>        </td>
+                  <td>-0.1422 </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.0261)</td>
+                  <td>        </td>
+                  <td>(0.0261)</td>
+                </tr>
+                <tr>
+                  <td>prcapinc   </td>
+                  <td>-0.0001 </td>
+                  <td>        </td>
+                  <td>-0.0001 </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.0000)</td>
+                  <td>        </td>
+                  <td>(0.0000)</td>
+                </tr>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>        </td>
+                  <td>0.0000  </td>
+                  <td>        </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>        </td>
+                  <td>(0.0414)</td>
+                  <td>        </td>
+                </tr>
+                <tr>
+                  <td>dunemp     </td>
+                  <td>        </td>
+                  <td>-0.1422 </td>
+                  <td>        </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>        </td>
+                  <td>(0.0254)</td>
+                  <td>        </td>
+                </tr>
+                <tr>
+                  <td>dprcapinc  </td>
+                  <td>        </td>
+                  <td>-0.0001 </td>
+                  <td>        </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>        </td>
+                  <td>(0.0000)</td>
+                  <td>        </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function styleCell_tinytable_e7qlfo1kl8gc4npombc6(i, j, css_id) {
+        var table = document.getElementById("tinytable_w8td0zxe75hhagi0jp3w");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_w8td0zxe75hhagi0jp3w');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_e7qlfo1kl8gc4npombc6(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_w8td0zxe75hhagi0jp3w");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 0, 'tinytable_css_i5ag57pyk437v4evgtmc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 1, 'tinytable_css_i5ag57pyk437v4evgtmc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 2, 'tinytable_css_i5ag57pyk437v4evgtmc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 3, 'tinytable_css_i5ag57pyk437v4evgtmc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+    </script>
+
+  
+
+
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Your data is a mystery to your software ">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Your data is a mystery to your software
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember, estimation software knows <strong>nothing</strong> about your data. R does not know if your data are cross-sectional, time-series, panel, etc. The analyst has to identify the data structure in order to address any of these issues.</p>
+<p>For example - the excellent <code>plm</code> library <strong>assumes</strong> the first two columns of your data are unit and time, respectively. If they’re not, R has no way of knowing. It’s essential to tell R what the panel structure is - in <code>plm</code> by writing <em>index=c(“unit”, “time”)</em>.</p>
+</div>
+</div>
+</section>
+<section id="what-fixed-effects-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-fixed-effects-do">What fixed effects do</h3>
+<p>Fixed effects (whether by LSDV or demeaning) remove the unit specific effects from the error term, so that the error term is uncorrelated with the <span class="math inline">\(X\)</span> variables. <span class="math inline">\(\mu_i\)</span> is now modeled, so no longer in the error; the error now only contains $_{i,t}. Fixed effects remove the between unit variation, leaving only the within unit variation.</p>
+</section>
+<section id="lsdv-and-de-meaning-are-equivalent-methods." class="level3">
+<h3 class="anchored" data-anchor-id="lsdv-and-de-meaning-are-equivalent-methods.">LSDV and de-meaning are equivalent methods.</h3>
+<ul>
+<li><p>LSDV uses lots of degrees of freedom, will sometimes produce perfect collinearity among unit intercepts. However, LSDV gives estimates of every unit intercept.</p></li>
+<li><p>De-meaning (the method used in R’s plm, feols, and others; Stata’s “xt” suite) is efficient, doesn’t estimate the intercepts.</p></li>
+<li><p>Another equivalent method is the absorbing regression where the variables are de-meaned as above, then the overall mean of each variable is added back. The unit effects are said to be absorbed.</p></li>
+</ul>
+</section>
+</section>
+<section id="random-effects" class="level2">
+<h2 class="anchored" data-anchor-id="random-effects">Random Effects</h2>
+<p>Recall we partitioned the residual in the panel data model into two parts:</p>
+<p><span class="math display">\[u_{it} = \mu_{i} + \epsilon_{it}\]</span></p>
+<p>and we motivated the fixed effects model by saying <span class="math inline">\(\mu_i\)</span> is correlated with the <span class="math inline">\(X\)</span> variables, so amounting to an ommited variable problem. If <span class="math inline">\(\mu_i\)</span> is correlated with the <span class="math inline">\(X\)</span> variables, estimates of <span class="math inline">\(\widehat{\beta}\)</span> will be biased.</p>
+<p>The random effects model assumes <span class="math inline">\(\mu_i\)</span> is uncorrelated with the <span class="math inline">\(X\)</span> variables, so is itself a random variable in the error term - in this case, the <span class="math inline">\(\widehat{\beta}s\)</span> are not biased, but the standard errors are inefficient. Unlike fixed effects, random effects do not model <span class="math inline">\(\mu_i\)</span>, but account for it in computing the standard errors, thereby addressing the inefficiency.</p>
+</section>
+<section id="which-should-i-use" class="level2">
+<h2 class="anchored" data-anchor-id="which-should-i-use">Which should I use?</h2>
+<p>Some authors (e.g. <span class="citation" data-cites="bailey2016stats">Bailey (<a href="#ref-bailey2016stats" role="doc-biblioref">2016</a>)</span>) pretty strongly prefer fixed effects, in part because it’s difficult to conceive of when/why <span class="math inline">\(\mu_i\)</span> would be uncorrelated with the <span class="math inline">\(X\)</span> variables, and in part because fixed effects help address endogenity issues - i.e., the case where <span class="math inline">\(cov(X, \mu_i) \neq 0\)</span>.</p>
+<p><span class="citation" data-cites="wooldridge2013">Wooldridge (<a href="#ref-wooldridge2013" role="doc-biblioref">2013</a>)</span> suggests that the random effects model can be useful where some (large) proportion of the <span class="math inline">\(x\)</span> variables are constant within unit, but vary across units - that is, they’re time-invariant. These, of course, are the variables that will drop out of the fixed effects model.</p>
+<section id="hausman-test" class="level3">
+<h3 class="anchored" data-anchor-id="hausman-test">Hausman test</h3>
+<p>The Hausman test is a test the equivalence of the fixed and random effects coefficient vectors. If the two are the same (we fail to reject the null), we prefer random effects; if we do reject the null (the coefficient vectors are different), we prefer fixed effects.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fixed vs random effects</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>FE <span class="ot">&lt;-</span> plm<span class="sc">::</span><span class="fu">plm</span>(murder <span class="sc">~</span> unemp <span class="sc">+</span> prcapinc, <span class="at">model=</span><span class="st">"within"</span> ,<span class="at">index=</span><span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"year"</span>), <span class="at">data=</span>states)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>RE <span class="ot">&lt;-</span> plm<span class="sc">::</span><span class="fu">plm</span>(murder <span class="sc">~</span> unemp <span class="sc">+</span> prcapinc, <span class="at">model=</span><span class="st">"random"</span> ,<span class="at">index=</span><span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"year"</span>), <span class="at">data=</span>states)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">phtest</span>(FE,RE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Hausman Test
+
+data:  murder ~ unemp + prcapinc
+chisq = 8.7476, df = 2, p-value = 0.0126
+alternative hypothesis: one model is inconsistent</code></pre>
+</div>
+</div>
+<p>In this case, we’d prefer the fixed effects model. Rejecting the null suggests the random effect assumption (that the error and <span class="math inline">\(X\)</span> are uncorrelated) is false. Failure to reject the null could indicate (per <span class="citation" data-cites="wooldridge2013">Wooldridge (<a href="#ref-wooldridge2013" role="doc-biblioref">2013</a>)</span>) there’s not enough information in the data to produce precise estimates - note this is not much of an endorsement of random effects so much as a question about how much we’re asking of the data.</p>
+<p>In the end, <span class="citation" data-cites="wooldridge2013">Wooldridge (<a href="#ref-wooldridge2013" role="doc-biblioref">2013</a>)</span> writes, “FE is almost always much more convincing that RE for policy analysis using aggregated data.” That said, we should be careful to evaluate whether the model sufficiently captures “between” effects without FE to make FE/RE unnecessary. This is also straightforward to do via F-test between the FE and pooled models.</p>
+</section>
+</section>
+<section id="cautionary-note" class="level2">
+<h2 class="anchored" data-anchor-id="cautionary-note">Cautionary Note</h2>
+<p>People love fixed effects. Too much. Like anything else, these should be used in an informed and cautious way, not merely included in every panel regression. Issues to consider are:</p>
+<ul>
+<li><p>Can I measure unit/time differences better than with dummy variables?</p></li>
+<li><p>Do I have other variables in the model that only vary by <span class="math inline">\(i\)</span> or by <span class="math inline">\(t\)</span>? Collinearity?</p></li>
+<li><p>In logit etc. models with panels, any panel where <span class="math inline">\(y\)</span> is all zero will drop out of the regression. <span class="citation" data-cites="green2001pool">Green, Kim, and Yoon (<a href="#ref-green2001pool" role="doc-biblioref">2001</a>)</span> argue for (almost always) using fixed effects in conflict studies (panel data, binary <span class="math inline">\(y\)</span> variable). Their advice is suspect at least because the models non-randomly lose all pairs of states that never fight.</p></li>
+</ul>
+</section>
+<section id="fixed-effects-and-endogeneity" class="level2">
+<h2 class="anchored" data-anchor-id="fixed-effects-and-endogeneity">Fixed Effects and Endogeneity</h2>
+<p>If <span class="math inline">\(cov(X, \epsilon) \neq 0\)</span>, we have an endogeneity problem. Endogeneity arises for different reasons - for our purposes here, the main thing is that the correlation of <span class="math inline">\(X\)</span> and <span class="math inline">\(\epsilon\)</span> indicates endogeneity, and we already know some of the consequences.</p>
+<p>Fixed effects are appropriate for the case where we think the individual errors are correlated with the <span class="math inline">\(X\)</span> variables; modeling those individual errors, <span class="math inline">\(\mu_i\)</span> in any of the ways described above removes those effects from the error term, thus returning us to the blissful case where <span class="math inline">\(cov(X, \epsilon)=0\)</span>.</p>
+<p>In other words, fixed effects can serve as a (partial) solution to endogeneity.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-bailey2016stats" class="csl-entry" role="listitem">
+Bailey, Michael A. 2016. <em>Real Stats: Using Econometrics for Political Science and Public Policy</em>. Oxford University Press.
+</div>
+<div id="ref-green2001pool" class="csl-entry" role="listitem">
+Green, Donald P, Soo Yeon Kim, and David H Yoon. 2001. <span>“Dirty Pool.”</span> <em>International Organization</em> 55 (2): 441–68.
+</div>
+<div id="ref-wooldridge2013" class="csl-entry" role="listitem">
+Wooldridge, Jeffrey M. 2013. <em>Introductory Econometrics</em>. South-Western/Cengage.
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
