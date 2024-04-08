@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dave Clark">
+<meta name="dcterms.date" content="2024-04-08">
+
+<title>PLSC 501 - Spring 2024 - Time and Variance in the OLS model</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">PLSC 501 - Spring 2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./slides.html"> 
+<span class="menu-text">Slides</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./syllabus24.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./code.html"> 
+<span class="menu-text">Code</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Time and Variance in the OLS model</h1>
+                      </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author">Dave Clark </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              Binghamton University
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 8, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#time-and-variance" id="toc-time-and-variance" class="nav-link active" data-scroll-target="#time-and-variance">Time and Variance</a>
+  <ul class="collapse">
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
+  </ul></li>
+  <li><a href="#time" id="toc-time" class="nav-link" data-scroll-target="#time">Time</a>
+  <ul class="collapse">
+  <li><a href="#uncorrelated-disturbances" id="toc-uncorrelated-disturbances" class="nav-link" data-scroll-target="#uncorrelated-disturbances">Uncorrelated Disturbances</a></li>
+  <li><a href="#temporal-correlation" id="toc-temporal-correlation" class="nav-link" data-scroll-target="#temporal-correlation">Temporal correlation</a></li>
+  <li><a href="#autoregressive-processes" id="toc-autoregressive-processes" class="nav-link" data-scroll-target="#autoregressive-processes">Autoregressive Processes</a></li>
+  <li><a href="#variance-covariance-matrix-of-widehatbeta" id="toc-variance-covariance-matrix-of-widehatbeta" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-widehatbeta">Variance-Covariance matrix of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
+  <li><a href="#detecting-autocorrelation" id="toc-detecting-autocorrelation" class="nav-link" data-scroll-target="#detecting-autocorrelation">Detecting Autocorrelation</a></li>
+  <li><a href="#graphical-methods---using-simulated-data" id="toc-graphical-methods---using-simulated-data" class="nav-link" data-scroll-target="#graphical-methods---using-simulated-data">Graphical Methods - using simulated data</a></li>
+  <li><a href="#graphical-methods---using-state-murder-rate-data" id="toc-graphical-methods---using-state-murder-rate-data" class="nav-link" data-scroll-target="#graphical-methods---using-state-murder-rate-data">Graphical Methods - using state murder rate data</a></li>
+  <li><a href="#regression-based-detection" id="toc-regression-based-detection" class="nav-link" data-scroll-target="#regression-based-detection">Regression-based detection</a></li>
+  <li><a href="#regression-based-methods" id="toc-regression-based-methods" class="nav-link" data-scroll-target="#regression-based-methods">Regression based methods</a>
+  <ul class="collapse">
+  <li><a href="#durbin-watson-d-statistic" id="toc-durbin-watson-d-statistic" class="nav-link" data-scroll-target="#durbin-watson-d-statistic">Durbin-Watson <em>d</em> Statistic</a></li>
+  <li><a href="#breusch-godfrey-lm-test" id="toc-breusch-godfrey-lm-test" class="nav-link" data-scroll-target="#breusch-godfrey-lm-test">Breusch-Godfrey LM Test</a></li>
+  <li><a href="#wooldridge-test-for-panel-data" id="toc-wooldridge-test-for-panel-data" class="nav-link" data-scroll-target="#wooldridge-test-for-panel-data">Wooldridge test for panel data</a></li>
+  </ul></li>
+  <li><a href="#correcting-ar1-processes" id="toc-correcting-ar1-processes" class="nav-link" data-scroll-target="#correcting-ar1-processes">Correcting AR(1) processes</a></li>
+  <li><a href="#rho-transformations" id="toc-rho-transformations" class="nav-link" data-scroll-target="#rho-transformations"><span class="math inline">\(\rho\)</span>-transformations</a></li>
+  <li><a href="#dynamic-models" id="toc-dynamic-models" class="nav-link" data-scroll-target="#dynamic-models">Dynamic Models</a></li>
+  </ul></li>
+  <li><a href="#variance" id="toc-variance" class="nav-link" data-scroll-target="#variance">Variance</a>
+  <ul class="collapse">
+  <li><a href="#what-is-non-constant-variance" id="toc-what-is-non-constant-variance" class="nav-link" data-scroll-target="#what-is-non-constant-variance">What is non constant variance</a></li>
+  <li><a href="#why-does-it-happen" id="toc-why-does-it-happen" class="nav-link" data-scroll-target="#why-does-it-happen">Why does it happen?</a></li>
+  <li><a href="#what-to-do" id="toc-what-to-do" class="nav-link" data-scroll-target="#what-to-do">What to do?</a></li>
+  <li><a href="#visualizing-variance" id="toc-visualizing-variance" class="nav-link" data-scroll-target="#visualizing-variance">Visualizing variance</a></li>
+  <li><a href="#variance-of-epsilon" id="toc-variance-of-epsilon" class="nav-link" data-scroll-target="#variance-of-epsilon">Variance of <span class="math inline">\(\epsilon\)</span></a></li>
+  <li><a href="#i.i.d." id="toc-i.i.d." class="nav-link" data-scroll-target="#i.i.d.">i.i.d.</a></li>
+  <li><a href="#ols-variance-covariance-matrix" id="toc-ols-variance-covariance-matrix" class="nav-link" data-scroll-target="#ols-variance-covariance-matrix">OLS variance-covariance matrix</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  <li><a href="#robust-standard-errors" id="toc-robust-standard-errors" class="nav-link" data-scroll-target="#robust-standard-errors">Robust Standard Errors</a></li>
+  <li><a href="#panel-data" id="toc-panel-data" class="nav-link" data-scroll-target="#panel-data">Panel data</a></li>
+  <li><a href="#detection" id="toc-detection" class="nav-link" data-scroll-target="#detection">Detection</a></li>
+  <li><a href="#graphical-methods" id="toc-graphical-methods" class="nav-link" data-scroll-target="#graphical-methods">Graphical methods</a></li>
+  <li><a href="#breusch-pagan-test" id="toc-breusch-pagan-test" class="nav-link" data-scroll-target="#breusch-pagan-test">Breusch-Pagan test</a></li>
+  <li><a href="#correcting-heterskedasticity---wls" id="toc-correcting-heterskedasticity---wls" class="nav-link" data-scroll-target="#correcting-heterskedasticity---wls">Correcting Heterskedasticity - WLS</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+<section id="time-and-variance" class="level1">
+<h1>Time and Variance</h1>
+<p>Our discussion of panel data emphasized the space and time dimensions and what the consequences of heterogeneity might be. Those dimensions may also have characteristics that violate the OLS assumptions so we can no longer rely on the BLUE properties of the estimator.</p>
+<section id="assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="assumptions">Assumptions</h2>
+<p>Recall these assumptions:</p>
+<p>This one holds that cross sections will have <em>identically</em> distributed disturbances.</p>
+<p><strong>Homoskedastic disturbances:</strong> <span class="math inline">\(Var(u|x_1,x_2,\ldots,x_k)=\sigma^2\)</span></p>
+<p>And this one holds that the disturbances will be <em>independent</em>.</p>
+<p><strong>Uncorrelated disturbances:</strong> <span class="math inline">\(cov(u_i,u_j|x_1,x_2,\ldots,x_k)=0\)</span></p>
+<p>Let’s call these collectively the i.i.d. assumption.</p>
+</section>
+</section>
+<section id="time" class="level1">
+<h1>Time</h1>
+<section id="uncorrelated-disturbances" class="level2">
+<h2 class="anchored" data-anchor-id="uncorrelated-disturbances">Uncorrelated Disturbances</h2>
+<p>The model assumes the errors are not correlated with each other such that:</p>
+<p><span class="math display">\[cov(u_t, u_{t-k} = 0)\]</span></p>
+<p>the errors are not correlated across time;</p>
+<p>and</p>
+<p><span class="math display">\[cov(u_i, u_j = 0)\]</span> the errors are not correlated across units or cross-sections (so across space).</p>
+<p>You should be able to see why the first can be an issue in time series data, the second in cross-sectional data, and both in panel data.</p>
+</section>
+<section id="temporal-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="temporal-correlation">Temporal correlation</h2>
+<p>The nature of temporal correlations varies hugely. The focus of most basic time series analysis is autocorrelation - the error is correlated with itself at some point in the past so that,</p>
+<p><span class="math display">\[
+cov[u_t,u_{t-k}] \neq 0,  \nonumber
+\]</span></p>
+<p>Because the errors are not independent, and because we know the rough source of their dependency, we could conceive of <span class="math inline">\(u_t\)</span> as\</p>
+<p><span class="math display">\[
+u_t= \rho u_{t-1} + \varepsilon_t  ~~~\forall t, ~~~-1 &lt; \rho &lt; 1
+\]</span></p>
+<p>where the error at <span class="math inline">\(t\)</span> is a function of the error at <span class="math inline">\(t-1\)</span> and <span class="math inline">\(\rho\)</span> is the coefficient indicating the effect of <span class="math inline">\(u_{t-1}\)</span> on <span class="math inline">\(u_t\)</span>.</p>
+<p>This conceptualization of <span class="math inline">\(u_t\)</span> is known as a <strong>first order autoregressive process</strong> or AR(1) because we’ve assumed <span class="math inline">\(u_t\)</span> is a function of <span class="math inline">\(u_{t-1}\)</span> rather than some other order or lag of <span class="math inline">\(u\)</span>; note we could just as easily model higher order lags as AR(t) functions.</p>
+<p>Also note the inclusion of an error term, <span class="math inline">\(\varepsilon_t\)</span> satisfying the GM assumptions, so:</p>
+<p><span class="math display">\[
+E[\varepsilon_t] =0 \nonumber \nonumber \\
+Var(\varepsilon_t)= \sigma^2 \nonumber \nonumber \\
+Cov(\varepsilon_t, \varepsilon_{t-k})=0
+\]</span></p>
+</section>
+<section id="autoregressive-processes" class="level2">
+<h2 class="anchored" data-anchor-id="autoregressive-processes">Autoregressive Processes</h2>
+<p>Let’s think about the errors <span class="math inline">\(u_t\)</span> for all <span class="math inline">\(t\)</span> in the AR scheme:</p>
+<p><span class="math display">\[\begin{align*}
+u_t= \rho u_{t-1} + \varepsilon_t
+= \rho(\rho u_{t-2} +\varepsilon_{t-1}) + \varepsilon_t  \nonumber \\
+= \rho^2 u_{t-2} + \rho \varepsilon_{t-1} + \varepsilon_t  \nonumber \\
+= \rho^2(\rho u_{t-3} + \varepsilon_{t-2}) + \rho \varepsilon_{t-1}+ \varepsilon_t  \nonumber \\
+= \rho^3 u_{t-3} + \rho^2 \varepsilon_{t-2} + \rho \varepsilon_{t-1}+ \varepsilon_t  \nonumber \\
+\vdots \nonumber \\
+= \rho^s u_{t-s} + \rho^{s-1} \varepsilon_{t-s+1} + \rho^{s-2} \varepsilon_{t-s+2}+ \ldots + \rho \varepsilon_{t-1} + \varepsilon_t  \nonumber \\ \nonumber \\
+u_t= \sum \limits_{s=0}^{\infty} \rho^s u_{t-s}
+\end{align*}\]</span></p>
+<p>You can see the effect of the lagged residuals up to <span class="math inline">\(s\)</span> on <span class="math inline">\(u_t\)</span>; since <span class="math inline">\(|\rho| &lt; 1\)</span>, then <span class="math inline">\(|\rho^2| &lt; |\rho|\)</span>, and so forth, so the effect of each successive lag (<span class="math inline">\(t-2, t-3, \ldots, t-s\)</span>) is smaller than the previous lag, eventually decaying to zero.</p>
+</section>
+<section id="variance-covariance-matrix-of-widehatbeta" class="level2">
+<h2 class="anchored" data-anchor-id="variance-covariance-matrix-of-widehatbeta">Variance-Covariance matrix of <span class="math inline">\(\widehat{\beta}\)</span></h2>
+<p>If the errors are correlated, then the variance-covariance matrix is certain to be troubled by that correlation if it is not corrected. In fact,</p>
+<p><span class="math display">\[\begin{align*}
+Var(u_t)= \frac{\sigma^2}{1-\rho^2} \\
+Cov(u_t, u_{t-1})= \rho \sigma^2 \\
+Cov(u_t, u_{t-2})= \rho^2 \sigma^2 \\
+Cov(u_t, u_{t-3})= \rho^3 \sigma^2 \\
+\vdots \\
+Cov(u_t, u_{t-s})= \rho^s \sigma^2 \\
+\end{align*}\]</span></p>
+<p>so it’s easy to see that if <span class="math inline">\(\rho=0\)</span>, then:</p>
+<p><span class="math display">\[
+u_t= \varepsilon_t \nonumber \\
+Var(u_t)= \sigma_\varepsilon^2 \nonumber \\
+cov(u_{t}, u_{t-k})=0 \nonumber
+\]</span></p>
+<p>If <span class="math inline">\(\rho \neq 0\)</span> the OLS estimator is not BLUE; even though the estimates are unbiased, they are inefficient, so the standard errors are not based on minimum variance in the class of estimators.</p>
+</section>
+<section id="detecting-autocorrelation" class="level2">
+<h2 class="anchored" data-anchor-id="detecting-autocorrelation">Detecting Autocorrelation</h2>
+<p>We’ll focus on two approaches:</p>
+<ul>
+<li><p>graphical methods.</p></li>
+<li><p>regression-based methods.</p></li>
+</ul>
+</section>
+<section id="graphical-methods---using-simulated-data" class="level2">
+<h2 class="anchored" data-anchor-id="graphical-methods---using-simulated-data">Graphical Methods - using simulated data</h2>
+<p></p>
+</section>
+<section id="graphical-methods---using-state-murder-rate-data" class="level2">
+<h2 class="anchored" data-anchor-id="graphical-methods---using-state-murder-rate-data">Graphical Methods - using state murder rate data</h2>
+<p></p>
+<p>In both cases (simulated, state murder rate data), the panels suggest the residuals are not random across time. The left panel plots the residuals against their lag and indicates the relationship between <span class="math inline">\(u_t, u_{t-1}\)</span>; the right panel shows a relationship between the residuals and time, and it’s pretty clearly not random. So let’s turn to some more mechanical ways of detecting autocorrelation.</p>
+</section>
+<section id="regression-based-detection" class="level2">
+<h2 class="anchored" data-anchor-id="regression-based-detection">Regression-based detection</h2>
+<p>Write the autocorrelation function:</p>
+<p><span class="math display">\[\begin{eqnarray}
+u_t= \rho u_{t-1} + \varepsilon_t  ~~~\forall t, ~~~-1 &lt; \rho &lt; 1
+\nonumber
+\end{eqnarray}\]</span></p>
+<p>We can estimate this {} using the residuals and their lagged values. The coefficient on <span class="math inline">\(u_{t-1}\)</span> is our estimate <span class="math inline">\(\hat{\rho}\)</span>.</p>
+</section>
+<section id="regression-based-methods" class="level2">
+<h2 class="anchored" data-anchor-id="regression-based-methods">Regression based methods</h2>
+<p>We’ll look at three regression based methods:</p>
+<ul>
+<li>Durbin-Watson</li>
+<li>Breusch-Godfrey</li>
+<li>Wooldridge</li>
+</ul>
+<p>All three rely on estimating the OLS model, generating the residuals, and examining the relationships among different lags of the residuals for evidence of correlation.</p>
+<p>The DW <em>d</em> is specifically designed for time-series data with exclusively exogenous variables in the model. In other words, models with lagged endogenous variables cannot be appropriately diagnosed using DW’s <em>d</em>. Instead, you should use Durbin and Watson’s <em>h</em> statistic or the BG Lagrange Multiplier test.</p>
+<p>This is maybe the simplest regression-based way to detect autocorrelation:</p>
+<ul>
+<li>estimate the regression of interest</li>
+<li>generate the residuals</li>
+<li>regress the residuals on its lag (or lags)</li>
+<li>if the coefficient on the lagged residuals is different from zero, some sort of AR process exists.</li>
+</ul>
+<section id="durbin-watson-d-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="durbin-watson-d-statistic">Durbin-Watson <em>d</em> Statistic</h3>
+<p>The <em>d</em> statistic tests a variety of null hypotheses, all supposing no AR(1) process exists. It has limited application because of the assumptions on which it’s based:</p>
+<ul>
+<li>the regression includes an intercept.</li>
+<li>the <span class="math inline">\(x\)</span> variables are fixed.</li>
+<li>the errors are AR(1)</li>
+<li>the model has no lagged endogenous variables.</li>
+<li>there are no missing observations in the time series.</li>
+</ul>
+<p>Beyond these limitations, the statistic has a bizarre distribution for which DW computed upper and lower bounds (outside of which we reject the null of no autocorrelation), but in the middle of which there is a region known as the “indeterminate” zone or “zone of indecision.”</p>
+<p>Here’s how the statistic is computed:</p>
+<p><span class="math display">\[
+d= \frac{\sum \hat{u}_{t}^{2} + \sum \hat{u}_{t-1}^{2} -2 \sum
+\hat{u}_{t}\hat{u}_{t-1}}{\sum \hat{u}_{t}^{2}} \nonumber
+\]</span></p>
+<p>Because the residuals and lagged residuals differ by one observation, they are not equal, but are approximately equal, so we can set them equal and write:</p>
+<p><span class="math display">\[
+d= 2  \left( 1- \frac{\sum \hat{u}_{t}\hat{u}_{t-1}}{\sum
+\hat{u}_{t}^{2}} \right) \nonumber
+\]</span></p>
+<p>The last term of this equation is <span class="math inline">\(\rho\)</span> - you can see the numerator is the covariation of the residuals and their lag, and the denominator is the sum squared residuals; this is a correlation coefficient indicating the correlation between <span class="math inline">\(u_t, u_{t-1}\)</span>.</p>
+<p><span class="math display">\[
+\rho =  \frac{\sum \hat{u}_{t}\hat{u}_{t-1}}{\sum \hat{u}_{t}^{2}}
+\]</span></p>
+<p>Consistent with the restrictions/assumptions underlying this statistic, note that we’ve estimated <span class="math inline">\(\rho_{1}\)</span> and so only can test for an AR(1) process. Given our estimate of <span class="math inline">\(\rho\)</span>, we can compute <em>d</em> as</p>
+<p><span class="math display">\[
+d= 2(1-\hat{\rho})  \nonumber
+\]</span></p>
+<p>And since <span class="math inline">\(\rho\)</span> is bounded by -1 and +1, <em>d</em> must be bounded by 0 and 4.</p>
+<p>Here are the criteria for evaluating Durbin-Watson statistics:</p>
+</section>
+<section id="breusch-godfrey-lm-test" class="level3">
+<h3 class="anchored" data-anchor-id="breusch-godfrey-lm-test">Breusch-Godfrey LM Test</h3>
+<p>The BG test is a more general test because it can account for higher order AR processes (while DW is limited to AR(1)). Moreover, the BG test is simple to compute by hand and has few of the limitations listed above for DW. \alert{Note, this is not appropriate for panel data.</p>
+<p>Here’s how it works:</p>
+<ul>
+<li>Estimate the OLS regression model.</li>
+<li>Generate the residuals.</li>
+<li>Regress the residuals, <span class="math inline">\(\hat{u}_t\)</span>, on all the <span class="math inline">\(x\)</span> variables in the model plus as many lagged values of <span class="math inline">\(\hat{u}_t\)</span> as you want to test, so; <span class="math inline">\(\hat{u}_{t-1}\)</span>, <span class="math inline">\(\hat{u}_{t-2}\)</span>, <span class="math inline">\(\hat{u}_{t-3}\)</span>, <span class="math inline">\(\hat{u}_{t-p}\)</span> etc.</li>
+</ul>
+<p>In this example, we’re testing 3 lags, so <span class="math inline">\(p=3\)</span>. The regression would be:</p>
+<p><span class="math display">\[
+\hat{u}_t= X\beta+\rho_1 \hat{u}_{t-1} +\rho_2 \hat{u}_{t-2}+\rho_3
+\hat{u}_{t-3} \nonumber
+\]</span></p>
+<p>Using the <span class="math inline">\(R^2\)</span> from this auxiliary regression, generate the BG LM statistic as:</p>
+<p><span class="math display">\[
+(n-p) R^2 ~~ \sim \chi_p^2
+\]</span></p>
+<p>The BG is a <span class="math inline">\(\chi_p^2\)</span> statistic with <span class="math inline">\(p\)</span> degrees of freedom. The null hypothesis is that <span class="math inline">\(\rho_1=\rho_2=\rho_3=0\)</span>. The BG test not only allows testing for higher order AR processes, but can be used in models with lagged endogenous variables as well.</p>
+</section>
+<section id="wooldridge-test-for-panel-data" class="level3">
+<h3 class="anchored" data-anchor-id="wooldridge-test-for-panel-data">Wooldridge test for panel data</h3>
+<p>Wooldridge’s test is simple; note that it’s appropriate for panel data as well.</p>
+<ul>
+<li>difference all variables; estimate the differenced regression, clustered by panel, excluding a constant.</li>
+<li>generate the residuals from this regression.</li>
+<li>regress the residuals on their lag, no constant, clustered by panel.</li>
+<li>test the null hypothesis that <span class="math inline">\(\beta\)</span> on the lag of the residual is equal to -.5.</li>
+</ul>
+</section>
+</section>
+<section id="correcting-ar1-processes" class="level2">
+<h2 class="anchored" data-anchor-id="correcting-ar1-processes">Correcting AR(1) processes</h2>
+<p>Most methods for dealing with autocorrelation seek to purge the temporal dependence from the data by transforming the data.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Generalized Least Squares">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Generalized Least Squares
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Generalized Least Squares: OLS on data transformed such that the data satisfy the assumptions of the OLS model.</p>
+</div>
+</div>
+<p>One common GLS method for dealing with correlated errors is to estimate <span class="math inline">\(\rho\)</span>-transformed models - two common variants are the Prais-Winsten and Cochrane-Orcutt regressions.</p>
+</section>
+<section id="rho-transformations" class="level2">
+<h2 class="anchored" data-anchor-id="rho-transformations"><span class="math inline">\(\rho\)</span>-transformations</h2>
+<p>The intuition of <span class="math inline">\(\rho\)</span>-transformed models is simple:</p>
+<ul>
+<li>estimate the regression of interest.</li>
+<li>generate the residuals.</li>
+<li>estimate <span class="math inline">\(\hat{\rho}\)</span> as above.</li>
+<li>transform the variables by <span class="math inline">\(\rho\)</span> such that: <span class="math display">\[y_t - \rho y_{t-1} = \beta_0(1-\rho)+ \beta_1(x_{1,t} - \rho x_{1,t-1}) \ldots\]</span></li>
+<li>call the new transformed variables <span class="math inline">\(y^*, x^*\)</span></li>
+<li>estimate the regression <span class="math inline">\(y^*=\beta^*_0+\beta^*_1(x^*)\)</span></li>
+</ul>
+<p>This particular process is the Cochrane-Orcutt 2-step method. Others are similar. The estimates are now corrected by the estimated value of <span class="math inline">\(\rho\)</span>.</p>
+</section>
+<section id="dynamic-models" class="level2">
+<h2 class="anchored" data-anchor-id="dynamic-models">Dynamic Models</h2>
+<p>Lagging <span class="math inline">\(y_t\)</span> and including it on the right hand side of the regression equation can ameliorate autocorrelation, but it changes the interpretation of the coefficients (all of them).</p>
+<p>Lagging <span class="math inline">\(y_t\)</span> is powerful - it generally is a poor choice for dealing with autocorrelation, but a great choice for estimating long term effects - these are known as <em>dynamic models</em>.</p>
+<p>Lagging <span class="math inline">\(x\)</span> variables is also a great choice if theory implies the effect of <span class="math inline">\(x\)</span> is spread over time, and accumulates in some fashion - these models are known as <em>distributed lag models</em>.</p>
+<p>Dynamic models allow us to examine the long-term effects of changes in <span class="math inline">\(x\)</span> on <span class="math inline">\(y_t\)</span>. The equation we estimate is</p>
+<p><span class="math display">\[
+y_t=+ \gamma y_{t-1}+ \beta_{0}+\beta_{1}X_{1} + \beta_{2}X_{2} \ldots +  \beta_{k}X_{k}
+\]</span></p>
+<p>where the first term estimates the “memory” in the <span class="math inline">\(y\)</span>-series. That is, it measures how much the present value of <span class="math inline">\(y\)</span> is a function of remembering the value of <span class="math inline">\(y\)</span> at <span class="math inline">\(t-1\)</span>. Thinking of <span class="math inline">\(-1 &lt;\gamma&lt; 1\)</span>, as <span class="math inline">\(|\gamma|\)</span> increases, so does memory.</p>
+<p>What does it mean for these lag-models to be dynamic? In the OLS setting, <span class="math inline">\(x\)</span> has a <span class="math inline">\(\beta\)</span> effect on <span class="math inline">\(y\)</span>. In this setting, if <span class="math inline">\(x_t\)</span> has a <span class="math inline">\(\beta\)</span> effect on <span class="math inline">\(y_t\)</span>, and if <span class="math inline">\(\gamma \neq 0\)</span>, then <span class="math inline">\(x_t\)</span> also has some effect on <span class="math inline">\(y_{t+1}\)</span>. In other words, the determinants of <span class="math inline">\(y\)</span> also exhibit a sort of memory-like, accumulating effect on future values of <span class="math inline">\(y\)</span>.</p>
+<p>What these models permit is measurement of short term effects - <span class="math inline">\(\beta_k\)</span>; and long term effects <span class="math inline">\(\frac{\beta_k}{1-\gamma}\)</span>.</p>
+<p>Why not use lags of <span class="math inline">\(y\)</span> to deal with autocorrelation? The AR problem is that <span class="math inline">\(u_t\)</span> is correlated with <span class="math inline">\(u_{t-1}\)</span>. In the dynamic setting, if these observations on the error are correlated, they must also be correlated with <span class="math inline">\(y_{t-1}\)</span> - this is a big problem because now, one of the regressors is correlated with <span class="math inline">\(u\)</span> - an endogeneity-like problem. Whereas AR usually causes inefficiency alone, in the dynamic model it also produces biased estimates.</p>
+<p>For this reason, it’s inadvisable to use a lag strategy to deal with AR. It’s also advisable to test for AR in dynamic models, and to use AR methods (like Prais-Winsten) to deal with AR problems in dynamic models.</p>
+</section>
+</section>
+<section id="variance" class="level1">
+<h1>Variance</h1>
+<p>The OLS model assumes the errors are <em>identically</em> distributed, again, part of i.i.d.:</p>
+<p><strong>Homoskedastic disturbances:</strong> <span class="math inline">\(Var(u|x_1,x_2,\ldots,x_k)=\sigma^2\)</span></p>
+<p>which means that the variance of the residuals, given the <span class="math inline">\(X\)</span> variables, is a constant, <span class="math inline">\(\sigma^2\)</span>. What would make this fail?</p>
+<p>Suppose we’re modeling individual consumer spending on luxury items like sports cars, speed boats, golden toilets, and vacation homes. One of the main predictors of luxury item purchases is income; we’d expect as income increases, so does spending on luxury items.</p>
+<p>Notice this prediction is about the mean of the <span class="math inline">\(y\)</span> variable - the expected value (predicted mean) of <span class="math inline">\(y\)</span> will increase with income. But what if the variance of spending on luxury items also increases with income? For simplicity, think about two income groups.</p>
+<ul>
+<li><p>low income: expected mean spending is low; as a group they will behave very uniformly, spending very little on luxury items.</p></li>
+<li><p>high income: expected mean spending is high; as a group they will <strong>not</strong> behave uniformly. Some will spend lavishly on gold toilets and the like (Donald Trump), while others will shop at Walmart (Warren Buffett).</p></li>
+</ul>
+<p>The OLS model <span class="math inline">\(\text{luxury spending} = \beta_0 + \beta_1\text{income}\)</span> will likely produce a positive, significant estimate for <span class="math inline">\(\beta_1\)</span> indicating the mean of spending increases with income. But because the variance is different between the two groups (or actually, the variance is increasing with income), the OLS model will be inefficient, so the standard errors will be wrong.</p>
+<p>Moreover, notice that we’re missing an interesting part of the story - with resources comes choice, and with choice comes variance in behavior.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Variance is not a nuisance">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Variance is not a nuisance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When we only develop stories about mean behavior, we neglect interesting stories about variance. In many of the phenomena we study, we should consider stories about uniformity of behavior and the sources of that uniformity - these are stories about variance.</p>
+</div>
+</div>
+<section id="what-is-non-constant-variance" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-non-constant-variance">What is non constant variance</h2>
+<p>Nonconstant variance - subgroups in the data have different error variances:</p>
+<ul>
+<li>those with large variances contain less information.</li>
+<li>those with small variances contain more information.</li>
+</ul>
+<p>Consider how this influences our measures of uncertainty.</p>
+<p>Thinking of non constant variance in terms of explanatory variables, lower values of <span class="math inline">\(x\)</span> explain <span class="math inline">\(y\)</span> well; higher values of <span class="math inline">\(x\)</span> do not explain as well.</p>
+</section>
+<section id="why-does-it-happen" class="level2">
+<h2 class="anchored" data-anchor-id="why-does-it-happen">Why does it happen?</h2>
+<ul>
+<li><p>endogenous limits on behavior - the number of responses in <span class="math inline">\(y\)</span> is related to the variability in <span class="math inline">\(y\)</span>, and therefore in <span class="math inline">\(\epsilon\)</span>. E.g., as income increases, so does mean spending and variability in spending. As income declines, spending declines and variability is limited by the low level. E.g. successful coups - as the number of coups increases, the variance in coup outcomes will also increase.</p></li>
+<li><p>training or learning - individuals better at a task will have smaller variance than novices. Major league hitters will have smaller variances than minor leaguers; grad students will have large variances in publishing out comes than faculty.</p></li>
+<li><p>data issues - different collection rules (e.g.&nbsp;MIDs); aggregation.</p></li>
+</ul>
+</section>
+<section id="what-to-do" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-do">What to do?</h2>
+<p>While most discussions of heteroskedasticity focus on diagnosis and correction, my view is that the possibility (or probability) the variance is not constant is something on which to theorize ex ante.</p>
+</section>
+<section id="visualizing-variance" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-variance">Visualizing variance</h2>
+<ul>
+<li>show constant/non constant</li>
+<li>show different variances, connect to hypotheses.</li>
+</ul>
+</section>
+<section id="variance-of-epsilon" class="level2">
+<h2 class="anchored" data-anchor-id="variance-of-epsilon">Variance of <span class="math inline">\(\epsilon\)</span></h2>
+<p>The variance of <span class="math inline">\(\epsilon\)</span> in OLS and in virtually all ML models can be thought of like this:</p>
+<p><span class="math display">\[
+var(\epsilon_i)=var(\epsilon_j) \forall i,j \ldots n \nonumber
+\]</span></p>
+<p>This is explicitly why we write the variance of the errors without a subscript - var(<span class="math inline">\(\epsilon\)</span>) - it is constant across all <span class="math inline">\(i\)</span>.</p>
+<p>Put slightly differently, the distribution of <span class="math inline">\(\epsilon\)</span> is the same for all <span class="math inline">\(i\)</span>.</p>
+<ul>
+<li>show non constant here</li>
+</ul>
+</section>
+<section id="i.i.d." class="level2">
+<h2 class="anchored" data-anchor-id="i.i.d.">i.i.d.</h2>
+<p>Expanding on this - virtually all frequentist statistical models assume the stochastic component is i.i.d.</p>
+<ul>
+<li><ol type="i">
+<li>independently</li>
+</ol></li>
+<li><ol type="i">
+<li>identically</li>
+</ol></li>
+<li><ol start="4" type="a">
+<li>distributed</li>
+</ol></li>
+</ul>
+<p>When we make identifying assumptions about the disturbances, we assume all observations on the error are distributed according to some probability distribution, and that their individual (identical) distributions are independent of one another - uncorrelated. E.g., we assume the OLS errors are Normal, with mean zero, and a shared or common variance, <span class="math inline">\(\sigma^2\)</span>.</p>
+</section>
+<section id="ols-variance-covariance-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="ols-variance-covariance-matrix">OLS variance-covariance matrix</h2>
+<p>In the simple regression case, the estimated variance of <span class="math inline">\(\beta\)</span> is given by \</p>
+<p><span class="math display">\[
+\widehat{\sigma}^{2}(\mathbf{X'X})^{-1} \nonumber
+\]</span></p>
+<p>or in scalar form, by</p>
+<p><span class="math display">\[
+\frac{\widehat{\sigma}^{2}}{SST} \nonumber
+\]</span></p>
+<p>If the variance is not constant, then the variance of <span class="math inline">\(\hat{\beta}\)</span> is given by:</p>
+<p><span class="math display">\[
+\text{Var}(\hat{\beta})=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2\widehat{\sigma_i}^{2}}{SST^2_x} \nonumber
+\]</span></p>
+<p>It’s pretty easy to see that this last estimate of the variance of <span class="math inline">\(\hat{\beta}\)</span> is not equivalent to the one above it, so the variance of <span class="math inline">\(\hat{\beta}\)</span> and thus the standard error of <span class="math inline">\(\hat{\beta}\)</span> are no longer “best.” The standard errors are wrong, but we don’t generally know if they’re too big or too small. Regardless, our inferences are under threat.</p>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<ul>
+<li><p>Compute robust standard errors.</p></li>
+<li><p>Change functional forms - often, logging the variables reduces the nonconstancy in the variance for about the same reasons it ropes-in outliers.</p></li>
+<li><p>Respecify the model - if relevant variables are excluded from the model, it may exacerbate the extent to which the error variance is nonconstant. Expect it! (it’s not the Spanish Inquisition).</p></li>
+<li><p>Estimate a model where we can examine the effects of variables on the variance.</p></li>
+</ul>
+</section>
+<section id="robust-standard-errors" class="level2">
+<h2 class="anchored" data-anchor-id="robust-standard-errors">Robust Standard Errors</h2>
+<p>White (1980) showed that it’s actually pretty simple to correct this problem, effectively to correct the variance (and standard error) of <span class="math inline">\(\beta\)</span> by using the residuals from the regression of <span class="math inline">\(y\)</span> on <span class="math inline">\(X\)</span> - in the bivariate case,</p>
+<p><span class="math display">\[\begin{align*}
+\text{White's Robust Variance}(\hat{\beta})=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2\widehat{\hat{u}_i}^{2}}{SST_x} \nonumber
+\end{align*}\]</span></p>
+<p>This computation weights the estimated variance of <span class="math inline">\(\hat{\beta}\)</span> by the residual thus accounting for the empirical source of the nonconstancy.</p>
+<p>This is marginally more complicated in the multiple regression case where the variance of <span class="math inline">\(\beta_j\)</span> is given by:</p>
+<p><span class="math display">\[\begin{align*}
+\text{White's Robust Variance}(\hat{\beta_j})=\frac{\sum \limits_{i=1}^{n} \hat{r}^2_{ij} \hat{u_i}^{2}}{SSR_j} \nonumber
+\end{align*}\]</span></p>
+<p>where we sum the residuals from the regression of <span class="math inline">\(x_j\)</span> on the other independent variables multiplied by <span class="math inline">\(u_i^2\)</span>, the residuals from the original regression, and divide by the sum squared residual from this auxiliary regression.</p>
+<p>This technique (which has been derived by several different econometricians) can be written mathematically in several different ways and computed in least squares or in maximum likelihood. It is probably most commonly known either as the White or White-Huber or Robust estimator of variance.</p>
+</section>
+<section id="panel-data" class="level2">
+<h2 class="anchored" data-anchor-id="panel-data">Panel data</h2>
+<p>The units in panel data can be significant sources of non constant variance. After all, the units surely will vary on any number of dimensions we model in the <span class="math inline">\(X\)</span> variables; it’s not hard to imagine that the conditional variances will also be different across those cross-sections. Robust standard errors are a good choice for dealing with this problem in panel data - it’s very common to see robust standard errors in panel data models.</p>
+</section>
+<section id="detection" class="level2">
+<h2 class="anchored" data-anchor-id="detection">Detection</h2>
+<ul>
+<li>graph residuals against <span class="math inline">\(x\)</span>, against <span class="math inline">\(\hat{y}\)</span></li>
+<li>statistical tests</li>
+</ul>
+</section>
+<section id="graphical-methods" class="level2">
+<h2 class="anchored" data-anchor-id="graphical-methods">Graphical methods</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#variance</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>e<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y=</span>y, <span class="at">x=</span>x) </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> simdata[<span class="fu">order</span>(y),] <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">t =</span> <span class="fu">row_number</span>(), <span class="at">e=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>)), <span class="at">yv=</span><span class="dv">1</span><span class="fl">+1.5</span><span class="sc">*</span>t<span class="sc">+</span>e<span class="sc">*</span>t)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(yv <span class="sc">~</span> t, <span class="at">data=</span>simdata)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(m2)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> simdata <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">fit=</span><span class="fu">predict</span>(m2, simdata), <span class="at">res=</span>yv<span class="sc">-</span>fit)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>varxy <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(simdata, <span class="fu">aes</span>(<span class="at">x=</span>t, <span class="at">y=</span>yv)) <span class="sc">+</span> </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>) </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>varxr <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(simdata, <span class="fu">aes</span>(<span class="at">x=</span>t, <span class="at">y=</span>res)) <span class="sc">+</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"residuals"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>varxy <span class="sc">/</span> varxr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="timevariance24_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="breusch-pagan-test" class="level2">
+<h2 class="anchored" data-anchor-id="breusch-pagan-test">Breusch-Pagan test</h2>
+<p>We can also detect non constant variance more mechanically by using the Breusch-Pagan test which works this way:</p>
+<ul>
+<li><p>Estimate the model of interest.</p></li>
+<li><p>Generate the residuals, and square each individual residual, so <span class="math inline">\(u_i^2\)</span>.</p></li>
+<li><p>Perform the auxiliary regression of <span class="math inline">\(u_i^2\)</span> on all the <span class="math inline">\(X\)</span>s.</p></li>
+<li><p>Generate either an F-statistic or Lagrange Multiplier (LM) <span class="math inline">\(\chi^2\)</span> statistic to test the null hypothesis of homoskedasticity.</p></li>
+</ul>
+<p>How do we compute the F or LM statistics? The <span class="math inline">\(F_{k,n-k-1}\)</span> is computed as</p>
+<p><span class="math display">\[
+F_{k,n-k-1}=\frac{R^2_{\hat{u_i^2}}/k}{(1-R^2_{\hat{u_i^2}})/(n-k-1)} \nonumber
+\]</span></p>
+<p>where we’re really testing the null hypothesis that the <span class="math inline">\(X\)</span> variables are jointly insignificant. If the auxiliary regression <span class="math inline">\(u_i^2\)</span> on all the <span class="math inline">\(X\)</span>s produces coefficients all equal to zero, then the squared residuals are not a function of the <span class="math inline">\(X\)</span>s. If this is the case, we cannot reject the null that all the coefficients are equal to zero, the null of homoskedasticity.</p>
+<p>The LM statistic is computed using the same information, but is not F-distributed - it’s distributed <span class="math inline">\(\chi^2_{k}\)</span> where <span class="math inline">\(k\)</span> is the degrees of freedom.</p>
+<p><span class="math display">\[
+LM \chi^2_{k} = n \cdot R^2_{\hat{u_i^2}} \nonumber
+\]</span></p>
+<p>If we reject the null hypothesis of homoskedasticity, we might want to take some corrective measures to account for the likelihood the variance in the error term is not constant.</p>
+</section>
+<section id="correcting-heterskedasticity---wls" class="level2">
+<h2 class="anchored" data-anchor-id="correcting-heterskedasticity---wls">Correcting Heterskedasticity - WLS</h2>
+<p>Another alternative is GLS, specifically “Weighted Least Squares”:</p>
+<p>The intuition is simple - weight estimation by the values of the variable(s) that we think is (are) associated with nonconstant error variance. In effect, dividing the entire estimating equation by <span class="math inline">\(x\)</span> will also weight the estimated variance of the error term, and thus return the model to homoskedasticity (assuming that variable is the sole source of nonconstant variance). We would benefit from doing this because we believe there are two types of cases in the data:</p>
+<ul>
+<li><p>cases with larger variances in <span class="math inline">\(y\)</span> due to <span class="math inline">\(x\)</span> contain less precise information.</p></li>
+<li><p>cases with smaller variances in <span class="math inline">\(y\)</span> due to <span class="math inline">\(x\)</span> contain more precise information.</p></li>
+</ul>
+<p>Ideally, what we would like to do is produce constant-variance residuals based on these differences so that their variances are equal.</p>
+<p>Suppose we could divide both sides of our model by <span class="math inline">\(\sigma_i\)</span> (if we knew it), the standard deviation of the residual, so</p>
+<p><span class="math display">\[\begin{align*}
+\frac{Y}{\sigma_i}=\beta_0\frac{1}{\sigma_i} + \beta_1 \frac{X_1}{\sigma_i} + \beta_2 \frac{X_2}{\sigma_{i,t}} +
+\frac{u_{i,t}}{\sigma_{i,t}} \nonumber
+\end{align*}\]</span></p>
+<p>This weights each individual case by the standard deviation of its residual, so those cases with larger variances (and standard deviations) are weighted to count less, those with smaller variances are weighted to count more. And the variance of the error term itself is now:</p>
+<p><span class="math display">\[
+E\left[\frac{u_{i,t}}{\sigma_{i,t}}\right]^2 =  \frac{1}{\sigma_i^2}E[u_{i,t}^2]  \nonumber \\ \nonumber \\
+=\frac{1}{\sigma_i^2}(\sigma^2) ~~~~~\text{because} ~~~~~E(u_i^2)=\sigma^2  \nonumber \\ \nonumber \\
+=1 \nonumber
+\]</span></p>
+<p>Because</p>
+<p><span class="math display">\[
+Var(u_{i,t})={\sigma_{i,t}}^2 X{_{i,t}} \nonumber
+\]</span></p>
+<p>the variance of the error term is proportional to <span class="math inline">\(X_i\)</span>, so we can divide each side of the equation by <span class="math inline">\(X_i\)</span> to transform the data, estimate our OLS model, and no longer violate the assumption the error variance is constant. Neat, eh?</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

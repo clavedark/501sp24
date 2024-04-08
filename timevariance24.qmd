@@ -1,0 +1,706 @@
+---
+title: "Time and Variance in the OLS model"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: interactions24s.html
+editor: source
+#embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+library(MASS)
+library(ggrepel)
+library(ggpmisc)
+library(sjPlot)
+library(plm)
+
+
+```
+
+
+# Time and Variance
+
+Our discussion of panel data emphasized the space and time dimensions and what the consequences of heterogeneity might be. Those dimensions may also have characteristics that violate the OLS assumptions so we can no longer rely on the BLUE properties of the estimator. 
+
+## Assumptions
+
+Recall these assumptions:
+
+This one holds that cross sections will have *identically* distributed disturbances.
+
+**Homoskedastic disturbances:**  $Var(u|x_1,x_2,\ldots,x_k)=\sigma^2$ 
+
+And this one holds that the disturbances will be *independent*.
+
+**Uncorrelated disturbances:**  $cov(u_i,u_j|x_1,x_2,\ldots,x_k)=0$ 
+
+
+Let's call these collectively the i.i.d. assumption. 
+
+
+# Time 
+
+## Uncorrelated Disturbances
+
+The model assumes the errors are not correlated with each other such that: 
+
+$$cov(u_t, u_{t-k} = 0)$$
+
+the errors are not correlated across time; 
+
+and 
+
+$$cov(u_i, u_j = 0)$$
+the errors are not correlated across units or cross-sections (so across space).
+
+You should be able to see why the first can be an issue in time series data, the second in cross-sectional data, and both in panel data.
+
+
+## Temporal correlation
+
+The nature of temporal correlations varies hugely. The focus of most basic time series analysis is autocorrelation - the error is correlated with itself at some point in the past so that, 
+
+$$
+cov[u_t,u_{t-k}] \neq 0,  \nonumber
+$$
+
+
+Because the errors are not independent, and because we know the rough source of their dependency, we could conceive of $u_t$ as\\
+
+$$
+u_t= \rho u_{t-1} + \varepsilon_t  ~~~\forall t, ~~~-1 < \rho < 1
+$$
+
+where the error at $t$ is a function of the error at $t-1$
+and $\rho$ is the coefficient indicating the effect of $u_{t-1}$ on
+$u_t$.  
+
+
+This conceptualization of $u_t$ is known as a **first order autoregressive process** or AR(1) because we've assumed $u_t$ is a function of $u_{t-1}$ rather than some other order or lag of $u$; note we could just as easily model higher order lags as AR(t) functions.
+
+
+Also note the inclusion of an error term, $\varepsilon_t$ satisfying the GM assumptions, so:
+
+$$
+E[\varepsilon_t] =0 \nonumber \nonumber \\
+Var(\varepsilon_t)= \sigma^2 \nonumber \nonumber \\
+Cov(\varepsilon_t, \varepsilon_{t-k})=0 
+$$
+
+
+## Autoregressive Processes
+
+Let's think about the errors $u_t$ for all $t$ in the AR  scheme:
+
+\begin{align*}
+u_t= \rho u_{t-1} + \varepsilon_t 
+= \rho(\rho u_{t-2} +\varepsilon_{t-1}) + \varepsilon_t  \nonumber \\
+= \rho^2 u_{t-2} + \rho \varepsilon_{t-1} + \varepsilon_t  \nonumber \\
+= \rho^2(\rho u_{t-3} + \varepsilon_{t-2}) + \rho \varepsilon_{t-1}+ \varepsilon_t  \nonumber \\
+= \rho^3 u_{t-3} + \rho^2 \varepsilon_{t-2} + \rho \varepsilon_{t-1}+ \varepsilon_t  \nonumber \\
+\vdots \nonumber \\
+= \rho^s u_{t-s} + \rho^{s-1} \varepsilon_{t-s+1} + \rho^{s-2} \varepsilon_{t-s+2}+ \ldots + \rho \varepsilon_{t-1} + \varepsilon_t  \nonumber \\ \nonumber \\
+u_t= \sum \limits_{s=0}^{\infty} \rho^s u_{t-s}
+\end{align*}
+
+You can see the effect of the lagged residuals up to $s$ on $u_t$; since $|\rho| < 1$, then $|\rho^2| < |\rho|$, and so forth, so the effect of each successive lag ($t-2, t-3, \ldots, t-s$) is smaller than the previous lag, eventually decaying to zero.
+
+
+## Variance-Covariance matrix of $\widehat{\beta}$
+
+ If the errors are correlated, then the variance-covariance matrix is certain to be
+troubled by that correlation if it is not corrected.  In fact,
+
+\begin{align*}
+Var(u_t)= \frac{\sigma^2}{1-\rho^2} \\
+Cov(u_t, u_{t-1})= \rho \sigma^2 \\ 
+Cov(u_t, u_{t-2})= \rho^2 \sigma^2 \\
+Cov(u_t, u_{t-3})= \rho^3 \sigma^2 \\
+\vdots \\
+Cov(u_t, u_{t-s})= \rho^s \sigma^2 \\
+\end{align*}
+
+
+
+so it's easy to see that if $\rho=0$, then:
+
+$$
+u_t= \varepsilon_t \nonumber \\
+Var(u_t)= \sigma_\varepsilon^2 \nonumber \\ 
+cov(u_{t}, u_{t-k})=0 \nonumber
+$$
+
+
+If $\rho \neq 0$ the OLS estimator is not BLUE; even though the estimates are unbiased, they are inefficient, so the standard errors are not based on
+minimum variance in the class of estimators.  
+ 
+
+
+
+
+
+## Detecting Autocorrelation
+
+We'll focus on two approaches:
+  
+  - graphical methods.
+  
+  - regression-based methods.
+
+ 
+
+## Graphical Methods - using simulated data
+
+
+
+\includegraphics[height=7cm]{autocorrelation.pdf} 
+
+
+
+## Graphical Methods - using state murder rate data
+
+
+
+\includegraphics[height=7cm]{soc_autocorr.pdf} 
+
+
+
+ In both cases (simulated, state murder rate data), the panels suggest the residuals are not random across time.  The left panel plots the residuals against their lag and indicates the relationship between $u_t, u_{t-1}$; the right panel shows a relationship between the residuals and time, and it's pretty clearly not random.  So let's turn to some more mechanical ways of detecting autocorrelation.
+
+
+## Regression-based detection
+
+Write the autocorrelation function:
+
+\begin{eqnarray}
+u_t= \rho u_{t-1} + \varepsilon_t  ~~~\forall t, ~~~-1 < \rho < 1
+\nonumber
+\end{eqnarray}
+
+We can estimate this {\it auxiliary regression} using the residuals and their lagged values.  The coefficient on $u_{t-1}$ is our estimate $\hat{\rho}$.
+
+
+
+## Regression based methods
+
+We'll look at three regression based methods:
+
+  - Durbin-Watson
+  - Breusch-Godfrey
+  - Wooldridge
+
+
+All three rely on estimating the OLS model, generating the residuals, and examining the relationships among different lags of the residuals for evidence of correlation. 
+
+The DW *d* is specifically designed for time-series data with exclusively exogenous variables in the model. In other words, models with lagged endogenous variables cannot be appropriately diagnosed using DW's *d*. Instead, you
+should use Durbin and Watson's *h* statistic or the BG Lagrange
+Multiplier test.    
+
+
+This is maybe the simplest regression-based way to detect autocorrelation: 
+
+  - estimate the regression of interest
+  - generate the residuals
+  - regress the residuals on its lag (or lags)
+  - if the coefficient on the lagged residuals is different from zero, some sort of AR process exists.
+
+
+
+
+### Durbin-Watson *d* Statistic
+
+The *d*  statistic tests a variety of null hypotheses, all supposing no AR(1) process exists.  It has limited application because of the assumptions on which it's based:
+
+
+  - the regression includes an intercept.
+  - the $x$ variables are fixed.
+  - the errors are AR(1)
+  - the model has no lagged endogenous variables.
+  - there are no missing observations in the time series.
+
+ 
+Beyond these limitations, the statistic has a bizarre distribution for which DW computed upper and lower bounds (outside of which we reject the null of no autocorrelation), but in the middle of which there is a region known as the "indeterminate" zone or "zone of indecision."
+
+
+Here's how the statistic is computed:
+
+$$
+d= \frac{\sum \hat{u}_{t}^{2} + \sum \hat{u}_{t-1}^{2} -2 \sum
+\hat{u}_{t}\hat{u}_{t-1}}{\sum \hat{u}_{t}^{2}} \nonumber
+$$
+
+ Because the residuals and lagged residuals differ by one
+observation, they are not equal, but are approximately equal, so we
+can set them equal and write: 
+
+$$
+d= 2  \left( 1- \frac{\sum \hat{u}_{t}\hat{u}_{t-1}}{\sum
+\hat{u}_{t}^{2}} \right) \nonumber
+$$
+
+The last term of this equation is $\rho$ - you can see the numerator is the covariation of the residuals and their lag, and the denominator is the sum squared residuals; this is a correlation coefficient indicating the correlation between $u_t, u_{t-1}$.  
+
+
+$$
+\rho =  \frac{\sum \hat{u}_{t}\hat{u}_{t-1}}{\sum \hat{u}_{t}^{2}}
+$$
+
+Consistent with the restrictions/assumptions underlying this statistic, note that we've estimated $\rho_{1}$ and so only can test for an AR(1) process.  Given our estimate of $\rho$, we can compute *d* as
+
+$$
+d= 2(1-\hat{\rho})  \nonumber
+$$
+
+And since $\rho$ is bounded by -1 and +1, *d* must be bounded by 0 and 4. 
+
+
+Here are the criteria for evaluating Durbin-Watson statistics: 
+
+
+\begin{table}[!ht]
+\begin{center}
+\caption{Durbin-Watson {\it d} Decision Criteria} \label{tab:dwcriteria}
+\begin{tabular}{lrr}
+Null Hypothesis &  Decision  & Value of Test {\it d} \\ \hline
+\hline
+
+no positive AR(1)  &  reject & $0<d<d_L$  \\
+
+no positive AR(1) & no decision & $d_L \leq d \leq d_U$ \\
+
+no negative AR(1) & reject  & $4-d_L < d < 4$  \\
+
+no negative  AR(1) & no decision & $4-d_u \leq d \leq 4-d-L$ \\
+
+no AR(1)  &  do not reject & $d_U<d<4-d_U$  \\
+
+\hline \hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+### Breusch-Godfrey LM Test
+
+The BG test is a more general test because it can account for higher order AR processes (while DW is limited to AR(1)).  Moreover, the BG test is simple to compute by hand and has few of the limitations listed above for DW.  \alert{Note, this is not appropriate for panel data.
+
+
+Here's how it works: 
+
+  - Estimate the OLS regression model.
+  - Generate the residuals.
+  - Regress the residuals, $\hat{u}_t$, on all the $x$ variables in the model plus as many lagged values of $\hat{u}_t$ as you want to test, so; $\hat{u}_{t-1}$,  $\hat{u}_{t-2}$,  $\hat{u}_{t-3}$, $\hat{u}_{t-p}$ etc. 
+  
+  
+In this example, we're testing 3 lags, so $p=3$. The regression would be:
+
+$$
+\hat{u}_t= X\beta+\rho_1 \hat{u}_{t-1} +\rho_2 \hat{u}_{t-2}+\rho_3
+\hat{u}_{t-3} \nonumber
+$$
+
+Using the $R^2$ from this auxiliary regression, generate the BG LM statistic as:
+
+$$
+(n-p) R^2 ~~ \sim \chi_p^2 
+$$
+
+
+
+The BG is a $\chi_p^2$ statistic with $p$ degrees of freedom. The null hypothesis is that $\rho_1=\rho_2=\rho_3=0$.  The BG test not only allows testing for higher order AR processes, but can be used in models with lagged endogenous variables as well.
+
+
+### Wooldridge test for panel data
+
+Wooldridge's test is simple; note that it's appropriate for panel data as well. 
+
+  - difference all variables; estimate the differenced regression, clustered by panel, excluding a constant.
+  - generate the residuals from this regression.
+  - regress the residuals on their lag, no constant, clustered by panel.
+  - test the null hypothesis that $\beta$ on the lag of the residual is equal to -.5.
+
+
+## Correcting AR(1) processes
+
+Most methods for dealing with autocorrelation seek to purge the temporal dependence from the data by transforming the data. 
+
+
+::: {.callout-note title="Generalized Least Squares"}
+ 
+Generalized Least Squares: OLS on data transformed such that the data satisfy the assumptions of the OLS model.
+
+:::
+
+One common GLS method for dealing with correlated errors is to estimate $\rho$-transformed models - two common variants are the Prais-Winsten and Cochrane-Orcutt regressions.
+
+
+
+## $\rho$-transformations
+
+The intuition of $\rho$-transformed models is simple:
+
+  - estimate the regression of interest.
+  - generate the residuals.
+  - estimate $\hat{\rho}$ as above.
+  - transform the variables by $\rho$ such that:
+  $$y_t - \rho y_{t-1} = \beta_0(1-\rho)+ \beta_1(x_{1,t} - \rho x_{1,t-1}) \ldots$$
+  - call the new transformed variables $y^*, x^*$
+  - estimate the regression $y^*=\beta^*_0+\beta^*_1(x^*)$
+
+
+This particular process is the Cochrane-Orcutt 2-step method. Others are similar. The estimates are now corrected by the estimated value of $\rho$. 
+
+
+## Dynamic Models 
+
+Lagging $y_t$ and including it on the right hand side of the regression equation can ameliorate autocorrelation, but it changes the interpretation of the coefficients (all of them).
+
+
+Lagging $y_t$ is powerful - it generally is a poor choice for dealing with autocorrelation, but a great choice for estimating long term effects - these are known as *dynamic models*.
+
+Lagging $x$ variables is also a great choice if theory implies the effect of $x$ is spread over time, and accumulates in some fashion - these models are known as *distributed lag models*. 
+
+
+Dynamic models allow us to examine the long-term effects of changes in $x$ on $y_t$. The equation we estimate is 
+
+$$
+y_t=+ \gamma y_{t-1}+ \beta_{0}+\beta_{1}X_{1} + \beta_{2}X_{2} \ldots +  \beta_{k}X_{k}
+$$
+
+where the first term estimates the "memory" in the $y$-series. That is, it measures how much the present value of $y$ is a function of remembering the value of $y$ at $t-1$. Thinking of $-1 <\gamma< 1$, as $|\gamma|$ increases, so does memory. 
+
+
+What does it mean for these lag-models to be dynamic? In the OLS setting, $x$ has a $\beta$ effect on $y$. In this setting, if $x_t$ has a $\beta$ effect on $y_t$, and if $\gamma \neq 0$, then $x_t$ also has some effect on $y_{t+1}$. In other words, the determinants of $y$ also exhibit a sort of memory-like, accumulating effect on future values of $y$.
+
+What these models permit is measurement of short term effects - $\beta_k$; and long term effects $\frac{\beta_k}{1-\gamma}$. 
+ 
+
+Why not use lags of $y$ to deal with autocorrelation? The AR problem is that $u_t$ is correlated with $u_{t-1}$. In the dynamic setting, if these observations on the error are correlated, they must also be correlated with $y_{t-1}$ - this is a big problem because now, one of the regressors is correlated with $u$ - an endogeneity-like problem. Whereas AR usually causes inefficiency alone, in the dynamic model it also produces biased estimates. 
+
+For this reason, it's inadvisable to use a lag strategy to deal with AR. It's also advisable to test for AR in dynamic models, and to use AR methods (like Prais-Winsten) to deal with AR problems in dynamic models. 
+
+
+
+# Variance 
+
+The OLS model assumes the errors are *identically* distributed, again, part of i.i.d.: 
+
+**Homoskedastic disturbances:**  $Var(u|x_1,x_2,\ldots,x_k)=\sigma^2$ 
+
+which means that the variance of the residuals, given the $X$ variables, is a constant, $\sigma^2$. What would make this fail? 
+
+Suppose we're modeling individual consumer spending on luxury items like sports cars, speed boats, golden toilets, and vacation homes. One of the main predictors of luxury item purchases is income; we'd expect as income increases, so does spending on luxury items.
+
+Notice this prediction is about the mean of the $y$ variable - the expected value (predicted mean) of $y$ will increase with income. But what if the variance of spending on luxury items also increases with income? For simplicity, think about two income groups. 
+
+  - low income: expected mean spending is low; as a group they will behave very uniformly, spending very little on luxury items.
+  
+  - high income: expected mean spending is high; as a group they will **not** behave uniformly. Some will spend lavishly on gold toilets and the like (Donald Trump), while others will shop at Walmart (Warren Buffett). 
+
+The OLS model $\text{luxury spending} = \beta_0 + \beta_1\text{income}$ will likely produce a positive, significant estimate for $\beta_1$ indicating the mean of spending increases with income. But because the variance is different between the two groups (or actually, the variance is increasing with income), the OLS model will be inefficient, so the standard errors will be wrong. 
+
+Moreover, notice that we're missing an interesting part of the story - with resources comes choice, and with choice comes variance in behavior. 
+
+::: {.callout-note title="Variance is not a nuisance"}
+
+When we only develop stories about mean behavior, we neglect interesting stories about variance. In many of the phenomena we study, we should consider stories about uniformity of behavior and the sources of that uniformity - these are stories about variance. 
+
+:::
+
+## What is non constant variance
+
+Nonconstant variance - subgroups in the data have different error variances:
+
+  - those with large variances contain less information.
+  - those with small variances contain more information.
+
+
+Consider how this influences our measures of uncertainty. 
+
+
+Thinking of non constant variance in terms of explanatory variables, lower values of $x$ explain $y$ well; higher values of $x$ do not explain as well.
+
+
+## Why does it happen?
+
+  - endogenous limits on behavior - the number of responses in $y$ is related to the variability in $y$, and therefore in $\epsilon$. E.g., as income increases, so does mean spending and variability in spending. As income declines, spending declines and variability is limited by the low level. E.g. successful coups - as the number of coups increases, the variance in coup outcomes will also increase.
+ 
+  - training or learning - individuals better at a task will have smaller variance than novices. Major league hitters will have smaller variances than minor leaguers; grad students will have large variances in publishing out comes than faculty. 
+  
+  - data issues - different collection rules (e.g. MIDs); aggregation.
+
+
+
+## What to do? 
+
+ While most discussions of heteroskedasticity focus on diagnosis and correction, my view is that the possibility (or probability) the variance is not constant is something on which to theorize ex ante.  
+ 
+## Visualizing variance 
+
+  - show constant/non constant
+  - show different variances, connect to hypotheses.
+
+
+## Variance of $\epsilon$
+
+The variance of $\epsilon$ in OLS and in virtually all ML models can be thought of like this:
+
+$$
+var(\epsilon_i)=var(\epsilon_j) \forall i,j \ldots n \nonumber
+$$
+
+
+This is explicitly why we write the variance of the errors without a subscript - var($\epsilon$) - it is constant across all $i$.
+
+Put slightly differently, the distribution of $\epsilon$ is the same for all $i$.
+
+
+  - show non constant here 
+
+
+
+## i.i.d.
+
+Expanding on this - virtually all frequentist statistical models assume the stochastic component is i.i.d. 
+
+  - i. independently
+
+  - i. identically 
+
+  - d. distributed 
+
+When we make identifying assumptions about the disturbances, we assume all observations on the error are distributed according to some probability distribution, and that their individual (identical) distributions are independent of one another - uncorrelated. E.g., we assume the OLS errors are Normal, with mean zero, and a shared or common variance, $\sigma^2$. 
+
+
+## OLS variance-covariance matrix
+
+In the simple regression case, the estimated variance of $\beta$ is given by \\
+
+$$
+\widehat{\sigma}^{2}(\mathbf{X'X})^{-1} \nonumber 
+$$
+
+or in scalar form, by 
+
+$$
+\frac{\widehat{\sigma}^{2}}{SST} \nonumber 
+$$
+
+If the variance is not constant, then the variance of $\hat{\beta}$ is given by:
+
+$$
+\text{Var}(\hat{\beta})=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2\widehat{\sigma_i}^{2}}{SST^2_x} \nonumber 
+$$
+
+It's pretty easy to see that this last estimate of the variance of $\hat{\beta}$ is not equivalent to the one above it, so the variance of $\hat{\beta}$ and thus the standard error of $\hat{\beta}$ are no longer "best." The standard errors are wrong, but we don't generally know if they're too big or too small. Regardless, our inferences are under threat.
+
+
+## Solutions
+
+
+  - Compute robust standard errors.
+ 
+  - Change functional forms - often, logging the variables reduces the nonconstancy in the variance for about the same reasons it ropes-in outliers.
+ 
+  - Respecify the model - if relevant variables are excluded from the model, it may exacerbate the extent to which the error variance is nonconstant. Expect it! (it's not the Spanish Inquisition).
+  
+  - Estimate a model where we can examine the effects of variables on the variance.
+
+
+## Robust Standard Errors
+
+White (1980) showed that it's actually pretty simple to correct this problem, effectively to correct the variance (and standard error) of $\beta$ by using the residuals from the regression of $y$ on $X$ - in the bivariate case, 
+
+\begin{align*}
+\text{White's Robust Variance}(\hat{\beta})=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2\widehat{\hat{u}_i}^{2}}{SST_x} \nonumber 
+\end{align*}
+
+This computation weights the estimated variance of $\hat{\beta}$ by the residual thus accounting for the empirical source of the nonconstancy. 
+
+
+This is marginally more complicated in the multiple regression case where the variance of $\beta_j$ is given by:
+
+\begin{align*}
+\text{White's Robust Variance}(\hat{\beta_j})=\frac{\sum \limits_{i=1}^{n} \hat{r}^2_{ij} \hat{u_i}^{2}}{SSR_j} \nonumber 
+\end{align*}
+
+where we sum the residuals from the regression of $x_j$ on the other independent variables multiplied by $u_i^2$, the residuals from the original regression, and divide by the sum squared residual from this auxiliary regression.   
+
+
+This technique (which has been derived by several different econometricians) can be written mathematically in several different ways and computed in least squares or in maximum likelihood. It is probably most commonly known either as the White or White-Huber or Robust estimator of variance. 
+
+## Panel data
+
+The units in panel data can be significant sources of non constant variance. After all, the units surely will vary on any number of dimensions we model in the $X$ variables; it's not hard to imagine that the conditional variances will also be different across those cross-sections. Robust standard errors are a good choice for dealing with this problem in panel data - it's very common to see robust standard errors in panel data models.
+
+
+## Detection 
+
+
+  - graph residuals against $x$, against $\hat{y}$
+  - statistical tests
+
+
+## Graphical methods
+
+
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+#variance
+set.seed(8675309)
+x=rnorm(runif(100, -2, 2))
+e=rnorm(runif(100, -2, 2))
+y=rnorm(runif(100, -2, 2))
+
+simdata <- data.frame(y=y, x=x) 
+
+simdata <- simdata[order(y),] %>%
+  mutate(t = row_number(), e=rnorm(runif(100, -2, 2)), yv=1+1.5*t+e*t)
+
+m2 <- lm(yv ~ t, data=simdata)
+#summary(m2)
+simdata <- simdata %>% mutate(fit=predict(m2, simdata), res=yv-fit)
+
+varxy <- ggplot(simdata, aes(x=t, y=yv)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x="x", y="y") 
+
+varxr <- ggplot(simdata, aes(x=t, y=res)) +
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x="x", y="residuals")
+
+varxy / varxr
+
+```
+
+
+## Breusch-Pagan test
+
+We can also detect non constant variance more mechanically by using the Breusch-Pagan test which works this way:
+
+
+  - Estimate the model of interest.
+ 
+  - Generate the residuals, and square each individual residual, so $u_i^2$.
+ 
+  - Perform the auxiliary regression of $u_i^2$ on all the $X$s.
+  
+  - Generate either an F-statistic or Lagrange Multiplier (LM) $\chi^2$ statistic to test the null hypothesis of homoskedasticity.
+
+
+
+How do we compute the F or LM statistics? The $F_{k,n-k-1}$ is computed as 
+
+$$
+F_{k,n-k-1}=\frac{R^2_{\hat{u_i^2}}/k}{(1-R^2_{\hat{u_i^2}})/(n-k-1)} \nonumber
+$$
+
+where we're really testing the null hypothesis that the $X$ variables are jointly insignificant. If the auxiliary regression $u_i^2$ on all the $X$s produces coefficients all equal to zero, then the squared residuals are not a function of the $X$s. If this is the case, we cannot reject the null that all the coefficients are equal to zero, the null of homoskedasticity. 
+
+
+The LM statistic is computed using the same information, but is not F-distributed - it's distributed $\chi^2_{k}$ where $k$ is the degrees of freedom.
+
+$$
+LM \chi^2_{k} = n \cdot R^2_{\hat{u_i^2}} \nonumber
+$$
+
+If we reject the null hypothesis of homoskedasticity, we might want to take some corrective measures to account for the likelihood the variance in the error term is not constant.  
+
+
+## Correcting Heterskedasticity - WLS
+
+Another alternative is GLS, specifically "Weighted Least Squares":
+
+The intuition is simple -  weight estimation by the values of the variable(s) that we think is (are) associated with nonconstant error variance. In effect, dividing the entire estimating equation by $x$ will also weight the estimated variance of the error term, and thus return the model to homoskedasticity (assuming that variable is the sole source of nonconstant variance). We would benefit from doing this because we believe there are two types of cases in the data:
+
+
+  - cases with larger variances in $y$ due to $x$ contain less precise information.
+ 
+  - cases with smaller variances in $y$ due to $x$ contain more precise information.
+
+Ideally, what we would like to do is produce constant-variance residuals based on these differences so that their variances are equal. 
+
+Suppose we could divide both sides of our model by $\sigma_i$ (if we knew it), the standard deviation of the residual, so 
+
+\begin{align*}
+\frac{Y}{\sigma_i}=\beta_0\frac{1}{\sigma_i} + \beta_1 \frac{X_1}{\sigma_i} + \beta_2 \frac{X_2}{\sigma_{i,t}} +
+\frac{u_{i,t}}{\sigma_{i,t}} \nonumber
+\end{align*}
+
+
+This weights each individual case by the standard deviation of its residual, so those cases with larger variances (and standard deviations) are weighted to count less, those with smaller variances are weighted to count more. And the variance of the error term itself is now: 
+
+$$
+E\left[\frac{u_{i,t}}{\sigma_{i,t}}\right]^2 =  \frac{1}{\sigma_i^2}E[u_{i,t}^2]  \nonumber \\ \nonumber \\
+=\frac{1}{\sigma_i^2}(\sigma^2) ~~~~~\text{because} ~~~~~E(u_i^2)=\sigma^2  \nonumber \\ \nonumber \\
+=1 \nonumber
+$$ 
+
+
+Because 
+
+$$
+Var(u_{i,t})={\sigma_{i,t}}^2 X{_{i,t}} \nonumber
+$$
+
+the variance of the error term is proportional to $X_i$, so we can divide each side of the equation by $X_i$ to transform the data, estimate our OLS model, and no longer violate the assumption the error variance is constant. Neat, eh? 
+
+
+
+
+  
+
+
+
+## References
+
+::: {#refs}
+:::

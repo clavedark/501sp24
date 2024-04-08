@@ -8,8 +8,8 @@ title-block-banner: TRUE
 bibliography: refs501.bib
 format: 
    html: default
-   revealjs:
-     output-file: bivariate24s.html
+   # revealjs:
+   #   output-file: bivariate24s.html
 editor: source
 embed-resources: true
 cache: true
