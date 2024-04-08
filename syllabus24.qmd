@@ -28,7 +28,7 @@ library(pander)
 
 -   {{< fa user >}}   [{{< var instructor.name >}}]({{< var instructor.url >}})
 -   {{< fa university >}}   {{< var instructor.office >}}
--   {{< fa envelope >}}   <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
+-   {{< fa envelope >}}   <a href="mailto:dclark@binghamton.edu">dclark@binghamton.edu</a>
 -   {{< fa brands github >}}   [{{< var instructor.gitname >}}]({{< var instructor.github >}})
 -   office hours: M 1:30-3:30pm
 
@@ -44,7 +44,7 @@ library(pander)
 ### TA
 
 -   {{< fa user >}}   [{{< var instructor.TA >}}]({{< var instructor.taurl >}})
--   {{< fa envelope >}}   <a href="mailto:{{< var instructor.taemail >}}">{{< var instructor.taemail >}}</a>
+-   {{< fa envelope >}}   <a href="mailto:kbannon1@binghamton.edu">kbannon1@binghamton.edu</a>
 
 ### Lab
 
