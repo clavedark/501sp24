@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Dave Clark">
-<meta name="dcterms.date" content="2024-04-08">
+<meta name="dcterms.date" content="2024-04-10">
 
 <title>PLSC 501 - Spring 2024 - Panel Data</title>
 <style>
@@ -228,7 +228,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 8, 2024</p>
+        <p class="date">April 10, 2024</p>
       </div>
     </div>
     
@@ -632,7 +632,7 @@ X_{nT}^1 &amp;X_{nT}^2 &amp;\cdots &amp; X_{nT}^k \nonumber
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">label =</span> <span class="cn">NULL</span>), <span class="at">se =</span> <span class="cn">FALSE</span>)<span class="sc">+</span>    </span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span>statename),<span class="at">size=</span><span class="fl">2.5</span>, <span class="at">force=</span><span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Assaults per 100,000"</span>, <span class="at">y=</span><span class="st">"Murders per 100,000"</span>)<span class="sc">+</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Between model"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Between variance"</span>)</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># within removing all between</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>tstates <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">wmurder=</span><span class="fu">mean</span>(murder, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">wassault=</span><span class="fu">mean</span>(assault, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
@@ -644,7 +644,7 @@ X_{nT}^1 &amp;X_{nT}^2 &amp;\cdots &amp; X_{nT}^k \nonumber
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">label =</span> <span class="cn">NULL</span>), <span class="at">se =</span> <span class="cn">FALSE</span>)<span class="sc">+</span>    </span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span>year),<span class="at">size=</span><span class="fl">2.5</span>, <span class="at">force=</span><span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Assaults per 100,000"</span>, <span class="at">y=</span><span class="st">"Murders per 100,000"</span>)<span class="sc">+</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Within model"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Within variance"</span>)</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>b <span class="sc">+</span> w  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1413,13 +1413,13 @@ window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i
   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tinytable_w8td0zxe75hhagi0jp3w</title>
+    <title>tinytable_xnxw8td0zxe75hhagi0j</title>
     <style>
-.table td.tinytable_css_i5ag57pyk437v4evgtmc, .table th.tinytable_css_i5ag57pyk437v4evgtmc {    border-bottom: solid 0.1em #d3d8dc; }
-.table td.tinytable_css_zvyapa6xnsgxshr5abuc, .table th.tinytable_css_zvyapa6xnsgxshr5abuc {    text-align: left; }
-.table td.tinytable_css_5vqs1lr7g88o5fhqgrh3, .table th.tinytable_css_5vqs1lr7g88o5fhqgrh3 {    text-align: center; }
-.table td.tinytable_css_fnjux1z807ipqjuzu3ue, .table th.tinytable_css_fnjux1z807ipqjuzu3ue {    text-align: center; }
-.table td.tinytable_css_cgtnm7fgydhj40g8m1n2, .table th.tinytable_css_cgtnm7fgydhj40g8m1n2 {    text-align: center; }
+.table td.tinytable_css_p3wi5ag57pyk437v4evg, .table th.tinytable_css_p3wi5ag57pyk437v4evg {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_huhzvyapa6xnsgxshr5a, .table th.tinytable_css_huhzvyapa6xnsgxshr5a {    text-align: left; }
+.table td.tinytable_css_buc5vqs1lr7g88o5fhqg, .table th.tinytable_css_buc5vqs1lr7g88o5fhqg {    text-align: center; }
+.table td.tinytable_css_rh3fnjux1z807ipqjuzu, .table th.tinytable_css_rh3fnjux1z807ipqjuzu {    text-align: center; }
+.table td.tinytable_css_3uecgtnm7fgydhj40g8m, .table th.tinytable_css_3uecgtnm7fgydhj40g8m {    text-align: center; }
     </style>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -1437,7 +1437,7 @@ window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i
 
   
     <div class="container">
-      <table class="table table-borderless" id="tinytable_w8td0zxe75hhagi0jp3w" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_xnxw8td0zxe75hhagi0j" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -1514,12 +1514,12 @@ window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i
     </div>
 
     <script>
-      function styleCell_tinytable_e7qlfo1kl8gc4npombc6(i, j, css_id) {
-        var table = document.getElementById("tinytable_w8td0zxe75hhagi0jp3w");
+      function styleCell_tinytable_dj9e7qlfo1kl8gc4npom(i, j, css_id) {
+        var table = document.getElementById("tinytable_xnxw8td0zxe75hhagi0j");
         table.rows[i].cells[j].classList.add(css_id);
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_w8td0zxe75hhagi0jp3w');
+        var table = document.getElementById('tinytable_xnxw8td0zxe75hhagi0j');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -1527,8 +1527,8 @@ window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_tinytable_e7qlfo1kl8gc4npombc6(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_w8td0zxe75hhagi0jp3w");
+      function spanCell_tinytable_dj9e7qlfo1kl8gc4npom(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_xnxw8td0zxe75hhagi0j");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -1555,54 +1555,54 @@ window.addEventListener('load', function () { styleCell_tinytable_fbh516q5a8df3i
         targetCell.colSpan = colspan;
       }
 
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 0, 'tinytable_css_i5ag57pyk437v4evgtmc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 1, 'tinytable_css_i5ag57pyk437v4evgtmc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 2, 'tinytable_css_i5ag57pyk437v4evgtmc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 3, 'tinytable_css_i5ag57pyk437v4evgtmc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 0, 'tinytable_css_zvyapa6xnsgxshr5abuc') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 1, 'tinytable_css_5vqs1lr7g88o5fhqgrh3') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 2, 'tinytable_css_fnjux1z807ipqjuzu3ue') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(0, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(1, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(2, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(3, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(4, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(5, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(6, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(7, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(8, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(9, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
-window.addEventListener('load', function () { styleCell_tinytable_e7qlfo1kl8gc4npombc6(10, 3, 'tinytable_css_cgtnm7fgydhj40g8m1n2') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 0, 'tinytable_css_p3wi5ag57pyk437v4evg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 1, 'tinytable_css_p3wi5ag57pyk437v4evg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 2, 'tinytable_css_p3wi5ag57pyk437v4evg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 3, 'tinytable_css_p3wi5ag57pyk437v4evg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(1, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(2, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(3, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(4, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(5, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(6, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(7, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(8, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(9, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(10, 0, 'tinytable_css_huhzvyapa6xnsgxshr5a') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(1, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(2, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(3, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(4, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(5, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(6, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(7, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(8, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(9, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(10, 1, 'tinytable_css_buc5vqs1lr7g88o5fhqg') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(1, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(2, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(3, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(4, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(5, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(6, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(7, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(8, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(9, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(10, 2, 'tinytable_css_rh3fnjux1z807ipqjuzu') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(0, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(1, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(2, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(3, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(4, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(5, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(6, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(7, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(8, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(9, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
+window.addEventListener('load', function () { styleCell_tinytable_dj9e7qlfo1kl8gc4npom(10, 3, 'tinytable_css_3uecgtnm7fgydhj40g8m') })
     </script>
 
   
@@ -1627,13 +1627,13 @@ Your data is a mystery to your software
 </section>
 <section id="what-fixed-effects-do" class="level3">
 <h3 class="anchored" data-anchor-id="what-fixed-effects-do">What fixed effects do</h3>
-<p>Fixed effects (whether by LSDV or demeaning) remove the unit specific effects from the error term, so that the error term is uncorrelated with the <span class="math inline">\(X\)</span> variables. <span class="math inline">\(\mu_i\)</span> is now modeled, so no longer in the error; the error now only contains $_{i,t}. Fixed effects remove the between unit variation, leaving only the within unit variation.</p>
+<p>Fixed effects (whether by LSDV or demeaning) remove the unit specific effects from the error term, so that the error term is uncorrelated with the <span class="math inline">\(X\)</span> variables. <span class="math inline">\(\mu_i\)</span> is now modeled, so no longer in the error; the error now only contains <span class="math inline">\(\epsilon_{i,t}\)</span>. Fixed effects remove the between unit variation, leaving only the within unit variation.</p>
 </section>
 <section id="lsdv-and-de-meaning-are-equivalent-methods." class="level3">
 <h3 class="anchored" data-anchor-id="lsdv-and-de-meaning-are-equivalent-methods.">LSDV and de-meaning are equivalent methods.</h3>
 <ul>
 <li><p>LSDV uses lots of degrees of freedom, will sometimes produce perfect collinearity among unit intercepts. However, LSDV gives estimates of every unit intercept.</p></li>
-<li><p>De-meaning (the method used in R’s plm, feols, and others; Stata’s “xt” suite) is efficient, doesn’t estimate the intercepts.</p></li>
+<li><p>De-meaning (the method used in R’s <code>plm</code>, <code>feols</code>, and others; Stata’s <code>xt</code> suite) is efficient, doesn’t estimate the intercepts.</p></li>
 <li><p>Another equivalent method is the absorbing regression where the variables are de-meaned as above, then the overall mean of each variable is added back. The unit effects are said to be absorbed.</p></li>
 </ul>
 </section>
@@ -1651,7 +1651,7 @@ Your data is a mystery to your software
 <p><span class="citation" data-cites="wooldridge2013">Wooldridge (<a href="#ref-wooldridge2013" role="doc-biblioref">2013</a>)</span> suggests that the random effects model can be useful where some (large) proportion of the <span class="math inline">\(x\)</span> variables are constant within unit, but vary across units - that is, they’re time-invariant. These, of course, are the variables that will drop out of the fixed effects model.</p>
 <section id="hausman-test" class="level3">
 <h3 class="anchored" data-anchor-id="hausman-test">Hausman test</h3>
-<p>The Hausman test is a test the equivalence of the fixed and random effects coefficient vectors. If the two are the same (we fail to reject the null), we prefer random effects; if we do reject the null (the coefficient vectors are different), we prefer fixed effects.</p>
+<p>The Hausman test tests the equivalence of the fixed and random effects coefficient vectors. If the two are the same (we fail to reject the null), we prefer random effects; if we do reject the null (the coefficient vectors are different), we prefer fixed effects.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>code</summary>
@@ -1688,7 +1688,7 @@ alternative hypothesis: one model is inconsistent</code></pre>
 <h2 class="anchored" data-anchor-id="fixed-effects-and-endogeneity">Fixed Effects and Endogeneity</h2>
 <p>If <span class="math inline">\(cov(X, \epsilon) \neq 0\)</span>, we have an endogeneity problem. Endogeneity arises for different reasons - for our purposes here, the main thing is that the correlation of <span class="math inline">\(X\)</span> and <span class="math inline">\(\epsilon\)</span> indicates endogeneity, and we already know some of the consequences.</p>
 <p>Fixed effects are appropriate for the case where we think the individual errors are correlated with the <span class="math inline">\(X\)</span> variables; modeling those individual errors, <span class="math inline">\(\mu_i\)</span> in any of the ways described above removes those effects from the error term, thus returning us to the blissful case where <span class="math inline">\(cov(X, \epsilon)=0\)</span>.</p>
-<p>In other words, fixed effects can serve as a (partial) solution to endogeneity.</p>
+<p>In other words, fixed effects can serve as a (partial) solution to endogeneity. For <span class="citation" data-cites="bailey2016stats">Bailey (<a href="#ref-bailey2016stats" role="doc-biblioref">2016</a>)</span>, this is a major reason to include fixed effects in panel data models.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>

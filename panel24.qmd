@@ -257,7 +257,7 @@ b <- ggplot(data=xstates, aes(x=bassault, y=bmurder)) +
   geom_smooth(method = 'lm', aes(color = NULL, label = NULL), se = FALSE)+    
   geom_text_repel(aes(label=statename),size=2.5, force=5) +
   labs(x="Assaults per 100,000", y="Murders per 100,000")+
-  ggtitle("Between model")
+  ggtitle("Between variance")
 
 # within removing all between
 tstates <- states %>% group_by(year) %>% summarise(wmurder=mean(murder, na.rm=TRUE), wassault=mean(assault, na.rm=TRUE))
@@ -269,7 +269,7 @@ w <- ggplot(data=tstates, aes(x=wassault, y=wmurder)) +
   geom_smooth(method = 'lm', aes(color = NULL, label = NULL), se = FALSE)+    
   geom_text_repel(aes(label=year),size=2.5, force=5) +
   labs(x="Assaults per 100,000", y="Murders per 100,000")+
-  ggtitle("Within model")
+  ggtitle("Within variance")
 
 
 b + w  
@@ -612,7 +612,7 @@ For example - the excellent `plm` library **assumes** the first two columns of y
  
 ### What fixed effects do
 
-Fixed effects (whether by LSDV or demeaning) remove the unit specific effects from the error term, so that the error term is uncorrelated with the $X$ variables. $\mu_i$ is now modeled, so no longer in the error; the error now only contains $\epsilon_{i,t}. Fixed effects remove the between unit variation, leaving only the within unit variation.
+Fixed effects (whether by LSDV or demeaning) remove the unit specific effects from the error term, so that the error term is uncorrelated with the $X$ variables. $\mu_i$ is now modeled, so no longer in the error; the error now only contains $\epsilon_{i,t}$. Fixed effects remove the between unit variation, leaving only the within unit variation.
 
 
 ### LSDV and de-meaning are equivalent methods. 
@@ -620,7 +620,7 @@ Fixed effects (whether by LSDV or demeaning) remove the unit specific effects fr
 
   - LSDV uses lots of degrees of freedom, will sometimes produce perfect collinearity among unit intercepts. However, LSDV gives estimates of every unit intercept. 
   
-  - De-meaning (the method used in R's plm, feols, and others; Stata's "xt" suite) is efficient, doesn't estimate the intercepts. 
+  - De-meaning (the method used in R's `plm`, `feols`, and others; Stata's `xt` suite) is efficient, doesn't estimate the intercepts. 
   
   - Another equivalent method is the  absorbing regression where the variables are de-meaned as above, then the overall mean of each variable is added back. The unit effects are said to be absorbed. 
 
@@ -644,7 +644,8 @@ Some authors (e.g. @bailey2016stats) pretty strongly prefer fixed effects, in pa
 
 ### Hausman test
 
-The Hausman test is a test the equivalence of the fixed and random effects coefficient vectors. If the two are the same (we fail to reject the null), we prefer random effects; if we do reject the null (the coefficient vectors are different), we prefer fixed effects. 
+The Hausman test tests the equivalence of the fixed and random effects coefficient vectors. If the two are the same (we fail to reject the null), we prefer random effects; if we do reject the null (the coefficient vectors are different), we prefer fixed effects. 
+
 ```{r}
 #| echo: true
 #| code-fold: true
@@ -683,7 +684,7 @@ If $cov(X, \epsilon) \neq 0$, we have an endogeneity problem. Endogeneity arises
 
 Fixed effects are appropriate for the case where we think the individual errors are correlated with the $X$ variables; modeling those individual errors, $\mu_i$ in any of the ways described above removes those effects from the error term, thus returning us to the blissful case where $cov(X, \epsilon)=0$. 
 
-In other words, fixed effects can serve as a (partial) solution to endogeneity. 
+In other words, fixed effects can serve as a (partial) solution to endogeneity. For @bailey2016stats, this is a major reason to include fixed effects in panel data models.
 
 
 ## References

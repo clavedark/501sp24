@@ -190,20 +190,39 @@ We'll focus on two approaches:
 
  
 
-## Graphical Methods - using simulated data
-
-
-
-\includegraphics[height=7cm]{autocorrelation.pdf} 
-
-
-
 ## Graphical Methods - using state murder rate data
 
+```{r, results='asis', warning=FALSE, message=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+states <- read_dta("/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta")
+
+ms <- lm(murder ~ south + unemp + hsdip + citid + prcapinc, data=states)
+#summary(ms)
+
+states <- states %>% mutate(res=residuals(ms))  
+
+states <- states %>% group_by(id) %>% 
+  mutate(res1=dplyr::lag(res,1), res2=dplyr::lag(res,n=2), res3=dplyr::lag(res,n=3))
+
+statesxs <- states %>% group_by(statename) %>% 
+  summarise(across(c(murder,res, res1, res2, res3), mean, na.rm=TRUE))
+
+# ggplot(statesxs, aes(x=res_mean, y=murder_mean))+
+#   geom_point()
+
+ggplot(states, aes(x=res, y=murder))+
+  geom_point()
+
+ggplot()+
+  geom_point(data=statesxs, aes(x=res, y=res1),color="red")+
+  geom_point(data=statesxs, aes(x=res, y=res2), color="blue")+
+geom_point(data=statesxs, aes(x=res, y=res3), color="yellow") 
 
 
-\includegraphics[height=7cm]{soc_autocorr.pdf} 
-
+```
 
 
  In both cases (simulated, state murder rate data), the panels suggest the residuals are not random across time.  The left panel plots the residuals against their lag and indicates the relationship between $u_t, u_{t-1}$; the right panel shows a relationship between the residuals and time, and it's pretty clearly not random.  So let's turn to some more mechanical ways of detecting autocorrelation.
@@ -218,7 +237,7 @@ u_t= \rho u_{t-1} + \varepsilon_t  ~~~\forall t, ~~~-1 < \rho < 1
 \nonumber
 \end{eqnarray}
 
-We can estimate this {\it auxiliary regression} using the residuals and their lagged values.  The coefficient on $u_{t-1}$ is our estimate $\hat{\rho}$.
+We can estimate this *auxiliary regression* using the residuals and their lagged values.  The coefficient on $u_{t-1}$ is our estimate $\hat{\rho}$.
 
 
 

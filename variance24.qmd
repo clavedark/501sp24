@@ -1,0 +1,342 @@
+---
+title: "Non-constant Variance in the OLS model"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: interactions24s.html
+editor: source
+#embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+library(MASS)
+library(ggrepel)
+library(ggpmisc)
+library(sjPlot)
+library(plm)
+
+
+```
+
+
+# Variance 
+
+The OLS model assumes the errors are *identically* distributed, again, part of i.i.d.: 
+
+**Homoskedastic disturbances:**  $Var(u|x_1,x_2,\ldots,x_k)=\sigma^2$ 
+
+which means that the variance of the residuals, given the $X$ variables, is a constant, $\sigma^2$. What would make this fail? 
+
+Suppose we're modeling individual consumer spending on luxury items like sports cars, speed boats, golden toilets, and vacation homes. One of the main predictors of luxury item purchases is income; we'd expect as income increases, so does spending on luxury items.
+
+Notice this prediction is about the mean of the $y$ variable - the expected value (predicted mean) of $y$ will increase with income. But what if the variance of spending on luxury items also increases with income? For simplicity, think about two income groups. 
+
+  - low income: expected mean spending is low; as a group they will behave very uniformly, spending very little on luxury items.
+  
+  - high income: expected mean spending is high; as a group they will **not** behave uniformly. Some will spend lavishly on gold toilets and the like (Donald Trump), while others will shop at Walmart (Warren Buffett). 
+
+The OLS model $\text{luxury spending} = \beta_0 + \beta_1\text{income}$ will likely produce a positive, significant estimate for $\beta_1$ indicating the mean of spending increases with income. But because the variance is different between the two groups (or actually, the variance is increasing with income), the OLS model will be inefficient, so the standard errors will be wrong. 
+
+Moreover, notice that we're missing an interesting part of the story - with resources comes choice, and with choice comes variance in behavior. 
+
+::: {.callout-note title="Variance is not a nuisance"}
+
+When we only develop stories about mean behavior, we neglect interesting stories about variance. In many of the phenomena we study, we should consider stories about uniformity of behavior and the sources of that uniformity - these are stories about variance. 
+
+:::
+
+## What is non constant variance
+
+Nonconstant variance - subgroups in the data have different error variances:
+
+  - those with large variances contain less information.
+  - those with small variances contain more information.
+
+
+Consider how this influences our measures of uncertainty. 
+
+
+Thinking of non constant variance in terms of explanatory variables, lower values of $x$ explain $y$ well; higher values of $x$ do not explain as well.
+
+
+## Why does it happen?
+
+  - endogenous limits on behavior - the number of responses in $y$ is related to the variability in $y$, and therefore in $\epsilon$. E.g., as income increases, so does mean spending and variability in spending. As income declines, spending declines and variability is limited by the low level. E.g. successful coups - as the number of coups increases, the variance in coup outcomes will also increase.
+ 
+  - training or learning - individuals better at a task will have smaller variance than novices. Major league hitters will have smaller variances than minor leaguers; grad students will have large variances in publishing out comes than faculty. 
+  
+  - data issues - different collection rules (e.g. MIDs); aggregation.
+
+
+
+## What to do? 
+
+ While most discussions of heteroskedasticity focus on diagnosis and correction, my view is that the possibility (or probability) the variance is not constant is something on which to theorize ex ante.  
+ 
+## Visualizing variance 
+
+  - show constant/non constant
+  - show different variances, connect to hypotheses.
+
+
+## Variance of $\epsilon$
+
+The variance of $\epsilon$ in OLS and in virtually all ML models can be thought of like this:
+
+$$
+var(\epsilon_i)=var(\epsilon_j) \forall i,j \ldots n \nonumber
+$$
+
+
+This is explicitly why we write the variance of the errors without a subscript - var($\epsilon$) - it is constant across all $i$.
+
+Put slightly differently, the distribution of $\epsilon$ is the same for all $i$.
+
+
+  - show non constant here 
+
+
+
+## i.i.d.
+
+Expanding on this - virtually all frequentist statistical models assume the stochastic component is i.i.d. 
+
+  - i. independently
+
+  - i. identically 
+
+  - d. distributed 
+
+When we make identifying assumptions about the disturbances, we assume all observations on the error are distributed according to some probability distribution, and that their individual (identical) distributions are independent of one another - uncorrelated. E.g., we assume the OLS errors are Normal, with mean zero, and a shared or common variance, $\sigma^2$. 
+
+
+## OLS variance-covariance matrix
+
+In the simple regression case, the estimated variance of $\beta$ is given by \\
+
+$$
+\widehat{\sigma}^{2}(\mathbf{X'X})^{-1} \nonumber 
+$$
+
+or in scalar form, by 
+
+$$
+\frac{\widehat{\sigma}^{2}}{SST} \nonumber 
+$$
+
+If the variance is not constant, then the variance of $\hat{\beta}$ is given by:
+
+$$
+\text{Var}(\hat{\beta})=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2\widehat{\sigma_i}^{2}}{SST^2_x} \nonumber 
+$$
+
+It's pretty easy to see that this last estimate of the variance of $\hat{\beta}$ is not equivalent to the one above it, so the variance of $\hat{\beta}$ and thus the standard error of $\hat{\beta}$ are no longer "best." The standard errors are wrong, but we don't generally know if they're too big or too small. Regardless, our inferences are under threat.
+
+
+## Solutions
+
+
+  - Compute robust standard errors.
+ 
+  - Change functional forms - often, logging the variables reduces the nonconstancy in the variance for about the same reasons it ropes-in outliers.
+ 
+  - Respecify the model - if relevant variables are excluded from the model, it may exacerbate the extent to which the error variance is nonconstant. Expect it! (it's not the Spanish Inquisition).
+  
+  - Estimate a model where we can examine the effects of variables on the variance.
+
+
+## Robust Standard Errors
+
+White (1980) showed that it's actually pretty simple to correct this problem, effectively to correct the variance (and standard error) of $\beta$ by using the residuals from the regression of $y$ on $X$ - in the bivariate case, 
+
+\begin{align*}
+\text{White's Robust Variance}(\hat{\beta})=\frac{\sum \limits_{i=1}^{n}(x_i-\bar{x})^2\widehat{\hat{u}_i}^{2}}{SST_x} \nonumber 
+\end{align*}
+
+This computation weights the estimated variance of $\hat{\beta}$ by the residual thus accounting for the empirical source of the nonconstancy. 
+
+
+This is marginally more complicated in the multiple regression case where the variance of $\beta_j$ is given by:
+
+\begin{align*}
+\text{White's Robust Variance}(\hat{\beta_j})=\frac{\sum \limits_{i=1}^{n} \hat{r}^2_{ij} \hat{u_i}^{2}}{SSR_j} \nonumber 
+\end{align*}
+
+where we sum the residuals from the regression of $x_j$ on the other independent variables multiplied by $u_i^2$, the residuals from the original regression, and divide by the sum squared residual from this auxiliary regression.   
+
+
+This technique (which has been derived by several different econometricians) can be written mathematically in several different ways and computed in least squares or in maximum likelihood. It is probably most commonly known either as the White or White-Huber or Robust estimator of variance. 
+
+## Panel data
+
+The units in panel data can be significant sources of non constant variance. After all, the units surely will vary on any number of dimensions we model in the $X$ variables; it's not hard to imagine that the conditional variances will also be different across those cross-sections. Robust standard errors are a good choice for dealing with this problem in panel data - it's very common to see robust standard errors in panel data models.
+
+
+## Detection 
+
+
+  - graph residuals against $x$, against $\hat{y}$
+  - statistical tests
+
+
+## Graphical methods
+
+
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+#variance
+set.seed(8675309)
+x=rnorm(runif(100, -2, 2))
+e=rnorm(runif(100, -2, 2))
+y=rnorm(runif(100, -2, 2))
+
+simdata <- data.frame(y=y, x=x) 
+
+simdata <- simdata[order(y),] %>%
+  mutate(t = row_number(), e=rnorm(runif(100, -2, 2)), yv=1+1.5*t+e*t)
+
+m2 <- lm(yv ~ t, data=simdata)
+#summary(m2)
+simdata <- simdata %>% mutate(fit=predict(m2, simdata), res=yv-fit)
+
+varxy <- ggplot(simdata, aes(x=t, y=yv)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x="x", y="y") 
+
+varxr <- ggplot(simdata, aes(x=t, y=res)) +
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x="x", y="residuals")
+
+varxy / varxr
+
+```
+
+
+## Breusch-Pagan test
+
+We can also detect non constant variance more mechanically by using the Breusch-Pagan test which works this way:
+
+
+  - Estimate the model of interest.
+ 
+  - Generate the residuals, and square each individual residual, so $u_i^2$.
+ 
+  - Perform the auxiliary regression of $u_i^2$ on all the $X$s.
+  
+  - Generate either an F-statistic or Lagrange Multiplier (LM) $\chi^2$ statistic to test the null hypothesis of homoskedasticity.
+
+
+
+How do we compute the F or LM statistics? The $F_{k,n-k-1}$ is computed as 
+
+$$
+F_{k,n-k-1}=\frac{R^2_{\hat{u_i^2}}/k}{(1-R^2_{\hat{u_i^2}})/(n-k-1)} \nonumber
+$$
+
+where we're really testing the null hypothesis that the $X$ variables are jointly insignificant. If the auxiliary regression $u_i^2$ on all the $X$s produces coefficients all equal to zero, then the squared residuals are not a function of the $X$s. If this is the case, we cannot reject the null that all the coefficients are equal to zero, the null of homoskedasticity. 
+
+
+The LM statistic is computed using the same information, but is not F-distributed - it's distributed $\chi^2_{k}$ where $k$ is the degrees of freedom.
+
+$$
+LM \chi^2_{k} = n \cdot R^2_{\hat{u_i^2}} \nonumber
+$$
+
+If we reject the null hypothesis of homoskedasticity, we might want to take some corrective measures to account for the likelihood the variance in the error term is not constant.  
+
+
+## Correcting Heterskedasticity - WLS
+
+Another alternative is GLS, specifically "Weighted Least Squares":
+
+The intuition is simple -  weight estimation by the values of the variable(s) that we think is (are) associated with nonconstant error variance. In effect, dividing the entire estimating equation by $x$ will also weight the estimated variance of the error term, and thus return the model to homoskedasticity (assuming that variable is the sole source of nonconstant variance). We would benefit from doing this because we believe there are two types of cases in the data:
+
+
+  - cases with larger variances in $y$ due to $x$ contain less precise information.
+ 
+  - cases with smaller variances in $y$ due to $x$ contain more precise information.
+
+Ideally, what we would like to do is produce constant-variance residuals based on these differences so that their variances are equal. 
+
+Suppose we could divide both sides of our model by $\sigma_i$ (if we knew it), the standard deviation of the residual, so 
+
+\begin{align*}
+\frac{Y}{\sigma_i}=\beta_0\frac{1}{\sigma_i} + \beta_1 \frac{X_1}{\sigma_i} + \beta_2 \frac{X_2}{\sigma_{i,t}} +
+\frac{u_{i,t}}{\sigma_{i,t}} \nonumber
+\end{align*}
+
+
+This weights each individual case by the standard deviation of its residual, so those cases with larger variances (and standard deviations) are weighted to count less, those with smaller variances are weighted to count more. And the variance of the error term itself is now: 
+
+$$
+E\left[\frac{u_{i,t}}{\sigma_{i,t}}\right]^2 =  \frac{1}{\sigma_i^2}E[u_{i,t}^2]  \nonumber \\ \nonumber \\
+=\frac{1}{\sigma_i^2}(\sigma^2) ~~~~~\text{because} ~~~~~E(u_i^2)=\sigma^2  \nonumber \\ \nonumber \\
+=1 \nonumber
+$$ 
+
+
+Because 
+
+$$
+Var(u_{i,t})={\sigma_{i,t}}^2 X{_{i,t}} \nonumber
+$$
+
+the variance of the error term is proportional to $X_i$, so we can divide each side of the equation by $X_i$ to transform the data, estimate our OLS model, and no longer violate the assumption the error variance is constant. Neat, eh? 
+
+
+
+
+  
+
+
+
+## References
+
+::: {#refs}
+:::
