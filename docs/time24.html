@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Dave Clark">
-<meta name="dcterms.date" content="2024-04-09">
+<meta name="dcterms.date" content="2024-04-15">
 
-<title>PLSC 501 - Spring 2024 - Time and Variance in the OLS model</title>
+<title>PLSC 501 - Spring 2024 - Time issues in the OLS model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,6 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -203,7 +204,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Time and Variance in the OLS model</h1>
+      <h1 class="title">Time issues in the OLS model</h1>
                       </div>
   </div>
     
@@ -227,7 +228,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 9, 2024</p>
+        <p class="date">April 15, 2024</p>
       </div>
     </div>
     
@@ -254,7 +255,7 @@ window.Quarto = {
   <li><a href="#autoregressive-processes" id="toc-autoregressive-processes" class="nav-link" data-scroll-target="#autoregressive-processes">Autoregressive Processes</a></li>
   <li><a href="#variance-covariance-matrix-of-widehatbeta" id="toc-variance-covariance-matrix-of-widehatbeta" class="nav-link" data-scroll-target="#variance-covariance-matrix-of-widehatbeta">Variance-Covariance matrix of <span class="math inline">\(\widehat{\beta}\)</span></a></li>
   <li><a href="#detecting-autocorrelation" id="toc-detecting-autocorrelation" class="nav-link" data-scroll-target="#detecting-autocorrelation">Detecting Autocorrelation</a></li>
-  <li><a href="#graphical-methods---using-state-murder-rate-data" id="toc-graphical-methods---using-state-murder-rate-data" class="nav-link" data-scroll-target="#graphical-methods---using-state-murder-rate-data">Graphical Methods - using state murder rate data</a></li>
+  <li><a href="#graphical-methods---state-murder-rate-data" id="toc-graphical-methods---state-murder-rate-data" class="nav-link" data-scroll-target="#graphical-methods---state-murder-rate-data">Graphical Methods - state murder rate data</a></li>
   <li><a href="#regression-based-detection" id="toc-regression-based-detection" class="nav-link" data-scroll-target="#regression-based-detection">Regression-based detection</a></li>
   <li><a href="#regression-based-methods" id="toc-regression-based-methods" class="nav-link" data-scroll-target="#regression-based-methods">Regression based methods</a>
   <ul class="collapse">
@@ -264,7 +265,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#correcting-ar1-processes" id="toc-correcting-ar1-processes" class="nav-link" data-scroll-target="#correcting-ar1-processes">Correcting AR(1) processes</a></li>
   <li><a href="#rho-transformations" id="toc-rho-transformations" class="nav-link" data-scroll-target="#rho-transformations"><span class="math inline">\(\rho\)</span>-transformations</a></li>
-  <li><a href="#dynamic-models" id="toc-dynamic-models" class="nav-link" data-scroll-target="#dynamic-models">Dynamic Models</a></li>
+  <li><a href="#dynamic-models" id="toc-dynamic-models" class="nav-link" data-scroll-target="#dynamic-models">Dynamic Models</a>
+  <ul class="collapse">
+  <li><a href="#dynamic-models-and-ar" id="toc-dynamic-models-and-ar" class="nav-link" data-scroll-target="#dynamic-models-and-ar">Dynamic models and AR</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -374,57 +378,268 @@ cov(u_{t}, u_{t-k})=0 \nonumber
 <li><p>regression-based methods.</p></li>
 </ul>
 </section>
-<section id="graphical-methods---using-state-murder-rate-data" class="level2">
-<h2 class="anchored" data-anchor-id="graphical-methods---using-state-murder-rate-data">Graphical Methods - using state murder rate data</h2>
-<div class="cell" data-layout-align="center">
+<section id="graphical-methods---state-murder-rate-data" class="level2">
+<h2 class="anchored" data-anchor-id="graphical-methods---state-murder-rate-data">Graphical Methods - state murder rate data</h2>
 <details class="code-fold">
 <summary>code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code/USstatedata.dta"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ms <span class="ot">&lt;-</span> <span class="fu">lm</span>(murder <span class="sc">~</span> south <span class="sc">+</span> unemp <span class="sc">+</span> hsdip <span class="sc">+</span> citid <span class="sc">+</span> prcapinc, <span class="at">data=</span>states)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(ms)</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">res=</span><span class="fu">residuals</span>(ms))  </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res1=</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(res,<span class="dv">1</span>), <span class="at">res2=</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(res,<span class="at">n=</span><span class="dv">2</span>), <span class="at">res3=</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(res,<span class="at">n=</span><span class="dv">3</span>))</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>statesxs <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(statename) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(murder,res, res1, res2, res3), mean, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(statesxs, aes(x=res_mean, y=murder_mean))+</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point()</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(states, <span class="fu">aes</span>(<span class="at">x=</span>res, <span class="at">y=</span>murder))<span class="sc">+</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(ms, <span class="at">stars=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="time24_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
-</figure>
-</div>
+ 
+
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tinytable_jor9z3i2om4h0zvhhuck</title>
+    <style>
+.table td.tinytable_css_3i8ecr9xoe0qa2j614cw, .table th.tinytable_css_3i8ecr9xoe0qa2j614cw {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_cdorysiuy5rr09tovbfd, .table th.tinytable_css_cdorysiuy5rr09tovbfd {    text-align: left; }
+.table td.tinytable_css_xrrxxaxdl33t4y3tbplm, .table th.tinytable_css_xrrxxaxdl33t4y3tbplm {    text-align: center; }
+.table td.tinytable_css_82kxkjrh5budjd2vfw5h, .table th.tinytable_css_82kxkjrh5budjd2vfw5h {    border-bottom: solid 0.05em black; }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+  
+
+  
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_jor9z3i2om4h0zvhhuck" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        <tfoot><tr><td colspan="2">+ p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td></tr></tfoot>
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>23.356***</td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(2.517)  </td>
+                </tr>
+                <tr>
+                  <td>south      </td>
+                  <td>1.149**  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.402)  </td>
+                </tr>
+                <tr>
+                  <td>unemp      </td>
+                  <td>0.350*** </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.048)  </td>
+                </tr>
+                <tr>
+                  <td>hsdip      </td>
+                  <td>-0.216***</td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.030)  </td>
+                </tr>
+                <tr>
+                  <td>citid      </td>
+                  <td>-0.083***</td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.007)  </td>
+                </tr>
+                <tr>
+                  <td>prcapinc   </td>
+                  <td>0.000*** </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.000)  </td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>950      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.407    </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.404    </td>
+                </tr>
+                <tr>
+                  <td>AIC        </td>
+                  <td>4774.2   </td>
+                </tr>
+                <tr>
+                  <td>BIC        </td>
+                  <td>4808.2   </td>
+                </tr>
+                <tr>
+                  <td>Log.Lik.   </td>
+                  <td>-2380.090</td>
+                </tr>
+                <tr>
+                  <td>F          </td>
+                  <td>129.779  </td>
+                </tr>
+                <tr>
+                  <td>RMSE       </td>
+                  <td>2.96     </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(i, j, css_id) {
+        var table = document.getElementById("tinytable_jor9z3i2om4h0zvhhuck");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_jor9z3i2om4h0zvhhuck');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_j0wd0n9ldbdkdmzc4mve(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_jor9z3i2om4h0zvhhuck");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(0, 0, 'tinytable_css_3i8ecr9xoe0qa2j614cw') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(0, 1, 'tinytable_css_3i8ecr9xoe0qa2j614cw') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(0, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(1, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(2, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(3, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(4, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(5, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(6, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(7, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(8, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(9, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(10, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(11, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(12, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(13, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(14, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(15, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(16, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(17, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(18, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(19, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(20, 0, 'tinytable_css_cdorysiuy5rr09tovbfd') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(0, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(1, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(2, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(3, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(4, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(5, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(6, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(7, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(8, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(9, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(10, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(11, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(12, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(13, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(14, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(15, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(16, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(17, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(18, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(19, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(20, 1, 'tinytable_css_xrrxxaxdl33t4y3tbplm') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(12, 0, 'tinytable_css_82kxkjrh5budjd2vfw5h') })
+window.addEventListener('load', function () { styleCell_tinytable_j0wd0n9ldbdkdmzc4mve(12, 1, 'tinytable_css_82kxkjrh5budjd2vfw5h') })
+    </script>
+
+  
+
+
 <details class="code-fold">
 <summary>code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>statesxs, <span class="fu">aes</span>(<span class="at">x=</span>res, <span class="at">y=</span>res1),<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>statesxs, <span class="fu">aes</span>(<span class="at">x=</span>res, <span class="at">y=</span>res2), <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>(<span class="at">data=</span>statesxs, <span class="fu">aes</span>(<span class="at">x=</span>res, <span class="at">y=</span>res3), <span class="at">color=</span><span class="st">"yellow"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">res=</span><span class="fu">residuals</span>(ms))  </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res1=</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(res,<span class="dv">1</span>), <span class="at">res2=</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(res,<span class="at">n=</span><span class="dv">2</span>), <span class="at">res3=</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(res,<span class="at">n=</span><span class="dv">3</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>statesxs <span class="ot">&lt;-</span> states <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(statename) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(murder,res, res1, res2, res3), mean, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(statesxs, aes(x=res_mean, y=murder_mean))+</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point()</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(states, <span class="fu">aes</span>(<span class="at">x=</span>res, <span class="at">y=</span>murder))<span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"murder rate"</span> , <span class="at">x=</span><span class="st">"residuals"</span>)<span class="sc">+</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"Murder Rate, Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="time24_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<p>In both cases (simulated, state murder rate data), the panels suggest the residuals are not random across time. The left panel plots the residuals against their lag and indicates the relationship between <span class="math inline">\(u_t, u_{t-1}\)</span>; the right panel shows a relationship between the residuals and time, and it’s pretty clearly not random. So let’s turn to some more mechanical ways of detecting autocorrelation.</p>
+<p><img src="time24_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(states, <span class="fu">aes</span>(<span class="at">x=</span>res1, <span class="at">y=</span>res))<span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm, <span class="at">se=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"residuals"</span> , <span class="at">x=</span><span class="st">"residuals t-1"</span>)<span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Residuals, Residuals lagged one period"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p><img src="time24_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid" width="672"></p>
+<p>Both panels suggest the residuals are not random across time. The first panel plots the residuals against the <span class="math inline">\(y\)</span> variable. The second shows a relationship between the residuals and their lag (<span class="math inline">\(t-1\)</span>), and it’s pretty clearly not random. So let’s turn to some more mechanical ways of detecting autocorrelation.</p>
 </section>
 <section id="regression-based-detection" class="level2">
 <h2 class="anchored" data-anchor-id="regression-based-detection">Regression-based detection</h2>
 <p>Write the autocorrelation function:</p>
-<p><span class="math display">\[\begin{eqnarray}
-u_t= \rho u_{t-1} + \varepsilon_t  ~~~\forall t, ~~~-1 &lt; \rho &lt; 1
-\nonumber
-\end{eqnarray}\]</span></p>
+<p><span class="math display">\[
+u_t= \rho u_{t-1} + \varepsilon_t  \\
+\forall t, (-1 &lt; \rho &lt; 1)
+\]</span></p>
 <p>We can estimate this <em>auxiliary regression</em> using the residuals and their lagged values. The coefficient on <span class="math inline">\(u_{t-1}\)</span> is our estimate <span class="math inline">\(\hat{\rho}\)</span>.</p>
 </section>
 <section id="regression-based-methods" class="level2">
@@ -540,23 +755,33 @@ Generalized Least Squares
 </section>
 <section id="dynamic-models" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic-models">Dynamic Models</h2>
-<p>Lagging <span class="math inline">\(y_t\)</span> and including it on the right hand side of the regression equation can ameliorate autocorrelation, but it changes the interpretation of the coefficients (all of them).</p>
-<p>Lagging <span class="math inline">\(y_t\)</span> is powerful - it generally is a poor choice for dealing with autocorrelation, but a great choice for estimating long term effects - these are known as <em>dynamic models</em>.</p>
-<p>Lagging <span class="math inline">\(x\)</span> variables is also a great choice if theory implies the effect of <span class="math inline">\(x\)</span> is spread over time, and accumulates in some fashion - these models are known as <em>distributed lag models</em>.</p>
-<p>Dynamic models allow us to examine the long-term effects of changes in <span class="math inline">\(x\)</span> on <span class="math inline">\(y_t\)</span>. The equation we estimate is</p>
+<ul>
+<li><p>Lagging <span class="math inline">\(y_t\)</span> and including it on the right hand side of the regression equation changes the interpretation of the coefficients. This is one form of a dynamic model.</p></li>
+<li><p>Lagging <span class="math inline">\(y_t\)</span> is powerful - it generally is a poor choice for dealing with autocorrelation. <span class="citation" data-cites="keele2006dynamic">Keele and Kelly (<a href="#ref-keele2006dynamic" role="doc-biblioref">2006, 203</a>)</span> show that, in presence of autocorrelation, lagging <span class="math inline">\(y\)</span> induces bias. <span class="citation" data-cites="wooldridge2013">Wooldridge (<a href="#ref-wooldridge2013" role="doc-biblioref">2013</a>)</span> also shows that models with lagged <span class="math inline">\(y\)</span> variables violate the assumption <span class="math inline">\(x\)</span> and <span class="math inline">\(e\)</span> are uncorrelated - in other words, they induce endogeneity.</p></li>
+<li><p>Lagging <span class="math inline">\(x\)</span> variables is also a great choice if theory implies the effect of <span class="math inline">\(x\)</span> is spread over time, and accumulates in some fashion - these models are known as <em>finite distributed lag models</em>.</p></li>
+</ul>
+<p>Dynamic models allow us to examine the long-term effects of changes in <span class="math inline">\(x\)</span> on <span class="math inline">\(y_t\)</span>. One form of this is:</p>
 <p><span class="math display">\[
 y_t=+ \gamma y_{t-1}+ \beta_{0}+\beta_{1}X_{1} + \beta_{2}X_{2} \ldots +  \beta_{k}X_{k}
 \]</span></p>
 <p>where the first term estimates the “memory” in the <span class="math inline">\(y\)</span>-series. That is, it measures how much the present value of <span class="math inline">\(y\)</span> is a function of remembering the value of <span class="math inline">\(y\)</span> at <span class="math inline">\(t-1\)</span>. Thinking of <span class="math inline">\(-1 &lt;\gamma&lt; 1\)</span>, as <span class="math inline">\(|\gamma|\)</span> increases, so does memory.</p>
 <p>What does it mean for these lag-models to be dynamic? In the OLS setting, <span class="math inline">\(x\)</span> has a <span class="math inline">\(\beta\)</span> effect on <span class="math inline">\(y\)</span>. In this setting, if <span class="math inline">\(x_t\)</span> has a <span class="math inline">\(\beta\)</span> effect on <span class="math inline">\(y_t\)</span>, and if <span class="math inline">\(\gamma \neq 0\)</span>, then <span class="math inline">\(x_t\)</span> also has some effect on <span class="math inline">\(y_{t+1}\)</span>. In other words, the determinants of <span class="math inline">\(y\)</span> also exhibit a sort of memory-like, accumulating effect on future values of <span class="math inline">\(y\)</span>.</p>
 <p>What these models permit is measurement of short term effects - <span class="math inline">\(\beta_k\)</span>; and long term effects <span class="math inline">\(\frac{\beta_k}{1-\gamma}\)</span>.</p>
+<section id="dynamic-models-and-ar" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-models-and-ar">Dynamic models and AR</h3>
 <p>Why not use lags of <span class="math inline">\(y\)</span> to deal with autocorrelation? The AR problem is that <span class="math inline">\(u_t\)</span> is correlated with <span class="math inline">\(u_{t-1}\)</span>. In the dynamic setting, if these observations on the error are correlated, they must also be correlated with <span class="math inline">\(y_{t-1}\)</span> - this is a big problem because now, one of the regressors is correlated with <span class="math inline">\(u\)</span> - an endogeneity-like problem. Whereas AR usually causes inefficiency alone, in the dynamic model it also produces biased estimates.</p>
 <p>For this reason, it’s inadvisable to use a lag strategy to deal with AR. It’s also advisable to test for AR in dynamic models, and to use AR methods (like Prais-Winsten) to deal with AR problems in dynamic models.</p>
 </section>
+</section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
-
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-keele2006dynamic" class="csl-entry" role="listitem">
+Keele, Luke, and Nathan J Kelly. 2006. <span>“Dynamic Models for Dynamic Theories: The Ins and Outs of Lagged Dependent Variables.”</span> <em>Political Analysis</em> 14 (2): 186–205.
+</div>
+<div id="ref-wooldridge2013" class="csl-entry" role="listitem">
+Wooldridge, Jeffrey M. 2013. <em>Introductory Econometrics</em>. South-Western/Cengage.
+</div>
 </div>
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Time and Variance in the OLS model"
+title: "Time issues in the OLS model"
 author: "Dave Clark"
 institute: "Binghamton University"
 date: today
@@ -190,7 +190,7 @@ We'll focus on two approaches:
 
  
 
-## Graphical Methods - using state murder rate data
+## Graphical Methods - state murder rate data
 
 ```{r, results='asis', warning=FALSE, message=FALSE}
 #| echo: true
@@ -201,6 +201,7 @@ states <- read_dta("/Users/dave/Documents/teaching/501/2023/slides/L8_panel/code
 
 ms <- lm(murder ~ south + unemp + hsdip + citid + prcapinc, data=states)
 #summary(ms)
+modelsummary(ms, stars=TRUE)
 
 states <- states %>% mutate(res=residuals(ms))  
 
@@ -214,28 +215,34 @@ statesxs <- states %>% group_by(statename) %>%
 #   geom_point()
 
 ggplot(states, aes(x=res, y=murder))+
-  geom_point()
+  geom_point()+
+  labs(y="murder rate" , x="residuals")+
+    ggtitle("Murder Rate, Residuals")
 
-ggplot()+
-  geom_point(data=statesxs, aes(x=res, y=res1),color="red")+
-  geom_point(data=statesxs, aes(x=res, y=res2), color="blue")+
-geom_point(data=statesxs, aes(x=res, y=res3), color="yellow") 
+
+ggplot(states, aes(x=res1, y=res))+
+  geom_point()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(y="residuals" , x="residuals t-1")+
+  ggtitle("Residuals, Residuals lagged one period")
+
+
 
 
 ```
 
 
- In both cases (simulated, state murder rate data), the panels suggest the residuals are not random across time.  The left panel plots the residuals against their lag and indicates the relationship between $u_t, u_{t-1}$; the right panel shows a relationship between the residuals and time, and it's pretty clearly not random.  So let's turn to some more mechanical ways of detecting autocorrelation.
+Both panels suggest the residuals are not random across time.  The first panel plots the residuals against the $y$ variable. The second shows a relationship between the residuals and their lag ($t-1$), and it's pretty clearly not random.  So let's turn to some more mechanical ways of detecting autocorrelation.
 
 
 ## Regression-based detection
 
 Write the autocorrelation function:
 
-\begin{eqnarray}
-u_t= \rho u_{t-1} + \varepsilon_t  ~~~\forall t, ~~~-1 < \rho < 1
-\nonumber
-\end{eqnarray}
+$$
+u_t= \rho u_{t-1} + \varepsilon_t  \\
+\forall t, (-1 < \rho < 1)
+$$
 
 We can estimate this *auxiliary regression* using the residuals and their lagged values.  The coefficient on $u_{t-1}$ is our estimate $\hat{\rho}$.
 
@@ -252,9 +259,7 @@ We'll look at three regression based methods:
 
 All three rely on estimating the OLS model, generating the residuals, and examining the relationships among different lags of the residuals for evidence of correlation. 
 
-The DW *d* is specifically designed for time-series data with exclusively exogenous variables in the model. In other words, models with lagged endogenous variables cannot be appropriately diagnosed using DW's *d*. Instead, you
-should use Durbin and Watson's *h* statistic or the BG Lagrange
-Multiplier test.    
+The DW *d* is specifically designed for time-series data with exclusively exogenous variables in the model. In other words, models with lagged endogenous variables cannot be appropriately diagnosed using DW's *d*. Instead, you should use Durbin and Watson's *h* statistic or the BG Lagrange Multiplier test.    
 
 
 This is maybe the simplest regression-based way to detect autocorrelation: 
@@ -414,15 +419,14 @@ This particular process is the Cochrane-Orcutt 2-step method. Others are similar
 
 ## Dynamic Models 
 
-Lagging $y_t$ and including it on the right hand side of the regression equation can ameliorate autocorrelation, but it changes the interpretation of the coefficients (all of them).
+  - Lagging $y_t$ and including it on the right hand side of the regression equation changes the interpretation of the coefficients. This is one form of a dynamic model.
+
+  - Lagging $y_t$ is powerful - it generally is a poor choice for dealing with autocorrelation. @keele2006dynamic [p. 203] show that, in presence of autocorrelation, lagging $y$ induces bias. @wooldridge2013 also shows that models with lagged $y$ variables violate the assumption $x$ and $e$ are uncorrelated - in other words, they induce endogeneity.
+
+  - Lagging $x$ variables is also a great choice if theory implies the effect of $x$ is spread over time, and accumulates in some fashion - these models are known as *finite distributed lag models*. 
 
 
-Lagging $y_t$ is powerful - it generally is a poor choice for dealing with autocorrelation, but a great choice for estimating long term effects - these are known as *dynamic models*.
-
-Lagging $x$ variables is also a great choice if theory implies the effect of $x$ is spread over time, and accumulates in some fashion - these models are known as *distributed lag models*. 
-
-
-Dynamic models allow us to examine the long-term effects of changes in $x$ on $y_t$. The equation we estimate is 
+Dynamic models allow us to examine the long-term effects of changes in $x$ on $y_t$. One form of this is:
 
 $$
 y_t=+ \gamma y_{t-1}+ \beta_{0}+\beta_{1}X_{1} + \beta_{2}X_{2} \ldots +  \beta_{k}X_{k}
@@ -435,6 +439,7 @@ What does it mean for these lag-models to be dynamic? In the OLS setting, $x$ ha
 
 What these models permit is measurement of short term effects - $\beta_k$; and long term effects $\frac{\beta_k}{1-\gamma}$. 
  
+### Dynamic models and AR
 
 Why not use lags of $y$ to deal with autocorrelation? The AR problem is that $u_t$ is correlated with $u_{t-1}$. In the dynamic setting, if these observations on the error are correlated, they must also be correlated with $y_{t-1}$ - this is a big problem because now, one of the regressors is correlated with $u$ - an endogeneity-like problem. Whereas AR usually causes inefficiency alone, in the dynamic model it also produces biased estimates. 
 

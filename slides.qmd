@@ -27,3 +27,5 @@ title: "Slides"
 [Limited dependent variables](limiteddv24.qmd)
 
 [Panel data](panel24.qmd)
+
+[Time Series](time24.qmd)
