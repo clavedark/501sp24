@@ -101,7 +101,7 @@ Thinking of non constant variance in terms of explanatory variables, lower value
 
 ## Why does it happen?
 
-  - endogenous limits on behavior - the number of responses in $y$ is related to the variability in $y$, and therefore in $\epsilon$. E.g., as income increases, so does mean spending and variability in spending. As income declines, spending declines and variability is limited by the low level. E.g. successful coups - as the number of coups increases, the variance in coup outcomes will also increase.
+  - built-in limits on behavior - the number of responses in $y$ is related to the variability in $y$, and therefore in $\epsilon$. E.g., as income increases, so does mean spending and variability in spending. As income declines, spending declines and variability is limited by the low level. E.g. successful coups - as the number of coups increases, the variance in coup outcomes will also increase.
  
   - training or learning - individuals better at a task will have smaller variance than novices. Major league hitters will have smaller variances than minor leaguers; grad students will have large variances in publishing out comes than faculty. 
   
@@ -115,9 +115,32 @@ Thinking of non constant variance in terms of explanatory variables, lower value
  
 ## Visualizing variance 
 
-  - show constant/non constant
-  - show different variances, connect to hypotheses.
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code" 
 
+xb <- runif(1000, min=-4, max=4)
+pdf1 <- dnorm(xb, mean=0, sd=1)
+pdf2 <- dnorm(xb, mean=0, sd=sqrt(.5))
+pdf3 <- dnorm(xb, mean=-1, sd=sqrt(1.5))
+pdf4 <- dnorm(xb)
+
+df <- data.frame(xb, pdf1, pdf2, pdf3, pdf4)
+
+
+
+ggplot(data=df, aes(x=xb, y=pdf1)) +
+  geom_line() +
+  geom_line(aes(y=pdf2), linetype="dotted") +
+  geom_line(aes(y=pdf3), linetype="longdash" ) +
+  annotate("text", x = 2.5, y = .1, label = "Normal (0,1)") +
+  annotate("text", x = 1.5, y = .4, label = "Normal (0, .5)") +
+  annotate("text", x = -3.3, y = .2, label = "Normal (-1, 1.5)") +
+  labs(y="Pr(Y=1)", x="x") +
+  ggtitle("Normal PDFs") 
+
+```
 
 ## Variance of $\epsilon$
 
@@ -130,24 +153,57 @@ $$
 
 This is explicitly why we write the variance of the errors without a subscript - var($\epsilon$) - it is constant across all $i$.
 
-Put slightly differently, the distribution of $\epsilon$ is the same for all $i$.
+Put slightly differently, the distribution of $\epsilon$ is the same for all $i$. This is true in the first panel below, but not the second. In the lower panel, you can see the variance of the residuals is correlated with $x$, increasing as $x$ increases. 
 
 
-  - show non constant here 
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+#variance
+set.seed(8675309)
+x=rep(1:100,2)
+sigma2 = x^.5
+e = rnorm(x,mean=0,sd=sqrt(sigma2))
+y= x + e
+
+ggplot(data.frame(x=x, y=y), aes(x=x, y=y)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x="x", y="y")
+
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+
+#variance
+set.seed(8675309)
+
+x=rep(1:100,2)
+sigma2 = x^1.5
+e = rnorm(x,mean=0,sd=sqrt(sigma2))
+y= x + e
+
+ggplot(data.frame(x=x, y=y), aes(x=x, y=y)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x="x", y="y")
 
 
 
-## i.i.d.
+```
 
-Expanding on this - virtually all frequentist statistical models assume the stochastic component is i.i.d. 
 
-  - i. independently
 
-  - i. identically 
+Importantly, the errors are not i.i.d - in this case, they are not *identically* distributed. 
 
-  - d. distributed 
-
-When we make identifying assumptions about the disturbances, we assume all observations on the error are distributed according to some probability distribution, and that their individual (identical) distributions are independent of one another - uncorrelated. E.g., we assume the OLS errors are Normal, with mean zero, and a shared or common variance, $\sigma^2$. 
 
 
 ## OLS variance-covariance matrix
@@ -331,12 +387,92 @@ the variance of the error term is proportional to $X_i$, so we can divide each s
 
 
 
+## Modeling Variance
 
+Variance is not a nuiscance - it's a feature of the data that we should theorize about. This is a potentially rich part of our literature largely neglected. Variance models in general do the following: 
+
+  - test hypotheses about mean differences in $y$ given $X$. This is the usual enterprise, and such hypotheses are about how the mean of $y$ increases/decreases given a change in $x$. 
   
+  - test hypotheses about variance differences in $y$ given $X$. This is a less common enterprise, and such hypotheses are about how the variance of $y$ increases/decreases given a change in $x$.
+  
+Thinking of the income and luxary spending example, we have hypotheses on both the mean and the variance of spending given changes in income. 
+
+## Variance model example
+
+Here's an example in the international relations literature motivated by economic models of resources and spending. The international conflict literature has a couple of competing views on how capabilities shape the chances of conflict - note, these are claims about how capabilities shape the *mean* levels of conflict. Some work argues conflict choices arise as a function of capabilities because such resources make conflict possible, and permit discretion over if/when to engage in conflict. 
+
+In other words, capabilities might increase the mean level of conflict, but they also influence the variance in when and whether states choose conflict. States without resources have few choices, and will choose military conflict less often then resource rich states - they'll do so uniformly because of their resource constraint. States with plenty of resources will choose conflict more often because they can, but will do so more variantly or more diffusely. 
+
+So we have two hypotheses regarding how capabilities shape conflict: 
+
+  - capabilities increase the mean level of conflict.
+  
+  - capabilities increase the variance in conflict.
+  
+  
+## The model
+
+The variance model is two equations, one anticipating $X$ variables' effects on the mean, the other anticipating $X$ variables' effects on the variance. It's usually estimated using ML. The model below uses aggregated dyadic event data over the period 1948-1978. The $y$ variable is the number of conflictual events the pair engages in during a year. The $X$ variables are the capabilities of the each state in the dyad, the lower polity score in the pair, distance between the states in the dyad, whether they're allies, and the aggregate level of cooperationt in the dyad year.
+
+First, let's look at the constant variance model - i.e., the OLS model only testing hypothesess about the mean level of conflict. 
+
+
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+library(dglm)
+
+#substitution data
+sub <- read_dta("/Users/dave/Documents/2005/mpsa05/sub/data/crn_ajps08.dta")
+# constant var model
+mv2 <- lm(SUMconf~ cap_1 + cap_2+ demlow+ ally + lndist+ SUMcoop, data=sub)
+summary(mv2)
+
+```
+
+And now let's look at the variance model testing hypotheses about both the mean and the variance of conflict. 
+
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
+
+# variance model
+mv3 <- dglm(SUMconf~ cap_1 + cap_2+ demlow+ ally + lndist+ SUMcoop, dformula= ~1+cap_1 + cap_2, data=sub)
+summary(mv3)
+
+```
+
+Let's look at predictions just from the variance vector. Since the model is linear, the likelihood function is normal with variance $\sigma^2$ parameterized as a set of $X$ variables (in this case, capabilities and a constant). The predictions are just the variance of the normal, so $exp(X\beta)$.
 
 
 
-## References
+```{r, message=FALSE, warning=FALSE}
+#| echo: true
+#| code-fold: true
+#| code-summary: "code"
 
-::: {#refs}
-:::
+# coefficients
+c <-data.frame(coef(mv3))
+v <-data.frame(coef(mv3$dispersion.fit))
+
+# at mean predictions
+
+vpreds <- data.frame(intercept = 1 , cap_1=seq(.01, .33, .01), cap_2=.025 )
+preds <- exp(as.matrix(vpreds)%*%as.matrix(v))
+
+#plot
+ggplot(data=cbind(vpreds, preds), aes(x=cap_1, y=preds)) + geom_line() + labs(x="Capabilities State 1", y="Variance") + ggtitle("Expected Variance in Conflict")
+
+
+```
+  
+Consistent with the coefficients in the variance vector, increases in capabilities increase the predicted variance in conflict behavior. States with greater capacity engage in more conflict (higher mean levels, per hypothesis one), and do so more variably (higher variance, per hypothesis two).
+
+
+<!-- ## References -->
+
+<!-- ::: {#refs} -->
+<!-- ::: -->

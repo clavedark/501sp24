@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Dave Clark">
-<meta name="dcterms.date" content="2024-04-09">
+<meta name="dcterms.date" content="2024-04-17">
 
 <title>PLSC 501 - Spring 2024 - Non-constant Variance in the OLS model</title>
 <style>
@@ -56,26 +56,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -227,7 +208,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 9, 2024</p>
+        <p class="date">April 17, 2024</p>
       </div>
     </div>
     
@@ -250,7 +231,6 @@ window.Quarto = {
   <li><a href="#what-to-do" id="toc-what-to-do" class="nav-link" data-scroll-target="#what-to-do">What to do?</a></li>
   <li><a href="#visualizing-variance" id="toc-visualizing-variance" class="nav-link" data-scroll-target="#visualizing-variance">Visualizing variance</a></li>
   <li><a href="#variance-of-epsilon" id="toc-variance-of-epsilon" class="nav-link" data-scroll-target="#variance-of-epsilon">Variance of <span class="math inline">\(\epsilon\)</span></a></li>
-  <li><a href="#i.i.d." id="toc-i.i.d." class="nav-link" data-scroll-target="#i.i.d.">i.i.d.</a></li>
   <li><a href="#ols-variance-covariance-matrix" id="toc-ols-variance-covariance-matrix" class="nav-link" data-scroll-target="#ols-variance-covariance-matrix">OLS variance-covariance matrix</a></li>
   <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
   <li><a href="#robust-standard-errors" id="toc-robust-standard-errors" class="nav-link" data-scroll-target="#robust-standard-errors">Robust Standard Errors</a></li>
@@ -259,7 +239,9 @@ window.Quarto = {
   <li><a href="#graphical-methods" id="toc-graphical-methods" class="nav-link" data-scroll-target="#graphical-methods">Graphical methods</a></li>
   <li><a href="#breusch-pagan-test" id="toc-breusch-pagan-test" class="nav-link" data-scroll-target="#breusch-pagan-test">Breusch-Pagan test</a></li>
   <li><a href="#correcting-heterskedasticity---wls" id="toc-correcting-heterskedasticity---wls" class="nav-link" data-scroll-target="#correcting-heterskedasticity---wls">Correcting Heterskedasticity - WLS</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#modeling-variance" id="toc-modeling-variance" class="nav-link" data-scroll-target="#modeling-variance">Modeling Variance</a></li>
+  <li><a href="#variance-model-example" id="toc-variance-model-example" class="nav-link" data-scroll-target="#variance-model-example">Variance model example</a></li>
+  <li><a href="#the-model" id="toc-the-model" class="nav-link" data-scroll-target="#the-model">The model</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -322,7 +304,7 @@ Variance is not a nuisance
 <section id="why-does-it-happen" class="level2">
 <h2 class="anchored" data-anchor-id="why-does-it-happen">Why does it happen?</h2>
 <ul>
-<li><p>endogenous limits on behavior - the number of responses in <span class="math inline">\(y\)</span> is related to the variability in <span class="math inline">\(y\)</span>, and therefore in <span class="math inline">\(\epsilon\)</span>. E.g., as income increases, so does mean spending and variability in spending. As income declines, spending declines and variability is limited by the low level. E.g. successful coups - as the number of coups increases, the variance in coup outcomes will also increase.</p></li>
+<li><p>built-in limits on behavior - the number of responses in <span class="math inline">\(y\)</span> is related to the variability in <span class="math inline">\(y\)</span>, and therefore in <span class="math inline">\(\epsilon\)</span>. E.g., as income increases, so does mean spending and variability in spending. As income declines, spending declines and variability is limited by the low level. E.g. successful coups - as the number of coups increases, the variance in coup outcomes will also increase.</p></li>
 <li><p>training or learning - individuals better at a task will have smaller variance than novices. Major league hitters will have smaller variances than minor leaguers; grad students will have large variances in publishing out comes than faculty.</p></li>
 <li><p>data issues - different collection rules (e.g.&nbsp;MIDs); aggregation.</p></li>
 </ul>
@@ -333,10 +315,37 @@ Variance is not a nuisance
 </section>
 <section id="visualizing-variance" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-variance">Visualizing variance</h2>
-<ul>
-<li>show constant/non constant</li>
-<li>show different variances, connect to hypotheses.</li>
-</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>xb <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>, <span class="at">min=</span><span class="sc">-</span><span class="dv">4</span>, <span class="at">max=</span><span class="dv">4</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pdf1 <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(xb, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="dv">1</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pdf2 <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(xb, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(.<span class="dv">5</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pdf3 <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(xb, <span class="at">mean=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(<span class="fl">1.5</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pdf4 <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(xb)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(xb, pdf1, pdf2, pdf3, pdf4)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df, <span class="fu">aes</span>(<span class="at">x=</span>xb, <span class="at">y=</span>pdf1)) <span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>pdf2), <span class="at">linetype=</span><span class="st">"dotted"</span>) <span class="sc">+</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>pdf3), <span class="at">linetype=</span><span class="st">"longdash"</span> ) <span class="sc">+</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">2.5</span>, <span class="at">y =</span> .<span class="dv">1</span>, <span class="at">label =</span> <span class="st">"Normal (0,1)"</span>) <span class="sc">+</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">1.5</span>, <span class="at">y =</span> .<span class="dv">4</span>, <span class="at">label =</span> <span class="st">"Normal (0, .5)"</span>) <span class="sc">+</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">3.3</span>, <span class="at">y =</span> .<span class="dv">2</span>, <span class="at">label =</span> <span class="st">"Normal (-1, 1.5)"</span>) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Pr(Y=1)"</span>, <span class="at">x=</span><span class="st">"x"</span>) <span class="sc">+</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Normal PDFs"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="variance24_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="variance-of-epsilon" class="level2">
 <h2 class="anchored" data-anchor-id="variance-of-epsilon">Variance of <span class="math inline">\(\epsilon\)</span></h2>
@@ -345,26 +354,55 @@ Variance is not a nuisance
 var(\epsilon_i)=var(\epsilon_j) \forall i,j \ldots n \nonumber
 \]</span></p>
 <p>This is explicitly why we write the variance of the errors without a subscript - var(<span class="math inline">\(\epsilon\)</span>) - it is constant across all <span class="math inline">\(i\)</span>.</p>
-<p>Put slightly differently, the distribution of <span class="math inline">\(\epsilon\)</span> is the same for all <span class="math inline">\(i\)</span>.</p>
-<ul>
-<li>show non constant here</li>
-</ul>
-</section>
-<section id="i.i.d." class="level2">
-<h2 class="anchored" data-anchor-id="i.i.d.">i.i.d.</h2>
-<p>Expanding on this - virtually all frequentist statistical models assume the stochastic component is i.i.d.</p>
-<ul>
-<li><ol type="i">
-<li>independently</li>
-</ol></li>
-<li><ol type="i">
-<li>identically</li>
-</ol></li>
-<li><ol start="4" type="a">
-<li>distributed</li>
-</ol></li>
-</ul>
-<p>When we make identifying assumptions about the disturbances, we assume all observations on the error are distributed according to some probability distribution, and that their individual (identical) distributions are independent of one another - uncorrelated. E.g., we assume the OLS errors are Normal, with mean zero, and a shared or common variance, <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>Put slightly differently, the distribution of <span class="math inline">\(\epsilon\)</span> is the same for all <span class="math inline">\(i\)</span>. This is true in the first panel below, but not the second. In the lower panel, you can see the variance of the residuals is correlated with <span class="math inline">\(x\)</span>, increasing as <span class="math inline">\(x\)</span> increases.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#variance</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sigma2 <span class="ot">=</span> x<span class="sc">^</span>.<span class="dv">5</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>e <span class="ot">=</span> <span class="fu">rnorm</span>(x,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="fu">sqrt</span>(sigma2))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> x <span class="sc">+</span> e</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="variance24_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#variance</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">2</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>sigma2 <span class="ot">=</span> x<span class="sc">^</span><span class="fl">1.5</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>e <span class="ot">=</span> <span class="fu">rnorm</span>(x,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="fu">sqrt</span>(sigma2))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> x <span class="sc">+</span> e</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="variance24_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Importantly, the errors are not i.i.d - in this case, they are not <em>identically</em> distributed.</p>
 </section>
 <section id="ols-variance-covariance-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="ols-variance-covariance-matrix">OLS variance-covariance matrix</h2>
@@ -418,40 +456,40 @@ var(\epsilon_i)=var(\epsilon_j) \forall i,j \ldots n \nonumber
 </section>
 <section id="graphical-methods" class="level2">
 <h2 class="anchored" data-anchor-id="graphical-methods">Graphical methods</h2>
-<div class="cell" data-layout-align="center">
+<div class="cell">
 <details class="code-fold">
 <summary>code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#variance</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>e<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y=</span>y, <span class="at">x=</span>x) </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> simdata[<span class="fu">order</span>(y),] <span class="sc">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">t =</span> <span class="fu">row_number</span>(), <span class="at">e=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>)), <span class="at">yv=</span><span class="dv">1</span><span class="fl">+1.5</span><span class="sc">*</span>t<span class="sc">+</span>e<span class="sc">*</span>t)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(yv <span class="sc">~</span> t, <span class="at">data=</span>simdata)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(m2)</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> simdata <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">fit=</span><span class="fu">predict</span>(m2, simdata), <span class="at">res=</span>yv<span class="sc">-</span>fit)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>varxy <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(simdata, <span class="fu">aes</span>(<span class="at">x=</span>t, <span class="at">y=</span>yv)) <span class="sc">+</span> </span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>) </span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>varxr <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(simdata, <span class="fu">aes</span>(<span class="at">x=</span>t, <span class="at">y=</span>res)) <span class="sc">+</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"residuals"</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>varxy <span class="sc">/</span> varxr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#variance</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>e<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y=</span>y, <span class="at">x=</span>x) </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> simdata[<span class="fu">order</span>(y),] <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">t =</span> <span class="fu">row_number</span>(), <span class="at">e=</span><span class="fu">rnorm</span>(<span class="fu">runif</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>)), <span class="at">yv=</span><span class="dv">1</span><span class="fl">+1.5</span><span class="sc">*</span>t<span class="sc">+</span>e<span class="sc">*</span>t)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(yv <span class="sc">~</span> t, <span class="at">data=</span>simdata)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(m2)</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> simdata <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">fit=</span><span class="fu">predict</span>(m2, simdata), <span class="at">res=</span>yv<span class="sc">-</span>fit)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>varxy <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(simdata, <span class="fu">aes</span>(<span class="at">x=</span>t, <span class="at">y=</span>yv)) <span class="sc">+</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"y"</span>) </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>varxr <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(simdata, <span class="fu">aes</span>(<span class="at">x=</span>t, <span class="at">y=</span>res)) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"x"</span>, <span class="at">y=</span><span class="st">"residuals"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>varxy <span class="sc">/</span> varxr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div>
 <figure class="figure">
-<p><img src="variance24_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="variance24_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -503,11 +541,136 @@ Var(u_{i,t})={\sigma_{i,t}}^2 X{_{i,t}} \nonumber
 \]</span></p>
 <p>the variance of the error term is proportional to <span class="math inline">\(X_i\)</span>, so we can divide each side of the equation by <span class="math inline">\(X_i\)</span> to transform the data, estimate our OLS model, and no longer violate the assumption the error variance is constant. Neat, eh?</p>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
+<section id="modeling-variance" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-variance">Modeling Variance</h2>
+<p>Variance is not a nuiscance - it’s a feature of the data that we should theorize about. This is a potentially rich part of our literature largely neglected. Variance models in general do the following:</p>
+<ul>
+<li><p>test hypotheses about mean differences in <span class="math inline">\(y\)</span> given <span class="math inline">\(X\)</span>. This is the usual enterprise, and such hypotheses are about how the mean of <span class="math inline">\(y\)</span> increases/decreases given a change in <span class="math inline">\(x\)</span>.</p></li>
+<li><p>test hypotheses about variance differences in <span class="math inline">\(y\)</span> given <span class="math inline">\(X\)</span>. This is a less common enterprise, and such hypotheses are about how the variance of <span class="math inline">\(y\)</span> increases/decreases given a change in <span class="math inline">\(x\)</span>.</p></li>
+</ul>
+<p>Thinking of the income and luxary spending example, we have hypotheses on both the mean and the variance of spending given changes in income.</p>
+</section>
+<section id="variance-model-example" class="level2">
+<h2 class="anchored" data-anchor-id="variance-model-example">Variance model example</h2>
+<p>Here’s an example in the international relations literature motivated by economic models of resources and spending. The international conflict literature has a couple of competing views on how capabilities shape the chances of conflict - note, these are claims about how capabilities shape the <em>mean</em> levels of conflict. Some work argues conflict choices arise as a function of capabilities because such resources make conflict possible, and permit discretion over if/when to engage in conflict.</p>
+<p>In other words, capabilities might increase the mean level of conflict, but they also influence the variance in when and whether states choose conflict. States without resources have few choices, and will choose military conflict less often then resource rich states - they’ll do so uniformly because of their resource constraint. States with plenty of resources will choose conflict more often because they can, but will do so more variantly or more diffusely.</p>
+<p>So we have two hypotheses regarding how capabilities shape conflict:</p>
+<ul>
+<li><p>capabilities increase the mean level of conflict.</p></li>
+<li><p>capabilities increase the variance in conflict.</p></li>
+</ul>
+</section>
+<section id="the-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-model">The model</h2>
+<p>The variance model is two equations, one anticipating <span class="math inline">\(X\)</span> variables’ effects on the mean, the other anticipating <span class="math inline">\(X\)</span> variables’ effects on the variance. It’s usually estimated using ML. The model below uses aggregated dyadic event data over the period 1948-1978. The <span class="math inline">\(y\)</span> variable is the number of conflictual events the pair engages in during a year. The <span class="math inline">\(X\)</span> variables are the capabilities of the each state in the dyad, the lower polity score in the pair, distance between the states in the dyad, whether they’re allies, and the aggregate level of cooperationt in the dyad year.</p>
+<p>First, let’s look at the constant variance model - i.e., the OLS model only testing hypothesess about the mean level of conflict.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dglm)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#substitution data</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sub <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"/Users/dave/Documents/2005/mpsa05/sub/data/crn_ajps08.dta"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># constant var model</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>mv2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SUMconf<span class="sc">~</span> cap_1 <span class="sc">+</span> cap_2<span class="sc">+</span> demlow<span class="sc">+</span> ally <span class="sc">+</span> lndist<span class="sc">+</span> SUMcoop, <span class="at">data=</span>sub)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mv2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = SUMconf ~ cap_1 + cap_2 + demlow + ally + lndist + 
+    SUMcoop, data = sub)
 
+Residuals:
+    Min      1Q  Median      3Q     Max 
+ -49.29   -4.42   -1.85    0.76 1681.19 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -0.28980    0.64887  -0.447 0.655149    
+cap_1       18.75053    2.43718   7.694  1.5e-14 ***
+cap_2       26.40155    2.43369  10.848  &lt; 2e-16 ***
+demlow      -0.17418    0.04758  -3.661 0.000252 ***
+ally        -3.69596    0.44125  -8.376  &lt; 2e-16 ***
+lndist       0.03244    0.07557   0.429 0.667778    
+SUMcoop      0.27555    0.01242  22.190  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 22.75 on 18026 degrees of freedom
+Multiple R-squared:  0.04101,   Adjusted R-squared:  0.04069 
+F-statistic: 128.5 on 6 and 18026 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
+</div>
+<p>And now let’s look at the variance model testing hypotheses about both the mean and the variance of conflict.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># variance model</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mv3 <span class="ot">&lt;-</span> <span class="fu">dglm</span>(SUMconf<span class="sc">~</span> cap_1 <span class="sc">+</span> cap_2<span class="sc">+</span> demlow<span class="sc">+</span> ally <span class="sc">+</span> lndist<span class="sc">+</span> SUMcoop, <span class="at">dformula=</span> <span class="sc">~</span><span class="dv">1</span><span class="sc">+</span>cap_1 <span class="sc">+</span> cap_2, <span class="at">data=</span>sub)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mv3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call: dglm(formula = SUMconf ~ cap_1 + cap_2 + demlow + ally + lndist + 
+    SUMcoop, dformula = ~1 + cap_1 + cap_2, data = sub)
+
+Mean Coefficients:
+               Estimate Std. Error    t value     Pr(&gt;|t|)
+(Intercept)  0.13765851 0.45000904  0.3059017 7.596831e-01
+cap_1       15.21375136 3.33231521  4.5655199 5.015517e-06
+cap_2       13.13900439 1.53838801  8.5407611 1.438125e-17
+demlow      -0.07717211 0.03026943 -2.5495070 1.079574e-02
+ally        -1.87046157 0.29380348 -6.3663697 1.982284e-10
+lndist       0.13122354 0.05179661  2.5334388 1.130335e-02
+SUMcoop      0.19237400 0.01013310 18.9847192 1.363534e-79
+(Dispersion Parameters for gaussian family estimated as below )
+
+    Scaled Null Deviance: 18541.27 on 18032 degrees of freedom
+Scaled Residual Deviance: 18032.99 on 18026 degrees of freedom
+
+Dispersion Coefficients:
+             Estimate Std. Error   z value     Pr(&gt;|z|)
+(Intercept)  4.598776 0.01940801 236.95244 0.000000e+00
+cap_1       15.227604 0.14596388 104.32446 0.000000e+00
+cap_2        3.060046 0.14721074  20.78684 5.693915e-96
+(Dispersion parameter for Gamma family taken to be 2 )
+
+    Scaled Null Deviance: 76876.86 on 18032 degrees of freedom
+Scaled Residual Deviance: 68133.7 on 18030 degrees of freedom
+
+Minus Twice the Log-Likelihood: 155219.4 
+Number of Alternating Iterations: 33 </code></pre>
+</div>
+</div>
+<p>Let’s look at predictions just from the variance vector. Since the model is linear, the likelihood function is normal with variance <span class="math inline">\(\sigma^2\)</span> parameterized as a set of <span class="math inline">\(X\)</span> variables (in this case, capabilities and a constant). The predictions are just the variance of the normal, so <span class="math inline">\(exp(X\beta)\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">coef</span>(mv3))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">coef</span>(mv3<span class="sc">$</span>dispersion.fit))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># at mean predictions</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>vpreds <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">intercept =</span> <span class="dv">1</span> , <span class="at">cap_1=</span><span class="fu">seq</span>(.<span class="dv">01</span>, .<span class="dv">33</span>, .<span class="dv">01</span>), <span class="at">cap_2=</span>.<span class="dv">025</span> )</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">as.matrix</span>(vpreds)<span class="sc">%*%</span><span class="fu">as.matrix</span>(v))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#plot</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="fu">cbind</span>(vpreds, preds), <span class="fu">aes</span>(<span class="at">x=</span>cap_1, <span class="at">y=</span>preds)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Capabilities State 1"</span>, <span class="at">y=</span><span class="st">"Variance"</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Expected Variance in Conflict"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="variance24_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Consistent with the coefficients in the variance vector, increases in capabilities increase the predicted variance in conflict behavior. States with greater capacity engage in more conflict (higher mean levels, per hypothesis one), and do so more variably (higher variance, per hypothesis two).</p>
+<!-- ## References -->
+<!-- ::: {#refs} -->
+<!-- ::: -->
 
 
 </section>

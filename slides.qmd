@@ -29,3 +29,5 @@ title: "Slides"
 [Panel data](panel24.qmd)
 
 [Time Series](time24.qmd)
+
+[Variance](variance24.qmd)
