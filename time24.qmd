@@ -13,6 +13,8 @@ format:
 editor: source
 #embed-resources: true
 cache: true
+filters:
+  - parse-latex
 
 ---
 
@@ -321,7 +323,7 @@ And since $\rho$ is bounded by -1 and +1, *d* must be bounded by 0 and 4.
 
 Here are the criteria for evaluating Durbin-Watson statistics: 
 
-
+```{=latex}
 \begin{table}[!ht]
 \begin{center}
 \caption{Durbin-Watson {\it d} Decision Criteria} \label{tab:dwcriteria}
@@ -345,10 +347,11 @@ no AR(1)  &  do not reject & $d_U<d<4-d_U$  \\
 \end{center}
 \end{table}
 
+```
 
 ### Breusch-Godfrey LM Test
 
-The BG test is a more general test because it can account for higher order AR processes (while DW is limited to AR(1)).  Moreover, the BG test is simple to compute by hand and has few of the limitations listed above for DW.  \alert{Note, this is not appropriate for panel data.
+The BG test is a more general test because it can account for higher order AR processes (while DW is limited to AR(1)).  Moreover, the BG test is simple to compute by hand and has few of the limitations listed above for DW. Note, this is not appropriate for panel data.
 
 
 Here's how it works: 
