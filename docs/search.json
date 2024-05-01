@@ -690,7 +690,7 @@
     "href": "slides.html",
     "title": "Slides",
     "section": "",
-    "text": "Course overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\nMultivariate model\nPrediction methods\nNormality\nInference\nModel specification\nDummy variables and interactions\nLimited dependent variables\nPanel data\nTime Series\nVariance"
+    "text": "Course overview\nMatrix algebra basics\nProbability basics\nThinking about data\nBivariate model\nMultivariate model\nPrediction methods\nNormality\nInference\nModel specification\nDummy variables and interactions\nLimited dependent variables\nPanel data\nTime Series\nVariance\nInstrumental variables"
   },
   {
     "objectID": "about.html",

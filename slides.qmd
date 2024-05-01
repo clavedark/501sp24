@@ -31,3 +31,5 @@ title: "Slides"
 [Time Series](time24.qmd)
 
 [Variance](variance24.qmd)
+
+[Instrumental variables](causal24.qmd)
