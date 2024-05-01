@@ -1,0 +1,217 @@
+---
+title: "2SLS and Instrumental Variables"
+author: "Dave Clark"
+institute: "Binghamton University"
+date: today
+date-format: long
+title-block-banner: TRUE
+bibliography: refs501.bib
+format: 
+   html: default
+   # revealjs:
+   #   output-file: interactions24s.html
+editor: source
+#embed-resources: true
+cache: true
+
+---
+
+<!-- render 2 types at same time; terminal "quarto render file.qmd" -->
+<!-- https://quarto.org/docs/output-formats/html-multi-format.html -->
+
+<!-- tables, smaller font and striping -->
+<style>
+table, th, td {
+    font-size: 18px;
+}
+tr:nth-child(odd) {
+  background-color: # f2f2f2;
+}
+</style>
+
+<!-- <script src="https://cdn.jsdelivr.net/gh/ncase/nutshell/nutshell.js"></script> -->
+
+```{r setup, include=FALSE ,echo=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(fig.retina = 2, fig.align = "center", warning=FALSE, error=FALSE, message=FALSE) 
+  
+library(knitr)
+library(datasets)
+library(tidyverse)
+library(ggplot2)
+library(haven) # read stata w/labels
+library(countrycode)
+library(patchwork)
+library(mvtnorm)
+library(modelsummary)
+library("GGally")
+library(stargazer)
+library(shiny)
+library(faux)
+library(MASS)
+library(ggrepel)
+library(ggpmisc)
+library(sjPlot)
+library(plm)
+
+
+```
+
+
+## Causal claims
+
+One of the central challenges in regression models  is the identification problem. Here, identification refers to exerting sufficient statistical control to enable causal claims. Among the things that make causal claims difficult are measurement error, omitted variables, and endogenous $x$ variables ($x$ correlated with $\epsilon$).
+
+
+## Identification
+
+A model is identified if, in an infinite sample, it is possible to learn the true value of the parameter (Keele, 2015: 314). The effort to identify a model is to generate circumstances where we can know that parameter in a finite sample. We do this by creating conditions that mimic randomization and thereby deal with the issues above.
+
+
+
+## Mimicking Randomization\
+
+Thinking of statistical control as an effort to mimic what randomization would achieve, identification strategies are efforts to structure the statistical analysis in ways that mimic the effects of randomization.
+
+
+
+
+
+## Identification strategies
+
+Several common identification strategies:
+
+
+  - instrumental variable models.
+  - natural experiments and regression discontinuties.
+  - randomized controlled trials (experiments).
+  - difference in difference designs.
+
+
+Today, we're focusing on instrumental variables approaches, though I'll present empirical examples of other strategies. Let's motivate the discussion by considering the question of crime rates and policing. 
+
+
+
+
+## Crime Rates and Policing
+
+Does increasing the number of police in a locale reduce crime? Stating the question as a regression, 
+
+$$ Crime = \beta_0 - \beta_1(Police) + \beta_k(X) + \epsilon$$
+
+All else equal, we'd probably expect increased policing has a negative effect on crime rates. As usual, our $y$ variable, Crime, is the endogenous variable, and we assume the $X$ variables are exogenous in order to ensure $cov(x,\epsilon) = 0$. 
+
+
+
+That might be a bit too simplistic. It's possible police presence increases *because of* high crime rates; that is: 
+
+$$ Police = \beta_0 + \beta_1(Crime) + \beta_k(X) + \epsilon$$
+
+The problem here is the causal arrow could flow either or both directions. 
+
+
+
+
+If Crime and Police determine each other simultaneously,
+
+$$ Crime = \beta_0 + \beta_1(Police) + \beta_k(X) + \epsilon$$
+$$ Police = \beta_0 + \beta_1(Crime) + \beta_k(X) + \epsilon$$
+
+then Police is correlated with $\epsilon$. As we've noted many times, if $cov(x,\epsilon) \neq 0$ we have an endogeneity problem; the estimates of $\beta$ are biased (for all the $\beta$s in the model, not just the one of interest).
+
+
+
+In the regression, 
+
+$$ Crime = \beta_0 + \beta_1(Police) + \beta_k(X) + \epsilon$$
+
+Police is an **endogenous regressor**. 
+
+
+Let's rewrite generically:
+
+$$ y_1 = \beta_0 + \beta_1(y_2) + \beta_k(X) + \epsilon$$
+
+$$ y_2 = \gamma_0 + \gamma_1(y_1) + \gamma_k(X) + \upsilon$$
+
+$$ y_1 = \beta_0 + [\gamma_0 + \gamma_1(y_1) + \gamma_k(X) + \upsilon] + \beta_k(X) + \epsilon$$
+
+
+
+
+## Causes of endogeneity 
+
+Let's slow a bit here - endogeneity, specifically $cov(x,\epsilon) \neq 0$ arises for three reasons: 
+
+  - Measurement error
+  - Omitted variables
+  - Simultaneity
+
+
+The policing example illustrates simultaneity, but it's also possible the model suffers either or both of the other problems. 
+
+
+
+## Instrumental Variables
+
+One way to deal with the endogenous regressor, $y_2$  is to use an *instrumental variables model*.
+
+Thinking of the original model, 
+
+$$ y_1 = \beta_0 + \beta_1(y_2) + \beta_k(X) + \epsilon$$
+
+we need to find a variable to use as an instrument for $y_2$ to measure the part of $y_2$ that's not correlated with the error. 
+
+
+
+## Instrumental Variables
+
+An instrumental variable is a regressor, $z$ that meets two conditions:
+
+  - $z$ is uncorrelated with $\epsilon$; that is, the instrument, $z$ is not correlated with omitted variables or effects including the reverse effect of crime on policing. By extension, $z$ is *not* correlated with $y_1$.
+  - $z$ is *partially correlated* with $y_2$, the endogenous regressor.
+
+
+So $z$ is uncorrelated with $y_1$, but correlated with $y_2$
+
+ 
+
+## What's the instrument for?
+
+Since the problem is $y_2$ is correlated with the error, the idea is to predict $y_2$ so we can measure the part of $y_2$ that's due to $z$, separating it from the part of $y_2$ that's correlated with $\epsilon$. 
+
+If we estimate the regression 
+
+$$ y_2 = \beta_0 + \beta_1(z) + \beta_k(X) $$
+
+where $z$ is the instrument, and $X$ are the other predictors from the original model, the predicted values, $\widehat{y_2}$ will measure the part of $y_2$ that's not in the error - the part that's due to the instrument and other $X$ variables from the original regression of interest, and not due to whatever source of endogeneity is in the error. 
+
+
+
+## 2 Stage Least Squares
+
+The IV model we're describing is the 2SLS model - there are other types of IV models, but the principles of instrumenting are the same. For 2SLS you won't be surprised to know we estimate two regressions. 
+
+
+## First stage regression 
+
+The equation regressing $y_2$, the endogenous regressor, on the instrument is the "first stage" regression:
+
+$$ y_2 = \beta_0 + \beta_1(z) + \beta_k(X) $$
+
+
+Here, $z$ is the excluded instrument; the $X$ variables are the included instruments. This regression is the "first stage" where we generate a new, purged variable, $\widehat{y_2}$ to use instead of $y_2$ in the original regression of interest. 
+
+
+## Second stage regression
+
+Now  we have  a new and "purged" version of $y_2$ called $\widehat{y_2}$. This new variable will not be correlated with the error in our original regression, so we can use OLS 
+
+$$y_i = \beta_0 + \beta_1(\widehat{y_2}) + \beta_k(X) + \epsilon$$
+
+
+<!-- ## References -->
+
+<!-- ::: {#refs} -->
+<!-- ::: -->

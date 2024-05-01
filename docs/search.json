@@ -5451,5 +5451,96 @@
     "title": "Non-constant Variance in the OLS model",
     "section": "",
     "text": "Variance is not a nuiscance - it’s a feature of the data that we should theorize about. This is a potentially rich part of our literature largely neglected. Variance models in general do the following:\n\ntest hypotheses about mean differences in \\(y\\) given \\(X\\). This is the usual enterprise, and such hypotheses are about how the mean of \\(y\\) increases/decreases given a change in \\(x\\).\ntest hypotheses about variance differences in \\(y\\) given \\(X\\). This is a less common enterprise, and such hypotheses are about how the variance of \\(y\\) increases/decreases given a change in \\(x\\).\n\nThinking of the income and luxary spending example, we have hypotheses on both the mean and the variance of spending given changes in income."
+  },
+  {
+    "objectID": "causal24.html",
+    "href": "causal24.html",
+    "title": "2SLS and Instrumental Variables",
+    "section": "",
+    "text": "One of the central challenges in regression models is the identification problem. Here, identification refers to exerting sufficient statistical control to enable causal claims. Among the things that make causal claims difficult are measurement error, omitted variables, and endogenous \\(x\\) variables (\\(x\\) correlated with \\(\\epsilon\\))."
+  },
+  {
+    "objectID": "causal24.html#causal-claims",
+    "href": "causal24.html#causal-claims",
+    "title": "2SLS and Instrumental Variables",
+    "section": "",
+    "text": "One of the central challenges in regression models is the identification problem. Here, identification refers to exerting sufficient statistical control to enable causal claims. Among the things that make causal claims difficult are measurement error, omitted variables, and endogenous \\(x\\) variables (\\(x\\) correlated with \\(\\epsilon\\))."
+  },
+  {
+    "objectID": "causal24.html#identification",
+    "href": "causal24.html#identification",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Identification",
+    "text": "Identification\nA model is identified if, in an infinite sample, it is possible to learn the true value of the parameter (Keele, 2015: 314). The effort to identify a model is to generate circumstances where we can know that parameter in a finite sample. We do this by creating conditions that mimic randomization and thereby deal with the issues above."
+  },
+  {
+    "objectID": "causal24.html#mimicking-randomization",
+    "href": "causal24.html#mimicking-randomization",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Mimicking Randomization\n",
+    "text": "Mimicking Randomization\n\nThinking of statistical control as an effort to mimic what randomization would achieve, identification strategies are efforts to structure the statistical analysis in ways that mimic the effects of randomization."
+  },
+  {
+    "objectID": "causal24.html#identification-strategies",
+    "href": "causal24.html#identification-strategies",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Identification strategies",
+    "text": "Identification strategies\nSeveral common identification strategies:\n\ninstrumental variable models.\nnatural experiments and regression discontinuties.\nrandomized controlled trials (experiments).\ndifference in difference designs.\n\nToday, we’re focusing on instrumental variables approaches, though I’ll present empirical examples of other strategies. Let’s motivate the discussion by considering the question of crime rates and policing."
+  },
+  {
+    "objectID": "causal24.html#crime-rates-and-policing",
+    "href": "causal24.html#crime-rates-and-policing",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Crime Rates and Policing",
+    "text": "Crime Rates and Policing\nDoes increasing the number of police in a locale reduce crime? Stating the question as a regression,\n\\[ Crime = \\beta_0 - \\beta_1(Police) + \\beta_k(X) + \\epsilon\\]\nAll else equal, we’d probably expect increased policing has a negative effect on crime rates. As usual, our \\(y\\) variable, Crime, is the endogenous variable, and we assume the \\(X\\) variables are exogenous in order to ensure \\(cov(x,\\epsilon) = 0\\).\nThat might be a bit too simplistic. It’s possible police presence increases because of high crime rates; that is:\n\\[ Police = \\beta_0 + \\beta_1(Crime) + \\beta_k(X) + \\epsilon\\]\nThe problem here is the causal arrow could flow either or both directions.\nIf Crime and Police determine each other simultaneously,\n\\[ Crime = \\beta_0 + \\beta_1(Police) + \\beta_k(X) + \\epsilon\\] \\[ Police = \\beta_0 + \\beta_1(Crime) + \\beta_k(X) + \\epsilon\\]\nthen Police is correlated with \\(\\epsilon\\). As we’ve noted many times, if \\(cov(x,\\epsilon) \\neq 0\\) we have an endogeneity problem; the estimates of \\(\\beta\\) are biased (for all the \\(\\beta\\)s in the model, not just the one of interest).\nIn the regression,\n\\[ Crime = \\beta_0 + \\beta_1(Police) + \\beta_k(X) + \\epsilon\\]\nPolice is an endogenous regressor.\nLet’s rewrite generically:\n\\[ y_1 = \\beta_0 + \\beta_1(y_2) + \\beta_k(X) + \\epsilon\\]\n\\[ y_2 = \\gamma_0 + \\gamma_1(y_1) + \\gamma_k(X) + \\upsilon\\]\n\\[ y_1 = \\beta_0 + [\\gamma_0 + \\gamma_1(y_1) + \\gamma_k(X) + \\upsilon] + \\beta_k(X) + \\epsilon\\]"
+  },
+  {
+    "objectID": "causal24.html#causes-of-endogeneity",
+    "href": "causal24.html#causes-of-endogeneity",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Causes of endogeneity",
+    "text": "Causes of endogeneity\nLet’s slow a bit here - endogeneity, specifically \\(cov(x,\\epsilon) \\neq 0\\) arises for three reasons:\n\nMeasurement error\nOmitted variables\nSimultaneity\n\nThe policing example illustrates simultaneity, but it’s also possible the model suffers either or both of the other problems."
+  },
+  {
+    "objectID": "causal24.html#instrumental-variables",
+    "href": "causal24.html#instrumental-variables",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Instrumental Variables",
+    "text": "Instrumental Variables\nOne way to deal with the endogenous regressor, \\(y_2\\) is to use an instrumental variables model.\nThinking of the original model,\n\\[ y_1 = \\beta_0 + \\beta_1(y_2) + \\beta_k(X) + \\epsilon\\]\nwe need to find a variable to use as an instrument for \\(y_2\\) to measure the part of \\(y_2\\) that’s not correlated with the error."
+  },
+  {
+    "objectID": "causal24.html#instrumental-variables-1",
+    "href": "causal24.html#instrumental-variables-1",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Instrumental Variables",
+    "text": "Instrumental Variables\nAn instrumental variable is a regressor, \\(z\\) that meets two conditions:\n\n\\(z\\) is uncorrelated with \\(\\epsilon\\); that is, the instrument, \\(z\\) is not correlated with omitted variables or effects including the reverse effect of crime on policing. By extension, \\(z\\) is not correlated with \\(y_1\\).\n\\(z\\) is partially correlated with \\(y_2\\), the endogenous regressor.\n\nSo \\(z\\) is uncorrelated with \\(y_1\\), but correlated with \\(y_2\\)"
+  },
+  {
+    "objectID": "causal24.html#whats-the-instrument-for",
+    "href": "causal24.html#whats-the-instrument-for",
+    "title": "2SLS and Instrumental Variables",
+    "section": "What’s the instrument for?",
+    "text": "What’s the instrument for?\nSince the problem is \\(y_2\\) is correlated with the error, the idea is to predict \\(y_2\\) so we can measure the part of \\(y_2\\) that’s due to \\(z\\), separating it from the part of \\(y_2\\) that’s correlated with \\(\\epsilon\\).\nIf we estimate the regression\n\\[ y_2 = \\beta_0 + \\beta_1(z) + \\beta_k(X) \\]\nwhere \\(z\\) is the instrument, and \\(X\\) are the other predictors from the original model, the predicted values, \\(\\widehat{y_2}\\) will measure the part of \\(y_2\\) that’s not in the error - the part that’s due to the instrument and other \\(X\\) variables from the original regression of interest, and not due to whatever source of endogeneity is in the error."
+  },
+  {
+    "objectID": "causal24.html#stage-least-squares",
+    "href": "causal24.html#stage-least-squares",
+    "title": "2SLS and Instrumental Variables",
+    "section": "2 Stage Least Squares",
+    "text": "2 Stage Least Squares\nThe IV model we’re describing is the 2SLS model - there are other types of IV models, but the principles of instrumenting are the same. For 2SLS you won’t be surprised to know we estimate two regressions."
+  },
+  {
+    "objectID": "causal24.html#first-stage-regression",
+    "href": "causal24.html#first-stage-regression",
+    "title": "2SLS and Instrumental Variables",
+    "section": "First stage regression",
+    "text": "First stage regression\nThe equation regressing \\(y_2\\), the endogenous regressor, on the instrument is the “first stage” regression:\n\\[ y_2 = \\beta_0 + \\beta_1(z) + \\beta_k(X) \\]\nHere, \\(z\\) is the excluded instrument; the \\(X\\) variables are the included instruments. This regression is the “first stage” where we generate a new, purged variable, \\(\\widehat{y_2}\\) to use instead of \\(y_2\\) in the original regression of interest."
+  },
+  {
+    "objectID": "causal24.html#second-stage-regression",
+    "href": "causal24.html#second-stage-regression",
+    "title": "2SLS and Instrumental Variables",
+    "section": "Second stage regression",
+    "text": "Second stage regression\nNow we have a new and “purged” version of \\(y_2\\) called \\(\\widehat{y_2}\\). This new variable will not be correlated with the error in our original regression, so we can use OLS\n\\[y_i = \\beta_0 + \\beta_1(\\widehat{y_2}) + \\beta_k(X) + \\epsilon\\]"
   }
 ]
